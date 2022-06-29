@@ -11,6 +11,7 @@ import GoogleRedirect from './components/GoogleRedirect';
 import Footer from './components/Footer';
 import NaverRedirect from './components/NaverRedirect';
 import UserWrite from './pages/UserWrite';
+import HostWrite from './pages/HostWrite';
 
 function App() {
  
@@ -24,7 +25,8 @@ function App() {
         <Route path="/posts" element={<Posts />} />
         <Route path="/userwrite" element={<UserWrite />} />
         <Route path="/userwrite/:id" element={<UserWrite />} />
-
+        <Route path="/hostwrite/" element={<HostWrite />} />
+        <Route path="/hostwrite/:id" element={<HostWrite />} />
         <Route path="/mypage" element={<Mypage />} />
         <Route path='/oauth/kakao/callback' element={<KakaoRedirect/>}/>
         <Route path='/oauth/google/callback' element={<GoogleRedirect/>}/>
