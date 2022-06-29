@@ -24,6 +24,7 @@ function App() {
         <Route path="/posts" element={<Posts />} />
         <Route path="/userwrite" element={<UserWrite />} />
         <Route path="/userwrite/:id" element={<UserWrite />} />
+
         <Route path="/mypage" element={<Mypage />} />
         <Route path='/oauth/kakao/callback' element={<KakaoRedirect/>}/>
         <Route path='/oauth/google/callback' element={<GoogleRedirect/>}/>
