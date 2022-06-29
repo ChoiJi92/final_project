@@ -1,0 +1,45 @@
+.label{
+    border: 1px solid;
+    border-radius: 10px;
+    width: 80px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    cursor: pointer;
+}
+.label:hover{
+    background-color: gray;
+}
+
+
+.card {
+  width: 340px;
+  height: 270px;
+  /* border-radius: 20px; */
+  /* border: 1px solid;
+  position: relative; */
+  overflow: hidden;
+}
+.image {
+  height: 70%;
+  background-image: url(./back.jpeg);
+  background-size: cover;
+}
+.contents {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  margin-top: 10px;
+  font-size: 15px;
+  font-weight: 500;
+}
+.price {
+  padding: 0 20px;
+  margin-top: 5px;
+  font-size: 15px;
+  font-weight: 500;
+}
