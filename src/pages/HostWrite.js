@@ -58,7 +58,9 @@ const HostWrite = () => {
         let imgUrlLists = [...multiImgs];
         for (let i = 0; i < imgLists.length; i++) {
             const currentImageUrl = URL.createObjectURL(imgLists[i]);
+            console.log(currentImageUrl)
             imgUrlLists.push(currentImageUrl);
+            
           }
 
         if (imgUrlLists.length > 10) {
@@ -99,7 +101,7 @@ const HostWrite = () => {
             tripLocation:isLocation,
         }
 
-       dispatch(postContentsDB(data))
+    //    dispatch(postContentsDB(data))
         // console.log(isTitle, isDes)
         // console.log(multiImgs);
         // console.log(showImages);
@@ -136,17 +138,17 @@ const HostWrite = () => {
         //   })
     };
     useEffect(()=>{
-        dispatch(loadContentsDB());
+        // dispatch(loadContentsDB());
     },[])
-    const list = useSelector((state) => state.postSlice.contents);
-    console.log(list[params.id])
-    console.log(params.id)
+    // const list = useSelector((state) => state.postSlice.contents);
+    // console.log(list[params.id])
+    // console.log(params.id)
     // {params.id == null ? (<button>등록!</button>) :
     // (<div><button>수정!</button><button>삭제</button></div>)}
     return (
         <Wrap>
             <h1>this is write page</h1>
-            {list[params.id] == undefined ? (<DataForm onSubmit={onSubmit}>
+            <DataForm onSubmit={onSubmit}>
                 <label>Title</label>
                 <input onChange={titleChange}/>
                 <label htmlFor="story">내용을 적어제주도</label>
@@ -154,9 +156,6 @@ const HostWrite = () => {
                 
                 <label>여행 장소(상호명을 적어제주도!)</label>
                 <input onChange={locationChange}/>
-
-
-
                 <label htmlFor="input-file"   />
                 <input multiple
                         id="input-file" 
@@ -170,33 +169,8 @@ const HostWrite = () => {
                 </SelectImgBox>
                 <button>등록!</button>
                 
-            </DataForm>) :
-             (<DataForm onSubmit={onSubmit}>
-                <label>Title</label>
-                <input onChange={titleChange}/>
-                <label htmlFor="story">내용을 적어제주도</label>
-                <textarea onChange={desChange} id="story" name="story" rows="5" cols="33" placeholder='내용을 적어제주도.'/>
-                
-                <label>여행 장소(상호명을 적어제주도!)</label>
-                <input onChange={locationChange}/>
+            </DataForm>
 
-
-
-                <label htmlFor="input-file"   />
-                <input multiple
-                        id="input-file" 
-                        style={{"display":"none", "outline":"none"}} 
-                        ref={currentImg} 
-                        type={"file"} accept={"image/*"}
-                        name="imgfile"
-                        onChange={onImgChange} />
-                <SelectImgBox onClick={imgClick}>
-                    <span>이미지 선택해제주도</span>
-                </SelectImgBox>
-
-                <button>수정!</button>
-            </DataForm>)}
-            <button>삭제</button>
             <h5>{multiImgs.length}/10</h5>
             <div style={{"display" :"flex"}}>
             {multiImgs.map((i, idx) =>( 
