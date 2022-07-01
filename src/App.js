@@ -12,6 +12,9 @@ import Footer from './components/Footer';
 import NaverRedirect from './components/NaverRedirect';
 import UserWrite from './pages/UserWrite';
 import HostWrite from './pages/HostWrite';
+import Community from './pages/Community';
+import CommunityDetail from './pages/CommunityDetail';
+import ChatList from './pages/ChatList';
 
 function App() {
  
@@ -23,16 +26,19 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Main />} />
         <Route path="/posts" element={<Posts />} />
+        <Route path="/community" element={<Community />} />
+        <Route path="/community/:id" element={<CommunityDetail />} />
         <Route path="/userwrite" element={<UserWrite />} />
         <Route path="/userwrite/:id" element={<UserWrite />} />
-        <Route path="/hostwrite/" element={<HostWrite />} />
-        <Route path="/hostwrite/:id" element={<HostWrite />} />
+        <Route path="/hostwrite" element={<HostWrite/>} />
+        <Route path="/hostwrite/:id" element={<HostWrite/>} />
+        <Route path="/chat" element={<ChatList/>} />
         <Route path="/mypage" element={<Mypage />} />
         <Route path='/oauth/kakao/callback' element={<KakaoRedirect/>}/>
         <Route path='/oauth/google/callback' element={<GoogleRedirect/>}/>
         <Route path='/oauth/naver/callback' element={<NaverRedirect/>}/>
       </Routes>
-      <Footer/>
+      {/* <Footer/> */}
     </div>
   );
 }

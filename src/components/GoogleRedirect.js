@@ -15,7 +15,7 @@ const GoogleRedirect = () => {
     googleLogin()
   },[])
     return (
-        <div>사실 이페이지는 크게 의미 없다. 첫화면으로 로직이 끝나면 이동시켜주면 된다.</div>
+      <div>로그인 중입니다...</div>
     );
 };
 
