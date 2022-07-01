@@ -10,7 +10,7 @@ export const kakaoLoginDB = (code) => {
     await instance
       .get(`/oauth/kakao/callback?code=${code}`)
       .then((response) => {
-        console.group(response)
+        console.log(response)
         localStorage.setItem('token',response.data.user.token)  
         localStorage.setItem('userId',response.data.user.userId)  
         localStorage.setItem('nickName',response.data.user.nickName)  
