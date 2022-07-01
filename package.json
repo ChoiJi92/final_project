@@ -18,6 +18,8 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
+    "@toast-ui/editor-plugin-color-syntax": "^3.0.3",
+    "@toast-ui/react-editor": "^3.1.7",
     "audit": "^0.0.6",
     "axios": "^0.27.2",
     "fix": "^0.0.6",
@@ -31,6 +33,7 @@
     "react-icons": "^4.4.0",
     "react-intersection-observer": "^9.3.3",
     "react-kakao-login": "^2.1.0",
+    "react-query": "^3.39.1",
     "react-quill": "^1.3.5",
     "react-redux": "^8.0.2",
     "react-router-dom": "^6.3.0",
@@ -39,11 +42,12 @@
     "react-slick": "^0.29.0",
     "redux": "^4.2.0",
     "slick-carousel": "^1.8.1",
+    "socket.io-client": "^4.5.1",
     "styled-components": "^5.3.5",
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts start GENERATE_SOURCEMAP=false",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
