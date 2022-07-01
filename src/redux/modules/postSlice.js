@@ -1,5 +1,11 @@
 import { createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+
+
 
 export const postContentsDB = (data) => {
     return function (dispatch) {
@@ -45,7 +51,16 @@ export const updateContentsDB = (data, id) => {
 const postSlice = createSlice({
     name:"contents",
     initialState:{
-        contents:[]
+        contents:[],
+        // settings : {
+        //     infinite: true,
+        //     speed: 500,
+        //     slidesToShow: 1,
+        //     slidesToScroll: 1,
+        //     arrow:true,
+        //     nextArrow: <SampleNextArrow/>,
+        //     prevArrow: <SamplePrevArrow/>
+        // },
     },
     reducers:{
         loadContents(state, action){
@@ -56,7 +71,8 @@ const postSlice = createSlice({
         },
         updateContents(state, action){
             const idx = state.contents.findIndex((v)=> v.id === action.payload.id)
-        }
+        },
+        
     },
         
 });
