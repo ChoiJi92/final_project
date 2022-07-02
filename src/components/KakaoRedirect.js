@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { kakaoLoginDB } from "../redux/modules/userSlice";
+import instance from "../shared/axios";
 
 const KakaoRedirect = () => {
   const navigate = useNavigate()
@@ -12,12 +13,28 @@ const KakaoRedirect = () => {
   let code = params.get("code"); // 인가코드 받는 부분
   console.log(code)
   // let grant_type = "authorization_code";
-  let client_id = process.env.REACT_APP_KAKAO_CLIENT_ID;
-  console.log(client_id)
+  // let client_id = process.env.REACT_APP_KAKAO_CLIENT_ID;
   
   useEffect(()=>{
     async function kakaoLogin(){
-      await dispatch(kakaoLoginDB(code))
+      // await dispatch(kakaoLoginDB(code))
+      await instance
+      .get(`/oauth/kakao/callback?code=${code}`)
+      // .get('/oauth/kakao/callback')
+      .then((response) => {
+        console.log(response)
+        localStorage.setItem('token',response.data.user.token)  
+        localStorage.setItem('userId',response.data.user.userId)  
+        localStorage.setItem('nickName',response.data.user.nickName)  
+        localStorage.setItem('userImage',response.data.user.userImg)  
+        console.log("로그인 확인");
+        window.location.replace("/"); // 토큰 받고 로그인되면 화면 전환(메인으로)
+      })
+      .catch((err) => {
+        console.log("소셜로그인 에러", err);
+        // window.alert("로그인에 실패하였습니다.");
+        // window.location.replace("/");
+      });
     }
     kakaoLogin()
   },[])

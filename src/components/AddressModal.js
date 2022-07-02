@@ -2,9 +2,12 @@ import React, { useCallback, useRef } from "react";
 import styled from "styled-components";
 import "../assests/css/modal.css";
 import DaumPostCode from 'react-daum-postcode';
-
+import cancelIcon from '../assests/css/cancelIcon.png'
+import {addressState} from '../recoil/atoms'
+import {useRecoilState} from 'recoil'
 //Login Modal
 const AddressModal = (props) => {
+  const [adderess, setAddress] = useRecoilState(addressState)
   // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
   const { open, close } = props;
   const handleComplete = (data) => {
@@ -20,6 +23,8 @@ const AddressModal = (props) => {
         fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
         close()
         console.log(fullAddress)
+        setAddress(fullAddress)
+        
     }
     //fullAddress -> 전체 주소반환
 }
@@ -29,7 +34,8 @@ const AddressModal = (props) => {
       {open ? (
         <section>
           <header>
-            <button
+         
+            {/* <button
               style={{ fontSize: "40px" }}
               className="close"
               onClick={() => {
@@ -37,12 +43,17 @@ const AddressModal = (props) => {
               }}
             >
               &times;
-            </button>
+            </button> */}
           </header>
           <main>
-            <LoginWrap>
+            <Wrap>
+            <Img>
+            <img src={cancelIcon} alt='닫기' onClick={()=>{
+              close()
+            }}></img>
+            </Img>
             <DaumPostCode style={{height:'90%'}} onComplete={handleComplete} className="post-code" />
-            </LoginWrap>
+            </Wrap>
           </main>
         </section>
       ) : null}
@@ -50,7 +61,17 @@ const AddressModal = (props) => {
   );
 };
 
-const LoginWrap = styled.div`
+
+const Img = styled.div`
+  width: 100%;
+  text-align: right;
+  img{
+    cursor: pointer;
+  }
+ 
+`
+
+const Wrap = styled.div`
   background-color: whitesmoke;
   height: 100%;
   width: 90%;

@@ -1,12 +1,15 @@
 import React from "react";
 import { useQuery } from "react-query";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import instance from "../shared/axios";
 
 const Community = () => {
+
+  const navigate = useNavigate()
   const { data } = useQuery(["content"], () =>
     instance.get("/post").then((res) => res.data),{
-      refetchOnWindowFocus:false
+      refetchOnWindowFocus:false  // 다른화면 갔다와도 재호출 안되게 함
     }
   );
   return (
@@ -43,10 +46,12 @@ const Community = () => {
       </Middle>
       <Bottom>
         {data.map((v) => (
-          <Card key={v.id}>
+          <Card key={v.id} onClick={()=>{
+            navigate(`/community/${v.id}`)
+          }}>
             <div>
               <div className="user">글쓴이</div>
-              <h1 className="title">{v.title}</h1>
+              <h1 className="title" >{v.title}</h1>
               <div className="like">좋아요,댓글</div>
             </div>
             <img alt="이미지"></img>
@@ -122,6 +127,16 @@ const Card = styled.div`
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 20px;
+  cursor: pointer;
+  :hover{
+    .title{
+      color:#64b5f6
+    }
+    img{
+      box-shadow: rgb(0 0 0 / 50%) 0px 5px 10px 0px;
+      transform: translateY(-10px);
+    }
+  }
   div {
     position: relative;
     width: 60%;
@@ -142,6 +157,7 @@ const Card = styled.div`
   img {
     border: 1px solid;
     width: 32%;
+    border-radius: 10px;
   }
 `;
 

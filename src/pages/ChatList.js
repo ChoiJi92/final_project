@@ -15,7 +15,7 @@ const ChatList = () => {
       },
     }
   );
-  const {isLoading, data} = useQuery(["loadChatRoom"], () =>
+  const {data} = useQuery(["loadChatRoom"], () =>
     instance.get("/chat").then((res) => {
       console.log(res.data);
       return res.data;
@@ -27,9 +27,6 @@ const ChatList = () => {
   const onChange = (e) => {
     setRoom(e.target.value);
   };
-  if(isLoading){
-    return 'Loading...'
-  }
   console.log(data)
   return (
     <div>
