@@ -26,7 +26,7 @@ const TestHostInfo = () => {
             </InfoBox2>
             <InfoBox3>
                 <input id="house"/>
-                <input id="square"/>
+                <input id="square"/>    
                 <input id="location"/>
                 <input id="step"/>
                 <input id="link"/>

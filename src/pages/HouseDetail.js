@@ -14,7 +14,7 @@ import { settings } from "../components/Slide";
 
 
 
-const HouseDetail = () => {
+const HouseInfoDetail = () => {
     const { isLoading, data,  } = useQuery("house", () => {
         return axios.get("http://localhost:5001/post").then((res) =>
             res.data
@@ -142,4 +142,4 @@ const MapBox = styled.div`
     align-items: center;
 `
 
-export default HouseDetail;
+export default HouseInfoDetail;
