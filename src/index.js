@@ -8,6 +8,8 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import store from "./redux/store";
 import reportWebVitals from "./reportWebVitals";
+import ScrollToTop from "./components/ScrollToTop";
+import {RecoilRoot} from 'recoil'
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const queryClient = new QueryClient({
@@ -19,17 +21,20 @@ const queryClient = new QueryClient({
 }
 );
 root.render(
-  <Suspense fallback={<div>로딩 중 입니다! :)</div>}>
   <Provider store={store}>
     <QueryClientProvider client={queryClient}>
       {/* devtools */}
       {/* <ReactQueryDevtools initialIsOpen={true} /> */}
+      <RecoilRoot>
+      <Suspense fallback={<div>로딩 중 입니다! :)</div>}>
       <BrowserRouter>
+      <ScrollToTop/>
         <App />
       </BrowserRouter>
+      </Suspense>
+      </RecoilRoot>
     </QueryClientProvider>
   </Provider>
-  </Suspense>
 );
 
 // If you want to start measuring performance in your app, pass a function

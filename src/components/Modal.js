@@ -8,6 +8,7 @@ import Kakao from "./Kakao";
 import pracImage from "../assests/css/back.jpeg";
 import Naver from "./Naver";
 import Google from "./Google";
+import cancelIcon from '../assests/css/cancelIcon.png'
 //Login Modal
 const Modal = (props) => {
   // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
@@ -18,15 +19,16 @@ const Modal = (props) => {
       {open ? (
         <section>
           <header>
-            <button
-              style={{ fontSize: "40px" }}
+            {/* <button
               className="close"
               onClick={() => {
                 close();
               }}
             >
-              &times;
-            </button>
+            </button> */}
+            <img onClick={() => {
+                close();
+              }} className="cancel" src={cancelIcon} alt="닫기"></img>
           </header>
           <main>
             <LoginWrap>

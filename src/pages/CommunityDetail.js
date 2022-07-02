@@ -11,6 +11,10 @@ const CommunityDetail = () => {
   const commentChange = (e) => {
     setComment(e.target.value);
   };
+  const {data} = useQuery(['detailContent'],()=>instance.get(`/post/${params.id}`).then((res)=>{
+    console.log(res.data)
+    return res.data
+  }))
   const postComment = useMutation(["postComment", comment], () =>
     instance.post(`/post/${params.id}`).then((res) => console.log(res.data))
   );

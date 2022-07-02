@@ -5,12 +5,23 @@ import PostEditer from "../components/PostEditer";
 import insta from "../assests/css/instagram.png";
 import { useParams } from "react-router-dom";
 import Address from "../components/Address";
+import Modal from "../components/Modal";
+import AddressModal from "../components/AddressModal";
+import { addressState } from "../recoil/atoms";
+import {useRecoilValue} from 'recoil'
 const UserWrite = () => {
   const params = useParams();
   const [title, setTitle] = useState("");
   const [preview, setPreview] = useState([]);
   const [thumbnail, setThumbnail] = useState([]);
-
+  const [modalOpen, setModalOpen] = useState(false);
+  const address = useRecoilValue(addressState)
+  const openAddressModal = () => {
+    setModalOpen(true);
+  };
+  const closeAddressModal = () => {
+    setModalOpen(false);
+  };
   // 이미지 업로드 부분
   const onDrop = useCallback((acceptedFiles) => {
     console.log(acceptedFiles);
@@ -50,6 +61,7 @@ const UserWrite = () => {
       setTitle(e.target.value);
     }
   };
+  console.log(address)
   return (
     <Wrap>
       <Container >
@@ -82,7 +94,9 @@ const UserWrite = () => {
         ></input>
         <p>{title.length}/20</p>
       </Title>
-      <Address></Address>
+      <button onClick={openAddressModal}>주소 검색</button>
+      <div>{address}</div>
+      <AddressModal open={modalOpen} close={closeAddressModal}></AddressModal>
       <PostEditer thumbnail={thumbnail} title={title}></PostEditer>
     </Wrap>
   );

@@ -9,6 +9,7 @@ export const kakaoLoginDB = (code) => {
   return async function (dispatch) {
     await instance
       .get(`/oauth/kakao/callback?code=${code}`)
+      // .get('/oauth/kakao/callback')
       .then((response) => {
         console.log(response)
         localStorage.setItem('token',response.data.user.token)  

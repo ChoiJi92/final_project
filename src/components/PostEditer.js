@@ -15,7 +15,6 @@ import Test from "./Test";
 import instance from "../shared/axios";
 import { QueryClient, useMutation, useQuery, useQueryClient } from "react-query";
 
-
 const PostEditer = ({thumbnail,title}) => {
     const [content, setContent]= useState()
     const editorRef = useRef();
