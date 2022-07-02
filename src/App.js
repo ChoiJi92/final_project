@@ -12,9 +12,13 @@ import Footer from './components/Footer';
 import NaverRedirect from './components/NaverRedirect';
 import UserWrite from './pages/UserWrite';
 import HostWrite from './pages/HostWrite';
+import TestWrite from './pages/TestWrite';
 import Community from './pages/Community';
 import CommunityDetail from './pages/CommunityDetail';
 import ChatList from './pages/ChatList';
+import HouseInfo from './pages/HouseInfo';
+import HouseDetail from './pages/HouseDetail';
+import HouseInfoDetail from './pages/HouseDetail';
 
 function App() {
  
@@ -30,8 +34,10 @@ function App() {
         <Route path="/community/:id" element={<CommunityDetail />} />
         <Route path="/userwrite" element={<UserWrite />} />
         <Route path="/userwrite/:id" element={<UserWrite />} />
-        <Route path="/hostwrite" element={<HostWrite/>} />
-        <Route path="/hostwrite/:id" element={<HostWrite/>} />
+        <Route path="/hostwrite" element={<TestWrite/>} />
+        <Route path="/hostwrite/:id" element={<TestWrite/>} />
+        <Route path="/house" element={<HouseInfo/>} />
+        <Route path="/house/:id" element={<HouseInfoDetail/>} />
         <Route path="/chat" element={<ChatList/>} />
         <Route path="/mypage" element={<Mypage />} />
         <Route path='/oauth/kakao/callback' element={<KakaoRedirect/>}/>
