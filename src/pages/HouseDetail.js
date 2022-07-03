@@ -1,16 +1,15 @@
 import React from "react";
 import styled from "styled-components";
+import room1 from "../assests/css/room1.jpeg"
 import room2 from "../assests/css/room2.jpeg"
 import jeju1 from "../assests/css/jeju1.jpeg"
 import jeju2 from "../assests/css/jeju2.jpeg"
-import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useQuery } from "react-query";
 import axios from "axios";
-import zIndex from "@mui/material/styles/zIndex";
 import { useSelector } from "react-redux";
-import { settings } from "../components/Slide";
+import SlideImg from "../components/SlideImg";
 
 
 
@@ -30,8 +29,8 @@ const HouseInfoDetail = () => {
     
     console.log(data, isLoading)
     // const slideSetting = useSelector((state)=>state);
-    const slideSetting = settings;
     // const list = useSelector((state) => state.postSlice.contents);
+    const listImg = [room2, room1, jeju1, jeju2];
     return (
         <Wrap>
             <div>
@@ -39,20 +38,8 @@ const HouseInfoDetail = () => {
                 <button>삭제</button>
             </div>
             <ImgBox>
-                <ImgInnerBox1>
-                    <Slider {...slideSetting}>
-                        
-                            <Img src={room2} />
-                            <Img src={room2} />
-                            
-                        {/* <div>
-                            <Img src={room2} />
-                        </div> */}
-                    </Slider>
-                </ImgInnerBox1>
-                {/* <ImgInnerBox1>
-                <img src={room2}/>
-            </ImgInnerBox1> */}
+                <SlideImg listImg={listImg}  />
+               
                 <ImgInnerBox2>
                     <img src={jeju1} />
                     <img src={jeju2} />
