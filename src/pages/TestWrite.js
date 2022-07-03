@@ -4,6 +4,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import HostEditor from "../components/HostEditor";
 import TestHostInfo from "../components/TestHostInfo";
+import {FaTimes} from "react-icons/fa"
 
 
 const TestWrite = () => {
@@ -35,6 +36,9 @@ const TestWrite = () => {
     const imgClick = (e) => {
         currentImg.current.click();
     };
+    const deleteImage = (id) => {
+        setMultiImgs(multiImgs.filter((_, index) => index !== id));
+      };
     const onSubmit = (e) => {
         e.preventDefault();
         console.log(e.target.house.value)
@@ -69,6 +73,7 @@ const TestWrite = () => {
                 {multiImgs.map((i, idx) =>( 
                 <div key={idx}>
                     <Img src={i} alt={`${i}-${idx}`}/>
+                    <DeleteIcon onClick={()=> deleteImage(idx)} />
                 </div>
             ))}
                 </ImgBox>
@@ -122,7 +127,7 @@ const SelectImgBox = styled.div`
 const ImgBox = styled.div`
     display: flex;
     flex-wrap: wrap;
-    width: 800px;
+    width: 900px;
 `
 
 const Img = styled.img`
@@ -148,6 +153,12 @@ const TitleBox = styled.div`
         font-size: 13px;
         margin-left: 10px;
     }
+`
+
+const DeleteIcon = styled(FaTimes)`
+    font-size: 13px;
+    opacity: 0.5;
+    cursor: pointer;
 `
 
 export default TestWrite;
