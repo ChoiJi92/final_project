@@ -94,9 +94,9 @@ const UserWrite = () => {
         ></input>
         <p>{title.length}/20</p>
       </Title>
-      <button onClick={openAddressModal}>주소 검색</button>
+      {/* <button onClick={openAddressModal}>주소 검색</button> */}
       <div>{address}</div>
-      <AddressModal open={modalOpen} close={closeAddressModal}></AddressModal>
+      {/* <AddressModal open={modalOpen} close={closeAddressModal}></AddressModal> */}
       <PostEditer thumbnail={thumbnail} title={title}></PostEditer>
     </Wrap>
   );
