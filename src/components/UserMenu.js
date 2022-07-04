@@ -2,7 +2,9 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import Divider from '@mui/material/Divider';
 import { useNavigate } from 'react-router-dom';
+import styled from '@emotion/styled';
 
 const UserMenu = ({userImage,nickName}) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -36,11 +38,15 @@ const UserMenu = ({userImage,nickName}) => {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={()=>{
+        <Write>
+        <MenuItem  onClick={()=>{
           navigate('/userwrite')
           handleClose()
         } }>글쓰기</MenuItem>
+        </Write>
+        
         <MenuItem onClick={handleClose}>숙소 호스트 되기</MenuItem>
+        <Divider />
         <MenuItem onClick={handleClose}>계정</MenuItem>
         <MenuItem onClick={()=>{
             localStorage.clear()
@@ -51,4 +57,10 @@ const UserMenu = ({userImage,nickName}) => {
   );
 }
 
+const Write = styled.div`
+  /* border: 1px solid;
+  border-radius: 5px;
+  width: 30%; */
+
+`
 export default UserMenu
