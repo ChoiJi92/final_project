@@ -23,6 +23,6 @@ jobs: # Job 설정
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.SECRET_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
-           AWS_REGION: '${{ secrets.AWS_REGION }}'
+          AWS_REGION: '${{ secrets.AWS_REGION }}'
         run:
           aws s3 cp --recursive --region ${{ secrets.AWS_REGION }} build s3://choijireact.com
