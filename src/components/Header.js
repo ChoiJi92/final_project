@@ -63,7 +63,7 @@ const Header = () => {
             setMenu('chat')
           }}>오픈 채팅방</div>
         </div>
-        {!nickName ? (
+        {nickName ? (
           <>
             <Btn search={search} onClick={openLoginModal}>로그인</Btn>
           </>
