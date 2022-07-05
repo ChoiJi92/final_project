@@ -8,7 +8,7 @@ on: # Event 감지
 jobs: # Job 설정
   build:
     # runs-on: ubuntu-latest
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-18.04
     steps:
       - name: Checkout source code. # Repo checkout
         uses: actions/checkout@v2
@@ -36,8 +36,8 @@ jobs: # Job 설정
           AWS_ACCESS_KEY_ID: ${{ secrets.SECRET_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
           AWS_REGION: "${{ secrets.AWS_REGION }}"
-        # run: aws s3 cp --recursive --region ${{ secrets.AWS_REGION }} build s3://mendorong-jeju.com
-          run: aws s3 sync ./dist s3://mendorong-jeju.com --delete
+        run: aws s3 cp --recursive --region ${{ secrets.AWS_REGION }} build s3://mendorong-jeju.com
+          # run: aws s3 sync ./dist s3://mendorong-jeju.com --delete
 
       - name: Invalidate CloudFront Cache
         run: aws cloudfront create-invalidation --distribution-id ${{secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID}} --paths "/*"
