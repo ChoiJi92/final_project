@@ -43,8 +43,8 @@ jobs: # Job 설정
       - name: Deploy to S3            # Upload build file to S3
         run: aws s3 sync ./build s3://mendorong-jeju.com --delete
       
-      - name: Invalidate CloudFront Cache #CloudFront 캐시 갱신
-        run: aws cloudfront create-invalidation --distribution-id ${{secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID}} --paths "/*"
+      # - name: Invalidate CloudFront Cache #CloudFront 캐시 갱신
+      #   run: aws cloudfront create-invalidation --distribution-id ${{secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID}} --paths "/*"
       # - name: Deploy # Upload build file to S3
       #   env:
       #     AWS_ACCESS_KEY_ID: ${{ secrets.SECRET_KEY }}
