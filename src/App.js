@@ -19,6 +19,7 @@ import ChatList from './pages/ChatList';
 import HouseInfo from './pages/HouseInfo';
 import HouseDetail from './pages/HouseDetail';
 import HouseInfoDetail from './pages/HouseDetail';
+import ChatRoom from './pages/ChatRoom';
 
 function App() {
  
@@ -39,6 +40,7 @@ function App() {
         <Route path="/house" element={<HouseInfo/>} />
         <Route path="/house/:id" element={<HouseInfoDetail/>} />
         <Route path="/chat" element={<ChatList/>} />
+        <Route path="/chatroom" element={<ChatRoom/>} />
         <Route path="/mypage" element={<Mypage />} />
         <Route path='/oauth/kakao/callback' element={<KakaoRedirect/>}/>
         <Route path='/oauth/google/callback' element={<GoogleRedirect/>}/>

@@ -20,7 +20,7 @@ const AddressModal = (props) => {
         if (data.buildingName !== '') {
             extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName);
         }
-        fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
+        // fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
         close()
         console.log(fullAddress)
         setAddress(fullAddress)

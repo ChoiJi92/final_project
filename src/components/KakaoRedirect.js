@@ -23,12 +23,12 @@ const KakaoRedirect = () => {
       // .get('/oauth/kakao/callback')
       .then((response) => {
         console.log(response)
-        localStorage.setItem('token',response.data.user.token)  
-        localStorage.setItem('userId',response.data.user.userId)  
-        localStorage.setItem('nickName',response.data.user.nickName)  
-        localStorage.setItem('userImage',response.data.user.userImg)  
+        localStorage.setItem('token',response.data.users.token)  
+        localStorage.setItem('userId',response.data.users.userId)
+        localStorage.setItem('nickName',response.data.users.nickname)  
+        localStorage.setItem('userImage',response.data.users.userImage)  
         console.log("로그인 확인");
-        window.location.replace("/"); // 토큰 받고 로그인되면 화면 전환(메인으로)
+        // window.location.replace("/"); // 토큰 받고 로그인되면 화면 전환(메인으로)
       })
       .catch((err) => {
         console.log("소셜로그인 에러", err);
