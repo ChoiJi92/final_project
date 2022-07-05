@@ -36,13 +36,8 @@ jobs: # Job 설정
           AWS_ACCESS_KEY_ID: ${{ secrets.SECRET_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
           AWS_REGION: "${{ secrets.AWS_REGION }}"
-        run: aws s3 cp --recursive --region ${{ secrets.AWS_REGION }} build s3://choijireact
+        run: aws s3 cp --recursive --region ${{ secrets.AWS_REGION }} build s3://mendorong-jeju.com
+          # run: aws s3 sync ./dist s3:// --delete
 
-- name: Invalidate cache CloudFront
-        uses: chetan/invalidate-cloudfront-action@master
-        env:
-          DISTRIBUTION: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
-          PATHS: '/*'
-        continue-on-error: true
-      # - name: Invalidate CloudFront Cache
-      #   run: aws cloudfront create-invalidation --distribution-id ${{secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID}} --paths "/*"
+      - name: Invalidate CloudFront Cache
+        run: aws cloudfront create-invalidation --distribution-id ${{secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID}} --paths "/*"
