@@ -11,45 +11,15 @@ import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-sy
 import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
 // toast-ui kor import
 import '@toast-ui/editor/dist/i18n/ko-kr'
-import Test from "./Test";
-import instance from "../shared/axios";
-import { QueryClient, useMutation, useQuery, useQueryClient } from "react-query";
+import {contentState} from '../recoil/atoms'
+import {useRecoilState} from 'recoil'
 
-const PostEditer = ({thumbnail,title}) => {
-    const [content, setContent]= useState()
+const PostEditer = () => {
+  const [,setContent] = useRecoilState(contentState)
     const editorRef = useRef();
-    const queryClient = useQueryClient()
-    console.log(thumbnail)
-    const post = {
-      thumbnailImage:thumbnail,
-      title:title,
-      postContent: content,
-    }
-    const formData = new FormData();
-    // thumbnail.forEach((file) => formData.append("file", file));
-    formData.append("file", thumbnail)
-    const json = JSON.stringify(post);
-    const blob = new Blob([json], { type: "application/json" });
-    formData.append("contents", blob);
-
-    const createPost = useMutation(['userPost',formData], () => 
-          instance.post('/post', formData, {
-            headers:{
-              "Content-Type": "multipart/form-data",
-            }
-          }).then((res)=>
-          console.log(res.data)),{
-            onSuccess: () => {
-              // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
-              queryClient.invalidateQueries("content");
-            }
-          }
-        )
     const onChange = ()=>{
         setContent(editorRef.current?.getInstance().getHTML())
     }
-   
-    console.log(content)
       // Toast-UI Editor 에 HTML 표시
   // useEffect(() => {
   //   // 1. DB에서 가져온 HTML이라고 가정
@@ -97,28 +67,26 @@ const PostEditer = ({thumbnail,title}) => {
         //     }
         // }}
       ></Editor>
-        {/* <Test content={content}></Test> */}
-      <Button disabled={!title || !thumbnail || content==='<p><img class="ProseMirror-separator" alt=""><br class="ProseMirror-trailingBreak"></p>'} onClick={()=>{
+      {/* <Button disabled={!title || !thumbnail || content==='<p><img class="ProseMirror-separator" alt=""><br class="ProseMirror-trailingBreak"></p>'} onClick={()=>{
         createPost.mutate()
-      }}>완료</Button>
+      }}>완료</Button> */}
     </Wrap>
   );
 };
 
 const Wrap = styled.div`
-    width: 80%;
-    /* height: 300px; */
+    width: 50%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     margin-bottom: 50px;
 `
-const Button = styled.button`
-    margin: 30px auto;
-    width: 50%;
-    height: 30px;
-    border: none;
-    font-size: 15px;
-    cursor: pointer;
-`
+// const Button = styled.button`
+//     margin: 30px auto;
+//     width: 50%;
+//     height: 30px;
+//     border: none;
+//     font-size: 15px;
+//     cursor: pointer;
+// `
 export default PostEditer;
