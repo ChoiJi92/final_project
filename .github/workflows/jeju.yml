@@ -31,13 +31,27 @@ jobs: # Job 설정
       - name: Build # React Build
         run: CI=false yarn build
 
-      - name: Deploy # Upload build file to S3
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.SECRET_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
-          AWS_REGION: "${{ secrets.AWS_REGION }}"
-          AWS_EC2_METADATA_DISABLED: true
-        run: aws s3 cp --recursive --region ${{ secrets.AWS_REGION }} build s3://mendorong-jeju.com
+
+
+      - name: Configure AWS Credentials   # AWS Credential 확인
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.SECRET_KEY }}
+          aws-secret-access-key: ${{ secrets.SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      
+      - name: Deploy to S3            # Upload build file to S3
+        run: aws s3 sync ./build s3://mendorong-jeju.com --delete
+      
+      - name: Invalidate CloudFront Cache #CloudFront 캐시 갱신
+        run: aws cloudfront create-invalidation --distribution-id ${{secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID}} --paths "/index.html"
+      # - name: Deploy # Upload build file to S3
+      #   env:
+      #     AWS_ACCESS_KEY_ID: ${{ secrets.SECRET_KEY }}
+      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
+      #     AWS_REGION: "${{ secrets.AWS_REGION }}"
+      #     AWS_EC2_METADATA_DISABLED: true
+      #   run: aws s3 cp --recursive --region ${{ secrets.AWS_REGION }} build s3://mendorong-jeju.com
           # run: aws s3 sync ./dist --region ${{ secrets.AWS_REGION }} s3://mendorong-jeju.com --delete
 
       # - name: Invalidate CloudFront Cache
