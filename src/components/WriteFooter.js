@@ -14,6 +14,7 @@ const WriteFooter = ({ title,thumbnail,reset, getValues }) => {
   }))
   const tempPost = () =>{
     console.log(`${address} ${getValues('subAddress')}`)
+    console.log(getValues())
     // const post = {
     //   title: title,
     //   postContent: content,

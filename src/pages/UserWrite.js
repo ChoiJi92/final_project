@@ -1,11 +1,11 @@
 import React, { useState, useCallback } from "react";
 import styled from "styled-components";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 import Dropzone, { useDropzone } from "react-dropzone";
 import PostEditer from "../components/PostEditer";
 import searchIcom from "../assests/css/search.png";
 import { useParams } from "react-router-dom";
-import Address from "../components/Address";
-import Modal from "../components/Modal";
 import AddressModal from "../components/AddressModal";
 import { addressState, contentState } from "../recoil/atoms";
 import { useRecoilValue } from "recoil";
@@ -176,13 +176,26 @@ const UserWrite = () => {
           <div className="category">
             <h3>카테고리 *</h3>
             <div>
-              <select {...register("category", { required: true })}>
+              {/* <select {...register("category", { required: true })}>
                 <option value="" disabled="disabled">
                   숙소의 카테고리를 선택해주세요.
                 </option>
                 <option value="a">호텔</option>
                 <option value="b">숙박</option>
-              </select>
+              </select> */}
+              <Select
+                // onChange={handleChange}
+                {...register("category", { required: true })}
+                style={{width:'100%', height:'40px',border:'1px solid black'}}
+                displayEmpty
+                inputProps={{ "aria-label": "Without label" }}
+              >
+                <MenuItem value="" disabled={true}>
+                  <em>숙소의 카테고리를 선택해주세요.</em>
+                </MenuItem>
+                <MenuItem value="호텔">호텔</MenuItem>
+                <MenuItem value="숙박">숙박</MenuItem>
+              </Select>
               <p className="errorMessage">
                 {errors.category?.type === "required" &&
                   "카테고리는 필수 선택사항입니다 :)"}
@@ -192,7 +205,7 @@ const UserWrite = () => {
           <div className="type">
             <h3>숙소 형태 *</h3>
             <div>
-              <select {...register("type", { required: true })}>
+              {/* <select {...register("type", { required: true })}>
                 <option value="" disabled="disabled">
                   숙소의 형태를 선택해주세요.
                 </option>
@@ -202,7 +215,22 @@ const UserWrite = () => {
                 <option value="아파트">아파트</option>
                 <option value="게스트용 별채">게스트용 별채</option>
                 <option value="호텔">호텔</option>
-              </select>
+              </select> */}
+              <Select
+                // onChange={handleChange}
+                {...register("type", { required: true })}
+                style={{width:'100%', height:'40px',border:'1px solid black'}}
+                displayEmpty
+                inputProps={{ "aria-label": "Without label" }}
+              >
+                <MenuItem value="" disabled={true}>
+                  <em>숙소의 형태를 선택해주세요.</em>
+                </MenuItem>
+                <MenuItem value="단독 또는 다세대 주택">단독 또는 다세대 주택</MenuItem>
+                <MenuItem value="아파트">아파트</MenuItem>
+                <MenuItem value="게스트용 별채">게스트용 별채</MenuItem>
+                <MenuItem value="호텔">호텔</MenuItem>
+              </Select>
               <p className="errorMessage">
                 {errors.type?.type === "required" &&
                   "숙소 형태는 필수 선택사항 입니다 :)"}
@@ -387,6 +415,7 @@ const InputWrap = styled.div`
       p {
         color: red;
         font-size: 13px;
+        margin-top: 10px;
         margin-left: 5px;
       }
     }
@@ -409,6 +438,7 @@ const InputWrap = styled.div`
       width: 80%;
       p {
         color: red;
+        margin-top: 10px;
         font-size: 13px;
         margin-left: 5px;
       }
