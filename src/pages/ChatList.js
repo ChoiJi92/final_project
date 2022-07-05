@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 const ChatList = () => {
   const [room, setRoom] = useState();
-  const [search, setSearch] = useState(true)
+  const [search, setSearch] = useState(true);
   const queryClient = useQueryClient();
   const createChatRoom = useMutation(
     ["createChatRoom", room],
@@ -36,27 +36,38 @@ const ChatList = () => {
   const onChange = (e) => {
     setRoom(e.target.value);
   };
-  const searchRoom =() =>{
-    if(search){
-      setSearch(false)
-    }
-    else{
-      if(!room){
-        window.alert('방 이름을 입력해 주세요 :)')
-      }
-      else{
-      createChatRoom.mutate()
-      setRoom("")
-      setSearch(true)
+  const searchRoom = () => {
+    if (search) {
+      setSearch(false);
+    } else {
+      if (!room) {
+        window.alert("방 이름을 입력해 주세요 :)");
+      } else {
+        createChatRoom.mutate();
+        setRoom("");
+        setSearch(true);
       }
     }
-  }
+  };
+  const onKeyPress = (e) => {
+    if (e.key === "Enter") {
+      if (search) {
+        // 검색
+      } else {
+        createChatRoom.mutate();
+        setRoom("");
+        setSearch(true);
+      }
+    }
+  };
   return (
     <>
       <Top>
         <div className="title">
           <h2>현재 참여중인 채팅방</h2>
-          <Link to ='/chatroom' style={{color:'black'}}>모두보기</Link>
+          <Link to="/chatroom" style={{ color: "black" }}>
+            모두보기
+          </Link>
         </div>
         <Card>
           <h3>방제목</h3>
@@ -71,19 +82,27 @@ const ChatList = () => {
             <option value="인기순">인기순</option>
           </select>
           <div className="search">
-            {search ?  <>
-            <input
-              placeholder="채팅방 검색하기"
-              onChange={onChange}
-              value={room || ""}
-            ></input>
-            <img src={searchIconBlack} alt="검색"></img>
-            </>: <input placeholder="채팅방 제목을 입력해 주세요 :)"onChange={onChange}
-              value={room || ""}></input>}
+            {search ? (
+              <>
+                <input
+                  placeholder="채팅방 검색하기"
+                  onChange={onChange}
+                  value={room || ""}
+                ></input>
+                <img src={searchIconBlack} alt="검색"></img>
+              </>
+            ) : (
+              <input
+                placeholder="채팅방 제목을 입력해 주세요 :)"
+                onChange={onChange}
+                value={room || ""}
+                onKeyPress={onKeyPress}
+              ></input>
+            )}
           </div>
           <button
             onClick={() => {
-                searchRoom()
+              searchRoom();
             }}
           >
             챗방 만들기

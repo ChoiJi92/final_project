@@ -68,17 +68,20 @@ const Container = styled.div`
   align-items: center;
 `;
 const Top = styled.div`
+  width: 80%;
   display: flex;
   flex-direction: row;
   margin: 40px 0;
   .leftImage {
-    width: 887px;
+    /* width: 887px; */
+    width: 80%;
     height: 550px;
     border: 1px solid;
     margin-right: 10px;
   }
   .rightImage {
-    width: 433px;
+    /* width: 433px; */
+    width: 40%;
     height: 550px;
     border: 1px solid;
   }
