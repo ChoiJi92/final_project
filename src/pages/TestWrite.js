@@ -1,23 +1,25 @@
 import React, { useCallback, useRef, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import {FaTimes} from "react-icons/fa"
 import {useForm} from "react-hook-form"
-import TestFooter from "../components/TestFooter";
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import WriteFooter from "../components/WriteFooter";
+import {FaImage} from "react-icons/fa"
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 
 const TestWrite = () => {
-    const { register, handleSubmit,  formState: { errors }, getValues,setValue } = useForm();
+    const { register, handleSubmit,  formState: { errors },watch } = useForm();
     const [multiImgs, setMultiImgs] = useState([]);
 
     const currentImg = useRef(null);
     
-    const onImgChange = (e) => {
+    const onDragEnd = () => {
+
+    }
+
+    const onImgChange = (e) => { 
         const imgLists = e.target.files;
         console.log(imgLists);
         
@@ -42,8 +44,8 @@ const TestWrite = () => {
         console.log(data)
         console.log(multiImgs)
     }
-    
-    
+    const hiddenSetp = watch("stepSelect")
+    console.log(hiddenSetp)
     return(
         <Wrap>
             <HostForm onSubmit={handleSubmit(onSubmit)}>
@@ -53,8 +55,6 @@ const TestWrite = () => {
                 <hr/>
                 <ImgMainBox>
                     <ImgDesBox>
-                            <h4>상품 이지미 등록 * </h4> 
-                            <span>  {multiImgs.length}/8</span>
                             <input multiple
                                 id="input-file" 
                                 style={{"display":"none", "outline":"none"}} 
@@ -62,114 +62,165 @@ const TestWrite = () => {
                                 type={"file"} accept={"image/*"}
                                 name="imgfile"
                                 onChange={onImgChange}
+                                // {...register("images", { required: "이미지는 필수 선택사항입니다 :)" })}
                                  />
-                            <SelectSpan onClick={imgClick}>이미지를 선택해 주세요</SelectSpan>
+                                 <div id="imgSelectBox" onClick={imgClick}>
+                                    <div style={{"display":"flex","flexDirection":"column","alignItems":"center"}}>
+                                    <h3 style={{"marginBottom":"20px"}}>상품 이미지 등록 * </h3> 
+                                    <ImgIcon/>
+                                    {/* <SelectSpan onClick={imgClick}>이미지 등록</SelectSpan> */}
+                                    <span>이미지 등록</span>
+                                    <span style={{"marginTop":"10px"}}> {multiImgs.length} / 8</span>
+                                    </div>
+                                </div>
+                                <span style={{"color":"red","fontSize":"13px"}}>{errors.images?.message}</span> 
                     </ImgDesBox>
-                    <ImgBox>
-                    {multiImgs.map((i, idx) =>( 
-                        <div key={idx}>
-                            <Img src={i} alt={`${i}-${idx}`}/>
-                            <DeleteIcon onClick={()=> deleteImage(idx)} />
-                        </div>
-                    ))}
-                    </ImgBox>
+                    
+                    
+                    <DragDropContext onDragEnd={onDragEnd}>
+                    <Droppable droppableId="one">
+                        {(provided)=>{
+                            <ImgBox ref={provided.innerRef} {...provided.droppableProps}>
+                            {multiImgs.map((i, idx) =>( 
+                                <Draggable key={idx} draggableId={idx} index={idx}>
+                                    {(provided)=>{
+                                        <div ref={provided.innerRef} {...provided.draggableProps} key={idx}>
+                                            <Img src={i} alt={`${i}-${idx}`}/>
+                                            <DeleteIcon  onClick={()=> deleteImage(idx)} />
+                                        </div>
+                                    }}
+                                </Draggable>   
+                            ))} 
+                            </ImgBox>  
+                        }}
+                    </Droppable>
+                    
+                    </DragDropContext>
+                   
                 </ImgMainBox>
                 <hr/>
                 <InfoBox>
-                    <h5>제목 *</h5>
-                    <div>
-                    <input {...register("title", { required: "제목은 필수입니다 :)" })} />
-                    <ErrorP>{errors.title?.message}</ErrorP>
+                    <h3>제목 *</h3>
+                    <div id="infoTitle">
+                        <input placeholder="제목을 입력해주세요." {...register("title", { required: true })} />
+                        <ErrorP1>{errors.title?.type === "required" &&
+                  "제목은 필수 선택사항입니다 :)"}</ErrorP1>
                     </div>
                 </InfoBox>
-              
+                {/* {multiImgs.map((i, idx) =>( 
+                                <div key={idx}>
+                                    <Img src={i} alt={`${i}-${idx}`}/>
+                                    <DeleteIcon onClick={()=> deleteImage(idx)} />
+                                </div>   
+                            ))} */}
                 <InfoBox>
-                    <h5>카테고리 *</h5>
-                    <div>
-                        <Box sx={{ width: 400, "marginRight":"220px" }}>
-                            <FormControl fullWidth>
-                            {/* <InputLabel style={{"fontSize":"1"}} id="demo-simple-select-label">Category</InputLabel> */}
+                    <h3>카테고리 *</h3>
+                    <div id="infoCategory">
                             <Select
-                                style={{"height": "30px"}}
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                {...register("category", { required: "카테고리는 필수입니다 :)" })}
+                                style={{"width":"100%","height":"40px"}}          
+                                {...register("category", { required: "카테고리는 필수 선택사항입니다 :)" })}
+                                displayEmpty
+                                inputProps={{ "aria-label": "Without label" }}
+                                defaultValue=""
                                 >
+                                <MenuItem value="" disabled={true}>
+                                 카테고리를 선택해주세요.
+                                </MenuItem> 
                                 <MenuItem value={10}>Ten</MenuItem>
                                 <MenuItem value={20}>Twenty</MenuItem>
                                 <MenuItem value={30}>Thirty</MenuItem>
-                                </Select>
-                            </FormControl>                    
-                        </Box>
-                        <p>{errors.category?.message}</p>
-                    </div>
+                                </Select> 
+                                <ErrorP>{errors.category?.message}</ErrorP>        
+                    </div>      
                 </InfoBox>
                 
                 <InfoBox>
-                    <h5>숙소형태 *</h5>
-                    <div>
-                    <Box sx={{ width: 400, "marginRight":"220px" }}>
-                            <FormControl fullWidth>
-                            {/* <InputLabel style={{"fontSize":"1"}} id="demo-simple-select-label">Category</InputLabel> */}
-                            <Select
-                                style={{"height": "30px"}}
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                {...register("houseInfo", { required: "숙소형태는 필수입니다 :)" })}
+                    <h3>숙소형태 *</h3>
+                    <div id="infoHouse">
+                            <Select  
+                                          
+                                {...register("houseInfo", { required: "숙소형태는 필수 선택사항입니다 :)" })}
+                                style={{"width":"100%","height":"40px"}}  
+                                displayEmpty
+                                inputProps={{ "aria-label": "Without label" }}
+                
+                                defaultValue=""
                                 >
-                                <MenuItem value={10}>Ten</MenuItem>
+                                <MenuItem value="" disabled={true}>
+                                 숙소의 형태를 선택해주세요.
+                                </MenuItem>    
+                                <MenuItem value={10}>Tenaaaaaaaaaaa</MenuItem>
                                 <MenuItem value={20}>Twenty</MenuItem>
                                 <MenuItem value={30}>Thirty</MenuItem>
                                 </Select>
-                            </FormControl>                    
-                        </Box>
-                    {/* <input {...register("houseInfo", { required: "숙소형태는 필수입니다 :)" })}/> */}
-                    <p>{errors.houseInfo?.message}</p>
+                        
+                                <ErrorP>{errors.houseInfo?.message}</ErrorP>
                     </div>
                 </InfoBox>
                 
                 <InfoBox>
-                    <h5>주소 *</h5>
-                    <div>
-                    <input  {...register("address", { required: "주소는 필수입니다 :)" })} />
-                    <ErrorP>{errors.address?.message}</ErrorP>
+                    <h3>주소 *</h3>
+                    <div id="infoAddress">
+                    <input placeholder="주소를 검색해주세요."  {...register("address", { required: "주소는 필수 선택사항입니다 :)" })} />
+                    <ErrorP1>{errors.address?.message}</ErrorP1>
                     </div>
                 </InfoBox>
                 
                 <InfoBox>
-                    <h5>스텝을 구하시나요? *</h5>
-                    <Box sx={{ width: 100, "marginLeft":"35px" }}>
-                        <FormControl fullWidth>
-                            <Select
-                                style={{"height": "30px"}}
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                {...register("stepSelct", { required: "스텝여부는 필수입니다 :)" })}
-                                >
-                                <MenuItem value={10}>예</MenuItem>
-                                <MenuItem value={20}>아니오</MenuItem>
-                                </Select>
-                        </FormControl>                    
-                    </Box>
-                    <StepInput {...register("stepInfo",  { required: true })}/>
+                    <h3>스텝을 구하시나요? *</h3>
+                    <div id="stepMainBox">
+                        <div id="">
+                            <div id="stepBox">
+                                <div style={{"display":"flex", "width":"60%","marginRight":"100px","height":"40px"}}>
+                                    <Select
+                                        style={{"width":"50%"}}
+                                        displayEmpty
+                                        inputProps={{ "aria-label": "Without label" }}
+                
+                                        defaultValue=""
+                                        {...register("stepSelect", { required: "스텝여부는 필수 선택사항입니다 :)" })}
+                                        >
+                                            <MenuItem value="" disabled={true}>
+                                            예 / 아니오
+                                            </MenuItem>   
+                                        <MenuItem value={"yes"}>예</MenuItem>
+                                        <MenuItem value={"no"}>아니오</MenuItem>
+                                    </Select>
+                                </div>
+                                {hiddenSetp === "yes" ? (
+                                <div id="stepInputBox">
+                                    <StepInput {...register("stepInfo",  { required: true })}/>
+                                </div>) : ("")}
+                        
+                            </div>
+                        </div>
+                        <div style={{"marginTop":"-30px"}}>
+                            <ErrorP>{errors.stepSelect?.message}</ErrorP>
+                        </div>
+                    </div>
                 </InfoBox>
                
                 <InfoBox>
-                    <h5>링크 </h5>
-                    <input {...register("link",  { required: true })}/>
+                    <h3>링크 </h3>
+                    <div id="infoLink">
+                        <input placeholder="링크는 선택사항입니다." {...register("link")}/>
+                    </div>
                 </InfoBox>
                 <InfoBox>
-                    <h5>설명 *</h5>
-                    <textarea {...register("des",  { required: true })} id="text" style={{"width":"450px", "height":"300px", "borderRadius":"10px", "padding":"10px", "margin":"15px 200px 15px 0px"}}></textarea>
+                    <h3>설명 *</h3>
+                    <div id="infoDes">
+                        <textarea placeholder="숙소에 대한 설명....." {...register("des",  { required: "설명은 필수입니다 :)" })} id="text" style={{"width":"100%", "height":"300px", "borderRadius":"10px", "padding":"10px", "margin":"15px 500px 15px 0px"}}></textarea>
+                        <ErrorP1>{errors.des?.message}</ErrorP1>
+                    </div>
                 </InfoBox>
                 <InfoBox>
                     <h5>태그 *</h5>
-                </InfoBox>
-                <TestFooter getValues={getValues}/>
+                </InfoBox>  
+               
                 {/* <button>저장</button>
                 <input onSubmit={} value="임시저장" type="button" />
                 <input value="작성취소" type="button" /> */}
-                
+                <WriteFooter/>
             </HostForm>
         </Wrap>
     );
@@ -180,10 +231,7 @@ const Wrap = styled.div`
     border: 1px solid black;
     display: flex;
     justify-content: center;
-    margin: auto;
-    
-    
-    
+    margin: auto;  
 `
 const HostForm = styled.form`
     margin-top: 50px;
@@ -193,12 +241,12 @@ const HostForm = styled.form`
     flex-direction: column;
     align-items: center;
     hr{
-        width: 800px;
+        width: 70%;
         margin:15px 0px 15px 0px;
     }
 `
 const HouseBox = styled.div`
-    width: 800px;
+    width: 70%;
     display: flex;
     justify-content: flex-start;
 `
@@ -206,170 +254,131 @@ const HouseBox = styled.div`
 const ImgMainBox = styled.div`
     display: flex;
     justify-content: space-between;
-    width: 800px;
+    width: 70%;
 `
 
 const ImgDesBox = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    #imgSelectBox{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 160px;
+        height: 160px;
+        margin: 15px 0px 10px 0px;
+        border-radius: 10px;
+        background-color: #dfe6e9;
+        cursor: pointer;
+    }
+`
+const ImgIcon = styled(FaImage)`
     
 `
 
-const SelectSpan = styled.div`
-    border: 1px solid black;
-    cursor: pointer;
-`
 
 const ImgBox = styled.div`
-    width: 600px;
+    width: 60%;
     height: auto;
     display: flex;
     flex-wrap: wrap;
+    margin-right: 200px;
 `
 const Img = styled.img`
-    width: 120px;
-    height: 120px;
-    margin-left: 10px;
+    width: 170px;
+    height: 150px;
+    margin-top: 5px;
     border-radius: 10px;
 `
 const DeleteIcon = styled(FaTimes)`
-    font-size: 13px;
-    opacity: 0.5;
+    font-size: 15px;
+    opacity: 0.9;
+    color: #fff;
     cursor: pointer;
+    position: relative;
+    left: -25px;
+    bottom: 130px;
 `
 
 const InfoBox = styled.div`
-    width: 800px;
+    width: 70%;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    /* align-items: center; */
     border-bottom: 1px solid black;
-    padding: 15px;
-    input{
-        width: 400px;
-        height: 30px;
-        margin-right: 220px;
+    padding: 20px 0px;
+    
+    #infoTitle,#infoLink,#infoAddress{
+        display: flex;
+        flex-direction: column;
+        width: 70%;
+        margin-right: 130px;
+        input{
+        height: 40px;
         padding: 10px;
-        
     }
-    div{
-        height: 35px;
-        p{
-            font-size: 10px;
-            color : #d63031;
+    }
+    #infoHouse,#infoCategory{
+        width: 70%;
+        display: flex;
+        flex-direction: column;
+        margin-right: 130px;
+    } 
+  
+    #infoDes{
+        height: 400px;
+        margin-right: 130px;
+        width: 70%;
+        textarea{
+            font-size: 20px;
         }
     }
     h5{
         white-space : nowrap; 
     }
-   
-`
-const StepInput = styled.input`
-    width: 200px;
-    margin-left: 10px;
-    margin-bottom: 4px;
-`
-
-const SelectBox = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    select{
-        margin: 0px 15px 0px 35px;
-        height: 30px;
+    #stepBox{
+        width: 100%;
+        height: 70px;
+        display: flex;
+        justify-content: space-between;
+        margin-right: 200px;
+    }
+    #stepInputBox{
+        width: 65%;
+        height: 70px;
+        margin-left: -350px; 
+    }
+    #stepMainBox{
+        width: 70%;
+        height: 60px;
+        display: flex;
+        flex-direction: column;
+        margin-right: 130px;
     }
 `
 
-const ErrorP = styled.p`
-    font-size: 10px;      
-    color : #d63031;
-    margin-top: 3px;
+const ErrorP1 = styled.p`
+font-size: 13px;
+    color : red;
+    margin-top: 10px;
 `
-// const BtnBox =  styled.div`
-//     width: 100vh;
-//     height: 50px;
-//     border: 1px solid black;
-//     margin: 15px 0px 15px 0px;
-// `
+const ErrorP = styled.p`
+font-size: 13px;
+    color : red;
+    /* margin-bottom: 8px; */
+    margin-top: 10px;
+    height: 100%;
+`
 
-// const SelectImgBox = styled.div`
-//     width: 200px;
-//     height: 50px;
-//     background-color: #e3e6ea;
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     cursor: pointer;
-//     border-radius: 10px;
-// `
-// const ImgBox = styled.div`
-//     display: flex;
-//     flex-wrap: wrap;
-//     width: 900px;
-// `
+const StepInput = styled.input`
+    width: 100%;
+    height: 40px;
+    padding: 10px;
+    margin-right: 100px ;
+`
 
-// const Img = styled.img`
-//     width: 150px;
-//     height: 150px;
-//     margin-left: 10px;
-//     border-radius: 10px;
-// `
 
-// const TitleBox = styled.div`
-//     display: flex;
-//     margin:15px 0px 15px 0px;
-//     input{
-//         width: 300px;
-        
-//         border: none;
-//         border-bottom: 1px solid gray;
-//         outline: none;
-//         padding: 0px 10px;
-//     }
-//     span{
-//         margin-top: 25px;
-//         font-size: 13px;
-//         margin-left: 10px;
-//     }
-// `
-
-// const DeleteIcon = styled(FaTimes)`
-//     font-size: 13px;
-//     opacity: 0.5;
-//     cursor: pointer;
-// `
 
 export default TestWrite;
 
-
-
-
-
-
-
-  {/* <TestHostInfo />
-                <TitleBox>
-                <input onChange={titleChange} placeholder="제목을 입력해주세요." maxLength={20}/><span>{isTitle.length}/20</span>
-                </TitleBox>
-                <input multiple
-                        id="input-file" 
-                        style={{"display":"none", "outline":"none"}} 
-                        ref={currentImg} 
-                        type={"file"} accept={"image/*"}
-                        name="imgfile"
-                        onChange={onImgChange} />
-                <SelectImgBox onClick={imgClick}>
-                    <span>이미지 선택해주세요. (클릭!)</span>
-                </SelectImgBox>
-                <h5>{multiImgs.length}/10</h5>
-                <ImgBox style={{"display" :"flex"}}>
-                {multiImgs.map((i, idx) =>( 
-                <div key={idx}>
-                    <Img src={i} alt={`${i}-${idx}`}/>
-                    <DeleteIcon onClick={()=> deleteImage(idx)} />
-                </div>
-            ))}
-                </ImgBox>
-                <textarea id="text" style={{"width":"600px", "height":"300px", "borderRadius":"10px", "padding":"10px", "margin":"15px 0px 15px 0px"}}></textarea>
-                <button>등록!</button> */}
