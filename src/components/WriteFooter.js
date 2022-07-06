@@ -36,7 +36,7 @@ const WriteFooter = ({ title,thumbnail,reset, getValues }) => {
         onClick={() => {
           // reset();
           // navigate(-1);
-          const confirm = window.confirm('정말 취소 하실 건가요??')
+          const confirm = window.confirm('작성을 취소 할까요?')
           if(confirm){
             console.log('취소')
           }

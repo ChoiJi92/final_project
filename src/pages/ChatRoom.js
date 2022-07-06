@@ -180,6 +180,7 @@ const Room = styled.div`
     height: 40px;
     padding: 0 10px;
     input{
+      width: 90%;
         border: none;
         outline: none;
     }
