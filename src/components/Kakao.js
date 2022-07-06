@@ -3,7 +3,8 @@ import styled from "styled-components";
 import kakaoBtn from "../assests/css/kakao_login.png";
 
 const Kakao = () => {
-  const clientId = process.env.REACT_APP_KAKAO_CLIENT_ID
+  // const clientId = process.env.REACT_APP_KAKAO_CLIENT_ID
+  const clientId = 'cecb49c30cd9b9ff5da21fda967b01ef'
   // const REDIRECT_URI = "http://localhost:3000/oauth/kakao/callback";
   const REDIRECT_URI = "https://choji.shop/oauth/kakao/callback";
   // const REDIRECT_URI = "http://13.125.112.232/oauth/kakao/callback";
