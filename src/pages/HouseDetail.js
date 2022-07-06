@@ -33,18 +33,19 @@ const HouseInfoDetail = () => {
     const listImg = [room2, room1, jeju1, jeju2];
     return (
         <Wrap>
-            <div>
-                <button>수정</button>
-                <button>삭제</button>
-            </div>
-            <ImgBox>
-                <SlideImg listImg={listImg}  />
-               
-                <ImgInnerBox2>
-                    <img src={jeju1} />
-                    <img src={jeju2} />
-                </ImgInnerBox2>
-            </ImgBox>
+            <div id="detailMainBox">
+                <div>
+                    <button>수정</button>
+                    <button>삭제</button>
+                </div>
+                <ImgBox>
+                    <SlideImg listImg={listImg}  />
+                    <ImgInnerBox2>
+                        <img src={jeju1} />
+                        <img src={jeju2} />
+                        <button>사진 더보기</button>
+                    </ImgInnerBox2>
+                </ImgBox>
             <InfoBox>
                 <h2>해변 근처의 게스트하우스</h2>
                 <hr />
@@ -53,7 +54,7 @@ const HouseInfoDetail = () => {
                 <h2>숙소 위치</h2>
             </InfoBox>
             <MapBox>맵 들어갈 예정</MapBox>
-            
+            </div>
         </Wrap>
     )
 }
@@ -61,13 +62,19 @@ const HouseInfoDetail = () => {
 const Wrap = styled.div`
     height: auto;
     margin: auto;
-    width: 800px;
-   
-  
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    #detailMainBox{
+        width: 70%;
+        border: 1px solid black;
+        /* display: flex;
+        justify-content: center;
+        flex-direction: column; */
+    }
 `
 
 const ImgBox = styled.div`
-
     height: 320px;
     display: flex;
     justify-content: space-between;
@@ -103,26 +110,30 @@ const ImgInnerBox2 = styled.div`
     display: flex;
     flex-direction: column;
     margin-left: 20px;
+    width: 50%;
     img{
        margin-top: 10px;
-       width: 300px;
-       height: 145px;
+       width: 100%;
+       height: 195px;
+    }
+    button{
+        width: 20%;
+        position: relative;
+        font-size: 20px;
+        left: 75%;
+        top:-10%;
+        opacity: 0.7;
+        cursor: pointer;
     }
 `
-const Img = styled.img`
-    width: 500px;
-    height: 300px;
-    margin-top: 10px;
-    
-`
-
 const InfoBox = styled.div`
-    width: 500px;
+    width: 60%;
     height: auto;
+    margin-top: 120px;
 `
 const MapBox = styled.div`
-    width: 500px;
-    height: 200px;
+    width: 60%;
+    height: 400px;
     border: 1px solid black;
     display: flex;
     justify-content: center;
