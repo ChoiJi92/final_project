@@ -201,6 +201,7 @@ const UserWrite = () => {
                 </MenuItem>
                 <MenuItem value="호텔">호텔</MenuItem>
                 <MenuItem value="숙박">숙박</MenuItem>
+                <MenuItem value="추가">추가</MenuItem>
               </Select>
               <p className="errorMessage">
                 {errors.category?.type === "required" &&
