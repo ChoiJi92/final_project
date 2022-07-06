@@ -81,11 +81,11 @@ const ImgBox = styled.div`
 
 const ImgInnerBox1 = styled.div`
     position: relative;
-    width: 500px;
-    height: 300px;
+    width: 60%;
+    height: 500px;
+    
     img{
-        width: 500px;
-        height: 300px;
+        height: 400px;
         margin-top: 10px;
     }
     /* .slick-prev:before {
