@@ -34,8 +34,15 @@ const WriteFooter = ({ title,thumbnail,reset, getValues }) => {
       <input
         type="button"
         onClick={() => {
-          reset();
-          navigate(-1);
+          // reset();
+          // navigate(-1);
+          const confirm = window.confirm('정말 취소 하실 건가요??')
+          if(confirm){
+            console.log('취소')
+          }
+          else{
+            console.log('다시화면')
+          }
         }}
         value="등록 취소"
       ></input>
