@@ -5,6 +5,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import instance from "../shared/axios";
 import searchIconBlack from "../assests/css/searchIconBlack.png";
+import cancelIcon from '../assests/css/cancelIcon.png'
 import { Link } from "react-router-dom";
 
 const ChatList = () => {
@@ -105,12 +106,18 @@ const ChatList = () => {
                 <img src={searchIconBlack} alt="검색"></img>
               </>
             ) : (
+              <>
               <input
                 placeholder="채팅방 제목을 입력해 주세요 :)"
                 onChange={onChange}
                 value={room || ""}
                 onKeyPress={onKeyPress}
               ></input>
+              <img src={cancelIcon} alt="검색" onClick={()=>{
+                setSearch("true")
+              }}
+              style={{width:'30px'}}></img>
+              </>
             )}
           </div>
           <button

@@ -4,8 +4,9 @@ const instance = axios.create({
   // baseURL: "http://localhost:5001",
   // baseURL: "http://localhost:3000",
     // baseURL: "http://13.125.112.232",
-    baseURL: "https://3.36.67.39",
-    // baseURL: "https://api.choiji.shop",
+    // baseURL: "https://3.36.67.39",
+    baseURL: "https://mendorong-jeju.com",
+   
     // headers: { "Content-Type": "application/json" },
     // headers: {"Content-Type": "multipart/form-data"},
 });
