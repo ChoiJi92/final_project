@@ -9,7 +9,8 @@ const Kakao = () => {
   // const REDIRECT_URI = "https://choiji.shop/oauth/kakao/callback";
   const REDIRECT_URI = "https://choiji.shop/oauth/kakao/callback";
   // const REDIRECT_URI = "http://13.125.112.232/oauth/kakao/callback";
-  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+  // const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=cecb49c30cd9b9ff5da21fda967b01ef&redirect_uri=https://choiji.shop/oauth/kakao/callback&response_type=code`;
   return (
     <a href={KAKAO_AUTH_URL}>
       <Img src={kakaoBtn} alt=""></Img>
