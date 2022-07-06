@@ -185,13 +185,19 @@ const UserWrite = () => {
               </select> */}
               <Select
                 // onChange={handleChange}
+                defaultValue=""
                 {...register("category", { required: true })}
-                style={{width:'100%', height:'40px',border:'1px solid black'}}
+                style={{
+                  width: "100%",
+                  height: "40px",
+                  border: "1px solid black",
+                  fontSize:'14px'
+                }}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
               >
                 <MenuItem value="" disabled={true}>
-                  <em>숙소의 카테고리를 선택해주세요.</em>
+                  숙소의 카테고리를 선택해주세요.
                 </MenuItem>
                 <MenuItem value="호텔">호텔</MenuItem>
                 <MenuItem value="숙박">숙박</MenuItem>
@@ -217,16 +223,24 @@ const UserWrite = () => {
                 <option value="호텔">호텔</option>
               </select> */}
               <Select
+                defaultValue=""
                 // onChange={handleChange}
                 {...register("type", { required: true })}
-                style={{width:'100%', height:'40px',border:'1px solid black'}}
+                style={{
+                  width: "100%",
+                  height: "40px",
+                  border: "1px solid black",
+                  fontSize:'14px'
+                }}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
               >
                 <MenuItem value="" disabled={true}>
-                  <em>숙소의 형태를 선택해주세요.</em>
+                  숙소의 형태를 선택해주세요.
                 </MenuItem>
-                <MenuItem value="단독 또는 다세대 주택">단독 또는 다세대 주택</MenuItem>
+                <MenuItem value="단독 또는 다세대 주택">
+                  단독 또는 다세대 주택
+                </MenuItem>
                 <MenuItem value="아파트">아파트</MenuItem>
                 <MenuItem value="게스트용 별채">게스트용 별채</MenuItem>
                 <MenuItem value="호텔">호텔</MenuItem>

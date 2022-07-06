@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import styled from "styled-components";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 import instance from "../shared/axios";
 import searchIconBlack from "../assests/css/searchIconBlack.png";
 import { Link } from "react-router-dom";
@@ -77,10 +79,21 @@ const ChatList = () => {
       </Top>
       <Bottom>
         <div className="header">
-          <select>
-            <option value="최신순">최신순</option>
-            <option value="인기순">인기순</option>
-          </select>
+          <Select
+            // onChange={handleChange}
+            defaultValue="최신순"
+            style={{
+              width: "20%",
+              height: "40px",
+              border: "1px solid black",
+              fontSize: "14px",
+            }}
+            displayEmpty
+            inputProps={{ "aria-label": "Without label" }}
+          >
+            <MenuItem value="최신순">최신순</MenuItem>
+            <MenuItem value="인기순">인기순</MenuItem>
+          </Select>
           <div className="search">
             {search ? (
               <>
