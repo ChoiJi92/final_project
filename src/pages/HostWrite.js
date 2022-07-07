@@ -6,19 +6,30 @@ import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import WriteFooter from "../components/WriteFooter";
 import {FaImage} from "react-icons/fa"
+import searchIcom from "../assests/css/search.png";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { useRecoilState } from "recoil";
-import { imgMoveState } from "../recoil/atoms";
-
+import imageIcon from '../assests/css/imageIcon.png'
+import { useRecoilState, useRecoilValue } from "recoil";
+import { imgMoveState,addressState } from "../recoil/atoms";
+import { MdOutlineCancel } from "react-icons/md";
+import { MdCancel } from "react-icons/md";
+import AddressModal from "../components/AddressModal";
 
 const HostWrite = () => {
     
     const { register, handleSubmit,  formState: { errors },watch } = useForm();
+    const [modalOpen, setModalOpen] = useState(false);
     const [multiImgs, setMultiImgs] = useState([]);
-
+    const address = useRecoilValue(addressState);
     const currentImg = useRef(null);
     // {draggableId, destination, source,args }
     // console.log(args)
+    const openAddressModal = () => {
+        setModalOpen(true);
+      };
+      const closeAddressModal = () => {
+        setModalOpen(false);
+      };
     const onDragEnd = ({draggableId, destination, source,  }) => {
         if(!destination) return;
         setMultiImgs((imgArry)=>{
@@ -77,8 +88,9 @@ const HostWrite = () => {
                                  />
                                  <div id="imgSelectBox" onClick={imgClick}>
                                     <div style={{"display":"flex","flexDirection":"column","alignItems":"center"}}>
-                                    <h3 style={{"marginBottom":"20px"}}>상품 이미지 등록 * </h3> 
-                                    <ImgIcon/>
+                                    <h3 style={{"marginBottom":"10px"}}>상품 이미지 등록 * </h3> 
+                                    {/* <ImgIcon/> */}
+                                    <img src={imageIcon} alt="이미지 선택" style={{marginBottom:'5px'}}></img>
                                     {/* <SelectSpan onClick={imgClick}>이미지 등록</SelectSpan> */}
                                     <span>이미지 등록</span>
                                     <span style={{"marginTop":"10px"}}> {multiImgs.length} / 8</span>
@@ -87,21 +99,21 @@ const HostWrite = () => {
                                 <span style={{"color":"red","fontSize":"13px"}}>{errors.images?.message}</span> 
                     </ImgDesBox>
                     
-                    
+
                     <DragDropContext onDragEnd={onDragEnd}>
                         <ImgBox>
                             {multiImgs.map((i, idx)=>(
-                               <Droppable droppableId={i}>
+                               <Droppable droppableId={i} key={idx}>
                                     {(provided, snapshot)=>(
                                         <div key={idx} ref={provided.innerRef} {...provided.droppableProps}>
                                         <Draggable key={i} draggableId={i} index={idx}>
                                             {(provided, snapshot)=>(
-                                                <div 
+                                                <div
                                                 ref={provided.innerRef}  
                                                 {...provided.draggableProps}
                                                 {...provided.dragHandleProps} 
                                                 key={idx}>
-                                                    <Img  src={i} alt={`${i}-${idx}`}/>
+                                                    <Img  src={i} alt="이미지"/>
                                                     <DeleteIcon  onClick={()=> deleteImage(idx)} />
                                                 </div>
                                             )}
@@ -109,6 +121,7 @@ const HostWrite = () => {
                                         </div>
                                     )}
                                </Droppable> 
+                               
                             ))}
                         </ImgBox>
                     {/* <Droppable droppableId="DropLand">
@@ -156,7 +169,7 @@ const HostWrite = () => {
                     <h3>카테고리 *</h3>
                     <div id="infoCategory">
                             <Select
-                                style={{"width":"100%","height":"40px"}}          
+                                style={{"width":"100%","height":"40px",border:'1px solid'}}          
                                 {...register("category", { required: "카테고리는 필수 선택사항입니다 :)" })}
                                 displayEmpty
                                 inputProps={{ "aria-label": "Without label" }}
@@ -179,7 +192,7 @@ const HostWrite = () => {
                             <Select  
                                           
                                 {...register("houseInfo", { required: "숙소형태는 필수 선택사항입니다 :)" })}
-                                style={{"width":"100%","height":"40px"}}  
+                                style={{"width":"100%","height":"40px",border:'1px solid'}}  
                                 displayEmpty
                                 inputProps={{ "aria-label": "Without label" }}
                 
@@ -199,23 +212,45 @@ const HostWrite = () => {
                 
                 <InfoBox>
                     <h3>주소 *</h3>
-                    <div id="infoAddress">
+                    {/* <div id="infoAddress">
                     <input placeholder="주소를 검색해주세요."  {...register("address", { required: "주소는 필수 선택사항입니다 :)" })} />
-                    <ErrorP1>{errors.address?.message}</ErrorP1>
-                    </div>
+                    
+                    </div> */}
+                    <div className="regionInput">
+              <div className="mainAddress">
+                <input
+                  placeholder="주소를 검색해 주세요."
+                  {...register("mainAddress", { required: true })}
+                  value={address}
+                  readOnly
+                ></input>
+                <img
+                  src={searchIcom}
+                  onClick={openAddressModal}
+                  alt="주소 검색"
+                ></img>
+              </div>
+              <input
+                className="subAddress"
+                placeholder="상세 주소를 입력해 주세요."
+                {...register("subAddress", { required: "주소는 필수 선택사항입니다 :)" })}
+              ></input>
+             <ErrorP1>{errors.subAddress?.message}</ErrorP1>
+            </div>
+            <AddressModal
+              open={modalOpen}
+              close={closeAddressModal}
+            ></AddressModal>
                 </InfoBox>
                 
                 <InfoBox>
                     <h3>스텝을 구하시나요? *</h3>
                     <div id="stepMainBox">
-                        <div id="">
                             <div id="stepBox">
-                                <div style={{"display":"flex", "width":"60%","marginRight":"100px","height":"40px"}}>
                                     <Select
-                                        style={{"width":"50%"}}
+                                        style={{"width":"30%",border:'1px solid'}}
                                         displayEmpty
                                         inputProps={{ "aria-label": "Without label" }}
-                
                                         defaultValue=""
                                         {...register("stepSelect", { required: "스텝여부는 필수 선택사항입니다 :)" })}
                                         >
@@ -225,30 +260,25 @@ const HostWrite = () => {
                                         <MenuItem value={"yes"}>예</MenuItem>
                                         <MenuItem value={"no"}>아니오</MenuItem>
                                     </Select>
-                                </div>
                                 {hiddenSetp === "yes" ? (
                                 <div id="stepInputBox">
-                                    <StepInput {...register("stepInfo",  { required: true })}/>
+                                    <StepInput {...register("stepInfo",  { required: true })} placeholder="근무 형태를 입력해 주세요 :)"/>
                                 </div>) : ("")}
-                        
                             </div>
-                        </div>
-                        <div style={{"marginTop":"-30px"}}>
-                            <ErrorP>{errors.stepSelect?.message}</ErrorP>
-                        </div>
+                        <ErrorP>{errors.stepSelect?.message}</ErrorP>
                     </div>
                 </InfoBox>
                
                 <InfoBox>
                     <h3>링크 </h3>
                     <div id="infoLink">
-                        <input placeholder="링크는 선택사항입니다." {...register("link")}/>
+                        <input placeholder="숙소 사이트, SNS 등 URL을 입력해주세요." {...register("link")}/>
                     </div>
                 </InfoBox>
                 <InfoBox>
                     <h3>설명 *</h3>
                     <div id="infoDes">
-                        <textarea placeholder="숙소에 대한 설명....." {...register("des",  { required: "설명은 필수입니다 :)" })} id="text" style={{"width":"100%", "height":"300px", "borderRadius":"10px", "padding":"10px", }}></textarea>
+                        <textarea placeholder="숙소에 대한 정보를 최대한 상세하게 입력해주시면 더 많은 고객을 만나실 수 있어요." {...register("des",  { required: "설명은 필수입니다 :)" })} id="text" ></textarea>
                         <ErrorP1>{errors.des?.message}</ErrorP1>
                     </div>
                 </InfoBox>
@@ -282,7 +312,8 @@ const HostForm = styled.form`
     align-items: center;
     hr{
         width: 70%;
-        margin:15px 0px 15px 0px;
+        /* margin:15px 0px 15px 0px; */
+        margin-top:15px;
     }
 `
 const HouseBox = styled.div`
@@ -294,9 +325,10 @@ const HouseBox = styled.div`
 const ImgMainBox = styled.div`
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    /* align-items: center; */
     width: 70%;
-`
+    margin-top: 3px;
+`   
 
 const ImgDesBox = styled.div`
     display: flex;
@@ -306,41 +338,45 @@ const ImgDesBox = styled.div`
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 160px;
-        height: 160px;
-        margin: 15px 0px 10px 0px;
+        width: 180px;
+        height: 180px;
+        /* margin: 15px 0px 10px 0px; */
+        margin-top: 10px;
         border-radius: 10px;
         background-color: #dfe6e9;
         cursor: pointer;
     }
 `
 const ImgIcon = styled(FaImage)`
-    
+    font-size: 20px;
 `
 
 
 const ImgBox = styled.div`
-    width: 60%;
+    width: 80%;
     height: auto;
     display: flex;
     flex-wrap: wrap;
-    margin-right: 130px;
-
 `
 const Img = styled.img`
-    width: 160px;
-    height: 160px;
-    margin-top: 5px;
+    width: 180px;
+    height: 180px;
+    margin-top: 10px;
+    margin-left: 10px;
     border-radius: 10px;
+    position: relative;
+    
 `
-const DeleteIcon = styled(FaTimes)`
-    font-size: 15px;
+const DeleteIcon = styled(MdCancel)`
+    font-size: 25px;
     opacity: 0.9;
-    color: #fff;
+    /* color: #fff; */
+    color: black;
     cursor: pointer;
     position: relative;
-    left: -25px;
-    bottom: 130px;
+    left: -15px;
+    bottom: 165px;
+    /* top:0px; */
 `
 
 const InfoBox = styled.div`
@@ -349,7 +385,46 @@ const InfoBox = styled.div`
     justify-content: space-between;
     border-bottom: 1px solid black;
     padding: 20px 0px;
-    
+    .regionInput {
+      display: flex;
+      flex-direction: column;
+      width: 70%;
+      margin-right: 130px;
+    }
+    .subAddress {
+      height: 40px;
+      border-radius: 5px;
+      padding: 10px;
+      border: 1px solid black;
+      // 크롬 자동완성 선택했을 때 인풋창 백그라운드 파란색되는거 막는 css
+      :-webkit-autofill {
+        -webkit-box-shadow: 0 0 0 1000px white inset;
+        box-shadow: 0 0 0 1000px white inset;
+      }
+    }
+    .mainAddress {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid;
+      border-radius: 5px;
+      padding: 0 10px;
+      margin-bottom: 10px;
+      input {
+        width: 90%;
+        border: none;
+        outline: none;
+        // 크롬 자동완성 선택했을 때 인풋창 백그라운드 파란색되는거 막는 css
+        :-webkit-autofill {
+          -webkit-box-shadow: 0 0 0 1000px white inset;
+          box-shadow: 0 0 0 1000px white inset;
+        }
+      }
+      img {
+        cursor: pointer;
+      }
+    }
     #infoTitle,#infoLink,#infoAddress{
         display: flex;
         flex-direction: column;
@@ -358,6 +433,8 @@ const InfoBox = styled.div`
         input{
         height: 40px;
         padding: 10px;
+        border-radius: 5px;
+        border: 1px solid;
     }
     }
     #infoHouse,#infoCategory{
@@ -373,7 +450,11 @@ const InfoBox = styled.div`
         width: 70%;
        
         textarea{
-            font-size: 20px;
+            width: 100%;
+            height: 300px;
+            border-radius: 5px;
+            padding: 20px 10px;
+            font-size: 15px;
             
         }
     }
@@ -382,10 +463,11 @@ const InfoBox = styled.div`
     }
     #stepBox{
         width: 100%;
-        height: 70px;
+        height: 40px;
         display: flex;
         justify-content: space-between;
-        margin-right: 200px;
+        /* margin-right: 200px; */
+        /* border: 1px solid; */
     }
     #stepInputBox{
         width: 65%;
@@ -394,10 +476,11 @@ const InfoBox = styled.div`
     }
     #stepMainBox{
         width: 70%;
-        height: 60px;
+        /* height: 60px; */
         display: flex;
         flex-direction: column;
         margin-right: 130px;
+        /* border: 1px solid; */
     }
 `
 
@@ -418,6 +501,8 @@ const StepInput = styled.input`
     width: 100%;
     height: 40px;
     padding: 10px;
+    border-radius:5px ;
+    border: 1px solid;
     /* margin-right: 100px ; */
 `
 

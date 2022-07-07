@@ -65,7 +65,7 @@ const Wrap = styled.footer`
   position: fixed;
   background-color: lightgray;
   bottom: 0;
-  padding: 0 300px;
+  padding: 0 250px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -77,7 +77,6 @@ const Wrap = styled.footer`
     border: 1px solid black;
     background-color: transparent;
     font-size: medium;
-    margin-left: 10px;
     cursor: pointer;
     :hover {
       background-color: gray;
