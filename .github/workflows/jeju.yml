@@ -1,9 +1,8 @@
 name: Jeju Project # Workflow 이름
 on: # Event 감지
   push:
-    push:
       branches: [master]
-    pull_request:
+  pull_request:
       branches: [master]
 jobs: # Job 설정
   build:
