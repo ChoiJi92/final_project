@@ -5,20 +5,22 @@ import { addressState, contentState } from "../recoil/atoms";
 import { useRecoilValue } from "recoil";
 import { useMutation } from "react-query";
 import instance from "../shared/axios";
-const WriteFooter = ({ title,thumbnail,reset, getValues,onSubmit }) => {
+const WriteFooter = ({ title, thumbnail, reset, getValues}) => {
   const navigate = useNavigate();
   const address = useRecoilValue(addressState);
   const content = useRecoilValue(contentState);
-  const temporary = useMutation(['tempPost'],(formData) => instance.post('/post',formData).then((res)=>{
-    console.log(res.data)
-  }))
-  const tempPost = () =>{
-    console.log(`${address} ${getValues('subAddress')}`)
-    console.log(getValues())
+  const temporary = useMutation(["tempPost"], (formData) =>
+    instance.post("/post", formData).then((res) => {
+      console.log(res.data);
+    })
+  );
+  const tempPost = () => {
+    console.log(`${address} ${getValues("subAddress")}`);
+    console.log(getValues());
     // const post = {
     //   title: title,
     //   postContent: content,
-      // tripLocation: `${address} ${getValues('subAddress')}`
+    // tripLocation: `${address} ${getValues('subAddress')}`
     // };
     // const formData = new FormData();
     // // thumbnail.forEach((file) => formData.append("file", file));
@@ -28,21 +30,18 @@ const WriteFooter = ({ title,thumbnail,reset, getValues,onSubmit }) => {
     // formData.append("contents", blob);
 
     // temporary.mutate(formData)
-  }
+  };
   return (
     <Wrap>
       <input
         type="button"
         onClick={() => {
-          // reset();
-          // navigate(-1);
-          const confirm = window.confirm('작성을 취소 할까요?')
-          if(confirm){
-            console.log('취소')
-          }
-          else{
-            console.log('다시화면')
-          }
+          const confirm = window.confirm("작성을 취소 할까요?");
+          if (confirm) {
+            reset();
+            navigate(-1);
+            console.log("취소");
+          } 
         }}
         value="등록 취소"
       ></input>
@@ -51,19 +50,10 @@ const WriteFooter = ({ title,thumbnail,reset, getValues,onSubmit }) => {
           type="button"
           value="임시 저장"
           onClick={() => {
-            tempPost()
+            tempPost();
           }}
         ></input>
-        {/* <button onClick={()=>{
-          onSubmit()
-        }}>완료</button> */}
-        <input
-          type="button"
-          value="저장"
-          onClick={() => {
-            onSubmit()
-          }}
-        ></input>
+        <button type="submit">완료</button>
       </div>
     </Wrap>
   );
