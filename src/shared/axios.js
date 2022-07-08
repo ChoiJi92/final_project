@@ -7,7 +7,7 @@ const instance = axios.create({
     // baseURL: "http://3.36.67.39",
     baseURL: "https://www.mendorong-jeju.com",
    
-    // headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json" },
     // headers: {"Content-Type": "multipart/form-data"},
 });
 

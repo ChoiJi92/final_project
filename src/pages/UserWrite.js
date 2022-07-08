@@ -105,22 +105,47 @@ const UserWrite = () => {
     console.log(title);
     console.log(content);
     console.log(thumbnail);
+    console.log(thumbnail[0]);
     console.log(address);
-
     console.log("저장");
-    const post = {
-      title: title,
-      postContent: content,
-      // tripLocation: 
-    };
+    if(thumbnail.length===0){
+      window.alert('썸네일 사진을 추가해 주세요 :)')
+    }
+    else if(!title){
+      window.alert('제목을 입력해 주세요 :)')
+    }
+    else if(!content) {
+      window.alert('내용을 입력해 주세요 :)') 
+    }
+    else if(address){
+      console.log('여기 안뜨지?')
+    // const post = {
+    //   title: title,
+    //   postContent: content,
+    //   tripLocation: `${address} ${data.subAddress}`,
+    //   category : data.category,
+    //   type : data.type,
+    //   link : data.link,
+    //   houseTitle:data.houseTitle
+    // };
+    // console.log(post)
     const formData = new FormData();
     // thumbnail.forEach((file) => formData.append("file", file));
-    formData.append("file", thumbnail);
-    const json = JSON.stringify(post);
-    const blob = new Blob([json], { type: "application/json" });
-    formData.append("contents", blob);
+    formData.append("images", thumbnail[0]);
+    // const json = JSON.stringify(post);
+    // const json = JSON.stringify(title);
+    // const blob = new Blob([json], { type: "application/json" });
+    formData.append("title", title);
+    formData.append("content", content);
+    formData.append("tripLocation", `${address} ${data.subAddress}`);
+    // formData.append("category", data.category);
+    // formData.append("type", data.type);
+    // formData.append("houseTitle", data.houseTitle);
+    
+    
 
-    // createPost.mutate(formData)
+    createPost.mutate(formData)
+  }
   };
   return (
     <Wrap>
@@ -251,9 +276,9 @@ const UserWrite = () => {
               <div className="mainAddress">
                 <input
                   placeholder="주소를 검색해 주세요."
-                  {...register("mainAddress", { required: true })}
+                  {...register("mainAddress")}
                   value={address}
-                  readOnly
+                  // readOnly
                 ></input>
                 <img
                   src={searchIcom}
@@ -267,7 +292,7 @@ const UserWrite = () => {
                 {...register("subAddress", { required: true })}
               ></input>
               <p className="errorMessage">
-                {errors.houseTitle?.type === "required" &&
+                {errors.subAddress?.type === "required" &&
                   "지역은 필수 입력사항 입니다 :)"}
               </p>
             </div>
