@@ -5,7 +5,7 @@ import { addressState, contentState } from "../recoil/atoms";
 import { useRecoilValue } from "recoil";
 import { useMutation } from "react-query";
 import instance from "../shared/axios";
-const WriteFooter = ({ title,thumbnail,reset, getValues }) => {
+const WriteFooter = ({ title,thumbnail,reset, getValues,onSubmit }) => {
   const navigate = useNavigate();
   const address = useRecoilValue(addressState);
   const content = useRecoilValue(contentState);
@@ -54,7 +54,16 @@ const WriteFooter = ({ title,thumbnail,reset, getValues }) => {
             tempPost()
           }}
         ></input>
-        <button type="submit">완료</button>
+        {/* <button onClick={()=>{
+          onSubmit()
+        }}>완료</button> */}
+        <input
+          type="button"
+          value="저장"
+          onClick={() => {
+            onSubmit()
+          }}
+        ></input>
       </div>
     </Wrap>
   );

@@ -199,9 +199,12 @@ const UserWrite = () => {
                 <MenuItem value="" disabled={true}>
                   숙소의 카테고리를 선택해주세요.
                 </MenuItem>
-                <MenuItem value="호텔">호텔</MenuItem>
-                <MenuItem value="숙박">숙박</MenuItem>
-                <MenuItem value="추가">추가</MenuItem>
+                <MenuItem value="해변근처">해변근처</MenuItem>
+                <MenuItem value="내륙">내륙</MenuItem>
+                <MenuItem value="관광지 근처">관광지 근처</MenuItem>
+                <MenuItem value="조용한 마을">조용한 마을</MenuItem>
+                <MenuItem value="우도">우도</MenuItem>
+                <MenuItem value="성산일출봉">성산일출봉</MenuItem>
               </Select>
               <p className="errorMessage">
                 {errors.category?.type === "required" &&
@@ -212,17 +215,6 @@ const UserWrite = () => {
           <div className="type">
             <h3>숙소 형태 *</h3>
             <div>
-              {/* <select {...register("type", { required: true })}>
-                <option value="" disabled="disabled">
-                  숙소의 형태를 선택해주세요.
-                </option>
-                <option value="단독 또는 다세대 주택">
-                  단독 또는 다세대 주택
-                </option>
-                <option value="아파트">아파트</option>
-                <option value="게스트용 별채">게스트용 별채</option>
-                <option value="호텔">호텔</option>
-              </select> */}
               <Select
                 defaultValue=""
                 // onChange={handleChange}
