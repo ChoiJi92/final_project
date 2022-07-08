@@ -8,7 +8,7 @@ const Community = () => {
 
   const navigate = useNavigate()
   const { data } = useQuery(["content"], () =>
-    instance.get("/post").then((res) => res.data),{
+    instance.get("/post").then((res) => console.log(res.data)),{
       refetchOnWindowFocus:false  // 다른화면 갔다와도 재호출 안되게 함
     }
   );

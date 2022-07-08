@@ -116,8 +116,9 @@ const Container = styled.div`
 
   .title {
     text-align: center;
-    width: 10%;
+    width: 7%;
     margin-left: 150px;
+    /* margin-bottom: 10px; */
     cursor: pointer;
   }
 `;

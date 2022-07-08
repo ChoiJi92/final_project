@@ -19,6 +19,7 @@ const PostEditer = () => {
     const editorRef = useRef();
     const onChange = ()=>{
         setContent(editorRef.current?.getInstance().getHTML())
+        console.log(editorRef.current?.getInstance().getHTML())
     }
       // Toast-UI Editor 에 HTML 표시
   // useEffect(() => {
