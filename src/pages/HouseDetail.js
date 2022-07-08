@@ -1,19 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import room1 from "../assests/css/room1.jpeg"
 import room2 from "../assests/css/room2.jpeg"
 import jeju1 from "../assests/css/jeju1.jpeg"
 import jeju2 from "../assests/css/jeju2.jpeg"
+import jeju3 from "../assests/css/jeju3.jpeg"
+import jeju4 from "../assests/css/jeju4.jpeg"
+import jeju5 from "../assests/css/jeju5.jpeg"
+import jeju6 from "../assests/css/jeju6.jpeg"
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useQuery } from "react-query";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import SlideImg from "../components/SlideImg";
+import DialogImg from "../components/DialogImg";
 
 
 
 const HouseInfoDetail = () => {
+    const [dialogOpen, setDialogOpen] = useState(false);
     const { isLoading, data,  } = useQuery("house", () => {
         return axios.get("http://localhost:5001/post").then((res) =>
             res.data
@@ -30,7 +36,16 @@ const HouseInfoDetail = () => {
     console.log(data, isLoading)
     // const slideSetting = useSelector((state)=>state);
     // const list = useSelector((state) => state.postSlice.contents);
-    const listImg = [room2, room1, jeju1, jeju2];
+
+    const openDialog = () => {
+        setDialogOpen(true);
+    }
+
+    const closeDialog = () => {
+        setDialogOpen(false);
+    }
+
+    const listImg = [room2, room1, jeju1, jeju2, jeju3, jeju4, jeju5, jeju6];
     return (
         <Wrap>
             <div id="detailMainBox">
@@ -43,7 +58,8 @@ const HouseInfoDetail = () => {
                     <ImgInnerBox2>
                         <img src={jeju1} />
                         <img src={jeju2} />
-                        <button>사진 더보기</button>
+                        <button onClick={openDialog}>사진 모두보기</button>
+                        <DialogImg onClose={closeDialog} open={dialogOpen} listImg={listImg} />
                     </ImgInnerBox2>
                 </ImgBox>
             <InfoBox>
@@ -111,19 +127,23 @@ const ImgInnerBox2 = styled.div`
     flex-direction: column;
     margin-left: 20px;
     width: 50%;
+    height: 500px;
     img{
        margin-top: 10px;
        width: 100%;
        height: 195px;
     }
     button{
-        width: 20%;
+        width: 90px;
         position: relative;
-        font-size: 20px;
-        left: 75%;
-        top:-10%;
+        font-size: 15px;
+        left: 70%;
+        top: -8%;
         opacity: 0.7;
         cursor: pointer;
+        border: none;
+        outline: none;
+        background-color: none;
     }
 `
 const InfoBox = styled.div`

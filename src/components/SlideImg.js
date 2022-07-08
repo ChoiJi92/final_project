@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -6,13 +6,14 @@ import "slick-carousel/slick/slick-theme.css";
 import { useParams } from "react-router-dom";
 
 const SlideImg = (props) => {
-
+  const [mouseOver, setMouseOver] = useState(false)
     const SampleNextArrow = (props) => {
         const { className, style, onClick } = props;
         return (
           <div
+          onMouseLeave={mouseLeave} onMouseOver={mouseHover}
             className={className}
-            style={{ ...style, display: "block",marginRight:"25px", opacity:0.7}}
+            style={{ ...style, display: "block",marginRight:"25px", opacity:1}}
             onClick={onClick}
           />
         );
@@ -22,8 +23,9 @@ const SlideImg = (props) => {
         const { className, style, onClick } = props;
         return (
           <div
+            onMouseLeave={mouseLeave} onMouseOver={mouseHover}
             className={className}
-            style={{ ...style, display: "block", marginLeft:"25px", zIndex:1 ,opacity:0.7}}
+            style={{ ...style, display: "block", marginLeft:"25px", zIndex:1 ,opacity:1}}
             onClick={onClick}
           />
         );
@@ -34,30 +36,43 @@ const SlideImg = (props) => {
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
-        arrow:true,
-        nextArrow: <SampleNextArrow/>,
-        prevArrow: <SamplePrevArrow/>
+        dots : true, 
     };
+
+    const arrows = {
+      nextArrow: <SampleNextArrow/>,
+      prevArrow: <SamplePrevArrow/>,
+    }
  
     const {listImg} = props;
 
     const params = useParams();
- 
+    const mouseHover = () => {
+      setMouseOver(true)
+    }
+    const mouseLeave = () => {
+      setMouseOver(false)
+    } 
     return(
         <>
         {!params.id ? (
-        <ImgBox>
-            <Slider {...settings}>
-                {listImg.map((item, idx)=>{return(<img src={item}/>)})}
-            </Slider>
+        <ImgBox >
+          {mouseOver ? (
+          <SliderImg {...settings} {...arrows}>
+                {listImg.map((item, idx)=>{return(<img onMouseLeave={mouseLeave} onMouseOver={mouseHover} src={item}/>)})}
+            </SliderImg>): (
+            <SliderImg {...settings}>
+                {listImg.map((item, idx)=>{return(<img onMouseLeave={mouseLeave} onMouseOver={mouseHover} src={item}/>)})}
+            </SliderImg>)
+            }
         </ImgBox>
     ) : 
     (
-        <ImgInnerBox1>
-            <Slider {...settings}>
+        <DetailImgBox >
+            <SliderImg  {...settings}>
                 {listImg.map((item, idx)=>{return(<img src={item}/>)})}
-            </Slider>
-        </ImgInnerBox1>)
+            </SliderImg>
+        </DetailImgBox>)
         }
     </>
     );
@@ -68,25 +83,37 @@ export default SlideImg;
 
 
 const ImgBox = styled.div`
-    width: 250px;
-    height: 200px;
-   
+    width: 55%;
+    height: 290px;
+    margin-top: 15px;
+ 
     img{
         border-radius: 5px;
-        width: 200px;
-        height: 200px;
-        object-fit: contain;
+        width: 270px;
+        height: 260px;      
     }
 `
 
-const ImgInnerBox1 = styled.div`
+const SliderImg = styled(Slider)`
+  .slick-dots {
+      bottom: -20px;
+      color: #fff;
+    }
+  .slick-active button:before {
+  opacity: .75;
+  color: #ffffff;
+}
+  
+`
+
+const DetailImgBox = styled.div`
     position: relative;
     width: 60%;
     height: 500px;
-    
     img{
         height: 400px;
         margin-top: 10px;
+        
     }
     /* .slick-prev:before {
     display: block;
