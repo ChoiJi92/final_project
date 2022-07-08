@@ -111,6 +111,7 @@ const UserWrite = () => {
     const post = {
       title: title,
       postContent: content,
+      // tripLocation: 
     };
     const formData = new FormData();
     // thumbnail.forEach((file) => formData.append("file", file));

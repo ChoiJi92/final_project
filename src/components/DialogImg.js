@@ -42,25 +42,26 @@ const Container = styled(DialogContent)`
   border: 1px solid green;
   display: flex;
   justify-content: center;
-  align-items: center;
+  /* align-items: center;  */
 `;
 const Wrap = styled(DialogContentText)`
   width: 60%;
   display: grid;
   grid-gap: 20px;
-  grid-template-columns: repeat(auto-fill, minmax(80%,auto));
+  justify-content: center;
+  grid-template-columns: repeat(auto-fill, minmax(50%,auto));
 
-  border: 1px solid red;
+  /* border: 1px solid red; */
 
   img {
     width: 500px;
     height: 500px;
-    border: 1px solid;
+    /* border: 1px solid; */
     /* object-fit: none; */
     /* object-fit: scale-down; */
-    /* object-fit: contain; */
+    object-fit: contain;
     /* object-fit: fill; */
-    object-fit: cover;
+    /* object-fit: cover; */
     overflow: hidden;
   }
 `;
