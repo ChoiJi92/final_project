@@ -8,3 +8,7 @@ export const contentState = atom({
   key: 'contentState',
   default:''
 })
+export const tagState = atom({
+  key: 'tagState',
+  default:[]
+})

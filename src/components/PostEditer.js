@@ -19,6 +19,8 @@ const PostEditer = () => {
     const editorRef = useRef();
     const onChange = ()=>{
         setContent(editorRef.current?.getInstance().getHTML())
+
+        console.log(editorRef.current?.getInstance().getHTML())
     }
       // Toast-UI Editor 에 HTML 표시
   // useEffect(() => {
@@ -49,23 +51,24 @@ const PostEditer = () => {
           ['table', 'image', 'link'],
         ]}
         language="ko-KR" // 도구설명 한글
-        // hooks={{
-        //     addImageBlobHook : async (blob, callback) => {
-        //         console.log(blob)
-        //         const formData = new FormData()
-        //         formData.append('image',blob)
-        //         const imageUrl = await instance.post('/image',formData,{
-        //           headers:{
-        //             "Content-Type": "multipart/form-data",
-        //           }
-        //         }).then((res)=>{
-        //           console.log(res.data)
-        //           return res.data
-        //         }
-        //         )
-        //         callback(imageUrl,'이미지')
-        //     }
-        // }}
+        hooks={{
+            addImageBlobHook : async (blob, callback) => {
+                console.log(blob)
+                const fileUrl = URL.createObjectURL(blob)
+                // const formData = new FormData()
+                // formData.append('image',blob)
+                // const imageUrl = await instance.post('/image',formData,{
+                //   headers:{
+                //     "Content-Type": "multipart/form-data",
+                //   }
+                // }).then((res)=>{
+                //   console.log(res.data)
+                //   return res.data
+                // }
+                // )
+                callback(fileUrl,'이미지')
+            }
+        }}
       ></Editor>
       {/* <Button disabled={!title || !thumbnail || content==='<p><img class="ProseMirror-separator" alt=""><br class="ProseMirror-trailingBreak"></p>'} onClick={()=>{
         createPost.mutate()

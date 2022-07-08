@@ -11,11 +11,11 @@ import SortableList, { SortableItem } from "react-easy-sort";
 import arrayMove from "array-move";
 import imageIcon from "../assests/css/imageIcon.png";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { imgMoveState, addressState } from "../recoil/atoms";
+import { imgMoveState, addressState, tagState } from "../recoil/atoms";
 import { MdOutlineCancel } from "react-icons/md";
 import { MdCancel } from "react-icons/md";
 import AddressModal from "../components/AddressModal";
-import { getValue } from "@testing-library/user-event/dist/utils";
+import TagList from "../components/TagList";
 
 const HostWrite = () => {
   const {
@@ -23,12 +23,13 @@ const HostWrite = () => {
     handleSubmit,
     formState: { errors },
     watch,
-    getValues
+    reset,
   } = useForm();
   const [modalOpen, setModalOpen] = useState(false);
   const [multiImgs, setMultiImgs] = useState([]);
   const [tagList, setTagList] = useState([]);
   const address = useRecoilValue(addressState);
+  const tag = useRecoilValue(tagState);
   const currentImg = useRef(null);
 
   const openAddressModal = () => {
@@ -61,15 +62,10 @@ const HostWrite = () => {
   const deleteImage = (id) => {
     setMultiImgs(multiImgs.filter((_, index) => index !== id));
   };
-  const onSubmit = (data, e) => {
-    console.log(getValues())
+  const onSubmit = (data) => {
+    console.log(tag)
     console.log(data);
     console.log(multiImgs);
-  };
-  const onKeyPress = (e) => {
-    if (e.key === "Enter") {
-      setTagList([...tagList, e.target.value]);
-    }
   };
   const hiddenSetp = watch("stepSelect");
   return (
@@ -285,25 +281,12 @@ const HostWrite = () => {
             <ErrorP1>{errors.des?.message}</ErrorP1>
           </div>
         </InfoBox>
-        <InfoBox>
-          <h3>태그 *</h3>
-          <div className="tag">
-            {tagList.map((v, i) => (
-              <div key={`${v}-${i}`}
-              onClick={()=>{
-                setTagList(tagList.filter((_,idx)=> i !== idx))
-              }}>{v}</div>
-            ))}
-              <input
-                // props={tagList.length === 10}
-                onKeyPress={onKeyPress}
-                placeholder="태그를 입력해 주세요."
-              ></input>
-            
-          </div>
-        </InfoBox>
-        <WriteFooter onSubmit={onSubmit}/>
+        <WriteFooter reset={reset} onSubmit={onSubmit} />
       </HostForm>
+      <Tag>
+          <h3>태그</h3>
+          <TagList></TagList>
+        </Tag>
     </Wrap>
   );
 };
@@ -313,6 +296,7 @@ const Wrap = styled.div`
   width: 100%;
   /* border: 1px solid black; */
   display: flex;
+  flex-direction: column;
   justify-content: center;
   margin: auto;
 `;
@@ -529,13 +513,13 @@ const InfoBox = styled.div`
       margin-right: 10px;
       margin-bottom: 10px;
       cursor: pointer;
-      :hover{
+      :hover {
         background-color: gray;
       }
     }
     input {
       /* width: 100%; */
-      /* display: ${(props)=>props.props ? 'block' : 'none'}; */
+      /* display: ${(props) => (props.props ? "block" : "none")}; */
       height: 40px;
       padding: 10px;
       border-radius: 5px;
@@ -566,5 +550,12 @@ const StepInput = styled.input`
   border: 1px solid;
   /* margin-right: 100px ; */
 `;
-
+const Tag = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 70%;
+  margin: 0 auto;
+  padding: 20px 0;
+ `
 export default HostWrite;
