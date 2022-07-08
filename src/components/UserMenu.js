@@ -5,7 +5,6 @@ import MenuItem from '@mui/material/MenuItem';
 import Divider from '@mui/material/Divider';
 import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
-import { textAlign } from '@mui/system';
 
 const UserMenu = ({userImage,nickName}) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -47,12 +46,15 @@ const UserMenu = ({userImage,nickName}) => {
         style={{ display:'flex',justifyContent:'center' ,color:'white',border:'none',borderRadius:'5px',backgroundColor:'#9090A0'}}>글쓰러 가기</MenuItem>
         </Write>
         
-        <MenuItem onClick={handleClose}>숙소 호스트 되기</MenuItem>
+        <MenuItem onClick={()=>{
+          navigate('/hostwrite')
+          handleClose()}}>숙소 호스트 되기</MenuItem>
         <Divider />
         <MenuItem onClick={handleClose}>계정</MenuItem>
         <MenuItem onClick={()=>{
             localStorage.clear()
             handleClose()
+            window.location.reload()
         }}>로그아웃</MenuItem>
       </Menu>
     </div>

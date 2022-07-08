@@ -54,9 +54,10 @@ const Header = () => {
         </div>
         <div className="menu">
           <div
-            style={{ color: menu === "hotel" ? "gray" : "black" }}
+            style={{ color: menu === "house" ? "gray" : "black" }}
             onClick={() => {
-              setMenu("hotel");
+              setMenu("house");
+              navigate('/house')
             }}
           >
             숙소 찾기
