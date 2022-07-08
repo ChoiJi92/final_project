@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {FaHeart,FaStar} from "react-icons/fa"
 import styled from "styled-components";
 import room2 from "../assests/css/room2.jpeg"
@@ -15,7 +15,9 @@ import SlideImg from "../components/SlideImg";
 
 const HouseInfo = () => {
     const [isList, setIsList] = useState([]);
-
+    const [leftPosition, setLeftPosition] = useState("");
+    const [rigthPosition, setRigthPosition] = useState("");
+    const underlineRef = useRef(null)
     const navigate = useNavigate();
     const list = [1,2,3,4,5,6,7,8,9]
     const listImg = [room2, room1, jeju1, jeju2, jeju3, jeju4,jeju5,jeju6];
@@ -28,10 +30,66 @@ const HouseInfo = () => {
         console.log(id);
         alert(id)
     }
+    let position;
 
+    //클릭시 메뉴 언더바 이동
+    const menuOnClick = (e) => {
+        underlineRef.current.style.left = e.currentTarget.offsetLeft+"px"
+        underlineRef.current.style.width = e.currentTarget.offsetWidth+"px"
+        console.log(underlineRef.current.style.left,underlineRef.current.style.width);
+        setLeftPosition(e.currentTarget.offsetLeft+"px");
+        setRigthPosition(e.currentTarget.offsetWidth+"px");
+    }
+
+    //마우스 올릴시 메뉴 언더바 이동
+    const menuOnOver = (e) => {
+        underlineRef.current.style.left = e.currentTarget.offsetLeft+"px"
+        underlineRef.current.style.width = e.currentTarget.offsetWidth+"px"
+        console.log(position,"hello")
+    }
+    //마우스 나오면 기존 클릭되어있던 position으로 이동
+    const menuLeave = () => {
+        underlineRef.current.style.left = leftPosition;
+        underlineRef.current.style.width = rigthPosition;
+    }
     return(
         <MainBox>
+            <SpotMainBox>
+                <div onMouseLeave={menuLeave} onMouseOver={menuOnOver} onClick={menuOnClick}  id="spot">
+                    <SpotMiniBox />
+                    <span style={{"marginTop":"5px"}}>hello</span>
+                </div>
+                <div onMouseLeave={menuLeave} onMouseOver={menuOnOver} onClick={menuOnClick}  id="spot">
+                    <SpotMiniBox />
+                    <span style={{"marginTop":"5px"}}>hello</span>
+                </div>
+                <div onMouseLeave={menuLeave} onMouseOver={menuOnOver} onClick={menuOnClick} id="spot">
+                    <SpotMiniBox/>
+                    <span style={{"marginTop":"5px"}}>hello</span>
+                </div>
+                <div onMouseLeave={menuLeave} onMouseOver={menuOnOver} onClick={menuOnClick} id="spot">
+                    <SpotMiniBox/>
+                    <span style={{"marginTop":"5px"}}>hello</span>
+                </div>
+                <div onMouseLeave={menuLeave} onMouseOver={menuOnOver} onClick={menuOnClick} id="spot">
+                    <SpotMiniBox/>
+                    <span style={{"marginTop":"5px"}}>hello</span>
+                </div>
+                <div onMouseLeave={menuLeave} onMouseOver={menuOnOver} onClick={menuOnClick} id="spot">
+                    <SpotMiniBox/>
+                    <span style={{"marginTop":"5px"}}>hello</span>
+                </div>
+                <UnderBar ref={underlineRef}></UnderBar>
+            </SpotMainBox>
+      
+            <div id="contentsMapBox">
             <ContentsBox>
+                <OrderingBox>
+                    <div>날짜</div>
+                    <div>인원</div>
+                    <div>위치별</div>
+                    <div>추천순</div>
+                </OrderingBox>
                     {isList.map((item, idx)=>{
                         return(
                         <ContentsListBox key={idx}>
@@ -64,6 +122,7 @@ const HouseInfo = () => {
             <Map>
                 지도 들어갈 예정
             </Map>
+            </div>
         </MainBox>
     );
 };
@@ -73,18 +132,73 @@ const HouseInfo = () => {
 
 const MainBox = styled.div`
     display: flex;
+    flex-direction:column;
     width: 100%;
+
     margin-top: 30px;
+    #contentsMapBox{
+        display:flex;
+    }
 `
+
+const SpotMainBox = styled.div`
+    width: 100%;
+    height: 100px;
+    border: 1px solid black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 200px;
+    #spot{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+    }
+`
+const UnderBar = styled.div`
+    position: absolute;
+    width: 0%;
+    height: 5px;
+    background-color: red;
+    transition: 0.5s;
+    top:225px;
+    left: 201px;
+    width: 50px;
+    
+`
+
+const SpotMiniBox = styled.div`
+    width: 50px;
+    height: 50px;
+    border: 1px solid black;
+`
+
 const ContentsBox = styled.div`
     width: 40%;
-    height: 700px;
+    height: 70vh;
     overflow-y: auto;
-    border: 1px solid black;
     margin-left: 200px;
     display: flex;
     flex-direction: column;
 `
+const OrderingBox = styled.div`
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    div{
+        width: 13%;
+        height: 30px;
+        border: 1px solid black;
+        margin: 0px 15px 0px 0px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
+        font-size: 15px;
+    }
+`
+
 const ContentsListBox = styled.div`
     height: 300px;  
     display: flex;
@@ -123,13 +237,11 @@ const LikeBox = styled.div`
 const HeartIcon = styled(FaHeart)`
     color: gray;
     cursor: pointer;
-    margin-top: -5px;
+    margin-top: -25px;
 `
 const StarIcon = styled(FaStar)`
-    margin-top: -5px;
+    margin-top: -25px;
 `
-
-
 
 const Map = styled.div`
     width: 50%;
