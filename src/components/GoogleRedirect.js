@@ -21,7 +21,7 @@ const GoogleRedirect = () => {
         localStorage.setItem('nickName',response.data.user.nickname)  
         localStorage.setItem('userImage',response.data.user.userImage)  
         console.log("로그인 확인");
-        window.location.replace("/"); // 토큰 받고 로그인되면 화면 전환(메인으로)
+        // window.location.replace("/"); // 토큰 받고 로그인되면 화면 전환(메인으로)
       })
       .catch((err) => {
         console.log("소셜로그인 에러", err);
