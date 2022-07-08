@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useParams } from "react-router-dom";
 
+
 const SlideImg = (props) => {
   const [mouseOver, setMouseOver] = useState(false)
     const SampleNextArrow = (props) => {
@@ -36,7 +37,22 @@ const SlideImg = (props) => {
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
-        dots : true, 
+        dots:true,
+        appendDots: (dots) => (
+          <div
+            style={{
+              width: '100%',
+              position: 'absolute',
+              bottom: '5px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <ul> {dots} </ul>
+          </div>
+        ),
+        dotsClass: 'dots_custom'
     };
 
     const arrows = {
@@ -84,9 +100,8 @@ export default SlideImg;
 
 const ImgBox = styled.div`
     width: 55%;
-    height: 290px;
+    height: 280px;
     margin-top: 15px;
- 
     img{
         border-radius: 5px;
         width: 270px;
@@ -95,17 +110,41 @@ const ImgBox = styled.div`
 `
 
 const SliderImg = styled(Slider)`
-  .slick-dots {
-      bottom: -20px;
-      color: #fff;
-    }
-  .slick-active button:before {
-  opacity: .75;
-  color: #ffffff;
-}
   
-`
+.dots_custom {
+  display: inline-block;
+  vertical-align: middle;
+  margin: auto 0;
+  padding: 0;
+  
+}
 
+.dots_custom li {
+  list-style: none;
+  cursor: pointer;
+  display: inline-block;
+  margin: 0 6px;
+  padding: 0;
+  
+}
+
+.dots_custom li button {
+  border: none;
+  background: gray;
+  color: transparent;
+  cursor: pointer;
+  display: block;
+  height: 6px;
+  width: 6px;
+  border-radius: 100%;
+  padding: 0;
+  display: hidden;
+}
+
+.dots_custom li.slick-active button {
+  background-color: #fff;
+}
+`
 const DetailImgBox = styled.div`
     position: relative;
     width: 60%;
@@ -115,18 +154,5 @@ const DetailImgBox = styled.div`
         margin-top: 10px;
         
     }
-    /* .slick-prev:before {
-    display: block;
-    opacity: 1; // 기존에 숨어있던 화살표 버튼이 보이게
-    color: black; // 버튼 색은 검은색으로
-    left: 0;
-    margin-right: -30px;
-    z-index: 3;
-  }
-  .slick-next:before {
-    display: block;
-    opacity: 1;
-    color: black;
-    margin-left: -50px;
-  } */
+
 `
