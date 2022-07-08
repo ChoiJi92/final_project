@@ -17,7 +17,8 @@ const HouseInfo = () => {
     const [isList, setIsList] = useState([]);
     const [leftPosition, setLeftPosition] = useState("");
     const [rigthPosition, setRigthPosition] = useState("");
-    const underlineRef = useRef(null)
+    const liveUnderlineRef = useRef(null)
+    const spotUnderlineRef = useRef(null)
     const navigate = useNavigate();
     const list = [1,2,3,4,5,6,7,8,9]
     const listImg = [room2, room1, jeju1, jeju2, jeju3, jeju4,jeju5,jeju6];
@@ -30,34 +31,52 @@ const HouseInfo = () => {
         console.log(id);
         alert(id)
     }
-    let position;
+  
 
     //클릭시 메뉴 언더바 이동
     const menuOnClick = (e) => {
-        underlineRef.current.style.left = e.currentTarget.offsetLeft+"px"
-        underlineRef.current.style.width = e.currentTarget.offsetWidth+"px"
-        console.log(underlineRef.current.style.left,underlineRef.current.style.width);
+        spotUnderlineRef.current.style.left = e.currentTarget.offsetLeft+"px"
+        spotUnderlineRef.current.style.width = e.currentTarget.offsetWidth+"px"
+
+        // liveUnderlineRef.current.style.left = e.currentTarget.offsetLeft+"px"
+        // liveUnderlineRef.current.style.width = e.currentTarget.offsetWidth+"px"
         setLeftPosition(e.currentTarget.offsetLeft+"px");
         setRigthPosition(e.currentTarget.offsetWidth+"px");
     }
 
     //마우스 올릴시 메뉴 언더바 이동
     const menuOnOver = (e) => {
-        underlineRef.current.style.left = e.currentTarget.offsetLeft+"px"
-        underlineRef.current.style.width = e.currentTarget.offsetWidth+"px"
-        console.log(position,"hello")
+        spotUnderlineRef.current.style.left = e.currentTarget.offsetLeft+"px";
+        spotUnderlineRef.current.style.width = e.currentTarget.offsetWidth+"px";
+
+        // liveUnderlineRef.current.style.left = e.currentTarget.offsetLeft+"px"
+        // liveUnderlineRef.current.style.width = e.currentTarget.offsetWidth+"px"
+
     }
     //마우스 나오면 기존 클릭되어있던 position으로 이동
     const menuLeave = () => {
-        underlineRef.current.style.left = leftPosition;
-        underlineRef.current.style.width = rigthPosition;
+        spotUnderlineRef.current.style.left = leftPosition;
+        spotUnderlineRef.current.style.width = rigthPosition;
+
+        // liveUnderlineRef.current.style.left = currentTarget.offsetLeft+"px"
+        // liveUnderlineRef.current.style.width = currentTarget.offsetWidth+"px"
     }
     return(
         <MainBox>
+            <LiveMainBox>
+                <div >
+                    <p>편하게 한달 살기</p>
+                </div>
+                <div >
+                    <p style={{"marginLeft":"50px"}}>최소비용으로 한달 살기</p>
+                </div>
+                <LiveUnderBar />
+            </LiveMainBox>
             <SpotMainBox>
                 <div onMouseLeave={menuLeave} onMouseOver={menuOnOver} onClick={menuOnClick}  id="spot">
                     <SpotMiniBox />
                     <span style={{"marginTop":"5px"}}>hello</span>
+                    <SpotUnderBar ref={spotUnderlineRef}/>
                 </div>
                 <div onMouseLeave={menuLeave} onMouseOver={menuOnOver} onClick={menuOnClick}  id="spot">
                     <SpotMiniBox />
@@ -79,7 +98,6 @@ const HouseInfo = () => {
                     <SpotMiniBox/>
                     <span style={{"marginTop":"5px"}}>hello</span>
                 </div>
-                <UnderBar ref={underlineRef}></UnderBar>
             </SpotMainBox>
       
             <div id="contentsMapBox">
@@ -135,7 +153,6 @@ const MainBox = styled.div`
     flex-direction:column;
     width: 100%;
 
-    margin-top: 30px;
     #contentsMapBox{
         display:flex;
     }
@@ -154,24 +171,46 @@ const SpotMainBox = styled.div`
         flex-direction: column;
         align-items: center;
         cursor: pointer;
+        width: 10%;
+        border:2px solid red;
     }
 `
-const UnderBar = styled.div`
+const SpotUnderBar = styled.div`
     position: absolute;
-    width: 0%;
+    width: 7.5%;
     height: 5px;
     background-color: red;
     transition: 0.5s;
-    top:225px;
-    left: 201px;
-    width: 50px;
-    
+    top:244px;
+`
+
+const LiveUnderBar = styled.div`
+    position: absolute;
+    width: 7.5%;
+    height: 5px;
+    background-color: red;
+    transition: 0.5s;
+    top:145px;
 `
 
 const SpotMiniBox = styled.div`
     width: 50px;
     height: 50px;
     border: 1px solid black;
+`
+
+const LiveMainBox = styled.div`
+    width: 100%;
+    height: 50px;
+    border: 1px solid red;
+    display: flex;
+    padding: 0px 200px;
+    align-items: center;
+    div{
+        p{
+            font-size: 20px;
+        }
+    }
 `
 
 const ContentsBox = styled.div`

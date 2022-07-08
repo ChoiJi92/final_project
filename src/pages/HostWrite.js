@@ -28,6 +28,7 @@ const HostWrite = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [multiImgs, setMultiImgs] = useState([]);
   const [tagList, setTagList] = useState([]);
+  const [addressError, setAddressError] = useState(false);
   const address = useRecoilValue(addressState);
   const tag = useRecoilValue(tagState);
   const currentImg = useRef(null);
@@ -63,9 +64,15 @@ const HostWrite = () => {
     setMultiImgs(multiImgs.filter((_, index) => index !== id));
   };
   const onSubmit = (data) => {
-    console.log(tag)
-    console.log(data);
-    console.log(multiImgs);
+    if(address === ""){
+      setAddressError(true);
+    }else{
+      console.log(tag)
+      console.log(data, address);
+      console.log(multiImgs);
+    }
+    
+    
   };
   const hiddenSetp = watch("stepSelect");
   return (
@@ -203,7 +210,7 @@ const HostWrite = () => {
             <div className="mainAddress">
               <input
                 placeholder="주소를 검색해 주세요."
-                {...register("mainAddress", { required: true })}
+                // {...register("mainAddress", { required: true })}
                 value={address}
                 readOnly
               ></input>
@@ -217,10 +224,12 @@ const HostWrite = () => {
               className="subAddress"
               placeholder="상세 주소를 입력해 주세요."
               {...register("subAddress", {
-                required: "주소는 필수 선택사항입니다 :)",
+                required: "상세주소는 필수 선택사항입니다 :)",
               })}
             ></input>
-            <ErrorP1>{errors.subAddress?.message}</ErrorP1>
+            {addressError ? 
+            (<ErrorP1>주소는 필수 선택사항입니다 :)</ErrorP1>) 
+            : (<ErrorP1>{errors.subAddress?.message}</ErrorP1>)}
           </div>
           <AddressModal
             open={modalOpen}
