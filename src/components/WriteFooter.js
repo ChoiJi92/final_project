@@ -1,11 +1,12 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { addressState, contentState } from "../recoil/atoms";
 import { useRecoilValue } from "recoil";
 import { useMutation } from "react-query";
 import instance from "../shared/axios";
 const WriteFooter = ({ title, thumbnail, reset, getValues}) => {
+  const params = useParams();
   const navigate = useNavigate();
   const address = useRecoilValue(addressState);
   const content = useRecoilValue(contentState);
@@ -53,7 +54,7 @@ const WriteFooter = ({ title, thumbnail, reset, getValues}) => {
             tempPost();
           }}
         ></input>
-        <button type="submit">완료</button>
+        <button type="submit">{params.id ? '수정 완료' : '완료'}</button>
       </div>
     </Wrap>
   );

@@ -1,31 +1,36 @@
 import React, { useState } from "react";
 import { useMutation, useQuery } from "react-query";
-import { useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Comment from "../components/Comment";
 import instance from "../shared/axios";
+import "@toast-ui/editor/dist/toastui-editor-viewer.css";
+import { Viewer } from "@toast-ui/react-editor";
 
 const CommunityDetail = () => {
   const params = useParams();
+  const navigate = useNavigate();
   const [comment, setComment] = useState();
   const commentChange = (e) => {
     setComment(e.target.value);
   };
-  const {data} = useQuery(['detailContent'],()=>instance.get(`/post/${params.id}`).then((res)=>{
-    console.log(res.data)
-    return res.data
-  }))
+  const { data } = useQuery(["detailContent"], () =>
+    instance.get(`/post/${params.id}`).then((res) => {
+      console.log(res.data);
+      return res.data.post[0];
+    })
+  );
   const postComment = useMutation(["postComment", comment], () =>
     instance.post(`/post/${params.id}`).then((res) => console.log(res.data))
   );
   // const postComment
   return (
     <Container>
-      <Image></Image>
+      <Image image={data.thumbnailURL}></Image>
       <Wrap>
         <Content>
           <div>
-            <h1>김녕해수욕장 근처에서 한달 살고 왔어요.</h1>
+            <h1>{data.title}</h1>
             <User>
               <div className="profileImage">
                 <img alt="프로필"></img>
@@ -37,10 +42,19 @@ const CommunityDetail = () => {
               <Button>
                 <button>공유</button>
                 <button>좋아요</button>
+                <button
+                  onClick={() => {
+                    navigate(`/userwrite/${params.id}`);
+                  }}
+                >
+                  수정
+                </button>
               </Button>
             </User>
           </div>
-          <div className="post">컨텐츠 내용들</div>
+          <div className="post">
+            <Viewer initialValue={data.content}></Viewer>
+          </div>
         </Content>
         <div className="otherContent">관련글</div>
       </Wrap>
@@ -58,11 +72,19 @@ const CommunityDetail = () => {
         <div className="comment">
           <img alt="기본이미지"></img>
           <div className="commentInput">
-            <input onChange={commentChange} value={comment || ""} placeholder="칭찬과 격려의 댓글은 작성자에게 큰 힘이 됩니다."></input>
-            <button onClick={() =>{
-              postComment.mutate()
-              setComment("")
-            }}>입력</button>
+            <input
+              onChange={commentChange}
+              value={comment || ""}
+              placeholder="칭찬과 격려의 댓글은 작성자에게 큰 힘이 됩니다."
+            ></input>
+            <button
+              onClick={() => {
+                postComment.mutate();
+                setComment("");
+              }}
+            >
+              입력
+            </button>
           </div>
         </div>
       </CommentWrap>
@@ -81,6 +103,8 @@ const Image = styled.div`
   width: 80%;
   height: 550px;
   margin: 40px 0;
+  background: url(${(props)=>props.image}) no-repeat;
+  background-size: cover;
 `;
 const Wrap = styled.div`
   display: flex;

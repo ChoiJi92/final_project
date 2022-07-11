@@ -6,12 +6,13 @@ import Fade from '@mui/material/Fade';
 import Typography from '@mui/material/Typography';
 import styled from 'styled-components';
 import cancelIcon from '../assests/css/cancelIcon.png'
-import searchIcom from "../assests/css/search.png";
-import DaumPostCode from 'react-daum-postcode';
-
+import pracImage from "../assests/css/back.jpeg";
+import Kakao from "./Kakao";
+import Naver from "./Naver";
+import Google from "./Google";
 const style = {
     position: 'absolute',
-    top: '50%',
+    top: '40%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 400,
@@ -22,31 +23,13 @@ const style = {
   };
 
 
-const AddressModal = ({setAddress}) => {
+const LoginModal = () => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const handleComplete = (data) => {
-        let fullAddress = data.address;
-        let extraAddress = '';
-        if (data.addressType === 'R') {
-            if (data.bname !== '') {
-                extraAddress += data.bname;
-            }
-            if (data.buildingName !== '') {
-                extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName);
-            }
-            // fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
-            handleClose()
-            console.log(fullAddress)
-            setAddress(fullAddress)
-            
-        }
-        //fullAddress -> 전체 주소반환
-    }
     return (
         <div>
-        <img style={{cursor:'pointer'}} onClick={handleOpen} src={searchIcom} alt="검색"/>
+        <div onClick={handleOpen}>로그인</div>
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
@@ -62,13 +45,22 @@ const AddressModal = ({setAddress}) => {
             <Box sx={style}>
               <Container id="transition-modal-title" variant="h6" component="h2">
                 <h1>
-                주소 찾기
+                로그인
                 </h1>
                 <img className="cancel" src={cancelIcon} alt="닫기" onClick={handleClose}></img>
               </Container>
               <Middle id="transition-modal-description" sx={{ mt: 2 }}>
-              <DaumPostCode style={{height:'90%'}} onComplete={handleComplete} className="post-code" />
+              <Img src={pracImage} alt=""></Img>
+                <div>멘도롱제주에 어서오세요.</div>
               </Middle>
+              <Btn>
+                {/* 카카오로그인 버튼 */}
+                <Kakao></Kakao>
+              {/* 네이버로그인 버튼 */}
+              <Naver></Naver>
+              {/* 구글로그인 버튼 */}
+              <Google></Google>
+              </Btn>
             </Box>
           </Fade>
         </Modal>
@@ -76,12 +68,13 @@ const AddressModal = ({setAddress}) => {
     );
 };
 const Container = styled(Typography)`
+    /* border: 1px solid; */
     display: flex;
     justify-content: center;
     align-items: center;
     h1{
         font-size: 30px;
-        font-weight: 400;
+        font-weight: 500;
     }
     img{
         position: absolute;
@@ -94,8 +87,21 @@ const Middle = styled(Typography)`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 60vh;
-  
+    div{
+        font-size: 20px;
+        margin: 10px 0;
+    }
 `
-
-export default AddressModal;
+const Img = styled.img`
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin: 10px auto;
+`;
+const Btn = styled.div`
+margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+`
+export default LoginModal;

@@ -1,26 +1,52 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect,useContext } from "react";
 import styled from "styled-components";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import Dropzone, { useDropzone } from "react-dropzone";
+import Dropzone from "react-dropzone";
 import PostEditer from "../components/PostEditer";
-import searchIcom from "../assests/css/search.png";
-import { useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams, UNSAFE_NavigationContext as NavigationContext } from "react-router-dom";
 import AddressModal from "../components/AddressModal";
-import { addressState, contentState } from "../recoil/atoms";
-import { useRecoilValue } from "recoil";
 import { useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import instance from "../shared/axios";
 import WriteFooter from "../components/WriteFooter";
+import { createBrowserHistory } from "history";
+
 const UserWrite = () => {
+  const history = createBrowserHistory()
   const params = useParams();
-  const [title, setTitle] = useState("");
-  const [preview, setPreview] = useState([]);
-  const [thumbnail, setThumbnail] = useState([]);
+  const { data } = useQuery(
+    ["detailContent"],
+    () =>
+      instance.get(`/post/${params.id}`).then((res) => {
+        console.log(res.data);
+        return res.data;
+      }),
+    {
+      enabled: !!params.id, // params.id가 있을때만 query실행
+      retry: false, // 재호출 안하기
+      refetchOnWindowFocus: false, // 다른화면 갔다와도 재호출 안되게 함
+    }
+  );
+  //   const { data } = useQuery(["content"], () =>
+  //   instance.get("/post").then((res) => {
+  //     console.log(res.data.allPost)
+  //     res.data.allPost.filter((v) => params.id === v.postId)
+  //     return res.data.allPost
+  //   }),{
+  //     refetchOnWindowFocus:false  // 다른화면 갔다와도 재호출 안되게 함
+  //   }
+  // );
+  const [complete, setComplete] = useState(false)
+  const [title, setTitle] = useState(data?.title);
+  const [preview, setPreview] = useState(data?.thumbnailURL);
+  const [thumbnail, setThumbnail] = useState();
+  const [thumbnailKey, setThumbnailKey] = useState(data?.thumbnailKey);
   const [modalOpen, setModalOpen] = useState(false);
-  const address = useRecoilValue(addressState);
-  const content = useRecoilValue(contentState);
+  const [address, setAddress] = useState();
+  // const address = useRecoilValue(addressState);
+  const [content, setContent] = useState();
+  const [imageKey, setImageKey] = useState([]);
   const {
     register,
     handleSubmit,
@@ -29,12 +55,12 @@ const UserWrite = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      houseTitle: "",
-      category: "",
-      type: "",
-      mainAddress: "",
-      subAddress: "",
-      link: "",
+      houseTitle: data?.houseTitle ? data.houseTitle : "",
+      category: data?.category ? data.category : "",
+      type: data?.type ? data.type : "",
+      mainAddress: data?.mianAddress ? data.mainAddress : "",
+      subAddress: data?.subAddress ? data.subAddress : "",
+      link: data?.link ? data.link : "",
     },
   });
   const openAddressModal = () => {
@@ -45,34 +71,23 @@ const UserWrite = () => {
   };
   // 이미지 업로드 부분
   const onDrop = useCallback((acceptedFiles) => {
-    console.log(acceptedFiles);
-    let imagelist = []; // 미리보기 이미지 담을 리스트
-    let filelist = []; // 업로드할 파일을 담을 리스트
-    for (let i = 0; i < acceptedFiles.length; i++) {
-      // 이미지 미리보기 createObjectURL 버전
-      filelist[i] = acceptedFiles[i];
-      imagelist[i] = URL.createObjectURL(acceptedFiles[i]);
-      console.log(imagelist[i]);
-      setPreview([...preview, ...imagelist]);
-      // let reader = new FileReader(); // 이미지 미리보기!!!
-      // reader.readAsDataURL(acceptedFiles[i]);
-      // reader.onload = () => {
-      //   imagelist[i] = reader.result;
-      //   setPreview([...preview, ...imagelist]);
-      // };
-    }
-    setThumbnail([...thumbnail, ...filelist]);
+    console.log(acceptedFiles[0]);
+    // let imagelist = []; // 미리보기 이미지 담을 리스트
+    // let filelist = []; // 업로드할 파일을 담을 리스트
+    // 이미지 미리보기 createObjectURL 버전
+    setThumbnail(acceptedFiles[0]);
+    setPreview(URL.createObjectURL(acceptedFiles[0]));
+    // console.log(imagelist[i]);
+    // setPreview([...preview, ...imagelist]);
+    // let reader = new FileReader(); // 이미지 미리보기!!!
+    // reader.readAsDataURL(acceptedFiles[i]);
+    // reader.onload = () => {
+    //   imagelist[i] = reader.result;
+    //   setPreview([...preview, ...imagelist]);
+    // };
+    // setThumbnail([...thumbnail, ...filelist]);
     // e.target.value = "";
   }, []);
-  // const { getRootProps, getInputProps, isDragActive } = useDropzone({
-  //   onDrop,
-  //   multiple:false,
-  //   accept: {
-  //     "image/png": [".png"],
-  //     "image/jpg": [".jpg"],
-  //     "image/jpeg": [".jpeg"],
-  //   },
-  // });
   const titleChange = (e) => {
     // 글자수 제한
     if (e.target.value.length > 20) {
@@ -87,7 +102,24 @@ const UserWrite = () => {
     ["createPost"],
     (formData) =>
       instance
-        .post("/post", formData, {
+        .post(`/post`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => console.log(res.data)),
+    {
+      onSuccess: () => {
+        // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
+        queryClient.invalidateQueries("content");
+      },
+    }
+  );
+  const updataPost = useMutation(
+    ["updataPost"],
+    (formData) =>
+      instance
+        .patch(`/post/${params.id}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -105,48 +137,49 @@ const UserWrite = () => {
     console.log(title);
     console.log(content);
     console.log(thumbnail);
-    console.log(thumbnail[0]);
     console.log(address);
     console.log("저장");
-    if(thumbnail.length===0){
-      window.alert('썸네일 사진을 추가해 주세요 :)')
+    console.log(imageKey.filter((v) => !content.includes(v)));
+    if (thumbnail.length === 0) {
+      window.alert("썸네일 사진을 추가해 주세요 :)");
+    } else if (!title) {
+      window.alert("제목을 입력해 주세요 :)");
+    } else if (!content) {
+      window.alert("내용을 입력해 주세요 :)");
+    } else if (address) {
+      console.log("여기 안뜨지?");
+      // const post = {
+      //   title: title,
+      //   postContent: content,
+      //   tripLocation: `${address} ${data.subAddress}`,
+      //   category : data.category,
+      //   type : data.type,
+      //   link : data.link,
+      //   houseTitle:data.houseTitle
+      // };
+      // console.log(post)
+      const formData = new FormData();
+      formData.append("images", thumbnail);
+      formData.append("title", title);
+      formData.append("content", content);
+      formData.append("mainAddress", address);
+      formData.append("subAddress", data.subAddress);
+      formData.append("category", data.category);
+      formData.append("type", data.type);
+      formData.append("houseTitle", data.houseTitle);
+      formData.append("link", data.link);
+      formData.append(
+        "thumbnailKey",
+        thumbnail.length !== 0 ? thumbnailKey : ""
+      );
+      // if(!params.id){
+      // createPost.mutate(formData);
+      // }else{
+      //   updataPost.mutate(formData)
+      // }
     }
-    else if(!title){
-      window.alert('제목을 입력해 주세요 :)')
-    }
-    else if(!content) {
-      window.alert('내용을 입력해 주세요 :)') 
-    }
-    else if(address){
-      console.log('여기 안뜨지?')
-    // const post = {
-    //   title: title,
-    //   postContent: content,
-    //   tripLocation: `${address} ${data.subAddress}`,
-    //   category : data.category,
-    //   type : data.type,
-    //   link : data.link,
-    //   houseTitle:data.houseTitle
-    // };
-    // console.log(post)
-    const formData = new FormData();
-    // thumbnail.forEach((file) => formData.append("file", file));
-    formData.append("images", thumbnail[0]);
-    // const json = JSON.stringify(post);
-    // const json = JSON.stringify(title);
-    // const blob = new Blob([json], { type: "application/json" });
-    formData.append("title", title);
-    formData.append("content", content);
-    formData.append("tripLocation", `${address} ${data.subAddress}`);
-    // formData.append("category", data.category);
-    // formData.append("type", data.type);
-    // formData.append("houseTitle", data.houseTitle);
-    
-    
-
-    createPost.mutate(formData)
-  }
   };
+
   return (
     <Wrap>
       <Container>
@@ -176,10 +209,15 @@ const UserWrite = () => {
           placeholder="제목을 입력해 주세요."
           onChange={titleChange}
           maxLength="20"
+          value={title || ""}
         ></input>
-        <p>{title.length}/20</p>
+        <p>{title?.length ? title.length : 0}/20</p>
       </Title>
-      <PostEditer></PostEditer>
+      <PostEditer
+        setContent={setContent}
+        imageKey={imageKey}
+        setImageKey={setImageKey}
+      ></PostEditer>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <InputWrap>
           <h2>방문하신 숙소에 대한 포스팅인가요?</h2>
@@ -217,7 +255,7 @@ const UserWrite = () => {
                   width: "100%",
                   height: "40px",
                   border: "1px solid black",
-                  fontSize:'14px'
+                  fontSize: "14px",
                 }}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
@@ -249,7 +287,7 @@ const UserWrite = () => {
                   width: "100%",
                   height: "40px",
                   border: "1px solid black",
-                  fontSize:'14px'
+                  fontSize: "14px",
                 }}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
@@ -277,14 +315,10 @@ const UserWrite = () => {
                 <input
                   placeholder="주소를 검색해 주세요."
                   {...register("mainAddress")}
-                  value={address}
+                  value={address || ""}
                   // readOnly
                 ></input>
-                <img
-                  src={searchIcom}
-                  onClick={openAddressModal}
-                  alt="주소 검색"
-                ></img>
+                <AddressModal setAddress={setAddress} />
               </div>
               <input
                 className="subAddress"
@@ -296,10 +330,6 @@ const UserWrite = () => {
                   "지역은 필수 입력사항 입니다 :)"}
               </p>
             </div>
-            <AddressModal
-              open={modalOpen}
-              close={closeAddressModal}
-            ></AddressModal>
           </div>
           <div className="link">
             <h3>링크</h3>
