@@ -6,7 +6,7 @@ import { MdOutlineCancel } from "react-icons/md";
 import "../assests/css/map.css";
 const { kakao } = window;
 
-const Map = ({ search }) => {
+const Map = ({ search, isinfo }) => {
   useEffect(() => {
     let infowindow = new kakao.maps.InfoWindow({ zIndex: 1 , removable:true});
     const container = document.getElementById("map"); // 지도를 표시할 div
@@ -76,20 +76,31 @@ const Map = ({ search }) => {
       });
     }
   }, []);
+  // 550px 450px 600px
+  console.log(isinfo)
   return (
+  
     <Container>
-      <div id="map" style={{ width: "800px", height: "500px" }}></div>
+      {/* {isinfo ? (<div id="map" style={{ width: "100%", height: "550px" }}></div>) :  ("")}
+      {isdetail ? (<div id="map" style={{ width: "100%", height: "400px" }}></div>): ("")} */}
+      <div id="map"  ></div>
     </Container>
   );
 };
 
 const Container = styled.div`
-  width: 90%;
+  width: 100%;
+  height: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  #map{
+    width: 100%;
+    height: 100%;
+    /* height: ${(props)=> props.isinfo ? "550px":"400px"}; */
+  }
 `;
 
 export default Map;

@@ -22,6 +22,7 @@ import { useQuery } from "react-query";
 import axios from "axios";
 import SlideImg from "../components/SlideImg";
 import DialogImg from "../components/DialogImg";
+import Map from "../components/Map";
 
 const HouseInfoDetail = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -50,6 +51,7 @@ const HouseInfoDetail = () => {
   const closeDialog = () => {
     setDialogOpen(false);
   };
+  console.log(window.location.href);
 
   const listImg = [jeju7, jeju8, jeju9, jeju10, jeju11, jeju12,jeju13,jeju14];
   return (
@@ -94,7 +96,9 @@ const HouseInfoDetail = () => {
           <hr />
           <h2>숙소 위치</h2>
         </InfoBox>
-        <MapBox>맵 들어갈 예정</MapBox>
+        <MapBox>
+          <Map/>
+        </MapBox>
       </div>
     </Wrap>
   );
@@ -179,9 +183,9 @@ const MapBox = styled.div`
   width: 60%;
   height: 400px;
   border: 1px solid black;
-  display: flex;
+  /* display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
 `;
 
 export default HouseInfoDetail;
