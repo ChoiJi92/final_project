@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { FaTimes } from "react-icons/fa";
 import { useForm } from "react-hook-form";
@@ -16,21 +16,54 @@ import { MdOutlineCancel } from "react-icons/md";
 import { MdCancel } from "react-icons/md";
 import AddressModal from "../components/AddressModal";
 import TagList from "../components/TagList";
+import { useParams } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient  } from "react-query";
+import axios from "axios";
+import Modal from "../components/Modal";
 
 const HostWrite = () => {
+  const params = useParams();
+  const paramsId = params.id;
+  const [testModal, setTestModal] = useState(false);
+//   const getWriteData = async (id) => {
+//     const { data } = await axios.get(`http://localhost:5001/testList/${id}`)
+//     return data
+// }
+  const { isLoading, data } = useQuery(
+    ["hostWrite", paramsId],
+
+    // ()=>getWriteData(paramsId),
+    () => {
+      return axios.get(`http://localhost:5001/testList/${paramsId}`).then((res) => res.data);
+    },
+    {
+      refetchOnWindowFocus: false,
+      enabled: !!paramsId, 
+    }
+  );
+  
+  
   const {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
     reset,
-  } = useForm();
+    watch
+  } = useForm({defaultValues:{
+    // category:data?.category,
+    // houseInfo:data?.houseInfo,
+    // stepSelect:data?.value,
+    // stepInfo:data?.stepInfo,
+    // link:data?.link,
+    // postContent:data?.postContent,
+    // subAddress:data?.subAddress,
+    mainAddress:data?.mainAddress ,
+  }});
   const [modalOpen, setModalOpen] = useState(false);
   const [multiImgs, setMultiImgs] = useState([]);
   const [tagList, setTagList] = useState([]);
   const [addressError, setAddressError] = useState(false);
-  const address = useRecoilValue(addressState);
-  const tag = useRecoilValue(tagState);
+  const [address, setAddress] = useState("");
   const currentImg = useRef(null);
 
   const openAddressModal = () => {
@@ -63,18 +96,77 @@ const HostWrite = () => {
   const deleteImage = (id) => {
     setMultiImgs(multiImgs.filter((_, index) => index !== id));
   };
+
+
+  
+  const queryClient = useQueryClient();
+
+  // const testWrite = async (hostData) => {
+  //   const { data } = await axios.post("http://localhost:5001/testList/", 
+  //     hostData).then((res)=>console.log(res));
+  //     return data;
+  // };
+  
+  // const postMutate = useMutation(testWrite, {
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries("hostWrite");
+  //   },
+  // });
+
+  
+  const postMutation = useMutation(hostData => {
+    return axios.post('http://localhost:5001/testList', hostData)
+  },{
+    onSuccess: () => {
+      queryClient.invalidateQueries("hostWrite");
+    }
+  });
+
+
+  const updateMutation = useMutation(updateData =>{
+    return axios.put(`http://localhost:5001/testList/${paramsId}`, updateData)
+  },{
+    onSuccess: () => {
+      queryClient.invalidateQueries("hostWrite");
+    }
+  })
+  
   const onSubmit = (data) => {
     if(address === ""){
       setAddressError(true);
-    }else{
-      console.log(tag)
-      console.log(data, address);
-      console.log(multiImgs);
     }
-    
-    
+    if(paramsId){
+      console.log("hi")
+      updateMutation.mutate(data)
+    }else{
+      // const formData = new FormData();
+      // formData.append("category",data.category)
+      // formData.append("houseInfo",data.houseInfo)
+      // formData.append("link",data.link)
+      // formData.append("mainAddress",data.address)
+      // formData.append("subAddress",data.subAddress)
+      // formData.append("postContent",data.postContent)
+      // formData.append("stepInfo",data.stepInfo)
+      // formData.append("stepSelect",data.stepSelect)
+      // formData.append("title",data.title)
+      // formData.append("images",multiImgs)
+      console.log("hello", data);
+      postMutation.mutate(data);
+      setTestModal(true);
+
+    }
+    // else{
+    //   console.log(tag)
+    //   console.log(data, address);
+    //   const fulladdress =  address + data.subAddress
+    //   console.log(multiImgs);
+    //   console.log(fulladdress);
+    // }
   };
+  
   const hiddenSetp = watch("stepSelect");
+  console.log(params.id)
+  // console.log(data)
   return (
     <Wrap>
       <HostForm onSubmit={handleSubmit(onSubmit)}>
@@ -114,7 +206,7 @@ const HostWrite = () => {
                   {multiImgs.length} / 8
                 </span>
               </div>
-            </div>
+            </div>  
             <span style={{ color: "red", fontSize: "13px" }}>
               {errors.images?.message}
             </span>
@@ -143,6 +235,7 @@ const HostWrite = () => {
           <div id="infoTitle">
             <input
               placeholder="숙소 이름을 입력해주세요."
+              defaultValue={data?.title ? data?.title : ""}
               {...register("title", { required: true })}
             />
             <ErrorP1>
@@ -161,7 +254,8 @@ const HostWrite = () => {
               })}
               displayEmpty
               inputProps={{ "aria-label": "Without label" }}
-              defaultValue=""
+              defaultValue={data?.category ? data?.category : ""}
+              
             >
               <MenuItem value="" disabled={true}>
                 카테고리를 선택해주세요.
@@ -187,7 +281,7 @@ const HostWrite = () => {
               style={{ width: "100%", height: "40px", border: "1px solid" }}
               displayEmpty
               inputProps={{ "aria-label": "Without label" }}
-              defaultValue=""
+              defaultValue={data?.houseInfo ? data?.houseInfo : ""}
             >
               <MenuItem value="" disabled={true}>
                 숙소의 형태를 선택해주세요.
@@ -208,12 +302,21 @@ const HostWrite = () => {
           <h3>주소 *</h3>
           <div className="regionInput">
             <div className="mainAddress">
-              <input
+              {paramsId ? (<input
+                placeholder="주소를 검색해 주세요."
+                // {...register("mainAddress", { required: true })}
+                // value={address}
+                readOnly
+                onClick={openAddressModal}
+                {...register("mainAddress")}
+                defaultValue={data?.mainAddress ? data?.mainAddress : ""} />):
+              (<input
                 placeholder="주소를 검색해 주세요."
                 // {...register("mainAddress", { required: true })}
                 value={address}
                 readOnly
-              ></input>
+                onClick={openAddressModal}
+                {...register("mainAddress")}/>)}
               <img
                 src={searchIcom}
                 onClick={openAddressModal}
@@ -226,6 +329,7 @@ const HostWrite = () => {
               {...register("subAddress", {
                 required: "상세주소는 필수 선택사항입니다 :)",
               })}
+              defaultValue={data?.subAddress ? data?.subAddress : ""}
             ></input>
             {addressError ? 
             (<ErrorP1>주소는 필수 선택사항입니다 :)</ErrorP1>) 
@@ -245,22 +349,25 @@ const HostWrite = () => {
                 style={{ width: "30%", border: "1px solid" }}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
-                defaultValue=""
+               
                 {...register("stepSelect", {
                   required: "스텝여부는 필수 선택사항입니다 :)",
-                })}
+                })} 
+                defaultValue={data?.stepSelect ? data?.stepSelect : ""}
               >
                 <MenuItem value="" disabled={true}>
                   예 / 아니오
                 </MenuItem>
-                <MenuItem value="yes">예</MenuItem>
-                <MenuItem value="no">아니오</MenuItem>
+                <MenuItem value="예">예</MenuItem>
+                <MenuItem value="아니오">아니오</MenuItem>
               </Select>
-              {hiddenSetp === "yes" ? (
+              {hiddenSetp === "예" ? (
                 <div id="stepInputBox">
                   <StepInput
                     {...register("stepInfo", { required: true })}
                     placeholder="근무 형태를 입력해 주세요."
+                    defaultValue={data?.stepInfo ? data?.stepInfo : ""}
+                    
                   />
                 </div>
               ) : (
@@ -276,6 +383,7 @@ const HostWrite = () => {
             <input
               placeholder="숙소 사이트, SNS 등 URL을 입력해주세요."
               {...register("link")}
+              defaultValue={data?.link ? data?.link : ""}
             />
           </div>
         </InfoBox>
@@ -284,18 +392,20 @@ const HostWrite = () => {
           <div id="infoDes">
             <textarea
               placeholder="숙소에 대한 정보를 최대한 상세하게 입력해주시면 더 많은 고객을 만나실 수 있어요."
-              {...register("des", { required: "설명은 필수입니다 :)" })}
+              {...register("postContent", { required: "설명은 필수입니다 :)" })}
+              defaultValue={data?.postContent ? data?.postContent : ""}
               id="text"
             ></textarea>
             <ErrorP1>{errors.des?.message}</ErrorP1>
           </div>
         </InfoBox>
+        <Modal testModal={testModal}/>
         <WriteFooter reset={reset} onSubmit={onSubmit} />
       </HostForm>
       <Tag>
           <h3>태그</h3>
-          <TagList></TagList>
-        </Tag>
+          <TagList maxLength={10} isModal={false} tagList={tagList} setTagList={setTagList} />
+      </Tag>
     </Wrap>
   );
 };
