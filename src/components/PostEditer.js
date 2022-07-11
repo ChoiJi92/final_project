@@ -11,20 +11,19 @@ import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-sy
 import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
 // toast-ui kor import
 import '@toast-ui/editor/dist/i18n/ko-kr'
-import {contentState} from '../recoil/atoms'
-import {useRecoilState} from 'recoil'
+import instance from "../shared/axios";
 
-const PostEditer = () => {
-  const [,setContent] = useRecoilState(contentState)
+const PostEditer = ({setContent,setImageKey}) => {
+  // const [,setContent] = useRecoilState(contentState)
     const editorRef = useRef();
     const onChange = ()=>{
         setContent(editorRef.current?.getInstance().getHTML())
-        console.log(editorRef.current?.getInstance().getHTML())
+        // console.log(editorRef.current?.getInstance().getHTML())
     }
       // Toast-UI Editor 에 HTML 표시
   // useEffect(() => {
   //   // 1. DB에서 가져온 HTML이라고 가정
-  //   const htmlString = '<h1>h1 제목</h1> <p>p 내용</p>';
+  //   const htmlString = '<p>테스트입니다!!!<img src="blob:http://localhost:3000/0c189732-bee7-4488-8b92-1be8695a8610" alt="이미지" contenteditable="false"><img class="ProseMirror-separator" alt=""><br class="ProseMirror-trailingBreak"></p>';
 
   //   // 2. Editor DOM 내용에 HTML 주입
   //   editorRef.current?.getInstance().setHTML(htmlString);
@@ -53,25 +52,25 @@ const PostEditer = () => {
         hooks={{
             addImageBlobHook : async (blob, callback) => {
                 console.log(blob)
-                const fileUrl = URL.createObjectURL(blob)
-                // const formData = new FormData()
-                // formData.append('image',blob)
-                // const imageUrl = await instance.post('/image',formData,{
-                //   headers:{
-                //     "Content-Type": "multipart/form-data",
-                //   }
-                // }).then((res)=>{
-                //   console.log(res.data)
-                //   return res.data
-                // }
-                // )
-                callback(fileUrl,'이미지')
+                // const fileUrl = URL.createObjectURL(blob)
+                let alt;
+                const formData = new FormData()
+                formData.append('images',blob)
+                const imageUrl = await instance.post('/post/images',formData,{
+                  headers:{
+                    "Content-Type": "multipart/form-data",
+                  }
+                }).then((res)=>{
+                  console.log(res.data)
+                  alt = res.data.postImageKEY[0]
+                  return res.data.postImageURL[0]
+                }
+                )
+                setImageKey((prevState)=>[...prevState,alt])
+                callback(imageUrl,alt)
             }
         }}
       ></Editor>
-      {/* <Button disabled={!title || !thumbnail || content==='<p><img class="ProseMirror-separator" alt=""><br class="ProseMirror-trailingBreak"></p>'} onClick={()=>{
-        createPost.mutate()
-      }}>완료</Button> */}
     </Wrap>
   );
 };

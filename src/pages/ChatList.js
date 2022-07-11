@@ -3,32 +3,19 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import styled from "styled-components";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import Avatar from "@mui/material/Avatar";
+import AvatarGroup from "@mui/material/AvatarGroup";
 import instance from "../shared/axios";
 import searchIconBlack from "../assests/css/searchIconBlack.png";
-import cancelIcon from '../assests/css/cancelIcon.png'
 import { Link } from "react-router-dom";
+import RoomModal from "../components/RoomModal";
 
 const ChatList = () => {
   const [room, setRoom] = useState();
-  const [search, setSearch] = useState(true);
-  const queryClient = useQueryClient();
-  const createChatRoom = useMutation(
-    ["createChatRoom", room],
-    () =>
-      instance
-        .post("/chat", { roomName: room })
-        .then((res) => console.log(res.data)),
-    {
-      onSuccess: () => {
-        // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
-        queryClient.invalidateQueries("loadChatRoom");
-      },
-    }
-  );
   const { data } = useQuery(
     ["loadChatRoom"],
     () =>
-      instance.get("/chat").then((res) => {
+      instance.get("/room").then((res) => {
         console.log(res.data);
         return res.data;
       }),
@@ -39,94 +26,28 @@ const ChatList = () => {
   const onChange = (e) => {
     setRoom(e.target.value);
   };
-  const searchRoom = () => {
-    if (search) {
-      setSearch(false);
-    } else {
-      if (!room) {
-        window.alert("방 이름을 입력해 주세요 :)");
-      } else {
-        createChatRoom.mutate();
-        setRoom("");
-        setSearch(true);
-      }
-    }
-  };
+  const searchRoom = () => {};
   const onKeyPress = (e) => {
     if (e.key === "Enter") {
-      if (search) {
-        // 검색
-      } else {
-        createChatRoom.mutate();
-        setRoom("");
-        setSearch(true);
-      }
     }
   };
   return (
     <>
       <Top>
         <div className="title">
-          <h2>현재 참여중인 채팅방</h2>
+          <h2>제주살이 오픈 챗 방</h2>
+          <p>제주 살이에 관한 이모저모를 오픈 챗방에서 나눠보세요.</p>
           <Link to="/chatroom" style={{ color: "black" }}>
             모두보기
           </Link>
         </div>
-        <Card>
-          <h3>방제목</h3>
-          <div>내용들</div>
-          <button>입장하기</button>
-        </Card>
-      </Top>
-      <Bottom>
-        <div className="header">
-          <Select
-            // onChange={handleChange}
-            defaultValue="최신순"
-            style={{
-              width: "20%",
-              height: "40px",
-              border: "1px solid black",
-              fontSize: "14px",
-            }}
-            displayEmpty
-            inputProps={{ "aria-label": "Without label" }}
-          >
-            <MenuItem value="최신순">최신순</MenuItem>
-            <MenuItem value="인기순">인기순</MenuItem>
-          </Select>
-          <div className="search">
-            {search ? (
-              <>
-                <input
-                  placeholder="채팅방 검색하기"
-                  onChange={onChange}
-                  value={room || ""}
-                ></input>
-                <img src={searchIconBlack} alt="검색"></img>
-              </>
-            ) : (
-              <>
-              <input
-                placeholder="채팅방 제목을 입력해 주세요 :)"
-                onChange={onChange}
-                value={room || ""}
-                onKeyPress={onKeyPress}
-              ></input>
-              <img src={cancelIcon} alt="검색" onClick={()=>{
-                setSearch("true")
-              }}
-              style={{width:'30px'}}></img>
-              </>
-            )}
-          </div>
-          <button
-            onClick={() => {
-              searchRoom();
-            }}
-          >
-            챗방 만들기
-          </button>
+        <div className="search">
+          <input
+            placeholder="채팅방 검색하기"
+            onChange={onChange}
+            value={room || ""}
+          ></input>
+          <img src={searchIconBlack} alt="검색"></img>
         </div>
         <div className="keyword">
           <div>인기 키워드</div>
@@ -134,11 +55,49 @@ const ChatList = () => {
           <p># 키워드</p>
           <p># 키워드</p>
         </div>
+      </Top>
+      <Bottom>
+        <div className="header">
+          <Select
+            // onChange={handleChange}
+            defaultValue="최신순"
+            style={{
+              width: "23%",
+              height: "40px",
+              border: "1px solid black",
+              fontSize: "14px",
+              textAlign: "center",
+            }}
+            displayEmpty
+            inputProps={{ "aria-label": "Without label" }}
+          >
+            <MenuItem value="최신순">최신순</MenuItem>
+            <MenuItem value="인기순">인기순</MenuItem>
+          </Select>
+          <RoomModal width={'30%'}></RoomModal>
+        </div>
         {data.map((v) => (
           <Card key={v.id}>
             <h3>{v.roomName}</h3>
-            <div>내용들</div>
-            <button>입장하기</button>
+            <div className="avatar">
+              <div className="host">
+            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" sx={{ width: 40, height: 40 }} />
+            <p>방장 이름</p>
+            </div>
+              <AvatarGroup max={4}>
+                <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" sx={{ width: 40, height: 40 }}/>
+                <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" sx={{ width: 40, height: 40 }}/>
+                <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" sx={{ width: 40, height: 40 }}/>
+                <Avatar alt="Agnes Walker" src="/static/images/avatar/4.jpg" sx={{ width: 40, height: 40 }}/>
+                <Avatar
+                  alt="Trevor Henderson"
+                  src="/static/images/avatar/5.jpg"
+                  sx={{ width: 40, height: 40 }}
+                />
+              </AvatarGroup>
+            </div>
+            {/* <div>내용들</div> */}
+            {/* <button>입장하기</button> */}
           </Card>
         ))}
       </Bottom>
@@ -147,7 +106,7 @@ const ChatList = () => {
 };
 const Top = styled.div`
   background-color: #e5e5ea;
-  height: 280px;
+  height: 300px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -155,10 +114,64 @@ const Top = styled.div`
   .title {
     width: 40%;
     display: flex;
+    flex-direction: column;
+    /* justify-content: space-between; */
+    align-items: center;
+    margin-top: 20px;
+    h2 {
+      margin-bottom: 10px;
+    }
+    p {
+      color: #626273;
+    }
+  }
+  .search {
+    display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    border: 1px solid;
+    border-radius: 10px;
+    height: 20%;
+    width: 30%;
+    padding: 0 10px;
+    margin: 30px 0;
+    background-color: white;
+    input {
+      width: 95%;
+      /* height: 50px; */
+      font-size: medium;
+      border: none;
+      outline: none;
+      ::placeholder {
+        text-align: center;
+      }
+    }
+    img {
+      cursor: pointer;
+    }
+  }
+  .keyword {
+    width: 30%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     margin-bottom: 20px;
+    div {
+      margin-right: 10px;
+    }
+    p {
+      width: 100px;
+      height: 27px;
+      /* border: 1px solid; */
+      border-radius: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-left: 10px;
+      background-color: white;
+      font-size: 14px;
+    }
   }
 `;
 const Card = styled.div`
@@ -179,6 +192,23 @@ const Card = styled.div`
   }
   h3 {
     margin-bottom: 10px;
+  }
+  .avatar{
+    /* border: 1px solid; */
+    width: 70%;
+    display: flex;
+    flex-direction: row;
+    /* justify-content: space-between; */
+    align-items: center;
+  }
+  .host{
+      display: flex;
+      align-items: center;
+      margin-right: 40px;
+      p{
+        margin-left: 10px;
+      }
+
   }
   button {
     display: none;
@@ -214,35 +244,17 @@ const Bottom = styled.div`
       border-radius: 10px;
       padding: 0 10px;
     }
-    .search {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      border: 1px solid;
-      border-radius: 10px;
-      height: 60%;
-      width: 50%;
-      padding: 0 10px;
-      input {
-        width: 90%;
-        border: none;
-        outline: none;
-      }
-      img {
-        cursor: pointer;
-      }
-    }
-    button {
-      width: 25%;
+    
+    /* button {
+      width: 28%;
       height: 60%;
       border-radius: 10px;
       background-color: #c7c7cc;
       border: none;
       cursor: pointer;
-    }
+    } */
   }
-  .keyword {
+  /* .keyword {
     width: 40%;
     display: flex;
     flex-direction: row;
@@ -261,7 +273,7 @@ const Bottom = styled.div`
       align-items: center;
       margin-left: 10px;
     }
-  }
+  } */
 `;
 
 export default ChatList;

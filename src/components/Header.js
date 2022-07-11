@@ -6,19 +6,13 @@ import UserMenu from "./UserMenu";
 import searchIcon from "../assests/css/search.png";
 import cancelIcon from "../assests/css/cancelIcon.png";
 import jejuLogo from "../assests/css/jejuLogo.png";
+import LoginModal from "./LoginModal";
 
 const Header = () => {
-  const [modalOpen, setModalOpen] = useState(false);
   const [search, setSearch] = useState(false);
   const [menu, setMenu] = useState();
   const searchRef = useRef();
   const navigate = useNavigate();
-  const openLoginModal = () => {
-    setModalOpen(true);
-  };
-  const closeLoginModal = () => {
-    setModalOpen(false);
-  };
   const nickName = localStorage.getItem("nickName");
   const userImage = localStorage.getItem("userImage");
   return (
@@ -80,26 +74,18 @@ const Header = () => {
           >
             오픈 채팅방
           </div>
-        </div>
+      
         {!nickName ? (
           <>
-            <Btn search={search} onClick={openLoginModal}>
-              로그인
-            </Btn>
+            <LoginModal/>
           </>
         ) : (
           <User search={search}>
             <UserMenu nickName={nickName} userImage={userImage}></UserMenu>
-            {/* <img src={userImage} alt=""></img>
-          <div>{nickName} 님</div> */}
-            {/* <button onClick={()=>{
-            localStorage.clear()
-            window.location.replace('/')
-          }}>로그아웃</button> */}
           </User>
         )}
+        </div>
       </Center>
-      <Modal open={modalOpen} close={closeLoginModal}></Modal>
     </Container>
   );
 };
@@ -126,14 +112,15 @@ const Container = styled.div`
 const Center = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   width: 60%;
   white-space: nowrap;
 
   .search {
+    margin-right: 20px;
     position: relative;
-    right: ${(props) => (props.search ? "100px" : "0px")};
+    right: ${(props) => (props.search ? "50px" : "0px")};
     cursor: pointer;
     transition: 1s;
   }
@@ -168,22 +155,13 @@ const Center = styled.div`
     div {
       display: ${(props) => (props.search ? "none" : "block")};
     }
-    width: 40%;
+    width: 50%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
   }
-`;
-const Btn = styled.button`
-  display: ${(props) => (props.search ? "none" : "block")};
-  width: 25%;
-  border: none;
-  background-color: transparent;
-  font-size: large;
-  text-align: left;
-  cursor: pointer;
 `;
 const User = styled.div`
   width: 25%;
@@ -202,12 +180,7 @@ const User = styled.div`
     margin-right: 10px;
     display: ${(props) => props.search && "none"};
   }
-  /* button {
-    border: none;
-    background-color: transparent;
-    font-size: large;
-    cursor: pointer;
-  } */
+
 `;
 
 export default Header;

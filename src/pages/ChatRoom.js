@@ -1,8 +1,43 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import RoomModal from "../components/RoomModal";
+import io from "socket.io-client";
+import instance from "../shared/axios";
+
+const socket = io()
+
 const ChatRoom = () => {
+  const [isConnected, setIsConnected] = useState(socket.connected);
+  const [message, setMessage] = useState([])
+  const [room, setRoom] = useState()
+  // const socket = io.connect()  // backurl 넣기
+  const messageRef = useRef()
+  const titleRef = useRef()
+  useEffect(()=>{
+    socket.on('connect',()=>{
+      setIsConnected(true)
+    })
+
+    socket.on('disconnect',()=>{
+      setIsConnected(false)
+    })
+    socket.on('receive message')
+    return () => {
+      socket.off('connect');
+      socket.off('disconnect');
+    };
+  },[])
+  const joinRoom = () =>{
+    const roomName = titleRef.current.innerText
+    socket.emit('enter_room',roomName)
+    setRoom(roomName)
+  }
+  const sendMessage = ()=>{
+    socket.emit('chat_message',messageRef.current.value, room)
+    messageRef.current.value=""
+  }
   return (
     <Container>
       <Wrap>
@@ -15,6 +50,7 @@ const ChatRoom = () => {
               height: "40px",
               border: "1px solid black",
               fontSize: "14px",
+              textAlign: "center",
             }}
             displayEmpty
             inputProps={{ "aria-label": "Without label" }}
@@ -22,12 +58,12 @@ const ChatRoom = () => {
             <MenuItem value="최신순">최신순</MenuItem>
             <MenuItem value="인기순">인기순</MenuItem>
           </Select>
-          <button>챗방 만들기</button>
+          <RoomModal width={'50%'}></RoomModal>
         </Header>
         <ChatWrap>
           <ChatList>
-            <div>
-              <h3>서귀포 한달 살기 중, 밥친구 구해요.</h3>
+            <div onClick={joinRoom}>
+              <h3 ref={titleRef}>서귀포 한달 살기 중, 밥친구 구해요.</h3>
               <p>참여자 00명</p>
             </div>
             <div>
@@ -38,7 +74,7 @@ const ChatRoom = () => {
           <Room>
             <div className="title">
               <p>오픈 챗 방</p>
-              <h2>서귀포 한달 살기 중, 밥친구 구해요.</h2>
+              <h2>{room}</h2>
             </div>
             <div className="messageWrap">
             <div className="messageList">
@@ -52,8 +88,10 @@ const ChatRoom = () => {
             <div className="chat">
               <img alt="프로필"></img>
               <div className="chatInput">
-                <input placeholder="입력해주세요!"></input>
-                <button>입력</button>
+                <input placeholder="입력해주세요!"ref={messageRef}></input>
+                <button onClick={()=>{
+                sendMessage()
+                }}>입력</button>
               </div>
             </div>
           </Room>
@@ -84,14 +122,6 @@ const Header = styled.div`
     height: 60%;
     border-radius: 10px;
     padding: 0 10px;
-  }
-  button {
-    width: 50%;
-    height: 60%;
-    border-radius: 10px;
-    background-color: #c7c7cc;
-    border: none;
-    cursor: pointer;
   }
 `;
 const ChatWrap = styled.div`

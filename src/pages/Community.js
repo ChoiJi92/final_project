@@ -1,17 +1,28 @@
 import React from "react";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import instance from "../shared/axios";
 
 const Community = () => {
-
+  const queryClient = useQueryClient()
   const navigate = useNavigate()
   const { data } = useQuery(["content"], () =>
-    instance.get("/post").then((res) => console.log(res.data)),{
+    instance.get("/post").then((res) => {
+      console.log(res.data.allPost)
+      return res.data.allPost
+    }),{
       refetchOnWindowFocus:false  // 다른화면 갔다와도 재호출 안되게 함
     }
   );
+  const deleteContent = useMutation(['deleteContent'],(postId) =>
+    instance.delete(`/post/${postId}`).then((res)=>console.log(res.data))
+  ,{
+    onSuccess: () => {
+      // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
+      queryClient.invalidateQueries("content");
+    },
+  })
   return (
     <Container>
       <Top>
@@ -46,13 +57,14 @@ const Community = () => {
       </Middle>
       <Bottom>
         {data.map((v) => (
-          <Card key={v.id} onClick={()=>{
-            navigate(`/community/${v.id}`)
-          }}>
+          <Card key={v.postId} >
             <div>
               <div className="user">글쓴이</div>
-              <h1 className="title" >{v.title}</h1>
+              <h1 className="title" onClick={()=>{navigate(`/community/${v.postId}`)}}>{v.title}</h1>
               <div className="like">좋아요,댓글</div>
+              <button onClick={()=>{
+                deleteContent.mutate(v.postId)
+              }}>삭제</button>
             </div>
             <img alt="이미지"></img>
           </Card>

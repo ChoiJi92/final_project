@@ -4,7 +4,7 @@ import styled from "styled-components";
 import instance from "../shared/axios";
 
 const Comment = () => {
-  // const {isLoding,data} = useQuery(['comment'], () => instance.get(`/`))
+  // const {data} = useQuery(['comment'], () => instance.get(`/`))
   const [edit, setEdit] = useState(false);
   return (
     <CommentList>
