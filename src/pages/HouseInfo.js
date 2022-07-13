@@ -20,10 +20,19 @@ const HouseInfo = () => {
     const [rigthPosition, setRigthPosition] = useState("");
     const [fleftPosition, setFLeftPosition] = useState("");
     const [frigthPosition, setFRigthPosition] = useState("");
+
+    const [secondPosition, setSecondPosition] = useState("");
+    const [sRigthPosition, setSRigthPosition] = useState("");
+    const [sFleftPosition, setSFLeftPosition] = useState("");
+    const [sFrigthPosition, setSFRigthPosition] = useState("");
+
     const [firstUnderbar, setFirstUnderbar] = useState(false);
-    const liveUnderlineRef = useRef(null)
-    const spotUnderlineRef = useRef(null)
-    const firstBox = useRef(null)
+    const [secondUnderbar, setSecondtUnderbar] = useState(false);
+
+    const liveUnderlineRef = useRef(null);
+    const spotUnderlineRef = useRef(null); 
+    const firstBox = useRef(null);
+    const liveFirstBox = useRef(null);
 
     const list = [1,2,3,4,5,6,7,8,9]
     const listImg = [room2, room1, jeju1, jeju2, jeju3, jeju4,jeju5,jeju6];
@@ -38,9 +47,10 @@ const HouseInfo = () => {
     }
   
     useEffect(()=>{
-        autoClick();
+        autoSpotClick();
+        autoLiveClick();
     },[])
-    const autoClick = () => {
+    const autoSpotClick = () => {
         spotUnderlineRef.current.style.left = firstBox.current.offsetLeft+"px"
         spotUnderlineRef.current.style.width = firstBox.current.offsetWidth+"px";
         setFLeftPosition(firstBox.current.offsetLeft+"px");
@@ -50,8 +60,6 @@ const HouseInfo = () => {
     const menuOnClick = (e) => {
         spotUnderlineRef.current.style.left = e.currentTarget.offsetLeft+"px";
         spotUnderlineRef.current.style.width = e.currentTarget.offsetWidth+"px";
-        // liveUnderlineRef.current.style.left = e.currentTarget.offsetLeft+"px"
-        // liveUnderlineRef.current.style.width = e.currentTarget.offsetWidth+"px"
         setLeftPosition(e.currentTarget.offsetLeft+"px");
         setRigthPosition(e.currentTarget.offsetWidth+"px");
         setFirstUnderbar(true);
@@ -59,19 +67,11 @@ const HouseInfo = () => {
 
     //마우스 올릴시 메뉴 언더바 이동
     const menuOnOver = (e) => {
-        // spotUnderlineRef.current.style.left =firstBox.current.offsetLeft+"px"
-        // spotUnderlineRef.current.style.width = firstBox.current.offsetWidth+"px";
         spotUnderlineRef.current.style.left = e.currentTarget.offsetLeft+"px";
         spotUnderlineRef.current.style.width = e.currentTarget.offsetWidth+"px";
-        // liveUnderlineRef.current.style.left = e.currentTarget.offsetLeft+"px"
-        // liveUnderlineRef.current.style.width = e.currentTarget.offsetWidth+"px"
-
     }
     //마우스 나오면 기존 클릭되어있던 position으로 이동
     const menuLeave = () => {
-        
-        // spotUnderlineRef.current.style.left =firstBox.current.offsetLeft+"px"
-        // spotUnderlineRef.current.style.width = firstBox.current.offsetWidth+"px";
         if(firstUnderbar === true){
             spotUnderlineRef.current.style.left = leftPosition;
             spotUnderlineRef.current.style.width = rigthPosition;
@@ -84,17 +84,43 @@ const HouseInfo = () => {
     // const isInfo = window.location.href.slice(22,27);
     // console.log(isInfo);
     // const isInfo = "500px";
-    
+    const autoLiveClick = () => {
+        liveUnderlineRef.current.style.left = liveFirstBox.current.offsetLeft+"px"
+        liveUnderlineRef.current.style.width = liveFirstBox.current.offsetWidth+"px";
+        setSFLeftPosition(liveFirstBox.current.offsetLeft+"px");
+        setSFRigthPosition(liveFirstBox.current.offsetWidth+"px");
+    }
+
+    const liveOnLeave = () => {
+        if(secondUnderbar === true){
+            liveUnderlineRef.current.style.left = secondPosition;
+            liveUnderlineRef.current.style.width = sRigthPosition;
+        }else{
+            liveUnderlineRef.current.style.left = sFleftPosition;
+            liveUnderlineRef.current.style.width = sFrigthPosition;
+        }  
+    }
+    const liveOnOver = (e) => {
+        liveUnderlineRef.current.style.left = e.currentTarget.offsetLeft+"px";
+        liveUnderlineRef.current.style.width = e.currentTarget.offsetWidth+"px";
+    }
+    const liveOnClick = (e) => {
+        liveUnderlineRef.current.style.left = e.currentTarget.offsetLeft+"px";
+        liveUnderlineRef.current.style.width = e.currentTarget.offsetWidth+"px";
+        setSecondPosition(e.currentTarget.offsetLeft+"px");
+        setSRigthPosition(e.currentTarget.offsetWidth+"px");
+        setSecondtUnderbar(true);
+    }
     return(
         <MainBox>
             <LiveMainBox>
-                <div >
+                <div ref={liveFirstBox} onMouseLeave={liveOnLeave} onMouseOver={liveOnOver} onClick={liveOnClick} id="live" >
                     <p>편하게 한달 살기</p>
                 </div>
-                <div >
-                    <p style={{"marginLeft":"50px"}}>최소비용으로 한달 살기</p>
+                <div style={{}} onMouseLeave={liveOnLeave} onMouseOver={liveOnOver} onClick={liveOnClick} id="live1">
+                    <p style={{}}>최소비용으로 한달 살기</p>
                 </div>
-                <LiveUnderBar />
+                <LiveUnderBar ref={liveUnderlineRef} />
             </LiveMainBox>
             <SpotMainBox>
                 
@@ -102,30 +128,30 @@ const HouseInfo = () => {
                 
                     <SpotMiniBox />
                     {/* <div id="defaultLine" /> */}
-                    <span style={{"marginTop":"5px"}}>hello</span>
+                    <span>해변</span>
                     
                     <SpotUnderBar ref={spotUnderlineRef}/>
                     
                 </div>
                 <div onMouseLeave={menuLeave} onMouseOver={menuOnOver} onClick={menuOnClick}  id="spot">
                     <SpotMiniBox />
-                    <span style={{"marginTop":"5px"}}>hello</span>
+                    <span>내륙</span>
                 </div>
                 <div onMouseLeave={menuLeave} onMouseOver={menuOnOver} onClick={menuOnClick} id="spot">
                     <SpotMiniBox/>
-                    <span style={{"marginTop":"5px"}}>hello</span>
+                    <span >관광지 근처</span>
                 </div>
                 <div onMouseLeave={menuLeave} onMouseOver={menuOnOver} onClick={menuOnClick} id="spot">
                     <SpotMiniBox/>
-                    <span style={{"marginTop":"5px"}}>hello</span>
+                    <span>조용한 마을</span>
                 </div>
                 <div onMouseLeave={menuLeave} onMouseOver={menuOnOver} onClick={menuOnClick} id="spot">
                     <SpotMiniBox/>
-                    <span style={{"marginTop":"5px"}}>hello</span>
+                    <span>우도</span>
                 </div>
                 <div onMouseLeave={menuLeave} onMouseOver={menuOnOver} onClick={menuOnClick} id="spot">
                     <SpotMiniBox/>
-                    <span style={{"marginTop":"5px"}}>hello</span>
+                    <span >성산일출봉</span>
                 </div>
             </SpotMainBox>
       
@@ -137,8 +163,10 @@ const HouseInfo = () => {
                     <div>위치별</div>
                     <div>추천순</div>
                 </OrderingBox>
+                <div id="houseCount">{isList.length} 개의 숙소</div>
                     {isList.map((item, idx)=>{
                         return(
+                        <div id="testBox">
                         <ContentsListBox key={idx}>
                             <SlideImg listImg={listImg}/>
                             <DesBox>
@@ -146,8 +174,7 @@ const HouseInfo = () => {
                                 <h3>해변근처의 게스트하우스ㅁㅁㅁ</h3>
                                 </StyledLink>
                                 <div id="infoHouse">
-                                <span>한달살기의 조건에 관한 설명 ...한달살기의 조건에 관한 설명 ...
-                                한달살기의 조건에 관한 설명 ...
+                                <span>한달살기의 조건에 관한 설명 ...한달살기의 조건에 관한 설명 ...한달살기의 조건에 관한 설명 ...
                                 </span>
                                 
                                 </div>
@@ -161,6 +188,7 @@ const HouseInfo = () => {
                             </DesBox>
                             
                         </ContentsListBox>
+                        </div>
                         )  
                     })}
             </ContentsBox> 
@@ -179,7 +207,6 @@ const MainBox = styled.div`
     display: flex;
     flex-direction:column;
     width: 100%;
-
     #contentsMapBox{
         display:flex;
     }
@@ -192,33 +219,37 @@ const SpotMainBox = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0px 200px;
+    padding: 0px 215px;
     #spot{
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: center;
         cursor: pointer;
-        width: 10%;
-        border: 1px solid red;
+        width: 7%;
+        margin-top: 10px;
+    }
+    span{
+        margin-top: 3px;
+        font-size: 80%;
     }
 `
 const SpotUnderBar = styled.div`
     position: absolute;
-   
-    height: 5px;
-    background-color: red;
+    height: 4px;
+    background-color: #bdc3c7;
     transition: 0.5s;
-    top: 244px;
+    top: 245px;
     /* left: 
     width: 152px; */
 `
 
 const LiveUnderBar = styled.div`
     position: absolute;
-    width: 7.5%;
-    height: 5px;
+    height: 4px;
     transition: 0.5s;
-    top:145px;
+    top:146px;
+    background-color: #bdc3c7;
 `
 
 const SpotMiniBox = styled.div`
@@ -230,34 +261,44 @@ const SpotMiniBox = styled.div`
 const LiveMainBox = styled.div`
     width: 100%;
     height: 50px;
-
     display: flex;
     padding: 0px 200px;
     align-items: center;
     div{
+        cursor: pointer;
+    }
         p{
             font-size: 20px;
         }
+    #live1{
+        margin-left: 40px;
     }
 `
 
 const ContentsBox = styled.div`
     width: 40%;
-    height: 72vh;
+    height: 70vh;
     overflow-y: auto;
-    margin-left: 200px;
+    margin-left: 190px;
     display: flex;
     flex-direction: column;
+    #testBox{
+        margin-right: 10px;
+    }
+    #houseCount{
+        margin: 15px 0px 5px 15px;
+    }
 `
 const OrderingBox = styled.div`
     display: flex;
     justify-content: space-between;
     margin-top: 10px;
+    margin-left: 10px;
     div{
-        width: 13%;
+        width: 18%;
         height: 30px;
         border: 1px solid black;
-        margin: 0px 15px 0px 0px;
+        margin: 0px 15px 0px 5px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -267,30 +308,34 @@ const OrderingBox = styled.div`
 `
 
 const ContentsListBox = styled.div`
-    height: 300px;  
+    height: 220px;  
     display: flex;
-    border-bottom: 0.5px solid gray;
-    
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 30px;
+    margin-top: 10px;
+    width: 99%;
+    margin: 10px 10px 2px 10px;
+    align-items: center;
+    padding: 10px;
 `
 const DesBox = styled.div`
     display: flex;
     flex-direction: column;
     margin-right: 10px;
-    width: 35%;
-    height: 270px;
-    margin-left: 20px;
-    margin-top: 15px;
+    width: 100%;
+    height: 180px;
+    margin-left: 15px;
     h3{
-
+ 
     }
     span{
-        margin-bottom: 30px;
+
+        margin-bottom: 10px;
     }
     #infoHouse{
         height: 200px;
         display: flex;
         align-items: center;
-        margin-top: 25px;
     }
 `
 const LikeBox = styled.div`
@@ -304,17 +349,15 @@ const LikeBox = styled.div`
 const HeartIcon = styled(FaHeart)`
     color: gray;
     cursor: pointer;
-    margin-top: -25px;
+
 `
 const StarIcon = styled(FaStar)`
-    margin-top: -25px;
+
 `
 
 const MapBox = styled.div`
     width: 50%;
-    height: 550px;
-    border: 1px solid black;
-    margin-right: 5px;
+    height: 545px;
     display: flex ;
     justify-content: center;
     align-items: center;
@@ -334,3 +377,56 @@ const StyledLink = styled(Link)`
 
 
 export default HouseInfo;
+
+
+// {isList.slice(0,4).map((item, idx)=>(
+//     <ContentsListBox ref={contentsBox} key={idx}>
+//         <SlideImg listImg={listImg}/>
+//         <DesBox>
+//             <StyledLink to={`/house/${idx}`}>
+//             <h3>해변근처의 게스트하우스ㅁㅁㅁ</h3>
+//             </StyledLink>
+//             <div id="infoHouse">
+//             <span>한달살기의 조건에 관한 설명 ...한달살기의 조건에 관한 설명 ...
+//             한달살기의 조건에 관한 설명 ...
+//             </span>
+//             </div>
+//             <span>000,000원 1박</span>
+//             <LikeBox>
+//                 <StarIcon/>
+//                 <HeartIcon onClick={()=>{onClick(isList[idx])}}/>
+//             </LikeBox>
+//         </DesBox>
+//     </ContentsListBox>
+// )   
+// )}
+// {/* <AdContentsBox>
+//     <div><span>이런 숙소는 어때요?</span></div>
+//     <div id="adImg">
+//         <img src={jeju1}/>
+//         <img src={jeju2}/>
+//         <img src={jeju3}/>
+
+//     </div>
+// </AdContentsBox> */}
+// {isList.slice(5).map((item, idx)=>(
+//     <ContentsListBox ref={contentsBox} key={idx}>
+//     <SlideImg listImg={listImg}/>
+//     <DesBox>
+//         <StyledLink to={`/house/${idx}`}>
+//         <h3>해변근처의 게스트하우스ㅁㅁㅁ</h3>
+//         </StyledLink>
+//         <div id="infoHouse">
+//         <span>한달살기의 조건에 관한 설명 ...한달살기의 조건에 관한 설명 ...
+//         한달살기의 조건에 관한 설명 ...
+//         </span>
+//         </div>
+//         <span>000,000원 1박</span>
+//         <LikeBox>
+//             <StarIcon/>
+//             <HeartIcon onClick={()=>{onClick(isList[idx])}}/>
+//         </LikeBox>
+//     </DesBox>
+// </ContentsListBox>
+// ))}
+// </ContentsBox>
