@@ -6,18 +6,14 @@ import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import WriteFooter from "../components/WriteFooter";
 import { FaImage } from "react-icons/fa";
-import searchIcom from "../assests/css/search.png";
 import SortableList, { SortableItem } from "react-easy-sort";
 import arrayMove from "array-move";
 import imageIcon from "../assests/css/imageIcon.png";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { imgMoveState, addressState, tagState } from "../recoil/atoms";
-import { MdOutlineCancel } from "react-icons/md";
 import { MdCancel } from "react-icons/md";
 import AddressModal from "../components/AddressModal";
 import TagList from "../components/TagList";
 import { useParams } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient  } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import axios from "axios";
 import Modal from "../components/Modal";
 
@@ -25,53 +21,49 @@ const HostWrite = () => {
   const params = useParams();
   const paramsId = params.id;
   const [testModal, setTestModal] = useState(false);
-//   const getWriteData = async (id) => {
-//     const { data } = await axios.get(`http://localhost:5001/testList/${id}`)
-//     return data
-// }
-  const { isLoading, data } = useQuery(
+  const [open, setOpen] = useState(false);
+  //   const getWriteData = async (id) => {
+  //     const { data } = await axios.get(`http://localhost:5001/testList/${id}`)
+  //     return data
+  // }
+  const { data } = useQuery(
     ["hostWrite", paramsId],
 
     // ()=>getWriteData(paramsId),
     () => {
-      return axios.get(`http://localhost:5001/testList/${paramsId}`).then((res) => res.data);
+      return axios
+        .get(`http://localhost:5001/testList/${paramsId}`)
+        .then((res) => res.data);
     },
     {
       refetchOnWindowFocus: false,
-      enabled: !!paramsId, 
+      enabled: !!paramsId,
     }
   );
-  
-  
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-    watch
-  } = useForm({defaultValues:{
-    // category:data?.category,
-    // houseInfo:data?.houseInfo,
-    // stepSelect:data?.value,
-    // stepInfo:data?.stepInfo,
-    // link:data?.link,
-    // postContent:data?.postContent,
-    // subAddress:data?.subAddress,
-    mainAddress:data?.mainAddress ,
-  }});
-  const [modalOpen, setModalOpen] = useState(false);
+    watch,
+  } = useForm({
+    defaultValues: {
+      // category:data?.category,
+      // houseInfo:data?.houseInfo,
+      // stepSelect:data?.value,
+      // stepInfo:data?.stepInfo,
+      // link:data?.link,
+      // postContent:data?.postContent,
+      // subAddress:data?.subAddress,
+      // mainAddress: data?.mainAddress,
+    },
+  });
   const [multiImgs, setMultiImgs] = useState([]);
   const [tagList, setTagList] = useState([]);
   const [addressError, setAddressError] = useState(false);
   const [address, setAddress] = useState("");
   const currentImg = useRef(null);
-
-  const openAddressModal = () => {
-    setModalOpen(true);
-  };
-  const closeAddressModal = () => {
-    setModalOpen(false);
-  };
 
   const onSortEnd = (oldIndex, newIndex) => {
     setMultiImgs((array) => arrayMove(array, oldIndex, newIndex));
@@ -97,48 +89,53 @@ const HostWrite = () => {
     setMultiImgs(multiImgs.filter((_, index) => index !== id));
   };
 
-
-  
   const queryClient = useQueryClient();
 
   // const testWrite = async (hostData) => {
-  //   const { data } = await axios.post("http://localhost:5001/testList/", 
+  //   const { data } = await axios.post("http://localhost:5001/testList/",
   //     hostData).then((res)=>console.log(res));
   //     return data;
   // };
-  
+
   // const postMutate = useMutation(testWrite, {
   //   onSuccess: () => {
   //     queryClient.invalidateQueries("hostWrite");
   //   },
   // });
 
-  
-  const postMutation = useMutation(hostData => {
-    return axios.post('http://localhost:5001/testList', hostData)
-  },{
-    onSuccess: () => {
-      queryClient.invalidateQueries("hostWrite");
+  const postMutation = useMutation(
+    (hostData) => {
+      return axios.post("http://localhost:5001/testList", hostData);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("hostWrite");
+      },
     }
-  });
+  );
 
-
-  const updateMutation = useMutation(updateData =>{
-    return axios.put(`http://localhost:5001/testList/${paramsId}`, updateData)
-  },{
-    onSuccess: () => {
-      queryClient.invalidateQueries("hostWrite");
+  const updateMutation = useMutation(
+    (updateData) => {
+      return axios.put(
+        `http://localhost:5001/testList/${paramsId}`,
+        updateData
+      );
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("hostWrite");
+      },
     }
-  })
-  
+  );
+
   const onSubmit = (data) => {
-    if(address === ""){
+    if (address === "") {
       setAddressError(true);
     }
-    if(paramsId){
-      console.log("hi")
-      updateMutation.mutate(data)
-    }else{
+    if (paramsId) {
+      console.log("hi");
+      updateMutation.mutate(data);
+    } else {
       // const formData = new FormData();
       // formData.append("category",data.category)
       // formData.append("houseInfo",data.houseInfo)
@@ -153,7 +150,7 @@ const HostWrite = () => {
       console.log("hello", data);
       postMutation.mutate(data);
       setTestModal(true);
-
+      setOpen(true);
     }
     // else{
     //   console.log(tag)
@@ -163,9 +160,8 @@ const HostWrite = () => {
     //   console.log(fulladdress);
     // }
   };
-  
+
   const hiddenSetp = watch("stepSelect");
-  console.log(params.id)
   // console.log(data)
   return (
     <Wrap>
@@ -206,7 +202,7 @@ const HostWrite = () => {
                   {multiImgs.length} / 8
                 </span>
               </div>
-            </div>  
+            </div>
             <span style={{ color: "red", fontSize: "13px" }}>
               {errors.images?.message}
             </span>
@@ -255,7 +251,6 @@ const HostWrite = () => {
               displayEmpty
               inputProps={{ "aria-label": "Without label" }}
               defaultValue={data?.category ? data?.category : ""}
-              
             >
               <MenuItem value="" disabled={true}>
                 카테고리를 선택해주세요.
@@ -302,26 +297,16 @@ const HostWrite = () => {
           <h3>주소 *</h3>
           <div className="regionInput">
             <div className="mainAddress">
-              {paramsId ? (<input
+              <input
                 placeholder="주소를 검색해 주세요."
                 // {...register("mainAddress", { required: true })}
                 // value={address}
                 readOnly
-                onClick={openAddressModal}
+                value={address || data?.mainAddress}
                 {...register("mainAddress")}
-                defaultValue={data?.mainAddress ? data?.mainAddress : ""} />):
-              (<input
-                placeholder="주소를 검색해 주세요."
-                // {...register("mainAddress", { required: true })}
-                value={address}
-                readOnly
-                onClick={openAddressModal}
-                {...register("mainAddress")}/>)}
-              <img
-                src={searchIcom}
-                onClick={openAddressModal}
-                alt="주소 검색"
-              ></img>
+                // defaultValue={address ? address : data?.mainAddress }
+              />
+              <AddressModal setAddress={setAddress}></AddressModal>
             </div>
             <input
               className="subAddress"
@@ -331,14 +316,12 @@ const HostWrite = () => {
               })}
               defaultValue={data?.subAddress ? data?.subAddress : ""}
             ></input>
-            {addressError ? 
-            (<ErrorP1>주소는 필수 선택사항입니다 :)</ErrorP1>) 
-            : (<ErrorP1>{errors.subAddress?.message}</ErrorP1>)}
+            {addressError ? (
+              <ErrorP1>주소는 필수 선택사항입니다 :)</ErrorP1>
+            ) : (
+              <ErrorP1>{errors.subAddress?.message}</ErrorP1>
+            )}
           </div>
-          <AddressModal
-            open={modalOpen}
-            close={closeAddressModal}
-          ></AddressModal>
         </InfoBox>
 
         <InfoBox>
@@ -349,10 +332,9 @@ const HostWrite = () => {
                 style={{ width: "30%", border: "1px solid" }}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
-               
                 {...register("stepSelect", {
                   required: "스텝여부는 필수 선택사항입니다 :)",
-                })} 
+                })}
                 defaultValue={data?.stepSelect ? data?.stepSelect : ""}
               >
                 <MenuItem value="" disabled={true}>
@@ -367,7 +349,6 @@ const HostWrite = () => {
                     {...register("stepInfo", { required: true })}
                     placeholder="근무 형태를 입력해 주세요."
                     defaultValue={data?.stepInfo ? data?.stepInfo : ""}
-                    
                   />
                 </div>
               ) : (
@@ -399,12 +380,23 @@ const HostWrite = () => {
             <ErrorP1>{errors.des?.message}</ErrorP1>
           </div>
         </InfoBox>
-        <Modal testModal={testModal}/>
-        <WriteFooter reset={reset} onSubmit={onSubmit} />
+        <Modal testModal={testModal} />
+        <WriteFooter
+          reset={reset}
+          onSubmit={onSubmit}
+          open={open}
+          setOpen={setOpen}
+          isHost={true}
+        />
       </HostForm>
       <Tag>
-          <h3>태그</h3>
-          <TagList maxLength={10} isModal={false} tagList={tagList} setTagList={setTagList} />
+        <h3>태그</h3>
+        <TagList
+          maxLength={10}
+          isModal={false}
+          tagList={tagList}
+          setTagList={setTagList}
+        />
       </Tag>
     </Wrap>
   );
@@ -676,5 +668,5 @@ const Tag = styled.div`
   width: 70%;
   margin: 0 auto;
   padding: 20px 0;
- `
+`;
 export default HostWrite;

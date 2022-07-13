@@ -5,7 +5,8 @@ import { addressState, contentState } from "../recoil/atoms";
 import { useRecoilValue } from "recoil";
 import { useMutation } from "react-query";
 import instance from "../shared/axios";
-const WriteFooter = ({ title, thumbnail, reset, getValues}) => {
+import CompleteModal from "./CompleteModal";
+const WriteFooter = ({ title, thumbnail, reset, getValues, open,setOpen,isHost}) => {
   const params = useParams();
   const navigate = useNavigate();
   const address = useRecoilValue(addressState);
@@ -42,11 +43,11 @@ const WriteFooter = ({ title, thumbnail, reset, getValues}) => {
             reset();
             navigate(-1);
             console.log("취소");
-          } 
+          }
         }}
         value="등록 취소"
       ></input>
-      <div>
+      <div className="post">
         <input
           type="button"
           value="임시 저장"
@@ -54,7 +55,8 @@ const WriteFooter = ({ title, thumbnail, reset, getValues}) => {
             tempPost();
           }}
         ></input>
-        <button type="submit">{params.id ? '수정 완료' : '완료'}</button>
+        {/* <button type="submit">{params.id ? '수정 완료' : '완료'}</button> */}
+        <CompleteModal open={open} setOpen={setOpen} isHost={isHost}/>
       </div>
     </Wrap>
   );
@@ -82,6 +84,9 @@ const Wrap = styled.footer`
       background-color: gray;
       color: white;
     }
+  }
+  .post {
+    display: flex;
   }
   button {
     width: 130px;

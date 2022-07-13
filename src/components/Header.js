@@ -51,7 +51,7 @@ const Header = () => {
             style={{ color: menu === "house" ? "gray" : "black" }}
             onClick={() => {
               setMenu("house");
-              navigate('/house')
+              navigate("/house");
             }}
           >
             숙소 찾기
@@ -74,16 +74,14 @@ const Header = () => {
           >
             오픈 채팅방
           </div>
-      
-        {!nickName ? (
-          <>
-            <LoginModal/>
-          </>
-        ) : (
-          <User search={search}>
-            <UserMenu nickName={nickName} userImage={userImage}></UserMenu>
-          </User>
-        )}
+
+          {!nickName ? (
+            <LoginModal />
+          ) : (
+            <User search={search}>
+              <UserMenu nickName={nickName} userImage={userImage}></UserMenu>
+            </User>
+          )}
         </div>
       </Center>
     </Container>
@@ -116,7 +114,6 @@ const Center = styled.div`
   align-items: center;
   width: 60%;
   white-space: nowrap;
-
   .search {
     margin-right: 20px;
     position: relative;
@@ -130,7 +127,7 @@ const Center = styled.div`
     height: 50px;
     border-radius: 10px;
     background-color: #f2f2f7;
-    border: none;
+    border: 1px solid;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -155,7 +152,8 @@ const Center = styled.div`
     div {
       display: ${(props) => (props.search ? "none" : "block")};
     }
-    width: 50%;
+    width: 60%;
+    height: 50px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -168,19 +166,18 @@ const User = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  text-align: right;
   div {
     margin-right: 10px;
     font-size: large;
     display: ${(props) => props.search && "none"};
   }
   img {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    margin-right: 10px;
     display: ${(props) => props.search && "none"};
   }
-
 `;
 
 export default Header;

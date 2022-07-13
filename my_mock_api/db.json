@@ -9,7 +9,7 @@
   "post": [
     {
       "title": "aa",
-      "postContent": "zz",
+      "content": "안녕하세요!!",
       "tripLocation": "zz",
       "id": 0
     },
@@ -84,6 +84,15 @@
       "title": "dasfdsff",
       "postContent": "<p>asdfasdf</p>",
       "id": 11
+    },
+    {
+      "id": 12
+    },
+    {
+      "id": 13
+    },
+    {
+      "id": 14
     }
   ],
   "chat": [
@@ -265,6 +274,29 @@
       "postContent": "ㅁㄴㅁㅁ",
       "stepInfo": "",
       "id": 22
+    },
+    {
+      "mainAddress": "",
+      "title": "fdasf",
+      "category": "관광지 근처",
+      "houseInfo": "아파트",
+      "subAddress": "3213",
+      "stepSelect": "아니오",
+      "link": "",
+      "postContent": "ㄹㅇㅁㄴㄹㅁㅇ",
+      "id": 23
+    }
+  ],
+  "room": [
+    {
+      "title": "제주살이 꿀팁 공유방",
+      "max": "5",
+      "hashTag": [
+        "#제주",
+        "#꿀팁",
+        "#공유"
+      ],
+      "id": 1
     }
   ]
 }

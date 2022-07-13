@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -6,17 +6,14 @@ import Fade from "@mui/material/Fade";
 import Typography from "@mui/material/Typography";
 import styled from "styled-components";
 import cancelIcon from "../assests/css/cancelIcon.png";
-import pracImage from "../assests/css/back.jpeg";
-import mendorongLogo from "../assests/css/mendorongLogo.png";
-import Kakao from "./Kakao";
-import Naver from "./Naver";
-import Google from "./Google";
+import mendorongLogo2 from "../assests/css/mendorongLogo2.png";
+import { useNavigate } from "react-router-dom";
 const style = {
   position: "absolute",
   top: "45%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 500,
+  width: 450,
   bgcolor: "background.paper",
   borderRadius: "10px",
   boxShadow: 24,
@@ -24,13 +21,18 @@ const style = {
   outline: "none",
 };
 
-const LoginModal = () => {
+const HostModal = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const navigate = useNavigate();
+  const handleClose = () => {
+    navigate("/");
+    setOpen(false);
+  };
+
   return (
-    <div style={{width:'25%',textAlign:'center'}}>
-      <div onClick={handleOpen}>로그인</div>
+    <div>
+      <div onClick={handleOpen}>숙소 등록하기</div>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -45,7 +47,6 @@ const LoginModal = () => {
         <Fade in={open}>
           <Box sx={style}>
             <Container id="transition-modal-title" variant="h6" component="h2">
-              <h1>Log in</h1>
               <img
                 className="cancel"
                 src={cancelIcon}
@@ -54,16 +55,28 @@ const LoginModal = () => {
               ></img>
             </Container>
             <Middle id="transition-modal-description" sx={{ mt: 2 }}>
-              <Img src={mendorongLogo} alt="Logo"></Img>
-              {/* <div>멘도롱제주에 어서오세요.</div> */}
+              <Img src={mendorongLogo2} alt="Logo"></Img>
+
+              <h2>숙소는 호스트만 등록할 수 있어요!</h2>
+              <p>멘도롱제주의 호스트가 되어주시겠어요?</p>
             </Middle>
             <Btn>
-              {/* 카카오로그인 버튼 */}
-              <Kakao></Kakao>
-              {/* 네이버로그인 버튼 */}
-              <Naver></Naver>
-              {/* 구글로그인 버튼 */}
-              <Google></Google>
+              <button
+                className="mywrite"
+                onClick={() => {
+                  navigate("/mypage");
+                }}
+              >
+                호스트 되기
+              </button>
+              <button
+                className="home"
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
+                아니요, 그냥 구경만 할래요.
+              </button>
             </Btn>
           </Box>
         </Fade>
@@ -72,16 +85,15 @@ const LoginModal = () => {
   );
 };
 const Container = styled(Typography)`
-  /* border: 1px solid; */
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   h1 {
     font-size: 30px;
     font-weight: 500;
   }
   img {
-    position: absolute;
+    /* position: absolute; */
     right: 10px;
     cursor: pointer;
   }
@@ -90,21 +102,42 @@ const Middle = styled(Typography)`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  div {
+  align-items: center;
+  h2 {
     font-size: 20px;
-    margin: 10px 0;
+    margin: 10px 0 5px 0;
   }
 `;
 const Img = styled.img`
   width: 300px;
   height: 250px;
-  margin: 10px auto;
+  margin: 0 auto;
+  position: relative;
+  bottom: 10px;
 `;
 const Btn = styled.div`
-  width: 80%;
+  width: 100%;
   margin: 20px auto;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  button {
+    height: 60px;
+    border: none;
+    border-radius: 10px;
+    margin-top: 10px;
+    font-size: large;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .mywrite {
+    background-color: black;
+    color: white;
+  }
+  .home {
+    background-color: white;
+    color: black;
+    border: 1px solid #d1d1d6;
+  }
 `;
-export default LoginModal;
+export default HostModal;

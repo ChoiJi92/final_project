@@ -1,9 +1,8 @@
 import React from 'react';
 import GoogleLogin, { GoogleLogout } from 'react-google-login'
 import styled from 'styled-components';
-import google_login from '../assests/css/btn_google_light_normal_ios.png'
-// import { GoogleLogin } from '@react-oauth/google';
-// import { GoogleOAuthProvider } from '@react-oauth/google';
+import google_logo from '../assests/css/구글 로고.png'
+
 
 const Google = () => {
   //  const secretcode='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'
@@ -17,27 +16,31 @@ const Google = () => {
       <Button onClick={()=>{
         window.location.href=GOOGLE_AUTH_URL
       }}>
-        <img src={google_login} alt=''></img>
-      <a href={GOOGLE_AUTH_URL}>구글로 시작하기
+        <img src={google_logo} alt=''></img>
+      <a href={GOOGLE_AUTH_URL}>구글 로그인
     </a>
     </Button>
     );
 };
 
 const Button= styled.div`
-  width: 78%;
-  height: 10%;
+ border: 1px solid;
+  width: 100%;
+  height: 55px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
   background-color: #FFFFFF;
-  /* background-color: #000000; */
+  padding-left:18px;
+  margin-bottom: 10px;
   display: flex;
   flex-direction: row;
   align-items: center;
   cursor: pointer;
   a{
-    margin-left: 50px;
-    font-size: 14px;
+    margin-left: 103px;
+    font-size: 18px;
     text-decoration: none;
-    color: black;
+    color: #828282;
   }
 `
 

@@ -14744,7 +14744,7 @@ socket.io@^1.6.0:
     socket.io-client "1.7.4"
     socket.io-parser "2.3.1"
 
-socket.io@^4.4.1:
+socket.io@^4.4.1, socket.io@^4.5.1:
   version "4.5.1"
   resolved "https://registry.yarnpkg.com/socket.io/-/socket.io-4.5.1.tgz#aa7e73f8a6ce20ee3c54b2446d321bbb6b1a9029"
   integrity sha512-0y9pnIso5a9i+lJmsCdtmTTgJFFSvNQKDnPQRz28mGNnxbmqYg2QPtJTLFxhymFZhAIn50eHAKzJeiNaKr+yUQ==
@@ -14764,11 +14764,6 @@ sockjs@^0.3.24:
     faye-websocket "^0.11.3"
     uuid "^8.3.2"
     websocket-driver "^0.7.4"
-
-soket.io@^0.0.1-security:
-  version "0.0.1-security"
-  resolved "https://registry.yarnpkg.com/soket.io/-/soket.io-0.0.1-security.tgz#0c144d468425a3e89031b8be5e668b00f55fd423"
-  integrity sha512-BMlCJfgZA5gKjP/MG08ydjx5RceBEGO++mv8dGq8RQaFE77Ilk1m8limVGOqLnmXMc8xmwcAqFwp8McpvqgF1g==
 
 sort-keys@^1.0.0, sort-keys@^1.1.2:
   version "1.1.2"
