@@ -63,6 +63,7 @@ const Wrap = styled(DialogContentText)`
     /* object-fit: fill; */
     /* object-fit: cover; */
     overflow: hidden;
+    
   }
 `;
 

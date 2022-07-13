@@ -4,6 +4,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useParams } from "react-router-dom";
+import { faHourglassEmpty } from "@fortawesome/free-solid-svg-icons";
 
 
 const SlideImg = (props) => {
@@ -11,6 +12,7 @@ const SlideImg = (props) => {
     const SampleNextArrow = (props) => {
         const { className, style, onClick } = props;
         return (
+
           <div
           onMouseLeave={mouseLeave} onMouseOver={mouseHover}
             className={className}
@@ -24,7 +26,7 @@ const SlideImg = (props) => {
         const { className, style, onClick } = props;
         return (
           <div
-            onMouseLeave={mouseLeave} onMouseOver={mouseHover}
+            onMouseOver={mouseHover}
             className={className}
             style={{ ...style, display: "block", marginLeft:"25px", zIndex:1 ,opacity:1}}
             onClick={onClick}
@@ -38,6 +40,7 @@ const SlideImg = (props) => {
         slidesToShow: 1,
         slidesToScroll: 1,
         dots:true,
+        arrows:mouseOver,
         appendDots: (dots) => (
           <div
             style={{
@@ -54,6 +57,7 @@ const SlideImg = (props) => {
         ),
         dotsClass: 'dots_custom'
     };
+    
 
     const arrows = {
       nextArrow: <SampleNextArrow/>,
@@ -75,7 +79,11 @@ const SlideImg = (props) => {
         <ImgBox >
           {mouseOver ? (
           <SliderImg {...settings} {...arrows}>
-                {listImg.map((item, idx)=>{return(<img onMouseLeave={mouseLeave} onMouseOver={mouseHover} src={item}/>)})}
+                {listImg.map((item, idx)=>{return(
+                <div onMouseLeave={mouseLeave} onMouseOver={mouseHover}>
+                <img src={item}/>
+                </div>
+                )})}
             </SliderImg>): (
             <SliderImg {...settings}>
                 {listImg.map((item, idx)=>{return(<img onMouseLeave={mouseLeave} onMouseOver={mouseHover} src={item}/>)})}
@@ -85,7 +93,7 @@ const SlideImg = (props) => {
     ) : 
     (
         <DetailImgBox >
-            <SliderImg  {...settings}>
+            <SliderImg {...settings}>
                 {listImg.map((item, idx)=>{return(<img src={item}/>)})}
             </SliderImg>
         </DetailImgBox>)
@@ -99,13 +107,17 @@ export default SlideImg;
 
 
 const ImgBox = styled.div`
-    width: 55%;
-    height: 280px;
+    width: 40%;
+    height: 205px;
     margin-top: 15px;
+    margin-left: 10px;
+    div{
+      border-radius: 30px;
+    }
     img{
-        border-radius: 5px;
-        width: 270px;
-        height: 260px;      
+        border-radius: 30px;
+        width: 100%;
+        height: 190px;      
     }
 `
 
