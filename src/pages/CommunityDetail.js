@@ -6,6 +6,7 @@ import Comment from "../components/Comment";
 import instance from "../shared/axios";
 import "@toast-ui/editor/dist/toastui-editor-viewer.css";
 import { Viewer } from "@toast-ui/react-editor";
+import KakaoShare from "../components/KakaoShare";
 
 const CommunityDetail = () => {
   const params = useParams();
@@ -17,7 +18,8 @@ const CommunityDetail = () => {
   const { data } = useQuery(["detailContent"], () =>
     instance.get(`/post/${params.id}`).then((res) => {
       console.log(res.data);
-      return res.data.post[0];
+      // return res.data.post[0];
+      return res.data;
     })
   );
   const postComment = useMutation(["postComment", comment], () =>
@@ -40,7 +42,8 @@ const CommunityDetail = () => {
                 </div>
               </div>
               <Button>
-                <button>공유</button>
+                {/* <button>공유</button> */}
+                <KakaoShare></KakaoShare>
                 <button>좋아요</button>
                 <button
                   onClick={() => {

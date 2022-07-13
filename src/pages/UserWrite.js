@@ -37,7 +37,7 @@ const UserWrite = () => {
   //     refetchOnWindowFocus:false  // 다른화면 갔다와도 재호출 안되게 함
   //   }
   // );
-  const [complete, setComplete] = useState(false)
+  const [open, setOpen] = useState(false);
   const [title, setTitle] = useState(data?.title);
   const [preview, setPreview] = useState(data?.thumbnailURL);
   const [thumbnail, setThumbnail] = useState();
@@ -140,7 +140,7 @@ const UserWrite = () => {
     console.log(address);
     console.log("저장");
     console.log(imageKey.filter((v) => !content.includes(v)));
-    if (thumbnail.length === 0) {
+    if (!thumbnail) {
       window.alert("썸네일 사진을 추가해 주세요 :)");
     } else if (!title) {
       window.alert("제목을 입력해 주세요 :)");
@@ -172,11 +172,12 @@ const UserWrite = () => {
         "thumbnailKey",
         thumbnail.length !== 0 ? thumbnailKey : ""
       );
-      // if(!params.id){
-      // createPost.mutate(formData);
-      // }else{
-      //   updataPost.mutate(formData)
-      // }
+      if(!params.id){
+      createPost.mutate(formData);
+        setOpen(true)
+      }else{
+        updataPost.mutate(formData)
+      }
     }
   };
 
@@ -344,6 +345,9 @@ const UserWrite = () => {
           thumbnail={thumbnail}
           reset={reset}
           getValues={getValues}
+          open={open}
+          setOpen={setOpen}
+          isHost={false}
         ></WriteFooter>
       </Form>
     </Wrap>

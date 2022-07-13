@@ -5,6 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Divider from '@mui/material/Divider';
 import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
+import HostModal from './HostModal';
 
 const UserMenu = ({userImage,nickName}) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -26,8 +27,9 @@ const UserMenu = ({userImage,nickName}) => {
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
       >
+         <div style={{color:'black'}}>{nickName} 님</div>
          <img src={userImage} alt=""></img>
-          <div style={{color:'black'}}>{nickName} 님</div>
+        
       </Button>
       <Menu
         id="basic-menu"
@@ -46,11 +48,9 @@ const UserMenu = ({userImage,nickName}) => {
         style={{ display:'flex',justifyContent:'center' ,color:'white',border:'none',borderRadius:'5px',backgroundColor:'#9090A0'}}>글쓰러 가기</MenuItem>
         </Write>
         
-        <MenuItem onClick={()=>{
-          navigate('/hostwrite')
-          handleClose()}}>숙소 호스트 되기</MenuItem>
+        <MenuItem ><HostModal></HostModal></MenuItem>
         <Divider />
-        <MenuItem onClick={handleClose}>계정</MenuItem>
+        <MenuItem onClick={handleClose}>마이페이지</MenuItem>
         <MenuItem onClick={()=>{
             localStorage.clear()
             handleClose()

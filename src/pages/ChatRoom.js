@@ -6,43 +6,94 @@ import RoomModal from "../components/RoomModal";
 import io from "socket.io-client";
 import instance from "../shared/axios";
 
-const socket = io()
+// const socketUrl = 'http://gudetama.shop'
+// const socketUrl = 'http://localhost:3000'
+// const socket = io('http://gudetama.shop')
+// const socket = io(socketUrl, {
+//   cors: {
+//       origin: socketUrl,
+//       credentials: true,
+//   },
+// });
 
 const ChatRoom = () => {
-  const [isConnected, setIsConnected] = useState(socket.connected);
-  const [message, setMessage] = useState([])
-  const [room, setRoom] = useState()
+  // const [isConnected, setIsConnected] = useState(socket.connected);
+  const [message, setMessage] = useState([]);
+  const [room, setRoom] = useState();
   // const socket = io.connect()  // backurl 넣기
-  const messageRef = useRef()
-  const titleRef = useRef()
-  useEffect(()=>{
-    socket.on('connect',()=>{
-      setIsConnected(true)
-    })
+  const messageRef = useRef();
+  const titleRef = useRef();
+  // const url = "http://gudetama.shop:3000/";
+  const url = "https://www.mendorong-jeju.com";
+  // const socket = io('ws//gudetama.shop/',{transports:['websocket']});
+  // const socket = io("http://gudetama.shop:3000",{transports:['polling','websocket']});
+     const  socket= io(url, {
+      cors: {
+          origin: url,
+          credentials: true,
+      },
+      // transports:['websocket']
+    });
+  console.log(socket)
+  // const socket =  io.connect(url)
 
-    socket.on('disconnect',()=>{
-      setIsConnected(false)
-    })
-    socket.on('receive message')
+  // let socket = io.connect(url,{transports:['websocket']});
+  // socket.connect()
+  // socket.current.emit('join-chatroom', 1, '최지')
+  // console.log(socket);
+  // socket.emit('join-room', 1, '최지')
+  // socket.on("receive message", (message) => {
+  //   setMessage([...message, message]);
+  //   console.log(message);
+  // });
+  useEffect(() => {
+    //   window.addEventListener("beforeunload", (e) => {
+    //     e.preventDefault();
+    //     console.log(e)
+    //     e.returnValue = '';
+    // });
+    //   socket.current = io(url, {
+    //   cors: {
+    //       origin: url,
+    //       credentials: true,
+    //   },
+    // });
+
+    // socket = io(url);
+    //  socket= io.connect(url)
+    // // socket.current.emit('join-chatroom', 1, '최지')
+    // console.log(socket)
+    // socket.on("receive message",(message) =>{
+    //   setMessage([...message,message])
+    //   console.log(message)
+    // })
+    // socket.on('connect',()=>{
+    //   setIsConnected(true)
+    // })
+
+    // socket.on('disconnect',()=>{
+    //   setIsConnected(false)
+    // })
     return () => {
-      socket.off('connect');
-      socket.off('disconnect');
+      socket.disconnect()
+      // socket.off('connect');
+      // socket.off('disconnect');
     };
-  },[])
-  const joinRoom = () =>{
-    const roomName = titleRef.current.innerText
-    socket.emit('enter_room',roomName)
-    setRoom(roomName)
-  }
-  const sendMessage = ()=>{
-    socket.emit('chat_message',messageRef.current.value, room)
-    messageRef.current.value=""
-  }
+  }, [message]);
+  const joinRoom = () => {
+    const roomName = titleRef.current.innerText;
+    socket.emit("join-chatroom", 1, "최지");
+    setRoom(roomName);
+  };
+  const sendMessage = () => {
+    socket.current.emit("chat_message", messageRef.current.value, room);
+    messageRef.current.value = "";
+  };
   return (
     <Container>
       <Wrap>
         <Header>
-        <Select
+          <Select
             // onChange={handleChange}
             defaultValue="최신순"
             style={{
@@ -58,7 +109,7 @@ const ChatRoom = () => {
             <MenuItem value="최신순">최신순</MenuItem>
             <MenuItem value="인기순">인기순</MenuItem>
           </Select>
-          <RoomModal width={'50%'}></RoomModal>
+          <RoomModal width={"50%"}></RoomModal>
         </Header>
         <ChatWrap>
           <ChatList>
@@ -67,7 +118,7 @@ const ChatRoom = () => {
               <p>참여자 00명</p>
             </div>
             <div>
-              <h3>서귀포 한달 살기 중, 밥친구 구해요.</h3>
+              <h3>서귀포 한달 살기 중, 친구 구해요.</h3>
               <p>참여자 00명</p>
             </div>
           </ChatList>
@@ -77,21 +128,25 @@ const ChatRoom = () => {
               <h2>{room}</h2>
             </div>
             <div className="messageWrap">
-            <div className="messageList">
+              <div className="messageList">
                 <img alt="프로필"></img>
                 <div className="message">
-                    <p>사용자1</p>
-                    <div>블라블라블라</div>
+                  <p>사용자1</p>
+                  <div>블라블라블라</div>
                 </div>
-            </div>
+              </div>
             </div>
             <div className="chat">
               <img alt="프로필"></img>
               <div className="chatInput">
-                <input placeholder="입력해주세요!"ref={messageRef}></input>
-                <button onClick={()=>{
-                sendMessage()
-                }}>입력</button>
+                <input placeholder="입력해주세요!" ref={messageRef}></input>
+                <button
+                  onClick={() => {
+                    sendMessage();
+                  }}
+                >
+                  입력
+                </button>
               </div>
             </div>
           </Room>
@@ -139,12 +194,13 @@ const ChatList = styled.div`
   border-radius: 10px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   div {
     padding: 20px;
     border-bottom: 1px solid;
     cursor: pointer;
-    :hover{
-        background-color: #d1d1d6;
+    :hover {
+      background-color: #d1d1d6;
     }
   }
 `;
@@ -155,53 +211,53 @@ const Room = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  .title{
+  .title {
     padding: 20px;
     border-bottom: 1px solid;
-    p{
-        margin-bottom: 5px;
-        color: gray;
+    p {
+      margin-bottom: 5px;
+      color: gray;
     }
   }
-  .messageWrap{
+  .messageWrap {
     height: 100%;
     padding: 10px;
   }
-  .messageList{
+  .messageList {
     display: flex;
-    img{
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        border: 1px solid;
-        margin-right: 8px;
+    img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid;
+      margin-right: 8px;
     }
   }
-  .message{
-    p{
-        margin-bottom: 5px;
+  .message {
+    p {
+      margin-bottom: 5px;
     }
-    div{
-        border: 1px solid;
-        border-radius: 5px;
-        padding: 10px;
+    div {
+      border: 1px solid;
+      border-radius: 5px;
+      padding: 10px;
     }
   }
-  .chat{
+  .chat {
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding:10px;
+    padding: 10px;
     border-top: 1px solid;
-    img{
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        border: 1px solid;
-        margin-right: 8px;
+    img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid;
+      margin-right: 8px;
     }
   }
-  .chatInput{
+  .chatInput {
     display: flex;
     justify-content: space-between;
     width: 85%;
@@ -209,15 +265,15 @@ const Room = styled.div`
     border-radius: 5px;
     height: 40px;
     padding: 0 10px;
-    input{
+    input {
       width: 90%;
-        border: none;
-        outline: none;
+      border: none;
+      outline: none;
     }
-    button{
-        border: none;
-        background-color:transparent;
-        cursor: pointer;
+    button {
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
     }
   }
 `;

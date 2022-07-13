@@ -9,6 +9,7 @@ import instance from "../shared/axios";
 import searchIconBlack from "../assests/css/searchIconBlack.png";
 import { Link } from "react-router-dom";
 import RoomModal from "../components/RoomModal";
+import KakaoShare from "../components/KakaoShare";
 
 const ChatList = () => {
   const [room, setRoom] = useState();
@@ -78,7 +79,7 @@ const ChatList = () => {
         </div>
         {data.map((v) => (
           <Card key={v.id}>
-            <h3>{v.roomName}</h3>
+            <h3>{v.title}</h3>
             <div className="avatar">
               <div className="host">
             <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" sx={{ width: 40, height: 40 }} />
