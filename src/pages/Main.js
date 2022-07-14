@@ -7,6 +7,8 @@ import north from "../assests/css/북쪽.png";
 import east from "../assests/css/동쪽.png";
 import west from "../assests/css/서쪽.png";
 import south from "../assests/css/남쪽.png";
+import { ReactComponent as Vector } from "../assests/css/Vector.svg";
+import { Fade } from "react-reveal";
 const Main = () => {
   return (
     <Container>
@@ -15,10 +17,11 @@ const Main = () => {
           width: "80%",
           display: "flex",
           justifyContent: "center",
+          alignItems: "center",
           margin: "70px auto",
         }}
       >
-        <img  src={main} alt="메인"></img>
+        <img className="mainImage" src={main} alt="메인"></img>
       </div>
       <div>
         <CategorySlide></CategorySlide>
@@ -27,13 +30,17 @@ const Main = () => {
         <h2 style={{ marginLeft: "160px" }}>Find accommodation by region</h2>
         <div className="region">
           <img className="west" src={west} alt="서쪽"></img>
+
+          {/* <Vector2 viewBox="0 0 688 364"/> */}
           <img className="north" src={north} alt="북쪽"></img>
+
           <img className="east" src={east} alt="동쪽"></img>
+
           <img className="south" src={south} alt="남쪽"></img>
         </div>
       </div>
       <div>
-        <h2 style={{ marginLeft: "160px", marginBottom: "20px" }}>
+        <h2 style={{ marginLeft: "160px", marginBottom: "50px" }}>
           Popular openchat
         </h2>
         <OpenChatSlide rtl={false} />
@@ -48,8 +55,12 @@ const Container = styled.div`
   /* min-height: 100vh; */
   width: 100%;
   padding-bottom: 80px;
-  h2{
+  .mainImage {
+    width: 100%;
+  }
+  h2 {
     font-size: 30px;
+    margin-top: 80px;
   }
   .region {
     width: 80%;
@@ -61,12 +72,12 @@ const Container = styled.div`
     align-items: center; */
     position: relative;
     /* border: 1px solid; */
-    img{
+    img {
       /* width: calc(70%-60px); */
     }
     .north {
       position: absolute;
-      top: 60px;
+      top: 7%;
       left: 18%;
     }
     .east {
@@ -77,7 +88,7 @@ const Container = styled.div`
     .west {
       position: absolute;
       left: 3%;
-      top:33%
+      top: 33%;
     }
     .south {
       position: absolute;

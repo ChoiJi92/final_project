@@ -13,7 +13,7 @@ import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
 import '@toast-ui/editor/dist/i18n/ko-kr'
 import instance from "../shared/axios";
 
-const PostEditer = ({setContent,setImageKey}) => {
+const PostEditer = ({setContent,setImageKey,content}) => {
   // const [,setContent] = useRecoilState(contentState)
     const editorRef = useRef();
     const onChange = ()=>{
@@ -21,14 +21,14 @@ const PostEditer = ({setContent,setImageKey}) => {
         // console.log(editorRef.current?.getInstance().getHTML())
     }
       // Toast-UI Editor 에 HTML 표시
-  // useEffect(() => {
-  //   // 1. DB에서 가져온 HTML이라고 가정
-  //   const htmlString = '<p>테스트입니다!!!<img src="blob:http://localhost:3000/0c189732-bee7-4488-8b92-1be8695a8610" alt="이미지" contenteditable="false"><img class="ProseMirror-separator" alt=""><br class="ProseMirror-trailingBreak"></p>';
+  useEffect(() => {
+    // 1. DB에서 가져온 HTML이라고 가정
+    const htmlString = content;
 
-  //   // 2. Editor DOM 내용에 HTML 주입
-  //   editorRef.current?.getInstance().setHTML(htmlString);
-  //   // editorRef.current?.getInstance().setHTML(data[2]?.content);
-  // }, []);
+    // 2. Editor DOM 내용에 HTML 주입
+    editorRef.current?.getInstance().setHTML(htmlString);
+    // editorRef.current?.getInstance().setHTML(data[2]?.content);
+  }, []);
   return (
     <Wrap>
     <Editor
@@ -46,7 +46,7 @@ const PostEditer = ({setContent,setImageKey}) => {
           ['heading', 'bold', 'italic', 'strike'],
           ['hr', 'quote'],
           ['ul', 'ol', 'task', 'indent', 'outdent'],
-          ['table', 'image', 'link'],
+          ['image'],
         ]}
         language="ko-KR" // 도구설명 한글
         hooks={{
@@ -81,6 +81,9 @@ const Wrap = styled.div`
     flex-direction: column;
     justify-content: center;
     margin-bottom: 50px;
+    .toastui-editor-contents p {
+  font-size: 16px;
+}
 `
 // const Button = styled.button`
 //     margin: 30px auto;

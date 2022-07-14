@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import styled from "styled-components";
 import cancelIcon from "../assests/css/cancelIcon.png";
 import mendorongLogo2 from "../assests/css/mendorongLogo2.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 const style = {
   position: "absolute",
   top: "45%",
@@ -24,6 +24,7 @@ const style = {
 const CompleteModal = ({ open, setOpen, isHost }) => {
   // const [open, setOpen] = useState(false);
   // const handleOpen = () => setOpen(true);
+  const params = useParams()
   const navigate = useNavigate();
   const handleClose = () => {
     navigate("/");
@@ -32,7 +33,7 @@ const CompleteModal = ({ open, setOpen, isHost }) => {
 
   return (
     <div>
-      <button>완료</button>
+      <button>{params.id ? '수정' : '완료'}</button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -47,8 +48,6 @@ const CompleteModal = ({ open, setOpen, isHost }) => {
         <Fade in={open}>
           <Box sx={style}>
             <Container id="transition-modal-title" variant="h6" component="h2">
-              {/* <h1>Log in</h1> */}
-
               <img
                 className="cancel"
                 src={cancelIcon}
@@ -56,7 +55,7 @@ const CompleteModal = ({ open, setOpen, isHost }) => {
                 onClick={handleClose}
               ></img>
             </Container>
-            <Middle id="transition-modal-description" sx={{ mt: 2 }}>
+            <Middle id="transition-modal-description" sx={{ mt: 2 }} component="div">
               <Img src={mendorongLogo2} alt="Logo"></Img>
               {isHost ? (
                 <>
@@ -109,10 +108,6 @@ const Container = styled(Typography)`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  h1 {
-    font-size: 30px;
-    font-weight: 500;
-  }
   img {
     /* position: absolute; */
     right: 10px;

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useMutation, useQuery } from "react-query";
+import React, { useRef, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Comment from "../components/Comment";
@@ -7,25 +7,81 @@ import instance from "../shared/axios";
 import "@toast-ui/editor/dist/toastui-editor-viewer.css";
 import { Viewer } from "@toast-ui/react-editor";
 import KakaoShare from "../components/KakaoShare";
+import shareIcon from "../assests/css/shareIcon.png";
 
 const CommunityDetail = () => {
+  const queryClient = useQueryClient();
   const params = useParams();
+  console.log(params.id);
   const navigate = useNavigate();
-  const [comment, setComment] = useState();
-  const commentChange = (e) => {
-    setComment(e.target.value);
+  // const [comment, setComment] = useState();
+  const commentRef = useRef();
+  // const commentChange = (e) => {
+  //   setComment(e.target.value);
+  // };
+  const userId = localStorage.getItem("userId");
+  const userImage = localStorage.getItem("userImage");
+  const { data } = useQuery(
+    ["detailContent"],
+    () =>
+      instance.get(`/post/${params.id}`).then((res) => {
+        console.log(res.data);
+        // return res.data.post[0];
+        return res.data.post[0];
+      }),
+    {
+      // retry: false, // 재호출 안하기
+      refetchOnWindowFocus: false, // 다른화면 갔다와도 재호출 안되게 함
+    }
+  );
+  // 코멘트 로드
+  const loadComment = useQuery(
+    ["loadComment"],
+    () =>
+      instance.get(`/post/${params.id}/comment`).then((res) => {
+        console.log(res.data);
+        // return res.data.post[0];
+        return res.data;
+      }),
+    {
+      // retry: false, // 재호출 안하기
+      refetchOnWindowFocus: false, // 다른화면 갔다와도 재호출 안되게 함
+    }
+  );
+  const commentData = loadComment.data
+  console.log(commentData)
+  // 코멘트 생성
+  const createComment = useMutation(
+    ["createComment"],
+    (comment) =>
+      instance
+        .post(`/post/${params.id}`,{comment})
+        .then((res) => console.log(res.data)),
+    {
+      onSuccess: () => {
+        // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
+        queryClient.invalidateQueries("detailContent");
+      },
+    }
+  );
+  const onKeyPress = (e) => {
+    if (e.key === "Enter") {
+      console.log(commentRef.current.value)
+      createComment.mutate(commentRef.current.value);
+      commentRef.current.value = "";
+    }
   };
-  const { data } = useQuery(["detailContent"], () =>
-    instance.get(`/post/${params.id}`).then((res) => {
-      console.log(res.data);
-      // return res.data.post[0];
-      return res.data;
-    })
+  const deleteContent = useMutation(
+    ["deleteContent"],
+    (postId) =>
+      instance.delete(`/post/${postId}`).then((res) => console.log(res.data)),
+    {
+      onSuccess: () => {
+        // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
+        queryClient.invalidateQueries("content");
+      },
+    }
   );
-  const postComment = useMutation(["postComment", comment], () =>
-    instance.post(`/post/${params.id}`).then((res) => console.log(res.data))
-  );
-  // const postComment
   return (
     <Container>
       <Image image={data.thumbnailURL}></Image>
@@ -35,23 +91,37 @@ const CommunityDetail = () => {
             <h1>{data.title}</h1>
             <User>
               <div className="profileImage">
-                <img alt="프로필"></img>
+                <img src={data.userImage} alt="프로필"></img>
                 <div className="profile">
-                  <div className="nickname">글쓴이 이름</div>
+                  <div className="nickname">{data.nickname}</div>
                   <div className="time">2시간 전</div>
                 </div>
               </div>
               <Button>
-                {/* <button>공유</button> */}
-                <KakaoShare></KakaoShare>
-                <button>좋아요</button>
-                <button
-                  onClick={() => {
-                    navigate(`/userwrite/${params.id}`);
-                  }}
-                >
-                  수정
-                </button>
+                {userId !== data.userId ? (
+                  <>
+                    <KakaoShare></KakaoShare>
+                    <button>좋아요</button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => {
+                        navigate(`/userwrite/${params.id}`);
+                      }}
+                    >
+                      수정
+                    </button>
+                    <button
+                      onClick={() => {
+                        deleteContent.mutate(data.postId);
+                        navigate("/community");
+                      }}
+                    >
+                      삭제
+                    </button>
+                  </>
+                )}
               </Button>
             </User>
           </div>
@@ -66,24 +136,29 @@ const CommunityDetail = () => {
         <div></div>
       </WrapBottom>
       <Count>
-        <p>좋아요 00개</p>
-        <p>스크랩 00개</p>
-        <p>댓글 00개</p>
+        <div className="likeShare">
+          <div>
+            <p>좋아요 00개</p>
+            <p>스크랩 00개</p>
+            <p>댓글 00개</p>
+          </div>
+          <img src={shareIcon} alt="공유하기" />
+        </div>
       </Count>
       <CommentWrap>
         <h3>댓글 00</h3>
         <div className="comment">
-          <img alt="기본이미지"></img>
+          <img src={userImage} alt="기본이미지"></img>
           <div className="commentInput">
             <input
-              onChange={commentChange}
-              value={comment || ""}
+              ref={commentRef}
               placeholder="칭찬과 격려의 댓글은 작성자에게 큰 힘이 됩니다."
+              onKeyPress={onKeyPress}
             ></input>
             <button
               onClick={() => {
-                postComment.mutate();
-                setComment("");
+                createComment.mutate(commentRef.current.value);
+                commentRef.current.value = "";
               }}
             >
               입력
@@ -103,10 +178,11 @@ const Container = styled.div`
 `;
 const Image = styled.div`
   border: 1px solid;
+  border-radius: 20px;
   width: 80%;
   height: 550px;
   margin: 40px 0;
-  background: url(${(props)=>props.image}) no-repeat;
+  background: url(${(props) => props.image}) no-repeat;
   background-size: cover;
 `;
 const Wrap = styled.div`
@@ -123,7 +199,6 @@ const Wrap = styled.div`
   }
 `;
 const Content = styled.div`
-  border: 1px solid;
   width: 70%;
   height: 800px;
   h1 {
@@ -131,7 +206,9 @@ const Content = styled.div`
   }
   .post {
     margin-top: 20px;
-    border: 1px solid;
+    .toastui-editor-contents p {
+      font-size: 16px;
+    }
   }
 `;
 const User = styled.div`
@@ -173,6 +250,7 @@ const Button = styled.div`
     border: none;
     margin-left: 10px;
     font-size: 15px;
+    cursor: pointer;
   }
 `;
 const WrapBottom = styled.div`
@@ -189,12 +267,24 @@ const WrapBottom = styled.div`
   }
 `;
 const Count = styled.div`
-  display: flex;
-  flex-direction: row;
   width: 80%;
   margin-bottom: 50px;
+  .likeShare {
+    width: 61%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  div {
+    display: flex;
+    flex-direction: row;
+  }
   p {
     margin-right: 20px;
+  }
+  img {
+    cursor: pointer;
   }
 `;
 const CommentWrap = styled.div`

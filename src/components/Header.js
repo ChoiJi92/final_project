@@ -127,7 +127,7 @@ const Center = styled.div`
     height: 50px;
     border-radius: 10px;
     background-color: #f2f2f7;
-    border: 1px solid;
+    /* border: 1px solid; */
     display: flex;
     flex-direction: row;
     justify-content: space-between;

@@ -22,7 +22,7 @@
   position: relative; */
   overflow: hidden;
 }
-.image {
+.backimage {
   height: 70%;
   background-image: url(./back.jpeg);
   background-size: cover;

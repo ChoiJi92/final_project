@@ -45,7 +45,7 @@ const LoginModal = () => {
         <Fade in={open}>
           <Box sx={style}>
             <Container id="transition-modal-title" variant="h6" component="h2">
-              <h1>Log in</h1>
+              <div>Log in</div>
               <img
                 className="cancel"
                 src={cancelIcon}
@@ -76,8 +76,8 @@ const Container = styled(Typography)`
   display: flex;
   justify-content: center;
   align-items: center;
-  h1 {
-    font-size: 30px;
+  div {
+    font-size: 25px;
     font-weight: 500;
   }
   img {

@@ -64,6 +64,49 @@ const OpenChatSlide = ({rtl}) => {
     rtl:rtl,
     arrows: false,
     variableWidth: true,
+    responsive: [ // 반응형 웹 구현 옵션
+		{  
+			breakpoint: 960, //화면 사이즈 960px일 때
+			settings: {
+				//위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
+        infinite: true,
+        speed: 500,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        // dots: true,
+        // arrows: mouseOver,
+        autoplay: true,
+        speed: 5000,
+        autoplaySpeed: 100,
+        cssEase: "linear",
+        pauseOnHover:true,
+        rtl:rtl,
+        arrows: false,
+        variableWidth: true,
+
+			} 
+		},
+		{ 
+			breakpoint: 768, //화면 사이즈 768px일 때
+			settings: {	
+				//위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
+        infinite: true,
+        speed: 500,
+        slidesToShow: 2,
+        slidesToScroll: 1,
+        // dots: true,
+        // arrows: mouseOver,
+        autoplay: true,
+        speed: 5000,
+        autoplaySpeed: 100,
+        cssEase: "linear",
+        pauseOnHover:true,
+        rtl:rtl,
+        arrows: false,
+        variableWidth: true,
+			} 
+		}
+	],
     appendDots: (dots) => (
       <div
         style={{
@@ -164,7 +207,7 @@ const ImgBox = styled.div`
 `;
 const SliderImg = styled(Slider)`
   width: 100%;
-  /* height: 400px; */
+  height: 100px;
   .dots_custom {
     /* display: inline-block; */
     /* vertical-align: middle; */

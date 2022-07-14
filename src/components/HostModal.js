@@ -26,7 +26,7 @@ const HostModal = () => {
   const handleOpen = () => setOpen(true);
   const navigate = useNavigate();
   const handleClose = () => {
-    navigate("/");
+    // navigate("/");
     setOpen(false);
   };
 
@@ -54,7 +54,7 @@ const HostModal = () => {
                 onClick={handleClose}
               ></img>
             </Container>
-            <Middle id="transition-modal-description" sx={{ mt: 2 }}>
+            <Middle id="transition-modal-description" sx={{ mt: 2 }} component="div">
               <Img src={mendorongLogo2} alt="Logo"></Img>
 
               <h2>숙소는 호스트만 등록할 수 있어요!</h2>
@@ -65,6 +65,7 @@ const HostModal = () => {
                 className="mywrite"
                 onClick={() => {
                   navigate("/mypage");
+                  setOpen(false);
                 }}
               >
                 호스트 되기
@@ -72,7 +73,7 @@ const HostModal = () => {
               <button
                 className="home"
                 onClick={() => {
-                  navigate("/");
+                  setOpen(false);
                 }}
               >
                 아니요, 그냥 구경만 할래요.
