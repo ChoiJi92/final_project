@@ -24,13 +24,14 @@ jobs: # Job 설정
             ${{ runner.OS }}-build-
             ${{ runner.OS }}-
 
-- name: Generate Environment Variables File for Production
+      - name: Generate Environment Variables File for Production
         run: |
-          echo "REACT_APP_GOOGLE_CLIENT_ID=$REACT_APP_GOOGLE_CLIENT_ID" >> .env.production
-          echo "REACT_APP_KAKAO_CLIENT_ID=$REACT_APP_KAKAO_CLIENT_ID" >> .env.production
-          echo "REACT_APP_NAVER_CLIENT_ID=$REACT_APP_NAVER_CLIENT_ID" >> .env.production
-          echo "REACT_APP_KAKAO_KEY=$REACT_APP_KAKAO_KEY" >> .env.production
-          
+          echo "REACT_APP_GOOGLE_CLIENT_ID=$REACT_APP_GOOGLE_CLIENT_ID" >> .env
+          echo "REACT_APP_KAKAO_CLIENT_ID=$REACT_APP_KAKAO_CLIENT_ID" >> .env
+          echo "REACT_APP_NAVER_CLIENT_ID=$REACT_APP_NAVER_CLIENT_ID" >> .env
+          echo "REACT_APP_KAKAO_KEY=$REACT_APP_KAKAO_KEY" >> .env
+          cat .env
+
         env:
           REACT_APP_GOOGLE_CLIENT_ID: ${{ secrets.REACT_APP_GOOGLE_CLIENT_ID }}
           REACT_APP_KAKAO_CLIENT_ID: ${{ secrets.REACT_APP_KAKAO_CLIENT_ID }}
