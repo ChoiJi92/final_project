@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { FaTimes } from "react-icons/fa";
+import { FaTimes,FaTimesCircle } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
@@ -26,6 +26,7 @@ const HostWrite = () => {
   //     const { data } = await axios.get(`http://localhost:5001/testList/${id}`)
   //     return data
   // }
+  
   const { data } = useQuery(
     ["hostWrite", paramsId],
 
@@ -104,8 +105,8 @@ const HostWrite = () => {
   // });
 
   const postMutation = useMutation(
-    (hostData) => {
-      return axios.post("http://localhost:5001/testList", hostData);
+    (hostData,address) => {
+      return axios.post("http://localhost:5001/testList", hostData,address);
     },
     {
       onSuccess: () => {
@@ -148,7 +149,7 @@ const HostWrite = () => {
       // formData.append("title",data.title)
       // formData.append("images",multiImgs)
       console.log("hello", data);
-      postMutation.mutate(data);
+      postMutation.mutate(data,address);
       setTestModal(true);
       setOpen(true);
     }
@@ -218,7 +219,7 @@ const HostWrite = () => {
                 <SortableItem key={`item-${v}`}>
                   <List>
                     <Img src={v} alt="이미지" />
-                    <DeleteIcon onClick={() => deleteImage(index)} />
+                    <DeleteIcon id="deleteIcon" onClick={() => deleteImage(index)} />
                   </List>
                 </SortableItem>
               ))}
@@ -467,6 +468,7 @@ const ImgBox = styled.div`
   .list {
     display: flex;
     flex-wrap: wrap;
+    
   }
 `;
 const List = styled.div`
@@ -474,6 +476,14 @@ const List = styled.div`
   flex-direction: row;
   cursor: grab;
   position: relative;
+  :hover{
+    img{
+      opacity: 0.5;
+    }
+    #deleteIcon{
+      display: block;
+    }
+  }
 `;
 const Img = styled.img`
   width: 180px;
@@ -484,18 +494,26 @@ const Img = styled.img`
   /* position: relative; */
   user-select: none;
   pointer-events: none;
+  
+  
 `;
-const DeleteIcon = styled(MdCancel)`
-  font-size: 25px;
-  opacity: 0.9;
-  /* color: #fff; */
-  color: black;
+const DeleteIcon = styled(FaTimesCircle)`
+  font-size: 20px;
+  background-color: #fff;
+  border: none;
+  border-radius: 50%;
+  color: #bdc3c7;
+  z-index: 2;
+  opacity: 1;
+  /* color: black; */
   cursor: pointer;
   position: absolute;
   /* left: -15px; */
-  right: -5px;
-  bottom: 165px;
+  right: 5px;
+  bottom: 150px;
   /* top:0px; */
+  display: none;
+  
 `;
 
 const InfoBox = styled.div`

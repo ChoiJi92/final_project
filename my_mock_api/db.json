@@ -285,6 +285,28 @@
       "link": "",
       "postContent": "ㄹㅇㅁㄴㄹㅁㅇ",
       "id": 23
+    },
+    {
+      "title": "ads",
+      "category": "내륙",
+      "houseInfo": "아파트",
+      "mainAddress": "",
+      "subAddress": "111",
+      "stepSelect": "아니오",
+      "link": "ㅁㅁㅁㅁ",
+      "postContent": "ㅊㅊㅊㅊㅊ",
+      "id": 24
+    },
+    {
+      "title": "fffff",
+      "category": "내륙",
+      "houseInfo": "게스트용 별채",
+      "mainAddress": "",
+      "subAddress": "3333333",
+      "stepSelect": "아니오",
+      "link": "ssssss",
+      "postContent": "hhhhhh",
+      "id": 25
     }
   ],
   "room": [
