@@ -27,14 +27,14 @@ const ChatRoom = () => {
   const url = "https://www.mendorong-jeju.com";
   // const socket = io('ws//gudetama.shop/',{transports:['websocket']});
   // const socket = io("http://gudetama.shop:3000",{transports:['polling','websocket']});
-     const  socket= io(url, {
-      cors: {
-          origin: url,
-          credentials: true,
-      },
-      // transports:['websocket']
-    });
-  console.log(socket)
+  const socket= io(url)
+  // const socket = io(url, {
+  //   cors: {
+  //     origin: url,
+  //     credentials: true,
+  //   },
+  // });
+  console.log(socket);
   // const socket =  io.connect(url)
 
   // let socket = io.connect(url,{transports:['websocket']});
@@ -75,7 +75,7 @@ const ChatRoom = () => {
     //   setIsConnected(false)
     // })
     return () => {
-      socket.disconnect()
+      socket.disconnect();
       // socket.off('connect');
       // socket.off('disconnect');
     };

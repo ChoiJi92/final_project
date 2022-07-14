@@ -38,7 +38,6 @@ const AddressModal = ({setAddress}) => {
             }
             // fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
             handleClose()
-            console.log(fullAddress)
             setAddress(fullAddress)
             
         }
@@ -61,12 +60,12 @@ const AddressModal = ({setAddress}) => {
           <Fade in={open}>
             <Box sx={style}>
               <Container id="transition-modal-title" variant="h6" component="h2">
-                <h1>
+                <div>
                 주소 찾기
-                </h1>
+                </div>
                 <img className="cancel" src={cancelIcon} alt="닫기" onClick={handleClose}></img>
               </Container>
-              <Middle id="transition-modal-description" sx={{ mt: 2 }}>
+              <Middle id="transition-modal-description" sx={{ mt: 2 }} component="div">
               <DaumPostCode style={{height:'90%'}} onComplete={handleComplete} className="post-code" />
               </Middle>
             </Box>
@@ -79,8 +78,8 @@ const Container = styled(Typography)`
     display: flex;
     justify-content: center;
     align-items: center;
-    h1{
-        font-size: 30px;
+    div{
+        font-size: 25px;
         font-weight: 400;
     }
     img{

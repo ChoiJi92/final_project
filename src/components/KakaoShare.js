@@ -67,10 +67,10 @@ const KakaoShare= () => {
   const Wrap = styled.div`
     /* border: 1px solid; */
     img{
-        border-radius: 0;
+        border-radius: 50%;
         border: none;
-        width: 40px;
-        height: 40px;
+        width: 48px;
+        height: 48px;
         cursor: pointer;
     }
   

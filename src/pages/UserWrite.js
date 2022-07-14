@@ -1,26 +1,29 @@
-import React, { useState, useCallback, useEffect,useContext } from "react";
+import React, { useState, useCallback, useEffect, useContext } from "react";
 import styled from "styled-components";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Dropzone from "react-dropzone";
 import PostEditer from "../components/PostEditer";
-import { Navigate, useNavigate, useParams, UNSAFE_NavigationContext as NavigationContext } from "react-router-dom";
+import {
+  Navigate,
+  useNavigate,
+  useParams,
+  UNSAFE_NavigationContext as NavigationContext,
+} from "react-router-dom";
 import AddressModal from "../components/AddressModal";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import instance from "../shared/axios";
 import WriteFooter from "../components/WriteFooter";
-import { createBrowserHistory } from "history";
 
 const UserWrite = () => {
-  const history = createBrowserHistory()
   const params = useParams();
   const { data } = useQuery(
-    ["detailContent"],
+    ["editContent"],
     () =>
       instance.get(`/post/${params.id}`).then((res) => {
         console.log(res.data);
-        return res.data;
+        return res.data.post[0];
       }),
     {
       enabled: !!params.id, // params.id가 있을때만 query실행
@@ -28,22 +31,14 @@ const UserWrite = () => {
       refetchOnWindowFocus: false, // 다른화면 갔다와도 재호출 안되게 함
     }
   );
-  //   const { data } = useQuery(["content"], () =>
-  //   instance.get("/post").then((res) => {
-  //     console.log(res.data.allPost)
-  //     res.data.allPost.filter((v) => params.id === v.postId)
-  //     return res.data.allPost
-  //   }),{
-  //     refetchOnWindowFocus:false  // 다른화면 갔다와도 재호출 안되게 함
-  //   }
-  // );
+
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState(data?.title);
   const [preview, setPreview] = useState(data?.thumbnailURL);
   const [thumbnail, setThumbnail] = useState();
   const [thumbnailKey, setThumbnailKey] = useState(data?.thumbnailKey);
   const [modalOpen, setModalOpen] = useState(false);
-  const [address, setAddress] = useState();
+  const [address, setAddress] = useState(data?.mainAddress);
   // const address = useRecoilValue(addressState);
   const [content, setContent] = useState();
   const [imageKey, setImageKey] = useState([]);
@@ -53,23 +48,9 @@ const UserWrite = () => {
     getValues,
     reset,
     formState: { errors },
-  } = useForm({
-    defaultValues: {
-      houseTitle: data?.houseTitle ? data.houseTitle : "",
-      category: data?.category ? data.category : "",
-      type: data?.type ? data.type : "",
-      mainAddress: data?.mianAddress ? data.mainAddress : "",
-      subAddress: data?.subAddress ? data.subAddress : "",
-      link: data?.link ? data.link : "",
-    },
-  });
-  const openAddressModal = () => {
-    setModalOpen(true);
-  };
-  const closeAddressModal = () => {
-    setModalOpen(false);
-  };
+  } = useForm();
   // 이미지 업로드 부분
+  console.log(content)
   const onDrop = useCallback((acceptedFiles) => {
     console.log(acceptedFiles[0]);
     // let imagelist = []; // 미리보기 이미지 담을 리스트
@@ -98,6 +79,7 @@ const UserWrite = () => {
     }
   };
   const queryClient = useQueryClient();
+  // 게시글 생성
   const createPost = useMutation(
     ["createPost"],
     (formData) =>
@@ -115,6 +97,7 @@ const UserWrite = () => {
       },
     }
   );
+  // 게시글 수정
   const updataPost = useMutation(
     ["updataPost"],
     (formData) =>
@@ -137,46 +120,44 @@ const UserWrite = () => {
     console.log(title);
     console.log(content);
     console.log(thumbnail);
+    console.log(thumbnailKey);
     console.log(address);
     console.log("저장");
     console.log(imageKey.filter((v) => !content.includes(v)));
-    if (!thumbnail) {
+    if (!thumbnail && !preview) {
       window.alert("썸네일 사진을 추가해 주세요 :)");
     } else if (!title) {
       window.alert("제목을 입력해 주세요 :)");
     } else if (!content) {
       window.alert("내용을 입력해 주세요 :)");
-    } else if (address) {
-      console.log("여기 안뜨지?");
-      // const post = {
-      //   title: title,
-      //   postContent: content,
-      //   tripLocation: `${address} ${data.subAddress}`,
-      //   category : data.category,
-      //   type : data.type,
-      //   link : data.link,
-      //   houseTitle:data.houseTitle
-      // };
-      // console.log(post)
+    } else{
       const formData = new FormData();
-      formData.append("images", thumbnail);
+      if(thumbnail){
+      formData.append("images", thumbnail)
+      }
       formData.append("title", title);
       formData.append("content", content);
-      formData.append("mainAddress", address);
+      formData.append("mainAddress", address ? address : data.mainAddress);
       formData.append("subAddress", data.subAddress);
       formData.append("category", data.category);
       formData.append("type", data.type);
       formData.append("houseTitle", data.houseTitle);
       formData.append("link", data.link);
+      // formData.append(
+      //   "thumbnailKEY",
+      //   thumbnailKey ? thumbnailKey : ""
+      // );
       formData.append(
-        "thumbnailKey",
-        thumbnail.length !== 0 ? thumbnailKey : ""
+        "ImageKEY",
+        imageKey.filter((v) => !content.includes(v))
       );
-      if(!params.id){
-      createPost.mutate(formData);
-        setOpen(true)
-      }else{
-        updataPost.mutate(formData)
+      if (!params.id) {
+        console.log('저장')
+        createPost.mutate(formData);
+        setOpen(true);
+      } else {
+        console.log(params.id);
+        updataPost.mutate(formData);
       }
     }
   };
@@ -218,6 +199,7 @@ const UserWrite = () => {
         setContent={setContent}
         imageKey={imageKey}
         setImageKey={setImageKey}
+        content={data?.content}
       ></PostEditer>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <InputWrap>
@@ -231,6 +213,7 @@ const UserWrite = () => {
               <input
                 placeholder="숙소 명을 입력해주세요."
                 {...register("houseTitle", { required: true })}
+                defaultValue={data?.houseTitle ? data.houseTitle : ""}
               ></input>
               <p className="errorMessage">
                 {errors.houseTitle?.type === "required" &&
@@ -241,16 +224,10 @@ const UserWrite = () => {
           <div className="category">
             <h3>카테고리 *</h3>
             <div>
-              {/* <select {...register("category", { required: true })}>
-                <option value="" disabled="disabled">
-                  숙소의 카테고리를 선택해주세요.
-                </option>
-                <option value="a">호텔</option>
-                <option value="b">숙박</option>
-              </select> */}
               <Select
                 // onChange={handleChange}
-                defaultValue=""
+                defaultValue={data?.category ? data?.category : ""}
+                // value={data.category ? data.category : ""}
                 {...register("category", { required: true })}
                 style={{
                   width: "100%",
@@ -281,7 +258,7 @@ const UserWrite = () => {
             <h3>숙소 형태 *</h3>
             <div>
               <Select
-                defaultValue=""
+                defaultValue={data?.type ? data.type : ""}
                 // onChange={handleChange}
                 {...register("type", { required: true })}
                 style={{
@@ -316,7 +293,8 @@ const UserWrite = () => {
                 <input
                   placeholder="주소를 검색해 주세요."
                   {...register("mainAddress")}
-                  value={address || ""}
+                  value={address||""}
+                  // defaultValue={address}
                   // readOnly
                 ></input>
                 <AddressModal setAddress={setAddress} />
@@ -325,6 +303,7 @@ const UserWrite = () => {
                 className="subAddress"
                 placeholder="상세 주소를 입력해 주세요."
                 {...register("subAddress", { required: true })}
+                defaultValue={data?.subAddress ? data.subAddress : ""}
               ></input>
               <p className="errorMessage">
                 {errors.subAddress?.type === "required" &&
@@ -337,6 +316,7 @@ const UserWrite = () => {
             <input
               placeholder="숙소 사이트, SNS 등 URL을 입력해주세요."
               {...register("link")}
+              defaultValue={data?.link ? data.link : ""}
             ></input>
           </div>
         </InputWrap>

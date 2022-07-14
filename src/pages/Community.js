@@ -20,27 +20,16 @@ import jeju13 from "../assests/css/제주8.jpeg";
 import jeju14 from "../assests/css/제주9.jpeg";
 
 const Community = () => {
-  const queryClient = useQueryClient();
   const navigate = useNavigate();
-  // const { data } = useQuery(["content"], () =>
-  //   instance.get("/post").then((res) => {
-  //     console.log(res.data.allPost)
-  //     return res.data.allPost
-  //   }),{
-  //     refetchOnWindowFocus:false  // 다른화면 갔다와도 재호출 안되게 함
-  //   }
-  // );
-  const deleteContent = useMutation(
-    ["deleteContent"],
-    (postId) =>
-      instance.delete(`/post/${postId}`).then((res) => console.log(res.data)),
-    {
-      onSuccess: () => {
-        // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
-        queryClient.invalidateQueries("content");
-      },
+  const { data } = useQuery(["content"], () =>
+    instance.get("/post").then((res) => {
+      console.log(res.data.allPost)
+      return res.data.allPost
+    }),{
+      refetchOnWindowFocus:false  // 다른화면 갔다와도 재호출 안되게 함
     }
   );
+ 
   const listImg = [jeju7, jeju8, jeju9, jeju10, jeju11, jeju12, jeju13, jeju14];
   const [count, setCount] = useState(0);
   return (
@@ -121,19 +110,16 @@ const Community = () => {
         </div>
       </Middle>
       <Bottom>
-        {/* {data.map((v) => (
+        {data.map((v) => (
           <Card key={v.postId} >
             <div>
               <div className="user">글쓴이</div>
               <h1 className="title" onClick={()=>{navigate(`/community/${v.postId}`)}}>{v.title}</h1>
               <div className="like">좋아요,댓글</div>
-              <button onClick={()=>{
-                deleteContent.mutate(v.postId)
-              }}>삭제</button>
             </div>
-            <img alt="이미지"></img>
+            <img src={v.thumbnailURL}alt="이미지"></img>
           </Card>
-        ))} */}
+        ))}
       </Bottom>
     </Container>
   );
@@ -317,6 +303,9 @@ const Card = styled.div`
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 20px;
+  img{
+    object-fit: cover;
+  }
   cursor: pointer;
   :hover {
     .title {
