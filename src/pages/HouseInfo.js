@@ -9,6 +9,10 @@ import jeju3 from "../assests/css/jeju3.jpeg"
 import jeju4 from "../assests/css/jeju4.jpeg"
 import jeju5 from "../assests/css/jeju5.jpeg"
 import jeju6 from "../assests/css/jeju6.jpeg"
+import inside from "../assests/css/내륙.png";
+import nearby from "../assests/css/관광지근처.png";
+import nearbySea from "../assests/css/해변근처.png";
+import quietVil from "../assests/css/조용한마을.png";
 import { Link, useNavigate } from "react-router-dom";
 import SlideImg from "../components/SlideImg";
 import Map from "../components/Map";
@@ -125,24 +129,28 @@ const HouseInfo = () => {
             <SpotMainBox>
                 
                 <div ref={firstBox} onMouseLeave={menuLeave} onMouseOver={menuOnOver} onClick={menuOnClick}  id="spot">
-                
-                    <SpotMiniBox />
-                    {/* <div id="defaultLine" /> */}
+                    <SpotMiniBox>
+                        <img src={nearbySea}/>
+                    </SpotMiniBox>
                     <span>해변</span>
-                    
                     <SpotUnderBar ref={spotUnderlineRef}/>
-                    
                 </div>
                 <div onMouseLeave={menuLeave} onMouseOver={menuOnOver} onClick={menuOnClick}  id="spot">
-                    <SpotMiniBox />
+                    <SpotMiniBox>
+                        <img src={inside}/>
+                    </SpotMiniBox>
                     <span>내륙</span>
                 </div>
                 <div onMouseLeave={menuLeave} onMouseOver={menuOnOver} onClick={menuOnClick} id="spot">
-                    <SpotMiniBox/>
+                    <SpotMiniBox>
+                        <img src={nearby}/>
+                    </SpotMiniBox>
                     <span >관광지 근처</span>
                 </div>
                 <div onMouseLeave={menuLeave} onMouseOver={menuOnOver} onClick={menuOnClick} id="spot">
-                    <SpotMiniBox/>
+                    <SpotMiniBox>
+                        <img src={quietVil}/>
+                    </SpotMiniBox>
                     <span>조용한 마을</span>
                 </div>
                 <div onMouseLeave={menuLeave} onMouseOver={menuOnOver} onClick={menuOnClick} id="spot">
@@ -256,6 +264,10 @@ const SpotMiniBox = styled.div`
     width: 50px;
     height: 50px;
     border: 1px solid black;
+    img{
+        width: 100%;
+        height: 50px;
+    }
 `
 
 const LiveMainBox = styled.div`

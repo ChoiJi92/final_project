@@ -7,6 +7,8 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { TransitionProps } from "@mui/material/transitions";
 import Slide from "@mui/material/Slide";
 import styled from "styled-components";
+import goki from "../assests/css/고기.png"
+import { FaTimes } from "react-icons/fa";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -14,7 +16,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const DialogImg = (props) => {
   const { listImg, open, onClose } = props;
-  console.log(props);
+  console.log();
   return (
     <Dialog
       fullWidth={true}
@@ -24,12 +26,13 @@ const DialogImg = (props) => {
       open={open}
       onClose={onClose}
     >
-      <DialogTitle>{"사진 더보기"}</DialogTitle>
+      <DialogTitle><DeleteIcon onClick={onClose} /></DialogTitle>
+      
       <Container>
         <Wrap id="alert-dialog-slide-description">
           {listImg.map((item, idx) => {
             return (
-              <img style={{ marginTop: "20px" }} src={item} alt="이미지" />
+              <img style={{}} src={goki} alt="이미지" />
             );
           })}
         </Wrap>
@@ -45,7 +48,7 @@ const Container = styled(DialogContent)`
   /* align-items: center;  */
 `;
 const Wrap = styled(DialogContentText)`
-  width: 60%;
+  width: 100%;
   display: grid;
   grid-gap: 20px;
   justify-content: center;
@@ -54,7 +57,7 @@ const Wrap = styled(DialogContentText)`
   /* border: 1px solid red; */
 
   img {
-    width: 500px;
+    width: 100%;
     height: 500px;
     /* border: 1px solid; */
     /* object-fit: none; */
@@ -66,5 +69,9 @@ const Wrap = styled(DialogContentText)`
     
   }
 `;
+
+const DeleteIcon = styled(FaTimes)`
+  cursor: pointer;
+`
 
 export default DialogImg;

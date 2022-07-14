@@ -12,7 +12,6 @@ const SlideImg = (props) => {
     const SampleNextArrow = (props) => {
         const { className, style, onClick } = props;
         return (
-
           <div
           onMouseLeave={mouseLeave} onMouseOver={mouseHover}
             className={className}

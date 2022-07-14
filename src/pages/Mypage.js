@@ -8,7 +8,8 @@ const Mypage = () => {
     const [isList, setIsList] = useState([]);
     const [myLike, setMyLike] = useState(true);
     const [myWrite, setMyWrite] = useState(true);
-   
+    const nickName = localStorage.getItem("nickName");
+    const userImage = localStorage.getItem("userImage");
     const list = [1,2,3,4,5,6,7,8,9,10]
     
     useEffect(()=>{
@@ -27,10 +28,10 @@ const Mypage = () => {
         <MainBox>
             <ProfilBox>
                 <div style={{"display":"flex"}}>
-                        <img src={jeju1} style={{"width":"50px","height":"50px","borderRadius":"50%"}}/>
+                        <img src={userImage} style={{"width":"50px","height":"50px","borderRadius":"50%"}}/>
                     <div id="profile">
-                        <h3 style={{}}>홍길동</h3>
-                        <span style={{ "opacity":"0.6"}}>mail1234@mail.com</span>
+                        <h3 style={{}}>{nickName}</h3>
+                        {/* <span style={{ "opacity":"0.6"}}>mail1234@mail.com</span> */}
                     </div>
                 </div>
                 <div id="btn">
