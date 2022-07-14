@@ -1,57 +1,57 @@
-# name: Jeju Project # Workflow 이름
-# on: # Event 감지
-#   push:
-#       branches: [master]
-#   pull_request:
-#       branches: [master]
-# jobs: # Job 설정
-#   build:
-#     # runs-on: ubuntu-latest
-#     runs-on: ubuntu-18.04
-#     steps:
-#       - name: Checkout source code. # Repo checkout
-#         uses: actions/checkout@v2
+name: Jeju Project # Workflow 이름
+on: # Event 감지
+  push:
+      branches: [master]
+  pull_request:
+      branches: [master]
+jobs: # Job 설정
+  build:
+    # runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout source code. # Repo checkout
+        uses: actions/checkout@v2
 
-#       - name: Check Node v # Node v 확인
-#         run: node -v
+      - name: Check Node v # Node v 확인
+        run: node -v
       
-#       - name: Cache node modules # node modules 캐싱
-#         uses: actions/cache@v1
-#         with:
-#           path: node_modules
-#           key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
-#           restore-keys: |
-#             ${{ runner.OS }}-build-
-#             ${{ runner.OS }}-
+      - name: Cache node modules # node modules 캐싱
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-build-
+            ${{ runner.OS }}-
 
-#       - name: Install Dependencies # 의존 파일 설치
-#         run: yarn install
+      - name: Install Dependencies # 의존 파일 설치
+        run: yarn install
 
-#       - name: Build # React Build
-#         run: CI=false yarn build
+      - name: Build # React Build
+        run: CI=false yarn build
 
 
 
-#       - name: Configure AWS Credentials   # AWS Credential 확인
-#         uses: aws-actions/configure-aws-credentials@v1
-#         with:
-#           aws-access-key-id: ${{ secrets.SECRET_KEY }}
-#           aws-secret-access-key: ${{ secrets.SECRET_ACCESS_KEY }}
-#           aws-region: ${{ secrets.AWS_REGION }}
+      - name: Configure AWS Credentials   # AWS Credential 확인
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.SECRET_KEY }}
+          aws-secret-access-key: ${{ secrets.SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
       
-#       - name: Deploy to S3            # Upload build file to S3
-#         run: aws s3 sync ./build s3://mendorong-jeju.co.kr --delete
+      - name: Deploy to S3            # Upload build file to S3
+        run: aws s3 sync ./build s3://mendorong-jeju.co.kr --delete
       
-#       - name: Invalidate CloudFront Cache #CloudFront 캐시 갱신
-#         run: aws cloudfront create-invalidation --distribution-id ${{secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID}} --paths "/*"
-#       # - name: Deploy # Upload build file to S3
-#       #   env:
-#       #     AWS_ACCESS_KEY_ID: ${{ secrets.SECRET_KEY }}
-#       #     AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
-#       #     AWS_REGION: "${{ secrets.AWS_REGION }}"
-#       #     AWS_EC2_METADATA_DISABLED: true
-#       #   run: aws s3 cp --recursive --region ${{ secrets.AWS_REGION }} build s3://mendorong-jeju.com
-#           # run: aws s3 sync ./dist --region ${{ secrets.AWS_REGION }} s3://mendorong-jeju.com --delete
+      - name: Invalidate CloudFront Cache #CloudFront 캐시 갱신
+        run: aws cloudfront create-invalidation --distribution-id ${{secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID}} --paths "/*"
+      # - name: Deploy # Upload build file to S3
+      #   env:
+      #     AWS_ACCESS_KEY_ID: ${{ secrets.SECRET_KEY }}
+      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
+      #     AWS_REGION: "${{ secrets.AWS_REGION }}"
+      #     AWS_EC2_METADATA_DISABLED: true
+      #   run: aws s3 cp --recursive --region ${{ secrets.AWS_REGION }} build s3://mendorong-jeju.com
+          # run: aws s3 sync ./dist --region ${{ secrets.AWS_REGION }} s3://mendorong-jeju.com --delete
 
-#       # - name: Invalidate CloudFront Cache
-#       #   run: aws cloudfront create-invalidation --distribution-id ${{secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID}} --paths "/*"
+      # - name: Invalidate CloudFront Cache
+      #   run: aws cloudfront create-invalidation --distribution-id ${{secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID}} --paths "/*"
