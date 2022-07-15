@@ -15,8 +15,8 @@ const CommentList = ({data}) => {
 const CommentWrap = styled.div`
   display: flex;
   flex-direction: column;
-  width: 80%;
-  margin: 20px 0;
+  width: 70%;
+  margin-bottom: 10px;
 `;
 
 export default CommentList;

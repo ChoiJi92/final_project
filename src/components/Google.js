@@ -10,7 +10,8 @@ const Google = () => {
   const REDIRECT_URI = "http://localhost:3000/oauth/google/callback";
   // const REDIRECT_URI = "https://mendorong-jeju.co.kr//oauth/google/callback";
   // const REDIRECT_URI = "https://choiji.shop/oauth/google/callback";
-  const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.profile`;
+  // const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.profile`;
+  const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email`;
 
     return (
       <Button onClick={()=>{

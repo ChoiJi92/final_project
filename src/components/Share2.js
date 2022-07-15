@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import shareIcon2 from "../assests/css/shareIcon2.png";
+import shareIcon from "../assests/css/shareIcon.png";
 import {
   FacebookShareButton,
   FacebookIcon,
@@ -14,22 +15,22 @@ import Button from "@mui/material/Button";
 import Popover from "@mui/material/Popover";
 import PopupState, { bindTrigger, bindPopover } from "material-ui-popup-state";
 
-const Share = ({data}) => {
+const Share2 = ({data}) => {
   const currentUrl = window.location.href;
   return (
     <PopupState variant="popover" popupId="demo-popup-popover">
       {(popupState) => (
         <Container>
           <Btn {...bindTrigger(popupState)}>
-            공유
-            <img className="shareIcon" src={shareIcon2} alt="공유" />
+        
+            <img className="shareIcon" src={shareIcon} alt="공유" />
           </Btn>
 		  
           <Popover
             {...bindPopover(popupState)}
             anchorOrigin={{
               vertical: "bottom",
-              horizontal: "center",
+              horizontal: "right",
             }}
             transformOrigin={{
               vertical: "top",
@@ -67,32 +68,15 @@ const Share = ({data}) => {
   );
 };
 const Container = styled.div`
-	margin-right: 20px;
-	width: 35%;
+	width: 20%;
 `
 const Btn = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
-  /* width: 128px; */
   width: 100%;
-  height: 58px;
-  border-radius: 10px;
-  border: none;
-  margin-left: 20px;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 160%;
-  background-color: #e5e5ea;
-  color: #48484a;
   cursor: pointer;
-  .shareIcon {
-    width: 32px;
-    height: 32px;
-    margin-left: 6px;
-  }
+
 `;
 
 const GridContainer = styled.div`
@@ -117,4 +101,4 @@ const URLShareButton = styled.button`
     background-color: #a99fee;
   } */
 `;
-export default Share;
+export default Share2;
