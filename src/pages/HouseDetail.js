@@ -23,21 +23,21 @@ import Map from "../components/Map";
 
 const HouseInfoDetail = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
-  const { isLoading, data } = useQuery(
-    "house",
-    () => {
-      return axios.get("http://localhost:5001/post").then((res) => res.data);
-    },
-    {
-      refetchOnWindowFocus: false,
-    }
-  );
+  // const { isLoading, data } = useQuery(
+  //   "house",
+  //   () => {
+  //     return axios.get("http://localhost:5001/post").then((res) => res.data);
+  //   },
+  //   {
+  //     refetchOnWindowFocus: false,
+  //   }
+  // );
 
-  if (isLoading) {
-    return "loading...";
-  }
+  // if (isLoading) {
+  //   return "loading...";
+  // }
 
-  console.log(data, isLoading);
+  // console.log(data, isLoading);
   // const slideSetting = useSelector((state)=>state);
   // const list = useSelector((state) => state.postSlice.contents);
 
@@ -61,7 +61,7 @@ const HouseInfoDetail = () => {
         <ImgBox>
           {/* <SlideImg listImg={listImg} /> */}
           <ImgInnerBox1>
-            <img src={jeju10}/>
+            <img src={jeju10} alt="이미지"/>
           </ImgInnerBox1>
           <ImgInnerBox2>
             <img src={jeju1} alt="이미지"/>
