@@ -24,7 +24,7 @@ const CategorySlide = (props) => {
         onMouseLeave={mouseLeave}
         onMouseOver={mouseHover}
         className={className}
-        style={{ ...style, display: "block", marginRight: "25px", opacity: 1 }}
+        style={{ ...style, display: "block", marginRight: "40px", opacity: 1 }}
         onClick={onClick}
       />
     );
@@ -52,7 +52,7 @@ const CategorySlide = (props) => {
   const settings = {
     infinite: true,
     speed: 500,
-    slidesToShow: 4,
+    slidesToShow: 3,
     slidesToScroll: 1,
     // dots: true,
     arrows:mouseOver,
@@ -64,7 +64,7 @@ const CategorySlide = (props) => {
 				//위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
         infinite: true,
         speed: 500,
-        slidesToShow: 3,
+        slidesToShow: 2,
         slidesToScroll: 1,
         dots: true,
         arrows:mouseOver,
@@ -78,7 +78,7 @@ const CategorySlide = (props) => {
 				//위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
         infinite: true,
         speed: 500,
-        slidesToShow: 2,
+        slidesToShow: 1,
         slidesToScroll: 1,
         dots: true,
         arrows:mouseOver,
@@ -185,16 +185,19 @@ const CategorySlide = (props) => {
   );
 };
 const ImgBox = styled.div`
-  width: 80%;
-  /* height: 300px; */
-  margin: 30px auto;
-  /* h2 {
-    margin-bottom: 20px;
-  } */
+  width: 70%;
+  height: 500px;
+  margin: 100px 0 100px 290px;
+  h2 {
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 61.6px;
+  }
 `;
 const SliderImg = styled(Slider)`
 width: 100%;
-  height: 300px;
+  /* height: 406px; */
+  /* border: 1px solid; */
   .dots_custom {
     /* display: inline-block; */
     /* vertical-align: middle; */
@@ -226,15 +229,15 @@ width: 100%;
 `;
 const Wrap = styled.div`
   width: 100%;
-  margin-right: 30px;
+  margin-right: 20px;
   /* height: 300px; */
   
 `;
 const Card = styled.div`
   border-radius: 20px;
-  margin-top: 20px;
-  width: 250px;
-  height: 300px;
+  margin-top: 30px;
+  width: 305px;
+  height: 406px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -248,12 +251,13 @@ const Card = styled.div`
       transform: translateY(-10px);
   }
   img{
-    width: 50%;
+    width: 40%;
     margin-bottom: 20px;
   }
   p{
-    font-size: large;
-    font-weight: bold;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 30.8px;
   }
 `;
 export default CategorySlide;

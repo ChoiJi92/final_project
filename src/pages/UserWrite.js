@@ -18,15 +18,16 @@ import WriteFooter from "../components/WriteFooter";
 
 const UserWrite = () => {
   const params = useParams();
+  // params.id에 의 queryfunction이 실행될지 말지를 결정하므로 queryKey에 넣어줘야함
   const { data } = useQuery(
-    ["editContent"],
+    ["editContent",params.id],
     () =>
       instance.get(`/post/${params.id}`).then((res) => {
         console.log(res.data);
         return res.data.post[0];
       }),
     {
-      enabled: !!params.id, // params.id가 있을때만 query실행
+      enabled: !!params.id, // params.id가 있을때만 query실행 
       retry: false, // 재호출 안하기
       refetchOnWindowFocus: false, // 다른화면 갔다와도 재호출 안되게 함
     }
@@ -98,8 +99,8 @@ const UserWrite = () => {
     }
   );
   // 게시글 수정
-  const updataPost = useMutation(
-    ["updataPost"],
+  const updatePost = useMutation(
+    ["updatePost"],
     (formData) =>
       instance
         .patch(`/post/${params.id}`, formData, {
@@ -133,8 +134,13 @@ const UserWrite = () => {
     } else{
       const formData = new FormData();
       if(thumbnail){
+        console.log('여기 지나가나요?')
       formData.append("images", thumbnail)
       }
+      // else{
+      //   console.log('여기는?')
+      //   formData.append("images", null)
+      // }
       formData.append("title", title);
       formData.append("content", content);
       formData.append("mainAddress", address ? address : data.mainAddress);
@@ -157,7 +163,7 @@ const UserWrite = () => {
         setOpen(true);
       } else {
         console.log(params.id);
-        updataPost.mutate(formData);
+        updatePost.mutate(formData);
       }
     }
   };

@@ -2,12 +2,13 @@ import React, { useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import Comment from "../components/Comment";
+import Comment from "../components/CommentList";
 import instance from "../shared/axios";
 import "@toast-ui/editor/dist/toastui-editor-viewer.css";
 import { Viewer } from "@toast-ui/react-editor";
 import KakaoShare from "../components/KakaoShare";
 import shareIcon from "../assests/css/shareIcon.png";
+import CommentList from "../components/CommentList";
 
 const CommunityDetail = () => {
   const queryClient = useQueryClient();
@@ -39,9 +40,7 @@ const CommunityDetail = () => {
     ["loadComment"],
     () =>
       instance.get(`/post/${params.id}/comment`).then((res) => {
-        console.log(res.data);
-        // return res.data.post[0];
-        return res.data;
+        return res.data.comments;
       }),
     {
       // retry: false, // 재호출 안하기
@@ -49,18 +48,18 @@ const CommunityDetail = () => {
     }
   );
   const commentData = loadComment.data
-  console.log(commentData)
+  
   // 코멘트 생성
   const createComment = useMutation(
     ["createComment"],
     (comment) =>
       instance
-        .post(`/post/${params.id}`,{comment})
+        .post(`/post/${params.id}/comment`,{comment})
         .then((res) => console.log(res.data)),
     {
       onSuccess: () => {
         // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
-        queryClient.invalidateQueries("detailContent");
+        queryClient.invalidateQueries("loadComment");
       },
     }
   );
@@ -166,7 +165,7 @@ const CommunityDetail = () => {
           </div>
         </div>
       </CommentWrap>
-      <Comment></Comment>
+      <CommentList data={commentData}></CommentList>
     </Container>
   );
 };
@@ -219,22 +218,28 @@ const User = styled.div`
     width: 50%;
     display: flex;
     flex-direction: row;
+    align-items: center;
   }
   img {
     border-radius: 50%;
-    width: 80px;
-    height: 80px;
-    border: 2px solid;
+    width: 96px;
+    height: 96px;
   }
   .profile {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 15px 0;
-    margin-left: 10px;
+    height: 84px;
+    margin-left: 30px;
     .nickname {
-      font-size: 20px;
+      font-size: 28px;
       font-weight: 500;
+      line-height: 42px;
+    }
+    .time{
+      font-size: 28px;
+      font-weight: 300;
+      line-height: 42px;
     }
   }
 `;
@@ -291,7 +296,7 @@ const CommentWrap = styled.div`
   display: flex;
   flex-direction: column;
   width: 80%;
-  margin-bottom: 30px;
+  margin-bottom: 50px;
   font-size: large;
   .comment {
     width: 100%;

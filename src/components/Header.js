@@ -35,8 +35,9 @@ const Header = () => {
             setSearch(true);
           }}
         ></img>
+        {search ? 
         <div className="searchInput">
-          <input placeholder="지역,원하는테마" ref={searchRef}></input>
+          <input placeholder="지역, 원하는테마" ref={searchRef}></input>
           <img
             className="cancel"
             src={cancelIcon}
@@ -45,7 +46,7 @@ const Header = () => {
               setSearch(false);
             }}
           ></img>
-        </div>
+        </div> :
         <div className="menu">
           <div
             style={{ color: menu === "house" ? "gray" : "black" }}
@@ -78,11 +79,12 @@ const Header = () => {
           {!nickName ? (
             <LoginModal />
           ) : (
-            <User search={search}>
+            <User >
               <UserMenu nickName={nickName} userImage={userImage}></UserMenu>
             </User>
           )}
         </div>
+}
       </Center>
     </Container>
   );
@@ -90,7 +92,7 @@ const Header = () => {
 
 const Container = styled.div`
   width: 100%;
-  height: 100px;
+  height: 120px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -99,10 +101,7 @@ const Container = styled.div`
   font-size: large;
 
   .title {
-    text-align: center;
-    width: 7%;
-    margin-left: 150px;
-    /* margin-bottom: 10px; */
+    margin-left: 306px;
     cursor: pointer;
   }
 `;
@@ -110,33 +109,34 @@ const Container = styled.div`
 const Center = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
-  width: 60%;
+  width: 75%;
   white-space: nowrap;
   .search {
-    margin-right: 20px;
     position: relative;
-    right: ${(props) => (props.search ? "50px" : "0px")};
+    margin-left: ${(props) => (props.search ? "70px" : "450px")};
     cursor: pointer;
-    transition: 1s;
+    /* transition: 1s; */
   }
 
   .searchInput {
-    width: 100%;
-    height: 50px;
+    width: 67%;
+    height: 60px;
     border-radius: 10px;
     background-color: #f2f2f7;
-    /* border: 1px solid; */
+    margin-left: 20px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    display: ${(props) => !props.search && "none"};
     input {
       width: 80%;
-      height: 40px;
+      height: 60px;
       background-color: #f2f2f7;
+      font-size: 24px;
+      font-weight: 300;
+      line-height: 28.8px;
       border: none;
       padding-left: 20px;
       border-radius: 10px;
@@ -150,10 +150,14 @@ const Center = styled.div`
   }
   .menu {
     div {
-      display: ${(props) => (props.search ? "none" : "block")};
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 24px;
+      width: 22%;
+      text-align: center;
     }
-    width: 60%;
-    height: 50px;
+    width: 45%;
+    height: 100px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -168,15 +172,17 @@ const User = styled.div`
   align-items: center;
   text-align: right;
   div {
-    margin-right: 10px;
-    font-size: large;
-    display: ${(props) => props.search && "none"};
+    margin-right: 28px;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 34.75px;
+    color: black;
   }
   img {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
-    display: ${(props) => props.search && "none"};
+
   }
 `;
 

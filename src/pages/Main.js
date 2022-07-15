@@ -14,11 +14,11 @@ const Main = () => {
     <Container>
       <div
         style={{
-          width: "80%",
+          width: "70%",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          margin: "70px auto",
+          margin: "20px auto",
         }}
       >
         <img className="mainImage" src={main} alt="메인"></img>
@@ -26,8 +26,8 @@ const Main = () => {
       <div>
         <CategorySlide></CategorySlide>
       </div>
-      <div>
-        <h2 style={{ marginLeft: "160px" }}>Find accommodation by region</h2>
+      <div style={{width:'70%', margin:'0 auto'}}>
+        <h2>Find accommodation by region</h2>
         <div className="region">
           <img className="west" src={west} alt="서쪽"></img>
 
@@ -40,7 +40,7 @@ const Main = () => {
         </div>
       </div>
       <div>
-        <h2 style={{ marginLeft: "160px", marginBottom: "50px" }}>
+        <h2 style={{ marginLeft: "290px", marginBottom: "50px" }}>
           Popular openchat
         </h2>
         <OpenChatSlide rtl={false} />
@@ -59,8 +59,9 @@ const Container = styled.div`
     width: 100%;
   }
   h2 {
-    font-size: 30px;
-    margin-top: 80px;
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 61.6px;
   }
   .region {
     width: 80%;

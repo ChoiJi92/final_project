@@ -29,8 +29,8 @@ const LoginModal = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   return (
-    <div style={{width:'25%',textAlign:'center'}}>
-      <div onClick={handleOpen}>로그인</div>
+    <div >
+      <div style={{marginLeft:'30px',fontSize:'23px'}} className="login" onClick={handleOpen}>로그인</div>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -55,7 +55,6 @@ const LoginModal = () => {
             </Container>
             <Middle id="transition-modal-description" sx={{ mt: 2 }}>
               <Img src={mendorongLogo} alt="Logo"></Img>
-              {/* <div>멘도롱제주에 어서오세요.</div> */}
             </Middle>
             <Btn>
               {/* 카카오로그인 버튼 */}
@@ -71,14 +70,16 @@ const LoginModal = () => {
     </div>
   );
 };
+
 const Container = styled(Typography)`
   /* border: 1px solid; */
   display: flex;
   justify-content: center;
   align-items: center;
   div {
-    font-size: 25px;
-    font-weight: 500;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 48px;
   }
   img {
     position: absolute;
@@ -90,19 +91,15 @@ const Middle = styled(Typography)`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  div {
-    font-size: 20px;
-    margin: 10px 0;
-  }
 `;
 const Img = styled.img`
   width: 300px;
   height: 250px;
-  margin: 10px auto;
+  margin: 40px auto;
 `;
 const Btn = styled.div`
   width: 80%;
-  margin: 20px auto;
+  margin: 10px auto;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
