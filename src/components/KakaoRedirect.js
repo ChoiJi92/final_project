@@ -25,7 +25,8 @@ const KakaoRedirect = () => {
         localStorage.setItem('token',response.data.users.token)  
         localStorage.setItem('userId',response.data.users.userId)
         localStorage.setItem('nickName',response.data.users.nickname)  
-        localStorage.setItem('userImage',response.data.users.userImage)  
+        localStorage.setItem('userImage',response.data.users.userImage)
+        localStorage.setItem('host',response.data.users.host)
         console.log("로그인 확인");
         window.location.replace("/"); // 토큰 받고 로그인되면 화면 전환(메인으로)
       })

@@ -27,7 +27,7 @@ const UserMenu = ({userImage,nickName}) => {
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
       >
-         <div style={{color:'black'}}>{nickName} 님</div>
+         <div style={{fontSize:'24px'}}>{nickName}</div>
          <img src={userImage} alt=""></img>
         
       </Button>
@@ -48,7 +48,7 @@ const UserMenu = ({userImage,nickName}) => {
         style={{ display:'flex',justifyContent:'center' ,color:'white',border:'none',borderRadius:'5px',backgroundColor:'#9090A0'}}>글쓰러 가기</MenuItem>
         </Write>
         
-        <MenuItem ><HostModal></HostModal></MenuItem>
+        <MenuItem><HostModal></HostModal></MenuItem>
         <Divider />
         <MenuItem onClick={handleClose}>마이페이지</MenuItem>
         <MenuItem onClick={()=>{

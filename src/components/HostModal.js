@@ -22,9 +22,17 @@ const style = {
 };
 
 const HostModal = () => {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
   const navigate = useNavigate();
+  const host = localStorage.getItem("host");
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => {
+    if (!host) {
+      setOpen(true);
+    }
+    else{
+      navigate('/hostwrite')
+    }
+  };
   const handleClose = () => {
     // navigate("/");
     setOpen(false);
@@ -54,7 +62,11 @@ const HostModal = () => {
                 onClick={handleClose}
               ></img>
             </Container>
-            <Middle id="transition-modal-description" sx={{ mt: 2 }} component="div">
+            <Middle
+              id="transition-modal-description"
+              sx={{ mt: 2 }}
+              component="div"
+            >
               <Img src={mendorongLogo2} alt="Logo"></Img>
 
               <h2>숙소는 호스트만 등록할 수 있어요!</h2>

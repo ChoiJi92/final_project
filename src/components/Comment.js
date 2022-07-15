@@ -1,73 +1,77 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import instance from "../shared/axios";
-
-const Comment = () => {
-  const queryClient = useQueryClient()
-  const params = useParams()
-  const commentRef = useRef()
-  const [edit, setEdit] = useState(false);
- 
-  // 댓글 수정
+import instance from '../shared/axios';
+const Comment = ({value,index}) => {
+    const queryClient = useQueryClient()
+    const params = useParams()
+    const commentRef = useRef()
+    const [edit, setEdit] = useState(false);
+    // 댓글 수정
   const updateComment = useMutation(
-    ["updateComment"],
-    (comment) =>
-      instance.patch(`/post/${params.id}`,{comment}).then((res) => console.log(res.data)),
+    ["updateComment",value.commentId],
+    (comment) =>{
+      instance.put(`/post/${params.id}/${value.commentId}`,{comment}).then((res) => console.log(res.data))},
     {
       onSuccess: () => {
         // update 성공하면 'detailContent'라는 key를 가진 친구가 실행 
-        queryClient.invalidateQueries("detailContent");
+        queryClient.invalidateQueries("loadComment");
       },
     }
   );
   // 댓글 삭제
   const deleteComment = useMutation(
     ["deleteComment"],
-    () =>
-      instance.delete(`/post/${params.id}`).then((res) => console.log(res.data)),
+    (commentId) =>
+      instance.delete(`/post/${params.id}/${commentId}`).then((res) => console.log(res.data)),
     {
       onSuccess: () => {
         // delete 성공하면 'detailContent'라는 key를 가진 친구가 실행 
-        queryClient.invalidateQueries("detailContent");
+        queryClient.invalidateQueries("loadComment");
       },
     }
   );
-  return (
-    <CommentList>
-      <Wrap>
-        <img alt="프로필"></img>
+  const onKeyPress = (e) =>  {
+    if(e.key==='Enter'){
+        updateComment.mutate(commentRef.current.value)
+        commentRef.current.value=""
+        setEdit(false);
+    }
+  }
+    return (
+        <Wrap key={value.commentId}>
+        <img src={value.userImage} alt="프로필"></img>
         <div className="content">
-          <h3 className="nickName">댓글 작성자 이름</h3>
+          <h3 className="nickName">{value.nickname}</h3>
           {!edit ? (
             <>
-              <div className="comment">꼼꼼한 포스팅 감사합니다!</div>
+              <div className="comment">{value.comment}</div>
               <div className="date">2시간 전</div>
             </>
           ) : (
-            <input autoFocus ref={commentRef}></input>
+            <input onKeyPress={onKeyPress} autoFocus ref={commentRef}></input>
           )}
         </div>
         {!edit ? (
           <Button>
             <button
               onClick={() => {
-                updateComment.mutate(commentRef.current.value)
-                commentRef.current.value=""
                 setEdit(true);
               }}
             >
               수정
             </button>
             <button onClick={()=>{
-              deleteComment.mutate()
+              deleteComment.mutate(value.commentId)
             }}>삭제</button>
           </Button>
         ) : (
           <Button>
             <button
               onClick={() => {
+                updateComment.mutate(commentRef.current.value)
+                commentRef.current.value=""
                 setEdit(false);
               }}
             >
@@ -83,19 +87,12 @@ const Comment = () => {
           </Button>
         )}
       </Wrap>
-    </CommentList>
-  );
+    );
 };
-
-const CommentList = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 80%;
-  margin: 20px 0;
-`;
 const Wrap = styled.div`
   display: flex;
   flex-direction: row;
+  margin-bottom: 30px;
   img {
     width: 80px;
     height: 80px;

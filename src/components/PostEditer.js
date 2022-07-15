@@ -56,7 +56,7 @@ const PostEditer = ({setContent,setImageKey,content}) => {
                 let alt;
                 const formData = new FormData()
                 formData.append('images',blob)
-                const imageUrl = await instance.post('/post/images',formData,{
+                const imageUrl = await instance.post('post/images',formData,{
                   headers:{
                     "Content-Type": "multipart/form-data",
                   }
