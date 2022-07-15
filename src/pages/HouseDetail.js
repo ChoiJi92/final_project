@@ -1,21 +1,18 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import room1 from "../assests/css/room1.jpeg";
-import room2 from "../assests/css/room2.jpeg";
 import jeju1 from "../assests/css/jeju1.jpeg";
 import jeju2 from "../assests/css/jeju2.jpeg";
-import jeju3 from "../assests/css/jeju3.jpeg";
-import jeju4 from "../assests/css/jeju4.jpeg";
-import jeju5 from "../assests/css/jeju5.jpeg";
-import jeju6 from "../assests/css/jeju6.jpeg";
-import jeju7 from '../assests/css/제주1.jpeg'
-import jeju8 from '../assests/css/제주2.jpeg'
-import jeju9 from '../assests/css/제주3.jpg'
-import jeju10 from '../assests/css/제주4.jpeg'
-import jeju11 from '../assests/css/제주5.jpg'
-import jeju12 from '../assests/css/제주6.jpeg'
-import jeju13 from '../assests/css/제주8.jpeg'
-import jeju14 from '../assests/css/제주9.jpeg'
+import jeju7 from '../assests/css/제주1.jpeg';
+import jeju8 from '../assests/css/제주2.jpeg';
+import jeju9 from '../assests/css/제주3.jpg';
+import jeju10 from '../assests/css/제주4.jpeg';
+import jeju11 from '../assests/css/제주5.jpg';
+import jeju12 from '../assests/css/제주6.jpeg';
+import jeju13 from '../assests/css/제주8.jpeg';
+import jeju14 from '../assests/css/제주9.jpeg';
+import shareIcon2 from '../assests/css/shareIcon2.png';
+import scrap from '../assests/css/scrap.png';
+import {FaHeart,FaStar} from "react-icons/fa"
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useQuery } from "react-query";
@@ -54,15 +51,18 @@ const HouseInfoDetail = () => {
   console.log(window.location.href);
 
   const listImg = [jeju7, jeju8, jeju9, jeju10, jeju11, jeju12,jeju13,jeju14];
+  const hashList = [0,1,3,4,5]
+
+  const MapRadius = '20px';
   return (
     <Wrap>
       <div id="detailMainBox">
-        <div>
-          <button>수정</button>
-          <button>삭제</button>
-        </div>
+        
         <ImgBox>
-          <SlideImg listImg={listImg} />
+          {/* <SlideImg listImg={listImg} /> */}
+          <ImgInnerBox1>
+            <img src={jeju10}/>
+          </ImgInnerBox1>
           <ImgInnerBox2>
             <img src={jeju1} alt="이미지"/>
             <img src={jeju2} alt="이미지"/>
@@ -75,9 +75,26 @@ const HouseInfoDetail = () => {
           </ImgInnerBox2>
         </ImgBox>
         <InfoBox>
-          <h1>해변 근처의 게스트하우스</h1>
+          <HashMainBox>
+            {hashList.map((item,idx)=>(
+              <HashTagBox>#Hello</HashTagBox>
+            ))}
+          </HashMainBox>
+          <div style={{"display":"flex","justifyContent":"space-between","alignItems":"center"}}>
+            <div>
+              <h1 style={{"fontSize": '48px'}}>해변 근처의 게스트하우스</h1>
+            </div>
+            <div style={{"display":"flex","alignItems":"center", "marginLeft":"170px","marginBottom":"25px"}}>
+              <span style={{"fontSize": '21px'}}>공유하기</span>
+              <IconImg  src={shareIcon2}/>
+            </div>
+            <div style={{"display":"flex","alignItems":"center","marginBottom":"25px"}}>
+              <span style={{"fontSize": '21px'}}>저장하기</span>
+              <IconImg src={scrap}/>
+            </div>
+          </div>
           <hr />
-          <div style={{ margin: "30px 0px 30px 0px" }}>
+          <div style={{ margin: "30px 0px 30px 0px","fontSize": '18px' }}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
             Pellentesque quam consequat massa sit aliquam. Dignissim nibh at
             cras magna orci massa. Vehicula molestie facilisi eu, porta tempor
@@ -94,11 +111,27 @@ const HouseInfoDetail = () => {
             arcu, facilisis felis interdum.
           </div>
           <hr />
-          <h1 style={{"marginTop":"20px"}}>숙소 위치</h1>
+          <h1 style={{"marginTop":"20px","fontSize": "48px"}}>숙소 위치</h1>
+          <MapBox>
+            <Map MapRadius={MapRadius}/>
+          </MapBox>
+          <div style={{"marginBottom":"30px"}}>
+            <h2 style={{"marginTop":"20px","fontSize": "32px"}}>제주도 어딘가, 어딘가</h2>
+            <h2 style={{"fontSize": "32px", "opacity":"0.2"}}>제주도 어딘가, 조용한 마을</h2>
+          </div>
+          <hr />
+          <ReviewMainBox>
+              <div>
+                <StarIcon/>
+                <span>4.99</span>
+                <span style={{"marginLeft":"10px"}}> 후기 00개</span>
+              </div>
+              <div>
+                <span style={{"fontSize":"32px","textDecoration":"underline"}}>나도 후기 남기기</span>
+              </div>
+          </ReviewMainBox>
         </InfoBox>
-        <MapBox>
-          <Map/>
-        </MapBox>
+        
       </div>
     </Wrap>
   );
@@ -122,17 +155,18 @@ const ImgBox = styled.div`
   height: 400px;
   display: flex;
   justify-content: space-between;
-  margin-top: 15px;
+  margin-top: 25px;
 `;
 const ImgInnerBox1 = styled.div`
-  position: relative;
-  width: 500px;
-  height: 300px;
-  img {
-    width: 500px;
-    height: 300px;
-    margin-top: 10px;
-  }
+    width: 73.5%;
+    height: 600px;
+    img{
+        width: 100%;
+        height: 550px;
+        margin-top: 10px;
+        border-radius:30px;
+        
+    }
   /* .slick-prev:before {
     display: block;
     opacity: 1; // 기존에 숨어있던 화살표 버튼이 보이게
@@ -149,11 +183,13 @@ const ImgInnerBox1 = styled.div`
   } */
 `;
 
+
+
 const ImgInnerBox2 = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 20px;
-  width: 60%;
+  width: 30%;
   height: 600px;
   img {
     margin-top: 10px;
@@ -163,16 +199,18 @@ const ImgInnerBox2 = styled.div`
     border-radius: 30px;
   }
   button {
-    width: 90px;
-    position: relative;
-    font-size: 15px;
-    left: 70%;
-    top: -8%;
-    opacity: 0.7;
+    width: 8%;
+    height: 46px;
+    position: absolute;
+    font-size: 18px;
+    z-index: 1;
+    border-radius: 10px;
     cursor: pointer;
     border: none;
     outline: none;
-    background-color: none;
+    background-color: #fff;
+    top: 65%;
+    right:17%;
   }
 `;
 const InfoBox = styled.div`
@@ -183,13 +221,58 @@ const InfoBox = styled.div`
     margin-bottom: 20px;
   }
 `;
+
+const HashMainBox = styled.div`
+  width: 100%;
+  height: 130px;
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+`
+
+const HashTagBox = styled.div`
+  width: 173px;
+  height: 45px;
+  border-radius: 10px;
+  background-color: #F2F2F7;
+  margin-right: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+`
+
+const IconImg = styled.img`
+  width: 42px;
+  height: 42px;
+  margin-left: 10px;
+  margin-bottom: 5px;
+`
+
 const MapBox = styled.div`
-  width: 70%;
+  width: 100%;
   height: 400px;
-  border: 1px solid black;
+  border-radius: 20px;
   /* display: flex;
   justify-content: center;
   align-items: center; */
 `;
+
+const ReviewMainBox = styled.div`
+  width: 100%;
+  height: 80px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  span{
+    font-size: 48px;
+  }
+`
+
+const StarIcon = styled(FaStar)`
+    font-size:35px;
+    margin-right: 20px;
+`
 
 export default HouseInfoDetail;

@@ -108,16 +108,16 @@ export default SlideImg;
 
 const ImgBox = styled.div`
     width: 36%;
-    height: 245px;
+    height: 235px;
     margin-top: 15px;
     margin-left: 10px;
     div{
-      border-radius: 30px;
+      border-radius: 12px;
     }
     img{
-        border-radius: 30px;
+        border-radius: 12px;
         width: 100%;
-        height: 230px;      
+        height: 220px;      
     }
 `
 
@@ -162,6 +162,7 @@ const DetailImgBox = styled.div`
     width: 70%;
     height: 600px;
     img{
+        width: 100%;
         height: 550px;
         margin-top: 10px;
         border-radius:30px;

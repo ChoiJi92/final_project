@@ -245,7 +245,7 @@ const HostWrite = () => {
           <h2>카테고리 *</h2>
           <div id="infoCategory">
             <Select
-              style={{ width: "100%", height: "50px", border: "1px solid" }}
+              style={{ width: "100%", height: "50px",borderRadius:"10px" }}
               {...register("category", {
                 required: "카테고리는 필수 선택사항입니다 :)",
               })}
@@ -274,7 +274,7 @@ const HostWrite = () => {
               {...register("houseInfo", {
                 required: "숙소형태는 필수 선택사항입니다 :)",
               })}
-              style={{ width: "100%", height: "50px", border: "1px solid" }}
+              style={{ width: "100%", height: "50px",borderRadius:"10px" }}
               displayEmpty
               inputProps={{ "aria-label": "Without label" }}
               defaultValue={data?.houseInfo ? data?.houseInfo : ""}
@@ -297,13 +297,14 @@ const HostWrite = () => {
         <InfoBox>
           <h2>주소 *</h2>
           <div className="regionInput">
-            <div className="mainAddress">
+            <div style={{borderRadius:"10px"}}  className="mainAddress">
               <input
                 placeholder="주소를 검색해 주세요."
                 // {...register("mainAddress", { required: true })}
                 // value={address}
                 readOnly
                 value={address || data?.mainAddress}
+                style={{borderRadius:"10px"}} 
                 {...register("mainAddress")}
                 // defaultValue={address ? address : data?.mainAddress }
               />
@@ -316,6 +317,7 @@ const HostWrite = () => {
                 required: "상세주소는 필수 선택사항입니다 :)",
               })}
               defaultValue={data?.subAddress ? data?.subAddress : ""}
+              style={{borderRadius:"10px"}}
             ></input>
             {addressError ? (
               <ErrorP1>주소는 필수 선택사항입니다 :)</ErrorP1>
@@ -330,7 +332,7 @@ const HostWrite = () => {
           <div id="stepMainBox">
             <div id="stepBox">
               <Select
-                style={{ width: "20%", border: "1px solid" }}
+                style={{ width: "30.2%", borderRadius:"10px" }}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
                 {...register("stepSelect", {
@@ -345,8 +347,9 @@ const HostWrite = () => {
                 <MenuItem value="아니오">아니오</MenuItem>
               </Select>
               {hiddenSetp === "예" ? (
-                <div id="stepInputBox">
+                <div  id="stepInputBox">
                   <StepInput
+                    style={{borderRadius:"10px"}}
                     {...register("stepInfo", { required: true })}
                     placeholder="근무 형태를 입력해 주세요."
                     defaultValue={data?.stepInfo ? data?.stepInfo : ""}
@@ -378,7 +381,7 @@ const HostWrite = () => {
               defaultValue={data?.postContent ? data?.postContent : ""}
               id="text"
             ></textarea>
-            <ErrorP1>{errors.des?.message}</ErrorP1>
+            <ErrorP1>{errors.postContent?.message}</ErrorP1>
           </div>
         </InfoBox>
         <Modal testModal={testModal} />
@@ -429,6 +432,9 @@ const HouseBox = styled.div`
   width: 70%;
   display: flex;
   justify-content: flex-start;
+  h1{
+    font-size: 32px;
+  }
 `;
 
 const ImgMainBox = styled.div`
@@ -447,8 +453,8 @@ const ImgDesBox = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 180px;
-    height: 180px;
+    width: 251px;
+    height: 272px;
     /* margin: 15px 0px 10px 0px; */
     margin-top: 10px;
     border-radius: 10px;
@@ -486,8 +492,8 @@ const List = styled.div`
   }
 `;
 const Img = styled.img`
-  width: 180px;
-  height: 180px;
+  width: 251px;
+  height: 272px;
   margin-top: 10px;
   margin-left: 21px;
   border-radius: 10px;
@@ -510,7 +516,7 @@ const DeleteIcon = styled(FaTimesCircle)`
   position: absolute;
   /* left: -15px; */
   right: 5px;
-  bottom: 150px;
+  bottom: 245px;
   /* top:0px; */
   display: none;
   
@@ -526,7 +532,7 @@ const InfoBox = styled.div`
     display: flex;
     flex-direction: column;
     width: 50%;
-    margin-right: 400px;
+    margin-right: 272px;
   }
   .subAddress {
     height: 50px;
@@ -569,11 +575,11 @@ const InfoBox = styled.div`
     display: flex;
     flex-direction: column;
     width: 50%;
-    margin-right: 400px;
+    margin-right: 272px;
     input {
       height: 55px;
       padding: 10px;
-      border-radius: 5px;
+      border-radius: 10px;
       border: 1px solid;
     }
   }
@@ -582,18 +588,19 @@ const InfoBox = styled.div`
     width: 50%;
     display: flex;
     flex-direction: column;
-    margin-right: 400px;
+    margin-right: 272px;
   }
 
   #infoDes {
     /* height: 300px; */
-    margin-right: 130px;
-    width: 70%;
-
+    margin-right: 272px;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
     textarea {
-      width: 72%;
+      /* width: 71.5%; */
       height: 300px;
-      border-radius: 5px;
+      border-radius: 10px;
       padding: 20px 10px;
       font-size: 15px;
     }
@@ -606,21 +613,21 @@ const InfoBox = styled.div`
     height: 50px;
     display: flex;
     justify-content: space-between;
-    /* margin-right: 200px; */
+    margin-left: -5px;
     /* border: 1px solid; */
   }
   #stepInputBox {
-    width: 55%;
+    width: 45%;
     height: 70px;
-    margin-left: 100px;
-    margin-right: 220px;
+    margin-right: 230px;
+    
   }
   #stepMainBox {
     width: 70%;
     /* height: 60px; */
     display: flex;
     flex-direction: column;
-    margin-right: 130px;
+    /* margin-right: 130px; */
     /* border: 1px solid; */
   }
   .tag {
@@ -657,6 +664,9 @@ const InfoBox = styled.div`
       border: 1px solid;
       margin-bottom: 10px;
     }
+  }
+  h2{
+    font-size: 24px;
   }
 `;
 
