@@ -136,7 +136,7 @@ const CommunityDetail = () => {
                 </div>
               </div>
               <Button>
-                {userId === data.userId ? (
+                {userId !== data.userId ? (
                   <>
                  <Share data={data}></Share>
                     {/* <button onClick={() => {}}>
