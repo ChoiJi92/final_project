@@ -25,6 +25,7 @@ const DialogImg = (props) => {
       TransitionComponent={Transition}
       open={open}
       onClose={onClose}
+      
     >
       <DialogTitle><DeleteIcon onClick={onClose} /></DialogTitle>
       
@@ -42,7 +43,6 @@ const DialogImg = (props) => {
 };
 const Container = styled(DialogContent)`
   width: 100%;
-  border: 1px solid green;
   display: flex;
   justify-content: center;
   /* align-items: center;  */
@@ -53,7 +53,7 @@ const Wrap = styled(DialogContentText)`
   grid-gap: 20px;
   justify-content: center;
   grid-template-columns: repeat(auto-fill, minmax(50%,auto));
-
+  border-radius: 30px;
   /* border: 1px solid red; */
 
   img {

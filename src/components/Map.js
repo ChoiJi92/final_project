@@ -65,7 +65,7 @@ const Map = ({ search, isinfo }) => {
                       <div>4.5 ⭐️</div>
                     </div>
                     <div class="price">₩ 50,000</div>
-                  </div>
+                </div>
                 `
             );
             infowindow.open(map,marker );

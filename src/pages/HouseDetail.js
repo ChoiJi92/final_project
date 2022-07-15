@@ -75,9 +75,9 @@ const HouseInfoDetail = () => {
           </ImgInnerBox2>
         </ImgBox>
         <InfoBox>
-          <h2>해변 근처의 게스트하우스</h2>
+          <h1>해변 근처의 게스트하우스</h1>
           <hr />
-          <div style={{ margin: "10px 0px 10px 0px" }}>
+          <div style={{ margin: "30px 0px 30px 0px" }}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
             Pellentesque quam consequat massa sit aliquam. Dignissim nibh at
             cras magna orci massa. Vehicula molestie facilisi eu, porta tempor
@@ -94,7 +94,7 @@ const HouseInfoDetail = () => {
             arcu, facilisis felis interdum.
           </div>
           <hr />
-          <h2>숙소 위치</h2>
+          <h1 style={{"marginTop":"20px"}}>숙소 위치</h1>
         </InfoBox>
         <MapBox>
           <Map/>
@@ -112,7 +112,6 @@ const Wrap = styled.div`
   justify-content: center;
   #detailMainBox {
     width: 70%;
-    border: 1px solid black;
     /* display: flex;
         justify-content: center;
         flex-direction: column; */
@@ -120,7 +119,7 @@ const Wrap = styled.div`
 `;
 
 const ImgBox = styled.div`
-  height: 320px;
+  height: 400px;
   display: flex;
   justify-content: space-between;
   margin-top: 15px;
@@ -154,12 +153,14 @@ const ImgInnerBox2 = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 20px;
-  width: 50%;
-  height: 500px;
+  width: 60%;
+  height: 600px;
   img {
     margin-top: 10px;
+    margin-bottom: 10px;
     width: 100%;
-    height: 195px;
+    height: 265px;
+    border-radius: 30px;
   }
   button {
     width: 90px;
@@ -175,12 +176,15 @@ const ImgInnerBox2 = styled.div`
   }
 `;
 const InfoBox = styled.div`
-  width: 60%;
+  width: 70%;
   height: auto;
-  margin-top: 120px;
+  margin-top: 200px;
+  h1{
+    margin-bottom: 20px;
+  }
 `;
 const MapBox = styled.div`
-  width: 60%;
+  width: 70%;
   height: 400px;
   border: 1px solid black;
   /* display: flex;
