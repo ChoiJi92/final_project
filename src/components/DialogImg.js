@@ -25,6 +25,8 @@ const DialogImg = (props) => {
       TransitionComponent={Transition}
       open={open}
       onClose={onClose}
+      PaperProps={{
+        style: { borderRadius: 30 }   }}
       
     >
       <DialogTitle><DeleteIcon onClick={onClose} /></DialogTitle>
@@ -45,6 +47,7 @@ const Container = styled(DialogContent)`
   width: 100%;
   display: flex;
   justify-content: center;
+  border-radius: 30px;
   /* align-items: center;  */
 `;
 const Wrap = styled(DialogContentText)`
@@ -58,7 +61,8 @@ const Wrap = styled(DialogContentText)`
 
   img {
     width: 100%;
-    height: 500px;
+    height: 592px;
+    margin-top: 10px;
     /* border: 1px solid; */
     /* object-fit: none; */
     /* object-fit: scale-down; */
@@ -66,12 +70,14 @@ const Wrap = styled(DialogContentText)`
     /* object-fit: fill; */
     /* object-fit: cover; */
     overflow: hidden;
+    border-radius: 30px;
     
   }
 `;
 
 const DeleteIcon = styled(FaTimes)`
   cursor: pointer;
+  opacity: 0.4;
 `
 
 export default DialogImg;

@@ -205,8 +205,10 @@ const HouseInfo = () => {
                                 </div>
                                 <span>000,000원 1박</span>
                                 <LikeBox>
-                                    
-                                    <StarIcon/>
+                                    <div style={{}}>
+                                        <StarIcon/>
+                                        <span style={{"margin":"5px 0px 3px 5px", "fontSize":"27px"}}>4.0</span>
+                                    </div>
                                     <HeartIcon onClick={()=>{onClick(isList[idx])}}/>
                                     
                                 </LikeBox>
@@ -218,7 +220,7 @@ const HouseInfo = () => {
                     })}
             </ContentsBox> 
             <MapBox>
-               <Map isinfo={true}/>
+               <Map isinfo={'isinfo'}/>
             </MapBox>
             </div>
         </MainBox>
@@ -244,7 +246,7 @@ const SpotMainBox = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0px 255px;
+    padding: 0px 243px;
     #spot{
         display: flex;
         flex-direction: column;
@@ -292,7 +294,7 @@ const SpotMiniBox = styled.div`
 
 const LiveMainBox = styled.div`
     width: 100%;
-    height: 80px;
+    height: 60px;
     display: flex;
     padding: 0px 255px;
     align-items: center;
@@ -323,31 +325,31 @@ const ContentsBox = styled.div`
         margin-top: 10px;
     }
     #houseCount{
-        margin: 15px 0px 5px 15px;
+        margin: 15px 0px 0px 15px;
     }
 `
 const OrderingBox = styled.div`
     display: flex;
     justify-content: space-between;
-    margin: 10px 0px 20px 10px;
+    margin: 20px 0px 20px 10px;
     div{
         width: 25%;
-        height: 45px;
+        height: 50px;
         border: 1px solid black;
         margin: 0px 15px 0px 5px;
         display: flex;
         justify-content: center;
         align-items: center;
         border-radius: 10px;
-        font-size: 15px;
+        font-size: 21px;
     }
 `
 
 const ContentsListBox = styled.div`
-    height: 270px;  
+    height: 260px;  
     display: flex;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    border-radius: 30px;
+    box-shadow: 0px 6px 32px rgba(0, 0, 0, 0.12);
+    border-radius: 20px;
     margin-top: 30px;
     width: 99%;
     margin: 10px 10px 2px 10px;
@@ -377,18 +379,25 @@ const DesBox = styled.div`
 const LikeBox = styled.div`
     display:flex;
     justify-content: space-between;
-    height: 30px;
+    height: 20px;
     align-items: center;
     margin-top: 10px;
+    margin-bottom: 10px;
+    div{
+        display: flex;
+        align-items: center;
+    }
+    
 `
 
 const HeartIcon = styled(FaHeart)`
     color: gray;
     cursor: pointer;
+    font-size:25px;
 
 `
 const StarIcon = styled(FaStar)`
-
+    font-size:25px;
 `
 
 const MapBox = styled.div`

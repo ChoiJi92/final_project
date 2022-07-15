@@ -6,9 +6,9 @@ import { MdOutlineCancel } from "react-icons/md";
 import "../assests/css/map.css";
 const { kakao } = window;
 
-const Map = ({ search, isinfo }) => {
+const Map = ({ search, MapRadius, isinfo }) => {
   useEffect(() => {
-    let infowindow = new kakao.maps.InfoWindow({ zIndex: 1 , removable:true});
+    let infowindow = new kakao.maps.InfoWindow({ 'border-radius':"30px" ,zIndex: 0 ,  removable:true} );
     const container = document.getElementById("map"); // 지도를 표시할 div
 
     const options = {
@@ -58,7 +58,10 @@ const Map = ({ search, isinfo }) => {
           kakao.maps.event.addListener(marker, "click", function () {
             // 마커를 클릭하면 장소명이 인포윈도우에 표출
             infowindow.setContent(
-              `<div class="card">
+              
+              `
+              <div >
+              <div class="card">
                     <div class="backimage"></div>
                     <div class="contents">
                       <div>${addressList[i]}</div>
@@ -66,9 +69,10 @@ const Map = ({ search, isinfo }) => {
                     </div>
                     <div class="price">₩ 50,000</div>
                 </div>
+                <div/>
                 `
             );
-            infowindow.open(map,marker );
+            infowindow.open(map,marker);
           });
           // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
           map.setCenter(coords);
@@ -77,13 +81,12 @@ const Map = ({ search, isinfo }) => {
     }
   }, []);
   // 550px 450px 600px
-  console.log(isinfo)
   return (
   
-    <Container>
+    <Container >
       {/* {isinfo ? (<div id="map" style={{ width: "100%", height: "550px" }}></div>) :  ("")}
       {isdetail ? (<div id="map" style={{ width: "100%", height: "400px" }}></div>): ("")} */}
-      <div id="map"  ></div>
+      <div id="map" isinfo={isinfo}   ></div>
     </Container>
   );
 };
@@ -96,9 +99,11 @@ const Container = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  border-radius: 20px;
   #map{
     width: 100%;
     height: 100%;
+    /* border-radius: ${(isinfo)=> isinfo.isinfo ? "20px":"none"}; */
     /* height: ${(props)=> props.isinfo ? "550px":"400px"}; */
   }
 `;

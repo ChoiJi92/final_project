@@ -130,7 +130,7 @@ const ProfilBox = styled.div`
             padding: 15px 65px;
             border-radius:10px;
             border: none;
-            background-color: #ecf0f1;
+            background-color: #F2F2F7;
             font-size: 20px;
         }
     }
@@ -172,7 +172,7 @@ const DefaultImgBox = styled.div`
     justify-content: space-between;
     align-items: center;
     border-radius: 10px;
-    background-color: #ecf0f1;
+    background-color: #F2F2F7;
         img{
             width: 30%;
             height: 230px;
