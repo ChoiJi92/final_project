@@ -7,7 +7,6 @@ import all from "../assests/css/모두보기.png";
 import land from "../assests/css/내륙.png";
 import tour from "../assests/css/관광지근처.png";
 import town from "../assests/css/조용한마을.png";
-import like from "../assests/css/like.png";
 import scrap from "../assests/css/scrap.png";
 import nextIcon from "../assests/css/nextIcon.png";
 import jeju7 from "../assests/css/제주1.jpeg";
@@ -49,7 +48,7 @@ const Community = () => {
               </div>
               <div className="like">
                 <div>
-                  <img src={like} alt="좋아요"></img>
+                  {/* <img src={like} alt="좋아요"></img> */}
                   <p>00개</p>
                 </div>
                 <div>

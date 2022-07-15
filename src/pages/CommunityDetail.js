@@ -6,8 +6,11 @@ import Comment from "../components/CommentList";
 import instance from "../shared/axios";
 import "@toast-ui/editor/dist/toastui-editor-viewer.css";
 import { Viewer } from "@toast-ui/react-editor";
-import KakaoShare from "../components/KakaoShare";
 import shareIcon from "../assests/css/shareIcon.png";
+import editIcon from "../assests/css/editIcon.png";
+import deleteIcon from "../assests/css/deleteIcon.png";
+import shareIcon2 from "../assests/css/shareIcon2.png";
+import unlikeIcon from "../assests/css/unlikeIcon.png";
 import CommentList from "../components/CommentList";
 
 const CommunityDetail = () => {
@@ -47,14 +50,14 @@ const CommunityDetail = () => {
       refetchOnWindowFocus: false, // 다른화면 갔다와도 재호출 안되게 함
     }
   );
-  const commentData = loadComment.data
-  
+  const commentData = loadComment.data;
+
   // 코멘트 생성
   const createComment = useMutation(
     ["createComment"],
     (comment) =>
       instance
-        .post(`/post/${params.id}/comment`,{comment})
+        .post(`/post/${params.id}/comment`, { comment })
         .then((res) => console.log(res.data)),
     {
       onSuccess: () => {
@@ -65,7 +68,7 @@ const CommunityDetail = () => {
   );
   const onKeyPress = (e) => {
     if (e.key === "Enter") {
-      console.log(commentRef.current.value)
+      console.log(commentRef.current.value);
       createComment.mutate(commentRef.current.value);
       commentRef.current.value = "";
     }
@@ -86,6 +89,11 @@ const CommunityDetail = () => {
       <Image image={data.thumbnailURL}></Image>
       <Wrap>
         <Content>
+          <div className="hashTag">
+            <p>#제주도 동부</p>
+            <p>#김녕해수욕장</p>
+            <p>#사람없는</p>
+          </div>
           <div>
             <h1>{data.title}</h1>
             <User>
@@ -99,8 +107,18 @@ const CommunityDetail = () => {
               <Button>
                 {userId !== data.userId ? (
                   <>
-                    <KakaoShare></KakaoShare>
-                    <button>좋아요</button>
+                    <button onClick={() => {}}>
+                      공유
+                      <img className="shareIcon" src={shareIcon} alt="공유" />
+                    </button>
+                    <button style={{ width: "40%" }} onClick={() => {}}>
+                      좋아요
+                      <img
+                        className="unlikeIcon"
+                        src={unlikeIcon}
+                        alt="좋아요"
+                      />
+                    </button>
                   </>
                 ) : (
                   <>
@@ -110,6 +128,7 @@ const CommunityDetail = () => {
                       }}
                     >
                       수정
+                      <img className="editIcon" src={editIcon} alt="수정" />
                     </button>
                     <button
                       onClick={() => {
@@ -118,6 +137,7 @@ const CommunityDetail = () => {
                       }}
                     >
                       삭제
+                      <img className="deleteIcon" src={deleteIcon} alt="삭제" />
                     </button>
                   </>
                 )}
@@ -176,11 +196,10 @@ const Container = styled.div`
   align-items: center;
 `;
 const Image = styled.div`
-  border: 1px solid;
   border-radius: 20px;
-  width: 80%;
+  width: 70%;
   height: 550px;
-  margin: 40px 0;
+  margin: 40px 0 60px 0;
   background: url(${(props) => props.image}) no-repeat;
   background-size: cover;
 `;
@@ -188,25 +207,58 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 80%;
+  width: 70%;
   margin-bottom: 80px;
   .otherContent {
-    width: 29%;
-    height: 600px;
-    border: 1px solid;
-    border-radius: 5px;
+    width: 32%;
+    height: 657px;
+    padding: 20px;
+    border-radius: 20px;
+    margin-left: 20px;
+    box-shadow: 0px 12px 42px rgba(0, 0, 0, 0.2);
   }
 `;
 const Content = styled.div`
   width: 70%;
   height: 800px;
+  .hashTag {
+    height: 45px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 40px;
+    p {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      margin-right: 20px;
+      width: 173px;
+      height: 45px;
+      border-radius: 10px;
+      border: none;
+      background: #c7c7cc;
+      font-size: 21px;
+      font-weight: 600;
+      line-height: 25.06px;
+    }
+  }
   h1 {
-    margin-bottom: 30px;
+    margin-bottom: 60px;
+    font-weight: 600;
+    font-size: 48px;
+    line-height: 57px;
   }
   .post {
-    margin-top: 20px;
+    border: 1px solid;
+    margin-top: 50px;
     .toastui-editor-contents p {
-      font-size: 16px;
+      /* font-weight: 300; */
+      font-size: 18px;
+      line-height: 150%;
+    }
+    .toastui-editor-contents img {
+      border-radius: 20px;
     }
   }
 `;
@@ -219,11 +271,11 @@ const User = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-  }
-  img {
-    border-radius: 50%;
-    width: 96px;
-    height: 96px;
+    img {
+      border-radius: 50%;
+      width: 96px;
+      height: 96px;
+    }
   }
   .profile {
     display: flex;
@@ -236,7 +288,7 @@ const User = styled.div`
       font-weight: 500;
       line-height: 42px;
     }
-    .time{
+    .time {
       font-size: 28px;
       font-weight: 300;
       line-height: 42px;
@@ -244,38 +296,78 @@ const User = styled.div`
   }
 `;
 const Button = styled.div`
-  width: 20%;
+  width: 40%;
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  button {
-    width: 30%;
-    height: 40px;
-    border-radius: 5px;
-    border: none;
+  .shareIcon {
+    width: 32px;
+    height: 32px;
+    margin-left: 6px;
+  }
+  .unlikeIcon {
+    width: 32px;
+    height: 32px;
     margin-left: 10px;
-    font-size: 15px;
+  }
+  .editIcon {
+    width: 32px;
+    height: 32px;
+    margin-left: 6px;
+  }
+  .deleteIcon {
+    width: 32px;
+    height: 32px;
+    margin-left: 10px;
+  }
+  button {
+    /* width: 128px; */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 35%;
+    height: 58px;
+    border-radius: 10px;
+    border: none;
+    margin-left: 20px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 160%;
+    background-color: #e5e5ea;
+    color: #48484a;
     cursor: pointer;
   }
 `;
 const WrapBottom = styled.div`
   display: flex;
   flex-direction: column;
-  width: 80%;
-  margin: 20px 0;
+  width: 70%;
+  margin: 151px 0 30px 0;
   border-bottom: 1px solid;
+  h2 {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 38px;
+    color: #48484a;
+  }
   div {
-    margin: 30px 0;
-    width: 60%;
-    height: 200px;
-    border: 1px solid;
+    margin: 24px 0 50px 0;
+    width: 67%;
+    height: 300px;
+    border: none;
+    background: #ffffff;
+    box-shadow: 0px 12px 42px rgba(0, 0, 0, 0.16);
+    border-radius: 20px;
   }
 `;
 const Count = styled.div`
-  width: 80%;
-  margin-bottom: 50px;
+  width: 70%;
+  margin-bottom: 54px;
   .likeShare {
-    width: 61%;
+    width: 67%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -287,6 +379,11 @@ const Count = styled.div`
   }
   p {
     margin-right: 20px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29px;
+    color: #000000;
   }
   img {
     cursor: pointer;
@@ -295,41 +392,55 @@ const Count = styled.div`
 const CommentWrap = styled.div`
   display: flex;
   flex-direction: column;
-  width: 80%;
+  width: 70%;
   margin-bottom: 50px;
   font-size: large;
+  h3 {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 43px;
+    color: #000000;
+  }
   .comment {
     width: 100%;
     display: flex;
     flex-direction: row;
     /* align-items: center; */
-    margin-top: 20px;
-
+    margin-top: 30px;
     img {
-      width: 80px;
-      height: 80px;
+      width: 96px;
+      height: 96px;
       border-radius: 50%;
     }
     .commentInput {
-      width: 50%;
+      width: 58%;
       display: flex;
       align-items: center;
-      border: 1px solid;
+      border: 1px solid #d9d9d9;
       border-radius: 10px;
-      margin-left: 20px;
+      margin-left: 30px;
       input {
-        width: 90%;
+        width: 89%;
         margin-left: 15px;
         height: 80px;
         border: none;
         outline: none;
-        font-size: large;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 24px;
+        line-height: 29px;
       }
       button {
+        border: 1px solid;
         height: 80px;
         background-color: transparent;
         border: none;
-        font-size: large;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 24px;
+        line-height: 29px;
+        color: #8e8e93;
         cursor: pointer;
       }
     }
