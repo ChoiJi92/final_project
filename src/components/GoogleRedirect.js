@@ -1,6 +1,4 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { GoogleLoginDB } from '../redux/modules/userSlice';
 import instance from '../shared/axios';
 
 const GoogleRedirect = () => {

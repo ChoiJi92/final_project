@@ -1,15 +1,12 @@
-import React, { useRef, useState } from "react";
+import React, { useRef} from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import Comment from "../components/CommentList";
 import instance from "../shared/axios";
 import "@toast-ui/editor/dist/toastui-editor-viewer.css";
 import { Viewer } from "@toast-ui/react-editor";
-import shareIcon from "../assests/css/shareIcon.png";
 import editIcon from "../assests/css/editIcon.png";
 import deleteIcon from "../assests/css/deleteIcon.png";
-import shareIcon2 from "../assests/css/shareIcon2.png";
 import unlikeIcon from "../assests/css/unlikeIcon.png";
 import likeIcon from "../assests/css/likeIcon.png";
 import CommentList from "../components/CommentList";
@@ -17,19 +14,15 @@ import Share from "../components/Share";
 import Share2 from "../components/Share2";
 
 const CommunityDetail = () => {
-  const [like, setLike] = useState(false);
   const queryClient = useQueryClient();
   const params = useParams();
   const navigate = useNavigate();
-  // const [comment, setComment] = useState();
   const commentRef = useRef();
-  // const commentChange = (e) => {
-  //   setComment(e.target.value);
-  // };
+
   const userId = localStorage.getItem("userId");
   const userImage = localStorage.getItem("userImage");
   const { data } = useQuery(
-    ["detailContent"],
+    ["detailContent",params.id],
     () =>
       instance.get(`/post/${params.id}`).then((res) => {
         console.log(res.data);
@@ -107,7 +100,9 @@ const CommunityDetail = () => {
   const deleteContent = useMutation(
     ["deleteContent"],
     (postId) =>
-      instance.delete(`/post/${postId}`).then((res) => console.log(res.data)),
+      instance.delete(`/post/${postId}`).then((res) => {
+        console.log(res.data)
+      navigate(-1)}),
     {
       onSuccess: () => {
         // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
@@ -146,7 +141,6 @@ const CommunityDetail = () => {
                     {data.islike ? (
                       <button style={{ width: "40%" }} onClick={() => {
                         unLike.mutate()
-                        setLike(false)
 
                       }}>
                         좋아요
@@ -159,7 +153,6 @@ const CommunityDetail = () => {
                     ) : (
                       <button style={{ width: "40%" }} onClick={() => {
                         Like.mutate()
-                        setLike(true)
                       }}>
                         좋아요
                         <img

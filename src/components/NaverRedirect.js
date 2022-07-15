@@ -1,6 +1,4 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { NaverLoginDB } from '../redux/modules/userSlice';
 import instance from '../shared/axios';
 
 const NaverRedirect = () => {

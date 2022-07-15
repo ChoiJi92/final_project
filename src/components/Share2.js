@@ -37,7 +37,7 @@ const Share2 = ({data}) => {
               horizontal: "center",
             }}
           >
-            <Typography sx={{ p: 2 }}>
+            <Typography sx={{ p: 2 }} component="div">
               <GridContainer>
                 <FacebookShareButton url={currentUrl}>
                   <FacebookIcon

@@ -3,10 +3,8 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
-import { Provider } from "react-redux";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-import store from "./redux/store";
 import reportWebVitals from "./reportWebVitals";
 import ScrollToTop from "./components/ScrollToTop";
 import {RecoilRoot} from 'recoil'
@@ -21,7 +19,6 @@ const queryClient = new QueryClient({
 }
 );
 root.render(
-  <Provider store={store}>
     <QueryClientProvider client={queryClient}>
       {/* devtools */}
       {/* <ReactQueryDevtools initialIsOpen={true} /> */}
@@ -34,7 +31,6 @@ root.render(
       </Suspense>
       </RecoilRoot>
     </QueryClientProvider>
-  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

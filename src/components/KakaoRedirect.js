@@ -1,13 +1,10 @@
 import React, { useEffect } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { kakaoLoginDB } from "../redux/modules/userSlice";
 import instance from "../shared/axios";
 
 const KakaoRedirect = () => {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
   // let params = new URL(document.location.toString()).searchParams;
   let params = new URL(window.location.href).searchParams;
   let code = params.get("code"); // 인가코드 받는 부분

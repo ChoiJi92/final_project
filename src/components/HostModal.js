@@ -26,7 +26,7 @@ const HostModal = () => {
   const host = localStorage.getItem("host");
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
-    if (!host) {
+    if (host) {
       setOpen(true);
     }
     else{

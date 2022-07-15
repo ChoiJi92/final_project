@@ -27,7 +27,6 @@ const Community = () => {
       instance.get("/post").then((res) => {
         console.log(res.data.allPost);
         return res.data.allPost;
-        // return res.data
       }),
     {
       refetchOnWindowFocus: false, // 다른화면 갔다와도 재호출 안되게 함

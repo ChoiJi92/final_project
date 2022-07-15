@@ -10,6 +10,8 @@ const Mypage = () => {
     const [myWrite, setMyWrite] = useState(true);
     const nickName = localStorage.getItem("nickName");
     const userImage = localStorage.getItem("userImage");
+    const email = localStorage.getItem("email");
+    const host = localStorage.getItem("host");
     const list = [1,2,3,4,5,6,7,8,9,10]
     
     useEffect(()=>{
@@ -28,15 +30,16 @@ const Mypage = () => {
         <MainBox>
             <ProfilBox>
                 <div style={{"display":"flex","alignItems":"center"}}>
-                    <img src={userImage} style={{"width":"75px","height":"75px","borderRadius":"50%"}}/>
+                    <img src={userImage} style={{"width":"75px","height":"75px","borderRadius":"50%"}} alt="프로필"/>
                     <div id="profile">
                         <h3 style={{}}>{nickName}</h3>
-                        <span style={{ "opacity":"0.6"}}>mail1234@mail.com</span>
+                        <span style={{ "opacity":"0.6"}}>{email}</span>
                     </div>
                 </div>
                 <div id="btn">
                     <button>개인 정보 수정</button>
-                    <button>호스트 되기</button>
+                    {host && <button>호스트 되기</button> }
+                    
                 </div>
             </ProfilBox>
 
