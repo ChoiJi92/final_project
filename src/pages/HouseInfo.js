@@ -33,6 +33,9 @@ const HouseInfo = () => {
     const [firstUnderbar, setFirstUnderbar] = useState(false);
     const [secondUnderbar, setSecondtUnderbar] = useState(false);
 
+    const liveCozy = useRef(null);
+    const liveBudget = useRef(null);
+
     const liveUnderlineRef = useRef(null);
     const spotUnderlineRef = useRef(null); 
     const firstBox = useRef(null);
@@ -93,6 +96,7 @@ const HouseInfo = () => {
         liveUnderlineRef.current.style.width = liveFirstBox.current.offsetWidth+"px";
         setSFLeftPosition(liveFirstBox.current.offsetLeft+"px");
         setSFRigthPosition(liveFirstBox.current.offsetWidth+"px");
+        liveCozy.current.style.fontWeight = "bolder";
     }
 
     const liveOnLeave = () => {
@@ -111,6 +115,19 @@ const HouseInfo = () => {
     const liveOnClick = (e) => {
         liveUnderlineRef.current.style.left = e.currentTarget.offsetLeft+"px";
         liveUnderlineRef.current.style.width = e.currentTarget.offsetWidth+"px";
+        console.log(e.target.innerText)
+        // console.log(liveCozy.current.style.fontWeight)
+        
+        if(e.target.innerText === "편하게 한달 살기"){
+            liveBudget.current.style.fontWeight = ""
+            liveCozy.current.style.fontWeight = "bolder"
+        }
+        else{
+            liveCozy.current.style.fontWeight = ""
+            liveBudget.current.style.fontWeight = "bolder"
+        }
+        // liveCozy.current.style.fontWeight = "bolder"
+        // liveBudget.current.style.fontWeight = "bolder"
         setSecondPosition(e.currentTarget.offsetLeft+"px");
         setSRigthPosition(e.currentTarget.offsetWidth+"px");
         setSecondtUnderbar(true);
@@ -119,10 +136,10 @@ const HouseInfo = () => {
         <MainBox>
             <LiveMainBox>
                 <div ref={liveFirstBox} onMouseLeave={liveOnLeave} onMouseOver={liveOnOver} onClick={liveOnClick} id="live" >
-                    <p>편하게 한달 살기</p>
+                    <p ref={liveCozy} onClick={liveOnClick}>편하게 한달 살기</p>
                 </div>
-                <div style={{}} onMouseLeave={liveOnLeave} onMouseOver={liveOnOver} onClick={liveOnClick} id="live1">
-                    <p style={{}}>최소비용으로 한달 살기</p>
+                <div onMouseLeave={liveOnLeave} onMouseOver={liveOnOver} onClick={liveOnClick} id="live1">
+                    <p ref={liveBudget} >최소비용으로 한달 살기</p>
                 </div>
                 <LiveUnderBar ref={liveUnderlineRef} />
             </LiveMainBox>
@@ -171,7 +188,7 @@ const HouseInfo = () => {
                     <div>위치별</div>
                     <div>추천순</div>
                 </OrderingBox>
-                <div id="houseCount">{isList.length} 개의 숙소</div>
+                <div style={{"fontSize":"22px"}} id="houseCount">{isList.length} 개의 숙소</div>
                     {isList.map((item, idx)=>{
                         return(
                         <div id="testBox">
@@ -179,7 +196,7 @@ const HouseInfo = () => {
                             <SlideImg listImg={listImg}/>
                             <DesBox>
                                 <StyledLink to={`/house/${idx}`}>
-                                <h3>해변근처의 게스트하우스ㅁㅁㅁ</h3>
+                                <h2>해변근처의 게스트하우스ㅁㅁㅁ</h2>
                                 </StyledLink>
                                 <div id="infoHouse">
                                 <span>한달살기의 조건에 관한 설명 ...한달살기의 조건에 관한 설명 ...한달살기의 조건에 관한 설명 ...
@@ -222,32 +239,36 @@ const MainBox = styled.div`
 
 const SpotMainBox = styled.div`
     width: 100%;
-    height: 100px;
+    height: 120px;
     border: 1px solid black;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0px 215px;
+    padding: 0px 255px;
     #spot{
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        width: 7%;
-        margin-top: 10px;
+        width: 13%;
+        margin-left: 40px;
+        /* margin-top: 10px; */
     }
     span{
-        margin-top: 3px;
-        font-size: 80%;
+        margin-top: 15px;
+        margin-right: 16px;
+        font-size: 100%;
     }
+    
+    
 `
 const SpotUnderBar = styled.div`
     position: absolute;
     height: 4px;
     background-color: #bdc3c7;
     transition: 0.5s;
-    top: 245px;
+    top: 295px;
     /* left: 
     width: 152px; */
 `
@@ -256,46 +277,50 @@ const LiveUnderBar = styled.div`
     position: absolute;
     height: 4px;
     transition: 0.5s;
-    top:146px;
+    top:176px;
     background-color: #bdc3c7;
 `
 
 const SpotMiniBox = styled.div`
-    width: 50px;
-    height: 50px;
-    border: 1px solid black;
+    width: 40%;
+    height: 40px;
     img{
-        width: 100%;
-        height: 50px;
+        width: 80%;
+        height: 55px;
     }
 `
 
 const LiveMainBox = styled.div`
     width: 100%;
-    height: 50px;
+    height: 80px;
     display: flex;
-    padding: 0px 200px;
+    padding: 0px 255px;
     align-items: center;
     div{
         cursor: pointer;
     }
         p{
-            font-size: 20px;
+            font-size: 30px;
         }
+    #live{
+        margin-left: 35px;
+    }
     #live1{
         margin-left: 40px;
     }
 `
 
 const ContentsBox = styled.div`
-    width: 40%;
-    height: 70vh;
+    width: 35%;
+    height: 90vh;
     overflow-y: auto;
-    margin-left: 190px;
+    margin-left: 280px;
+    margin-right: 10px;
     display: flex;
     flex-direction: column;
     #testBox{
         margin-right: 10px;
+        margin-top: 10px;
     }
     #houseCount{
         margin: 15px 0px 5px 15px;
@@ -304,27 +329,26 @@ const ContentsBox = styled.div`
 const OrderingBox = styled.div`
     display: flex;
     justify-content: space-between;
-    margin-top: 10px;
-    margin-left: 10px;
+    margin: 10px 0px 20px 10px;
     div{
-        width: 18%;
-        height: 30px;
+        width: 25%;
+        height: 45px;
         border: 1px solid black;
         margin: 0px 15px 0px 5px;
         display: flex;
         justify-content: center;
         align-items: center;
-        border-radius: 5px;
+        border-radius: 10px;
         font-size: 15px;
     }
 `
 
 const ContentsListBox = styled.div`
-    height: 220px;  
+    height: 270px;  
     display: flex;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     border-radius: 30px;
-    margin-top: 10px;
+    margin-top: 30px;
     width: 99%;
     margin: 10px 10px 2px 10px;
     align-items: center;
@@ -335,7 +359,7 @@ const DesBox = styled.div`
     flex-direction: column;
     margin-right: 10px;
     width: 100%;
-    height: 180px;
+    height: 220px;
     margin-left: 15px;
     h3{
  
@@ -369,7 +393,7 @@ const StarIcon = styled(FaStar)`
 
 const MapBox = styled.div`
     width: 50%;
-    height: 545px;
+    height: 90vh;
     display: flex ;
     justify-content: center;
     align-items: center;

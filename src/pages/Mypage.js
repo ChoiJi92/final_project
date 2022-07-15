@@ -27,11 +27,11 @@ const Mypage = () => {
     return (
         <MainBox>
             <ProfilBox>
-                <div style={{"display":"flex"}}>
-                        <img src={userImage} style={{"width":"50px","height":"50px","borderRadius":"50%"}}/>
+                <div style={{"display":"flex","alignItems":"center"}}>
+                    <img src={userImage} style={{"width":"75px","height":"75px","borderRadius":"50%"}}/>
                     <div id="profile">
                         <h3 style={{}}>{nickName}</h3>
-                        {/* <span style={{ "opacity":"0.6"}}>mail1234@mail.com</span> */}
+                        <span style={{ "opacity":"0.6"}}>mail1234@mail.com</span>
                     </div>
                 </div>
                 <div id="btn">
@@ -44,7 +44,7 @@ const Mypage = () => {
 
             <MyDefaultBox>
                 <div id="mylike">
-                    <h2>내 좋아요</h2>
+                    <h1>내 좋아요</h1>
                     <span>{myLike ? (<DownIcon onClick={likeClick}/>) : (<UpIcon onClick={likeClick}/>)}</span>
                 </div>
                 {myLike ? (
@@ -77,7 +77,7 @@ const Mypage = () => {
 
             <MyDefaultBox>
                 <div id="myWrite">
-                    <h2>내가 쓴 글</h2>
+                    <h1>내가 쓴 글</h1>
                     <span>{myWrite ? (<DownIcon onClick={writeClick}/>) : (<UpIcon onClick={writeClick}/>)}</span>
                 </div>
                 {myWrite ? (
@@ -119,30 +119,31 @@ const MainBox = styled.div`
 `
 
 const ProfilBox = styled.div`
-    width: 60%;
+    width: 42%;
     height: 110px;
-    margin-top: 50px;
+    margin-top: 100px;
     #btn{
         display: flex;
         justify-content: space-between;
-        margin-top:20px;
+        margin-top:30px;
         button{
-            padding: 10px 40px;
+            padding: 15px 65px;
             border-radius:10px;
             border: none;
             background-color: #ecf0f1;
+            font-size: 20px;
         }
     }
     #profile{
         display: flex;
         flex-direction: column;
-        margin: 5px 0px 0px 10px;
+        margin: 0px 0px 3px 20px;
     }
 `
 
 const MyDefaultBox = styled.div`
-    width: 60%;
-    margin-top: 20px;
+    width: 45%;
+    margin-top: 100px;
     #mylike{
         display: flex;
         justify-content: space-between;
@@ -157,14 +158,15 @@ const MyDefaultBox = styled.div`
     span{
         cursor: pointer;
     }
-    h2{
-            margin-left: 20px;
+    h1{
+            margin-left: 35px;
+            margin-bottom: 10px;
         }
 `
 
 const DefaultImgBox = styled.div`
     width: 100%;
-    height: 190px;
+    height: 270px;
     margin-top: 10px;
     display: flex;
     justify-content: space-between;
@@ -173,7 +175,7 @@ const DefaultImgBox = styled.div`
     background-color: #ecf0f1;
         img{
             width: 30%;
-            height: 170px;
+            height: 230px;
             margin: 0px 10px 0px 10px;
         }
 `
@@ -191,7 +193,7 @@ const HiddenMyLikeBox = styled.div`
     }    
     img{
             width: 100%;
-            height: 170px;
+            height: 230px;
     }
     #icons{
         display: flex;

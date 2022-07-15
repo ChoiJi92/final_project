@@ -228,7 +228,7 @@ const HostWrite = () => {
         </ImgMainBox>
         <hr />
         <InfoBox>
-          <h3>숙소 이름 *</h3>
+          <h2>숙소 이름 *</h2>
           <div id="infoTitle">
             <input
               placeholder="숙소 이름을 입력해주세요."
@@ -242,10 +242,10 @@ const HostWrite = () => {
           </div>
         </InfoBox>
         <InfoBox>
-          <h3>카테고리 *</h3>
+          <h2>카테고리 *</h2>
           <div id="infoCategory">
             <Select
-              style={{ width: "100%", height: "40px", border: "1px solid" }}
+              style={{ width: "100%", height: "50px", border: "1px solid" }}
               {...register("category", {
                 required: "카테고리는 필수 선택사항입니다 :)",
               })}
@@ -268,13 +268,13 @@ const HostWrite = () => {
         </InfoBox>
 
         <InfoBox>
-          <h3>숙소형태 *</h3>
+          <h2>숙소형태 *</h2>
           <div id="infoHouse">
             <Select
               {...register("houseInfo", {
                 required: "숙소형태는 필수 선택사항입니다 :)",
               })}
-              style={{ width: "100%", height: "40px", border: "1px solid" }}
+              style={{ width: "100%", height: "50px", border: "1px solid" }}
               displayEmpty
               inputProps={{ "aria-label": "Without label" }}
               defaultValue={data?.houseInfo ? data?.houseInfo : ""}
@@ -295,7 +295,7 @@ const HostWrite = () => {
         </InfoBox>
 
         <InfoBox>
-          <h3>주소 *</h3>
+          <h2>주소 *</h2>
           <div className="regionInput">
             <div className="mainAddress">
               <input
@@ -326,11 +326,11 @@ const HostWrite = () => {
         </InfoBox>
 
         <InfoBox>
-          <h3>스텝을 구하시나요? *</h3>
+          <h2>스텝을 구하시나요? *</h2>
           <div id="stepMainBox">
             <div id="stepBox">
               <Select
-                style={{ width: "30%", border: "1px solid" }}
+                style={{ width: "20%", border: "1px solid" }}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
                 {...register("stepSelect", {
@@ -360,7 +360,7 @@ const HostWrite = () => {
           </div>
         </InfoBox>
         <InfoBox>
-          <h3>링크 </h3>
+          <h2>링크 </h2>
           <div id="infoLink">
             <input
               placeholder="숙소 사이트, SNS 등 URL을 입력해주세요."
@@ -370,7 +370,7 @@ const HostWrite = () => {
           </div>
         </InfoBox>
         <InfoBox>
-          <h3>설명 *</h3>
+          <h2>설명 *</h2>
           <div id="infoDes">
             <textarea
               placeholder="숙소에 대한 정보를 최대한 상세하게 입력해주시면 더 많은 고객을 만나실 수 있어요."
@@ -461,7 +461,7 @@ const ImgIcon = styled(FaImage)`
 `;
 
 const ImgBox = styled.div`
-  width: 80%;
+  width: 81.5%;
   height: auto;
   display: flex;
   flex-wrap: wrap;
@@ -525,11 +525,11 @@ const InfoBox = styled.div`
   .regionInput {
     display: flex;
     flex-direction: column;
-    width: 70%;
-    margin-right: 130px;
+    width: 50%;
+    margin-right: 400px;
   }
   .subAddress {
-    height: 40px;
+    height: 50px;
     border-radius: 5px;
     padding: 10px;
     border: 1px solid black;
@@ -552,6 +552,7 @@ const InfoBox = styled.div`
       width: 90%;
       border: none;
       outline: none;
+      height: 50px;
       // 크롬 자동완성 선택했을 때 인풋창 백그라운드 파란색되는거 막는 css
       :-webkit-autofill {
         -webkit-box-shadow: 0 0 0 1000px white inset;
@@ -567,10 +568,10 @@ const InfoBox = styled.div`
   #infoAddress {
     display: flex;
     flex-direction: column;
-    width: 70%;
-    margin-right: 130px;
+    width: 50%;
+    margin-right: 400px;
     input {
-      height: 40px;
+      height: 55px;
       padding: 10px;
       border-radius: 5px;
       border: 1px solid;
@@ -578,10 +579,10 @@ const InfoBox = styled.div`
   }
   #infoHouse,
   #infoCategory {
-    width: 70%;
+    width: 50%;
     display: flex;
     flex-direction: column;
-    margin-right: 130px;
+    margin-right: 400px;
   }
 
   #infoDes {
@@ -590,7 +591,7 @@ const InfoBox = styled.div`
     width: 70%;
 
     textarea {
-      width: 100%;
+      width: 72%;
       height: 300px;
       border-radius: 5px;
       padding: 20px 10px;
@@ -602,16 +603,17 @@ const InfoBox = styled.div`
   }
   #stepBox {
     width: 100%;
-    height: 40px;
+    height: 50px;
     display: flex;
     justify-content: space-between;
     /* margin-right: 200px; */
     /* border: 1px solid; */
   }
   #stepInputBox {
-    width: 65%;
+    width: 55%;
     height: 70px;
-    margin-left: -350px;
+    margin-left: 100px;
+    margin-right: 220px;
   }
   #stepMainBox {
     width: 70%;
@@ -649,7 +651,7 @@ const InfoBox = styled.div`
     input {
       /* width: 100%; */
       /* display: ${(props) => (props.props ? "block" : "none")}; */
-      height: 40px;
+      height: 50px;
       padding: 10px;
       border-radius: 5px;
       border: 1px solid;
@@ -672,12 +674,12 @@ const ErrorP = styled.p`
 `;
 
 const StepInput = styled.input`
-  width: 100%;
-  height: 40px;
+  width: 90%;
+  height: 50px;
   padding: 10px;
   border-radius: 5px;
   border: 1px solid;
-  /* margin-right: 100px ; */
+  margin-right: -200px ;
 `;
 const Tag = styled.div`
   display: flex;

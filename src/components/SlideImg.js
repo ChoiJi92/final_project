@@ -12,6 +12,7 @@ const SlideImg = (props) => {
     const SampleNextArrow = (props) => {
         const { className, style, onClick } = props;
         return (
+
           <div
           onMouseLeave={mouseLeave} onMouseOver={mouseHover}
             className={className}
@@ -106,8 +107,8 @@ export default SlideImg;
 
 
 const ImgBox = styled.div`
-    width: 40%;
-    height: 205px;
+    width: 36%;
+    height: 245px;
     margin-top: 15px;
     margin-left: 10px;
     div{
@@ -116,7 +117,7 @@ const ImgBox = styled.div`
     img{
         border-radius: 30px;
         width: 100%;
-        height: 190px;      
+        height: 230px;      
     }
 `
 
@@ -158,11 +159,12 @@ const SliderImg = styled(Slider)`
 `
 const DetailImgBox = styled.div`
     position: relative;
-    width: 60%;
-    height: 500px;
+    width: 70%;
+    height: 600px;
     img{
-        height: 400px;
+        height: 550px;
         margin-top: 10px;
+        border-radius:30px;
         
     }
 
