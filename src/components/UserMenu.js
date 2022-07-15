@@ -70,7 +70,7 @@ const Wrap = styled.div`
   align-items: center;
   font-size: 24px;
   div{
-    margin-right: 40px;
+    margin-right: 50px;
   }
 
 `
