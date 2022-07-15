@@ -8,6 +8,7 @@ import land from "../assests/css/내륙.png";
 import tour from "../assests/css/관광지근처.png";
 import town from "../assests/css/조용한마을.png";
 import scrap from "../assests/css/scrap.png";
+import unlike from "../assests/css/unlikeIcon.png";
 import nextIcon from "../assests/css/nextIcon.png";
 import jeju7 from "../assests/css/제주1.jpeg";
 import jeju8 from "../assests/css/제주2.jpeg";
@@ -20,16 +21,19 @@ import jeju14 from "../assests/css/제주9.jpeg";
 
 const Community = () => {
   const navigate = useNavigate();
-  const { data } = useQuery(["content"], () =>
-    instance.get("/post").then((res) => {
-      console.log(res.data.allPost)
-      return res.data.allPost
-      // return res.data
-    }),{
-      refetchOnWindowFocus:false  // 다른화면 갔다와도 재호출 안되게 함
+  const { data } = useQuery(
+    ["content"],
+    () =>
+      instance.get("/post").then((res) => {
+        console.log(res.data.allPost);
+        return res.data.allPost;
+        // return res.data
+      }),
+    {
+      refetchOnWindowFocus: false, // 다른화면 갔다와도 재호출 안되게 함
     }
   );
- 
+    const title = "내 기준 제주에서 제일 예쁜 카페에요!!!"
   const listImg = [jeju7, jeju8, jeju9, jeju10, jeju11, jeju12, jeju13, jeju14];
   const [count, setCount] = useState(0);
   return (
@@ -48,7 +52,7 @@ const Community = () => {
               </div>
               <div className="like">
                 <div>
-                  {/* <img src={like} alt="좋아요"></img> */}
+                  <img src={unlike} alt="좋아요"></img>
                   <p>00개</p>
                 </div>
                 <div>
@@ -79,8 +83,7 @@ const Community = () => {
           >
             <img src={nextIcon} alt="다음"></img>
           </div>
-
-          <h2>내 기준 제주에서 <br/>제일 예쁜 카페에요!!!</h2>
+          <h2>{title.slice(0,18)}...</h2>
         </div>
       </Top>
       <Middle>
@@ -111,13 +114,22 @@ const Community = () => {
       </Middle>
       <Bottom>
         {data.map((v) => (
-          <Card key={v.postId} >
-            <div>
-              <div className="user">글쓴이</div>
-              <h1 className="title" onClick={()=>{navigate(`/community/${v.postId}`)}}>{v.title}</h1>
-              <div className="like">좋아요,댓글</div>
+          <Card key={v.postId}>
+            <div className="leftContent">
+              <div className="user">{v.nickname}</div>
+              <h1
+                className="title"
+                onClick={() => {
+                  navigate(`/community/${v.postId}`);
+                }}
+              >
+                {v.title}
+              </h1>
+              <div className="like">
+                좋아요{v.likeNum}개, 댓글{v.commentNum}개
+              </div>
             </div>
-            <img src={v.thumbnailURL}alt="이미지"></img>
+            <img src={v.thumbnailURL} alt="이미지"></img>
           </Card>
         ))}
       </Bottom>
@@ -131,18 +143,18 @@ const Container = styled.div`
   align-items: center;
 `;
 const Top = styled.div`
-  width: 80%;
+  width: 70%;
   display: flex;
   flex-direction: row;
-  margin: 40px 0;
+  margin: 40px 0 50px 0;
   overflow: hidden;
   .leftImage {
     /* width: 887px; */
-    width: 80%;
+    width: 66%;
     height: 500px;
     /* border: 1px solid; */
     border-radius: 20px;
-    margin-right: 10px;
+    margin-right: 20px;
     position: relative;
     background-repeat: no-repeat;
     background-position: center;
@@ -150,7 +162,7 @@ const Top = styled.div`
   }
   .rightImage {
     /* width: 433px; */
-    width: 40%;
+    width: 32%;
     height: 500px;
     border-radius: 20px;
     /* border: 1px solid; */
@@ -186,11 +198,16 @@ const Top = styled.div`
       cursor: pointer;
     }
     h2 {
+      /* border: 1px solid; */
       color: white;
-      width: 40%;
+      width: 55%;
       overflow: hidden;
-      white-space: nowrap;
+      /* white-space: nowrap; */
       text-overflow: ellipsis;
+      font-style: normal;
+      font-weight: 700;
+      font-size: 32px;
+      line-height: 46px;
     }
   }
 `;
@@ -202,11 +219,15 @@ const Wrap = styled.div`
   /* justify-content: flex-end; */
   position: absolute;
   bottom: 0;
-  padding: 20px;
+  padding: 0 26px 30px 30px;
+  /* border: 1px solid black; */
   color: white;
   white-space: nowrap;
   h2 {
-    margin-bottom: 10px;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 46px;
+    margin-bottom: 20px;
   }
   .wrap {
     display: flex;
@@ -218,47 +239,59 @@ const Wrap = styled.div`
     align-items: center;
     width: 30%;
     img {
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       border: 1px solid;
       border-radius: 50%;
-      margin-right: 5px;
+      margin-right: 10px;
     }
     p {
-      font-size: large;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 24px;
+      line-height: 35px;
     }
   }
   .like {
-    width: 40%;
+    width: 53%;
     display: flex;
     justify-content: space-around;
     align-items: flex-end;
-    /* border: 1px solid; */
     div {
       display: flex;
       justify-content: center;
       align-items: center;
+      margin-right: 40px;
+      p {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 29px;
+      }
       img {
-        width: 30px;
-        height: 30px;
-        margin-right: 5px;
+        width: 32px;
+        height: 32px;
+        margin-right: 8px;
       }
     }
     button {
-      width: 40%;
-      height: 40px;
-      border-radius: 5px;
+      width: 51%;
+      /* width: 200px; */
+      height: 56px;
+      border-radius: 16px;
       border: none;
-      font-size: medium;
+      font-weight: 700;
+      font-size: 21px;
+      line-height: 30px;
       background-color: white;
-      color: black;
+      color: #636366;
       cursor: pointer;
     }
   }
 `;
 const Middle = styled.div`
   width: 100%;
-  padding: 0 170px;
+  padding: 0 280px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -288,7 +321,7 @@ const Middle = styled.div`
   }
 `;
 const Bottom = styled.div`
-  width: 80%;
+  width: 70%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -296,16 +329,13 @@ const Bottom = styled.div`
 `;
 const Card = styled.div`
   width: 100%;
-  height: 200px;
+  height: 362px;
   padding-bottom: 30px;
   border-bottom: 1px solid;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-bottom: 20px;
-  img{
-    object-fit: cover;
-  }
+  margin-bottom: 30px;
   cursor: pointer;
   :hover {
     .title {
@@ -316,27 +346,42 @@ const Card = styled.div`
       transform: translateY(-10px);
     }
   }
+  .leftContent {
+    height: 90%;
+  }
   div {
     position: relative;
     width: 60%;
+    /* height: 80%; */
+    /* border: 1px solid; */
   }
   .user {
-    color: gray;
-    margin-bottom: 10px;
+    color: #aeaeb2;
+    margin-bottom: 28px;
+    font-weight: 600;
+    font-size: 27px;
+    line-height: 32px;
   }
   .title {
-    margin-bottom: 10px;
-    font-size: 40px;
+    margin-bottom: 35px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 52px;
+    line-height: 62px;
   }
   .like {
     position: absolute;
     bottom: 0;
-    font-size: 20px;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 38px;
+    color: #636366;
   }
   img {
-    border: 1px solid;
-    width: 32%;
-    border-radius: 10px;
+    border: none;
+    width: 39%;
+    border-radius: 20px;
+    object-fit: cover;
   }
 `;
 

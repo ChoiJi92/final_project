@@ -24,7 +24,7 @@ const CategorySlide = (props) => {
         onMouseLeave={mouseLeave}
         onMouseOver={mouseHover}
         className={className}
-        style={{ ...style, display: "block", marginRight: "40px", opacity: 1 }}
+        style={{ ...style, display: "block", marginRight: "30px", opacity: 1 }}
         onClick={onClick}
       />
     );
@@ -236,7 +236,7 @@ const Wrap = styled.div`
 const Card = styled.div`
   border-radius: 20px;
   margin-top: 30px;
-  width: 305px;
+  width: 320px;
   height: 406px;
   display: flex;
   flex-direction: column;

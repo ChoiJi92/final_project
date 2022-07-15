@@ -11,12 +11,15 @@ import editIcon from "../assests/css/editIcon.png";
 import deleteIcon from "../assests/css/deleteIcon.png";
 import shareIcon2 from "../assests/css/shareIcon2.png";
 import unlikeIcon from "../assests/css/unlikeIcon.png";
+import likeIcon from "../assests/css/likeIcon.png";
 import CommentList from "../components/CommentList";
+import Share from "../components/Share";
+import Share2 from "../components/Share2";
 
 const CommunityDetail = () => {
+  const [like, setLike] = useState(false);
   const queryClient = useQueryClient();
   const params = useParams();
-  console.log(params.id);
   const navigate = useNavigate();
   // const [comment, setComment] = useState();
   const commentRef = useRef();
@@ -43,6 +46,7 @@ const CommunityDetail = () => {
     ["loadComment"],
     () =>
       instance.get(`/post/${params.id}/comment`).then((res) => {
+        console.log('전체코멘트',res.data.comments)
         return res.data.comments;
       }),
     {
@@ -66,9 +70,36 @@ const CommunityDetail = () => {
       },
     }
   );
+    // 좋아요
+    const Like = useMutation(
+      ["Like"],
+      () =>
+        instance
+          .post(`/like/${params.id}`)
+          .then((res) => console.log(res.data)),
+      {
+        onSuccess: () => {
+          // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
+          queryClient.invalidateQueries("detailContent");
+        },
+      }
+    );
+    // 좋아요 취소
+    const unLike = useMutation(
+      ["unLike"],
+      () =>
+        instance
+          .delete(`/like/${params.id}/unlike`)
+          .then((res) => console.log(res.data)),
+      {
+        onSuccess: () => {
+          // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
+          queryClient.invalidateQueries("detailContent");
+        },
+      }
+    );
   const onKeyPress = (e) => {
     if (e.key === "Enter") {
-      console.log(commentRef.current.value);
       createComment.mutate(commentRef.current.value);
       commentRef.current.value = "";
     }
@@ -105,20 +136,39 @@ const CommunityDetail = () => {
                 </div>
               </div>
               <Button>
-                {userId !== data.userId ? (
+                {userId === data.userId ? (
                   <>
-                    <button onClick={() => {}}>
+                 <Share data={data}></Share>
+                    {/* <button onClick={() => {}}>
                       공유
-                      <img className="shareIcon" src={shareIcon} alt="공유" />
-                    </button>
-                    <button style={{ width: "40%" }} onClick={() => {}}>
-                      좋아요
-                      <img
-                        className="unlikeIcon"
-                        src={unlikeIcon}
-                        alt="좋아요"
-                      />
-                    </button>
+                      <img className="shareIcon" src={shareIcon2} alt="공유" />
+                    </button> */}
+                    {data.islike ? (
+                      <button style={{ width: "40%" }} onClick={() => {
+                        unLike.mutate()
+                        setLike(false)
+
+                      }}>
+                        좋아요
+                        <img
+                          className="unlikeIcon"
+                          src={likeIcon}
+                          alt="좋아요"
+                        />
+                      </button>
+                    ) : (
+                      <button style={{ width: "40%" }} onClick={() => {
+                        Like.mutate()
+                        setLike(true)
+                      }}>
+                        좋아요
+                        <img
+                          className="unlikeIcon"
+                          src={unlikeIcon}
+                          alt="좋아요"
+                        />
+                      </button>
+                    )}
                   </>
                 ) : (
                   <>
@@ -157,11 +207,12 @@ const CommunityDetail = () => {
       <Count>
         <div className="likeShare">
           <div>
-            <p>좋아요 00개</p>
+            <p>좋아요 {data.likeNum}개</p>
             <p>스크랩 00개</p>
-            <p>댓글 00개</p>
+            <p>댓글 {commentData.length}개</p>
           </div>
-          <img src={shareIcon} alt="공유하기" />
+          {/* <img src={shareIcon} alt="공유하기" /> */}
+          <Share2 data={data}></Share2>
         </div>
       </Count>
       <CommentWrap>
@@ -250,7 +301,6 @@ const Content = styled.div`
     line-height: 57px;
   }
   .post {
-    border: 1px solid;
     margin-top: 50px;
     .toastui-editor-contents p {
       /* font-weight: 300; */

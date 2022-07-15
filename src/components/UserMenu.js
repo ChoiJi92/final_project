@@ -6,6 +6,7 @@ import Divider from '@mui/material/Divider';
 import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import HostModal from './HostModal';
+import Paper from '@mui/material/Paper';
 
 const UserMenu = ({userImage,nickName}) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -27,9 +28,10 @@ const UserMenu = ({userImage,nickName}) => {
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
       >
-         <div style={{fontSize:'24px'}}>{nickName}</div>
-         <img src={userImage} alt=""></img>
-        
+        <Wrap>
+         <div>{nickName}</div>
+         <img src={userImage} alt="프로필"></img>
+         </Wrap>
       </Button>
       <Menu
         id="basic-menu"
@@ -45,7 +47,7 @@ const UserMenu = ({userImage,nickName}) => {
           navigate('/userwrite')
           handleClose()
         } }
-        style={{ display:'flex',justifyContent:'center' ,color:'white',border:'none',borderRadius:'5px',backgroundColor:'#9090A0'}}>글쓰러 가기</MenuItem>
+        style={{ display:'flex',justifyContent:'center' ,color:'white',border:'none',borderRadius:'10px',backgroundColor:'#9090A0'}}>글쓰러 가기</MenuItem>
         </Write>
         
         <MenuItem><HostModal></HostModal></MenuItem>
@@ -60,11 +62,22 @@ const UserMenu = ({userImage,nickName}) => {
     </div>
   );
 }
+const Wrap = styled.div`
+/* border: 1px solid; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 24px;
+  div{
+    margin-right: 40px;
+  }
 
+`
 const Write = styled.div`
   margin: 10px;
-  border-radius: 5px;
-  width: 200px;
+  border-radius: 10px;
+  width: 240px;
 
 `
 export default UserMenu

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 
 
-const KakaoShare= () => {
+const KakaoShare= ({data}) => {
     const url = window.location.href; //현재 url가져오기
     useEffect(() => {
       initKakao(); //
@@ -24,18 +24,17 @@ const KakaoShare= () => {
       window.Kakao.Link.sendDefault({ 
         objectType: 'feed',
         content: {
-          title: '딸기 치즈 케익',
-          description: '#케익 #딸기 #삼평동 #카페 #분위기 #소개팅',
-          imageUrl: 'http://mud-kage.kakao.co.kr/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png',
+          title: `${data.title}`,
+          // description: '#케익 #딸기 #삼평동 #카페 #분위기 #소개팅',
+          imageUrl: `${data.thumbnailURL}`,
           link: {
             mobileWebUrl: url,
             webUrl: url,
           },
         },
         social: {
-          likeCount: 286,
-          commentCount: 45,
-          sharedCount: 845,
+          likeCount: data.likeNum,
+          commentCount: data.commentNum,
         },
         buttons: [
           {

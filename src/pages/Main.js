@@ -29,14 +29,7 @@ const Main = () => {
       <div style={{width:'70%', margin:'0 auto'}}>
         <h2>Find accommodation by region</h2>
         <div className="region">
-          <img className="west" src={west} alt="서쪽"></img>
-
-          {/* <Vector2 viewBox="0 0 688 364"/> */}
-          <img className="north" src={north} alt="북쪽"></img>
-
-          <img className="east" src={east} alt="동쪽"></img>
-
-          <img className="south" src={south} alt="남쪽"></img>
+          
         </div>
       </div>
       <div>
