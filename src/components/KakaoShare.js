@@ -1,8 +1,14 @@
 import React, { useEffect } from "react";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { userShare } from "../recoil/atoms";
 
 
 const KakaoShare= ({data}) => {
+  const isUserShare = useRecoilValue(userShare);
+  // const isHostShare = useRecoilValue(hostShare);
+  // console.log(isUserShare)
+  console.log(data)
     const url = window.location.href; //현재 url가져오기
     useEffect(() => {
       initKakao(); //
@@ -24,17 +30,17 @@ const KakaoShare= ({data}) => {
       window.Kakao.Link.sendDefault({ 
         objectType: 'feed',
         content: {
-          title: `${data.title}`,
+          title: `${isUserShare.title}`,
           // description: '#케익 #딸기 #삼평동 #카페 #분위기 #소개팅',
-          imageUrl: `${data.thumbnailURL}`,
+          imageUrl: `${isUserShare.thumbnailURL}`,
           link: {
             mobileWebUrl: url,
             webUrl: url,
           },
         },
         social: {
-          likeCount: data.likeNum,
-          commentCount: data.commentNum,
+          likeCount: isUserShare.likeNum,
+          commentCount: isUserShare.commentNum,
         },
         buttons: [
           {

@@ -127,186 +127,38 @@
   ],
   "testList": [
     {
-      "title": "hello",
-      "category": "내륙",
-      "houseInfo": "아파트",
-      "stepSelect": "예",
-      "stepInfo": "구합니다",
-      "link": "",
-      "postContent": "hihi",
-      "subAddress": "집입니당",
-      "mainAddress": "대전 동구 판교1길 3",
-      "postId": 1,
-      "id": 1
-    },
-    {
-      "title": "hi",
-      "category": "해변근처",
-      "houseInfo": "호텔",
-      "stepSelect": "예",
-      "stepInfo": "구해용",
-      "link": "",
-      "postContent": "haha",
-      "subAddress": "집입니당",
-      "mainAddress": "대전 동구 판교1길 31233",
-      "postId": 2,
-      "id": 2
-    },
-    {
-      "hostData": {
-        "mainAddress": "",
-        "title": "ㅁㅇㄴㅁㅇㄴ",
-        "category": "관광지 근처",
-        "houseInfo": "아파트",
-        "subAddress": "ㅁㅁㅁ",
-        "stepSelect": "아니오",
-        "link": "ㅁㅇㄴㅁㅇㄴ",
-        "postContent": "ㅁㅇㄴㅇㅇㅇㅇ"
-      },
-      "id": 3
-    },
-    {
-      "hostData": {
-        "mainAddress": "",
-        "title": "ㅁㅁㄴㅇㅇㅇ",
-        "category": "내륙",
-        "houseInfo": "게스트용 별채",
-        "subAddress": "ㅇㄹㄹㄹ",
-        "stepSelect": "아니오",
-        "link": "ㅋㅋㅋㅋㅋㅋㅋ",
-        "postContent": "ㅋㅋㅋㅋㅋㅋ"
-      },
-      "id": 4
-    },
-    {
-      "hostData": {},
-      "id": 5
-    },
-    {
-      "hostData": {
-        "mainAddress": "",
-        "title": "ㅁㅇㄴㅇㄹㄴㅁ",
-        "category": "내륙",
-        "houseInfo": "단독 또는 다세대 주택",
-        "subAddress": "ㅇㄴㅇㄴㅇㄴㅇㄴ",
-        "stepSelect": "예",
-        "link": "ㅁㄴㅁㄴ",
-        "postContent": "ㅇㅁㅇㄴ",
-        "stepInfo": "ㅋㅋㅋ"
-      },
-      "id": 9
-    },
-    {
-      "mainAddress": "",
-      "title": "aaaazzzzzzz",
-      "category": "내륙",
-      "houseInfo": "단독 또는 다세대 주택",
-      "subAddress": "ㅇㄴㅇㄴㅇㄴㅇㄴ",
-      "stepSelect": "예",
-      "link": "ㅁㄴㅁㄴ",
-      "postContent": "ㅇㅁㅇㄴ",
-      "stepInfo": "ㅋㅋㅋ",
-      "id": 16
-    },
-    {
-      "mainAddress": "",
-      "title": "adsadsads",
-      "category": "내륙",
-      "houseInfo": "단독 또는 다세대 주택",
-      "subAddress": "ㅁㄴㅁㅇㄴㅁㅇㄴ",
-      "stepSelect": "아니오",
-      "link": "ㅁㅁㅁㅁ",
-      "postContent": "ㅁㄴㅇㅁㄴ",
-      "id": 17
-    },
-    {
-      "mainAddress": "",
-      "title": "aaaaaa",
-      "category": "관광지 근처",
-      "houseInfo": "아파트",
-      "subAddress": "ㅁㄴㅇㅁㅁㅁㅁㅁ",
-      "stepSelect": "아니오",
-      "link": "aaaaaa",
-      "postContent": "ㅌㅌㅌㅌㅌㅌㅌㅌ",
-      "id": 18
-    },
-    {
-      "mainAddress": "",
-      "title": "ㅁㅁㅁㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ",
-      "category": "관광지 근처",
-      "houseInfo": "호텔",
-      "subAddress": "ㅁㅁㅁㅁㅁㅋㅋㅋ",
-      "stepSelect": "아니오",
-      "link": "ㅁㅁ",
-      "postContent": "ㅋㅊㅊㅊㅌㅁㅁㅁㅁㅁㅁ",
-      "id": 19
-    },
-    {
-      "mainAddress": "",
-      "title": "ㅇㅇㅇㅇ",
-      "category": "내륙",
-      "houseInfo": "게스트용 별채",
-      "subAddress": "ㅁㅁㅁㅇㄴㄹ",
-      "stepSelect": "아니오",
-      "link": "ㅁㅁㅇㄴ",
-      "postContent": "ㅇㅇㅇㅇㅇ",
-      "id": 20
-    },
-    {
-      "mainAddress": "",
-      "title": "ㅇㅇㅇㅇ",
-      "category": "내륙",
-      "houseInfo": "게스트용 별채",
-      "subAddress": "ㅁㅁㅁㅇㄴㄹ",
-      "stepSelect": "아니오",
-      "link": "ㅁㅁㅇㄴ",
-      "postContent": "ㅇㅇㅇㅇㅇ",
-      "id": 21
-    },
-    {
-      "mainAddress": "",
-      "title": "adsadsadfs",
-      "category": "내륙",
-      "houseInfo": "게스트용 별채",
-      "subAddress": "ㅁㄴㅇㅁㄴ",
-      "stepSelect": "아니오",
-      "link": "ㅁㄴㅇㅁㄴ",
-      "postContent": "ㅁㄴㅁㅁ",
-      "stepInfo": "",
-      "id": 22
-    },
-    {
-      "mainAddress": "",
-      "title": "fdasf",
-      "category": "관광지 근처",
-      "houseInfo": "아파트",
-      "subAddress": "3213",
-      "stepSelect": "아니오",
-      "link": "",
-      "postContent": "ㄹㅇㅁㄴㄹㅁㅇ",
-      "id": 23
-    },
-    {
-      "title": "ads",
-      "category": "내륙",
-      "houseInfo": "아파트",
-      "mainAddress": "",
-      "subAddress": "111",
-      "stepSelect": "아니오",
-      "link": "ㅁㅁㅁㅁ",
-      "postContent": "ㅊㅊㅊㅊㅊ",
-      "id": 24
-    },
-    {
       "title": "fffff",
       "category": "내륙",
       "houseInfo": "게스트용 별채",
-      "mainAddress": "",
-      "subAddress": "3333333",
+      "mainAddress": "제주특별자치도 서귀포시 가가로 14",
+      "subAddress": "",
       "stepSelect": "아니오",
       "link": "ssssss",
       "postContent": "hhhhhh",
-      "id": 25
+      "id": 1
+    },
+    {
+      "title": "제주도 푸른밤",
+      "category": "내륙",
+      "houseInfo": "아파트",
+      "mainAddress": "제주특별자치도 제주시 감수북길 18",
+      "subAddress": "1",
+      "stepSelect": "아니오",
+      "link": "",
+      "postContent": "ㅋㅋㅋㅋㅋ",
+      "id": 2
+    },
+    {
+      "title": "제주도입니다",
+      "category": "내륙",
+      "houseInfo": "게스트용 별채",
+      "mainAddress": "제주특별자치도 서귀포시 가가로 28-11",
+      "subAddress": "1",
+      "stepSelect": "예",
+      "link": "ㅇ",
+      "postContent": "ㅇㅇㅇㅇ",
+      "stepInfo": "ㅋㅋ",
+      "id": 3
     }
   ],
   "room": [

@@ -5,7 +5,6 @@ import {FaChevronDown, FaChevronUp,FaStar,FaRegHeart,FaRegComment} from "react-i
 
 
 const Mypage = () => {
-    const [isList, setIsList] = useState([]);
     const [myLike, setMyLike] = useState(true);
     const [myWrite, setMyWrite] = useState(true);
     const nickName = localStorage.getItem("nickName");
@@ -14,10 +13,6 @@ const Mypage = () => {
     const host = localStorage.getItem("host");
     const list = [1,2,3,4,5,6,7,8,9,10]
     
-    useEffect(()=>{
-    
-        setIsList(list)
-    }, [])
 
     const likeClick = () => {
         setMyLike((prev)=>!prev);
@@ -58,7 +53,7 @@ const Mypage = () => {
                 </DefaultImgBox>) : ("")}
                 {myLike ? (""):(
                 <HiddenMyLikeBox>
-                    {isList.map((item, idx)=>{
+                    {list.map((item, idx)=>{
                         return(
                             <div key={idx} id="listBox">
                                 <img src={jeju1}/>
@@ -91,7 +86,7 @@ const Mypage = () => {
                 </DefaultImgBox>) : ("")}
                 {myWrite ? (""):(
                 <HiddenMyLikeBox>
-                    {isList.map((item, idx)=>{
+                    {list.map((item, idx)=>{
                         return(
                             <div key={idx} id="listBox">
                                 <img src={jeju1}/>
