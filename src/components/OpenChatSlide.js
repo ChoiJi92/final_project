@@ -136,7 +136,6 @@ const OpenChatSlide = ({rtl}) => {
   };
   return (
     <ImgBox>
-      {/* <h2>Popular openchat</h2> */}
       <SliderImg {...settings} {...arrows}>
         <Wrap>
           <Card
@@ -201,6 +200,8 @@ const ImgBox = styled.div`
   width: 100%;
   /* height: 300px; */
   margin: 10px auto;
+  display: flex;
+  flex-wrap: nowrap;
   h2 {
     margin-bottom: 20px;
   }

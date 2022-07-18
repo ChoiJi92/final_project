@@ -185,9 +185,9 @@ const CategorySlide = (props) => {
   );
 };
 const ImgBox = styled.div`
-  width: 70%;
+  width: 100%;
   height: 500px;
-  margin: 100px 0 100px 290px;
+  margin: 100px 0;
   h2 {
     font-size: 56px;
     font-weight: 700;
@@ -236,7 +236,7 @@ const Wrap = styled.div`
 const Card = styled.div`
   border-radius: 20px;
   margin-top: 30px;
-  width: 320px;
+  width: 321px;
   height: 406px;
   display: flex;
   flex-direction: column;

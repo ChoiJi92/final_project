@@ -17,75 +17,81 @@ const Header = () => {
   const userImage = localStorage.getItem("userImage");
   return (
     <Container>
-      <img
-        className="title"
-        onClick={() => {
-          navigate("/");
-          setMenu("");
-        }}
-        src={jejuLogo}
-        alt="로고"
-      ></img>
-      <Center search={search}>
+      <Wrap>
         <img
-          className="search"
-          src={searchIcon}
-          alt="검색"
+          className="title"
           onClick={() => {
-            setSearch(true);
+            navigate("/");
+            setMenu("");
           }}
+          src={jejuLogo}
+          alt="로고"
         ></img>
-        {search ? 
-        <div className="searchInput">
-          <input placeholder="지역, 원하는테마" ref={searchRef}></input>
+        <Center search={search}>
           <img
-            className="cancel"
-            src={cancelIcon}
-            alt="취소"
+            className="search"
+            src={searchIcon}
+            alt="검색"
             onClick={() => {
-              setSearch(false);
+              setSearch(true);
             }}
           ></img>
-        </div> :
-        <div className="menu">
-          <div
-            style={{ color: menu === "house" ? "gray" : "black" }}
-            onClick={() => {
-              setMenu("house");
-              navigate("/house");
-            }}
-          >
-            숙소 찾기
-          </div>
-          <div
-            style={{ color: menu === "community" ? "gray" : "black" }}
-            onClick={() => {
-              setMenu("community");
-              navigate("/community");
-            }}
-          >
-            유저 커뮤니티
-          </div>
-          <div
-            style={{ color: menu === "chat" ? "gray" : "black" }}
-            onClick={() => {
-              navigate("/chat");
-              setMenu("chat");
-            }}
-          >
-            오픈 채팅방
-          </div>
-
-          {!nickName ? (
-            <LoginModal />
+          {search ? (
+            <div className="searchInput">
+              <input placeholder="지역, 원하는테마" ref={searchRef}></input>
+              <img
+                className="cancel"
+                src={cancelIcon}
+                alt="취소"
+                onClick={() => {
+                  setSearch(false);
+                }}
+              ></img>
+            </div>
           ) : (
-            <User >
-              <UserMenu nickName={nickName} userImage={userImage}></UserMenu>
-            </User>
+            <div className="menu">
+              <div
+                style={{ color: menu === "house" ? "gray" : "black" }}
+                onClick={() => {
+                  setMenu("house");
+                  navigate("/house");
+                }}
+              >
+                숙소 찾기
+              </div>
+              <div
+                style={{ color: menu === "community" ? "gray" : "black" }}
+                onClick={() => {
+                  setMenu("community");
+                  navigate("/community");
+                }}
+              >
+                유저 커뮤니티
+              </div>
+              <div
+                style={{ color: menu === "chat" ? "gray" : "black" }}
+                onClick={() => {
+                  navigate("/chat");
+                  setMenu("chat");
+                }}
+              >
+                오픈 채팅방
+              </div>
+
+              {!nickName ? (
+                <LoginModal />
+              ) : (
+                <User>
+                  <UserMenu
+                    nickName={nickName}
+                    userImage={userImage}
+                  ></UserMenu>
+                </User>
+              )}
+            </div>
           )}
-        </div>
-}
-      </Center>
+        </Center>
+      </Wrap>
     </Container>
   );
 };
@@ -93,25 +99,27 @@ const Header = () => {
 const Container = styled.div`
   width: 100%;
   height: 120px;
+  border-bottom: 2px solid;
+`;
+const Wrap = styled.div`
+  width: 70%;
+  height: 120px;
+  margin: 0 auto;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid;
-  font-size: large;
-
   .title {
-    margin-left: 306px;
     cursor: pointer;
   }
 `;
-
 const Center = styled.div`
+  height: 100%;
   display: flex;
   flex-direction: row;
-  /* justify-content: center; */
+  justify-content: flex-end;
   align-items: center;
-  width: 75%;
+  width: 90%;
   white-space: nowrap;
   .search {
     position: relative;
@@ -121,7 +129,7 @@ const Center = styled.div`
   }
 
   .searchInput {
-    width: 67%;
+    width: 85%;
     height: 60px;
     border-radius: 10px;
     background-color: #f2f2f7;
@@ -149,6 +157,13 @@ const Center = styled.div`
     }
   }
   .menu {
+    width: 57%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
     div {
       font-size: 20px;
       font-weight: 400;
@@ -156,34 +171,12 @@ const Center = styled.div`
       width: 22%;
       text-align: center;
     }
-    width: 45%;
-    height: 100px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
   }
 `;
 const User = styled.div`
   width: 25%;
   display: flex;
   flex-direction: row;
-  align-items: center;
-  text-align: right;
-  div {
-    margin-right: 28px;
-    font-size: 24px;
-    font-weight: 500;
-    line-height: 34.75px;
-    color: black;
-  }
-  img {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-
-  }
 `;
 
 export default Header;

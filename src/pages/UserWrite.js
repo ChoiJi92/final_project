@@ -20,14 +20,14 @@ const UserWrite = () => {
   const params = useParams();
   // params.id에 의 queryfunction이 실행될지 말지를 결정하므로 queryKey에 넣어줘야함
   const { data } = useQuery(
-    ["editContent",params.id],
+    ["editContent", params.id],
     () =>
       instance.get(`/post/${params.id}`).then((res) => {
         console.log(res.data);
         return res.data.post[0];
       }),
     {
-      enabled: !!params.id, // params.id가 있을때만 query실행 
+      enabled: !!params.id, // params.id가 있을때만 query실행
       retry: false, // 재호출 안하기
       refetchOnWindowFocus: false, // 다른화면 갔다와도 재호출 안되게 함
     }
@@ -51,7 +51,7 @@ const UserWrite = () => {
     formState: { errors },
   } = useForm();
   // 이미지 업로드 부분
-  console.log(content)
+  console.log(content);
   const onDrop = useCallback((acceptedFiles) => {
     console.log(acceptedFiles[0]);
     // let imagelist = []; // 미리보기 이미지 담을 리스트
@@ -131,11 +131,11 @@ const UserWrite = () => {
       window.alert("제목을 입력해 주세요 :)");
     } else if (!content) {
       window.alert("내용을 입력해 주세요 :)");
-    } else{
+    } else {
       const formData = new FormData();
-      if(thumbnail){
-        console.log('여기 지나가나요?')
-      formData.append("images", thumbnail)
+      if (thumbnail) {
+        console.log("여기 지나가나요?");
+        formData.append("images", thumbnail);
       }
       // else{
       //   console.log('여기는?')
@@ -158,19 +158,20 @@ const UserWrite = () => {
         imageKey.filter((v) => !content.includes(v))
       );
       if (!params.id) {
-        console.log('저장')
+        console.log("저장");
         createPost.mutate(formData);
         setOpen(true);
       } else {
         console.log(params.id);
+        console.log("여기와야대!");
         updatePost.mutate(formData);
+        setOpen(true);
       }
     }
   };
-
   return (
     <Wrap>
-      <Container>
+      <Container background={preview}>
         <Dropzone multiple={false} onDrop={onDrop}>
           {({ getRootProps, getInputProps, isDragActive }) => (
             <div
@@ -237,9 +238,13 @@ const UserWrite = () => {
                 {...register("category", { required: true })}
                 style={{
                   width: "100%",
-                  height: "40px",
-                  border: "1px solid black",
-                  fontSize: "14px",
+                  height: "56px",
+                  border: "1px solid #C7C7CC",
+                  fontStyle: "normal",
+                  fontWeight: "500",
+                  fontSize: "18px",
+                  lineHeight: "150%",
+                  borderRadius: "10px",
                 }}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
@@ -269,9 +274,13 @@ const UserWrite = () => {
                 {...register("type", { required: true })}
                 style={{
                   width: "100%",
-                  height: "40px",
-                  border: "1px solid black",
-                  fontSize: "14px",
+                  height: "56px",
+                  border: "1px solid #C7C7CC",
+                  fontStyle: "normal",
+                  fontWeight: "500",
+                  fontSize: "18px",
+                  lineHeight: "150%",
+                  borderRadius: "10px",
                 }}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
@@ -299,7 +308,7 @@ const UserWrite = () => {
                 <input
                   placeholder="주소를 검색해 주세요."
                   {...register("mainAddress")}
-                  value={address||""}
+                  value={address || ""}
                   // defaultValue={address}
                   // readOnly
                 ></input>
@@ -349,20 +358,23 @@ const Wrap = styled.div`
 
 const Container = styled.div`
   display: flex;
-  /* justify-content: center; */
+  justify-content: center;
   align-items: center;
-  margin-top: 100px;
-  /* width: 80%; */
+  /* margin-top: 120px; */
+  width: 100%;
+  margin: 120px 0 95px 0;
   /* border: 1px solid; */
   /* height: 300px;
   background-size: cover;
   background-repeat: no-repeat; */
   cursor: pointer;
   div {
-    width: 350px;
-    height: 200px;
-    border: 1px solid;
+    /* width: 434px; */
+    width: 21%;
+    height: 270px;
+    border: none;
     border-radius: 10px;
+    background: #e5e5ea;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -374,42 +386,59 @@ const Container = styled.div`
     width: 70%;
     margin: 0 auto;
     text-align: center;
-    z-index: -1;
+    z-index: ${(props) => props.background && "-1"};
+    font-style: normal;
+    font-weight: 700;
+    font-size: 21px;
+    line-height: 150%;
+    color: #8e8e93;
+    letter-spacing: -0.02em;
   }
   button {
-    margin-top: 30px;
-    width: 50%;
-    height: 30px;
+    z-index: ${(props) => props.background && "-1"};
+    margin-top: 44px;
+    width: 57.5%;
+    height: 52px;
     border: none;
-    border-radius: 5px;
-    background-color: gray;
-    z-index: -1;
+    background: #aeaeb2;
+    border-radius: 10px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 21px;
+    line-height: 150%;
+    color: #636366;
   }
 `;
 const Title = styled.div`
-  margin: 50px 0;
-  width: 40%;
+  width: 38.5%;
+  margin-bottom: 42px;
   position: relative;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  border-bottom: 1px solid;
   input {
+    margin-bottom: 14px;
     width: 100%;
-    height: 50px;
+    height: 67px;
     border: none;
-    border-bottom: 1px solid;
-    font-size: 25px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 46px;
+    line-height: 67px;
     padding-left: 10px;
     outline: none;
+    ::placeholder {
+      color: #aeaeb2;
+    }
   }
   p {
-    border-bottom: 1px solid black;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: gray;
+    color: #aeaeb2;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 26px;
+    line-height: 31px;
   }
 `;
 const Form = styled.form`
@@ -419,12 +448,27 @@ const InputWrap = styled.div`
   width: 50%;
   margin: 0 auto;
   h2 {
-    margin-bottom: 10px;
+    color: #1c1c1e;
+    margin-bottom: 12px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 46px;
+  }
+  h3 {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29px;
   }
   .sub {
     padding-bottom: 20px;
     margin-bottom: 20px;
-    color: gray;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 29px;
+    color: #aeaeb2;
     border-bottom: 1px solid;
   }
   .title {
@@ -444,11 +488,18 @@ const InputWrap = styled.div`
     }
     input {
       width: 100%;
-      height: 40px;
-      border-radius: 5px;
+      height: 56px;
+      border-radius: 10px;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 150%;
       padding: 10px;
-      border: 1px solid;
+      border: 1px solid #c7c7cc;
       margin-bottom: 10px;
+      ::placeholder {
+        color: #8e8e93;
+      }
       // 크롬 자동완성 선택했을 때 인풋창 백그라운드 파란색되는거 막는 css
       :-webkit-autofill {
         -webkit-box-shadow: 0 0 0 1000px white inset;
@@ -525,8 +576,14 @@ const InputWrap = styled.div`
       height: 40px;
       border-radius: 5px;
       padding: 10px;
-      border: 1px solid black;
+      border: 1px solid #c7c7cc;
+      border-radius: 10px;
       margin-bottom: 10px;
+      height: 56px;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 150%;
       // 크롬 자동완성 선택했을 때 인풋창 백그라운드 파란색되는거 막는 css
       :-webkit-autofill {
         -webkit-box-shadow: 0 0 0 1000px white inset;
@@ -538,14 +595,19 @@ const InputWrap = styled.div`
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
-      border: 1px solid;
-      border-radius: 5px;
+      height: 56px;
+      border: 1px solid #c7c7cc;
+      border-radius: 10px;
       padding: 0 10px;
       margin-bottom: 10px;
       input {
         width: 90%;
         border: none;
         outline: none;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 150%;
         // 크롬 자동완성 선택했을 때 인풋창 백그라운드 파란색되는거 막는 css
         :-webkit-autofill {
           -webkit-box-shadow: 0 0 0 1000px white inset;
@@ -565,10 +627,14 @@ const InputWrap = styled.div`
     padding-bottom: 20px;
     input {
       width: 80%;
-      height: 40px;
-      border-radius: 5px;
+      height: 56px;
+      border: 1px solid #c7c7cc;
+      border-radius: 10px;
       padding: 10px;
-      border: 1px solid;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 150%;
       // 크롬 자동완성 선택했을 때 인풋창 백그라운드 파란색되는거 막는 css
       :-webkit-autofill {
         -webkit-box-shadow: 0 0 0 1000px white inset;
