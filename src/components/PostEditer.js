@@ -17,7 +17,8 @@ const PostEditer = ({setContent,setImageKey,content}) => {
   // const [,setContent] = useRecoilState(contentState)
     const editorRef = useRef();
     const onChange = ()=>{
-        setContent(editorRef.current?.getInstance().getHTML())
+        // setContent(editorRef.current?.getInstance().getHTML())
+        setContent(editorRef.current?.getInstance().getMarkdown())
         // console.log(editorRef.current?.getInstance().getHTML())
     }
       // Toast-UI Editor 에 HTML 표시
@@ -26,7 +27,8 @@ const PostEditer = ({setContent,setImageKey,content}) => {
     const htmlString = content;
 
     // 2. Editor DOM 내용에 HTML 주입
-    editorRef.current?.getInstance().setHTML(htmlString);
+    // editorRef.current?.getInstance().setHTML(htmlString);
+    editorRef.current?.getInstance().setMarkdown(htmlString);
     // editorRef.current?.getInstance().setHTML(data[2]?.content);
   }, []);
   return (
@@ -36,8 +38,8 @@ const PostEditer = ({setContent,setImageKey,content}) => {
         onChange={onChange}
         placeholder="내용을 입력해주세요."
         previewStyle="vertical" // 미리보기 스타일 지정
-        height="450px" // 에디터 창 높이
-        initialEditType="wysiwyg" // 초기 입력모드 설정(디폴트 markdown)
+        height="500px" // 에디터 창 높이
+        // initialEditType="wysiwyg"// 초기 입력모드 설정(디폴트 markdown)
         hideModeSwitch={true}  // 한가지 입력모드만 사용하도록!
         useCommandShortcut={false} // 키보드 입력 컨트롤 방지
         plugins={[colorSyntax]}
@@ -77,10 +79,11 @@ const PostEditer = ({setContent,setImageKey,content}) => {
 
 const Wrap = styled.div`
     width: 50%;
+    /* width: 753px; */
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin-bottom: 50px;
+    margin-bottom: 48px;
     .toastui-editor-contents p {
   font-size: 16px;
 }

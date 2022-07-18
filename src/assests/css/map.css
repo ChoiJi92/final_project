@@ -13,7 +13,10 @@
     background-color: gray;
 }
 
+.wrap{
 
+  border-radius: 20px;
+}
 .card {
   width: 340px;
   height: 270px;

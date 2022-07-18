@@ -18,22 +18,27 @@ const Main = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          margin: "20px auto",
+          margin: "20px auto 0 auto",
         }}
       >
         <img className="mainImage" src={main} alt="메인"></img>
       </div>
-      <div>
+      <div style={{
+          width: "70%",
+          display: "flex",
+          alignItems: "center",
+          margin: "0 auto"
+        }}>
         <CategorySlide></CategorySlide>
       </div>
-      <div style={{width:'70%', margin:'0 auto'}}>
+      <div style={{width:'70%', margin:'0 auto',whiteSpace:'nowrap'}}>
         <h2>Find accommodation by region</h2>
         <div className="region">
           
         </div>
       </div>
       <div>
-        <h2 style={{ marginLeft: "290px", marginBottom: "50px" }}>
+        <h2 style={{ width:'70%', margin:'0 auto 50px auto', whiteSpace:'nowrap'}}>
           Popular openchat
         </h2>
         <OpenChatSlide rtl={false} />

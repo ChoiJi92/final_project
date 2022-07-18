@@ -1,4 +1,4 @@
-import React, { useRef} from "react";
+import React, { useRef } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -9,9 +9,20 @@ import editIcon from "../assests/css/editIcon.png";
 import deleteIcon from "../assests/css/deleteIcon.png";
 import unlikeIcon from "../assests/css/unlikeIcon.png";
 import likeIcon from "../assests/css/likeIcon.png";
+import starIcon from "../assests/css/starIcon.png";
+import unsaveIcon from "../assests/css/unsaveIcon.png";
 import CommentList from "../components/CommentList";
 import Share from "../components/Share";
 import Share2 from "../components/Share2";
+import SlideImg from "../components/SlideImg";
+import room2 from "../assests/css/room2.jpeg";
+import room1 from "../assests/css/room1.jpeg";
+import jeju1 from "../assests/css/jeju1.jpeg";
+import jeju2 from "../assests/css/jeju2.jpeg";
+import jeju3 from "../assests/css/jeju3.jpeg";
+import jeju4 from "../assests/css/jeju4.jpeg";
+import jeju5 from "../assests/css/jeju5.jpeg";
+import jeju6 from "../assests/css/jeju6.jpeg";
 
 const CommunityDetail = () => {
   const queryClient = useQueryClient();
@@ -22,11 +33,10 @@ const CommunityDetail = () => {
   const userId = localStorage.getItem("userId");
   const userImage = localStorage.getItem("userImage");
   const { data } = useQuery(
-    ["detailContent",params.id],
+    ["detailContent", params.id],
     () =>
       instance.get(`/post/${params.id}`).then((res) => {
         console.log(res.data);
-        // return res.data.post[0];
         return res.data.post[0];
       }),
     {
@@ -39,7 +49,7 @@ const CommunityDetail = () => {
     ["loadComment"],
     () =>
       instance.get(`/post/${params.id}/comment`).then((res) => {
-        console.log('전체코멘트',res.data.comments)
+        console.log("전체코멘트", res.data.comments);
         return res.data.comments;
       }),
     {
@@ -63,34 +73,32 @@ const CommunityDetail = () => {
       },
     }
   );
-    // 좋아요
-    const Like = useMutation(
-      ["Like"],
-      () =>
-        instance
-          .post(`/like/${params.id}`)
-          .then((res) => console.log(res.data)),
-      {
-        onSuccess: () => {
-          // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
-          queryClient.invalidateQueries("detailContent");
-        },
-      }
-    );
-    // 좋아요 취소
-    const unLike = useMutation(
-      ["unLike"],
-      () =>
-        instance
-          .delete(`/like/${params.id}/unlike`)
-          .then((res) => console.log(res.data)),
-      {
-        onSuccess: () => {
-          // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
-          queryClient.invalidateQueries("detailContent");
-        },
-      }
-    );
+  // 좋아요
+  const Like = useMutation(
+    ["Like"],
+    () =>
+      instance.post(`/like/${params.id}`).then((res) => console.log(res.data)),
+    {
+      onSuccess: () => {
+        // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
+        queryClient.invalidateQueries("detailContent");
+      },
+    }
+  );
+  // 좋아요 취소
+  const unLike = useMutation(
+    ["unLike"],
+    () =>
+      instance
+        .delete(`/like/${params.id}/unlike`)
+        .then((res) => console.log(res.data)),
+    {
+      onSuccess: () => {
+        // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
+        queryClient.invalidateQueries("detailContent");
+      },
+    }
+  );
   const onKeyPress = (e) => {
     if (e.key === "Enter") {
       createComment.mutate(commentRef.current.value);
@@ -101,8 +109,9 @@ const CommunityDetail = () => {
     ["deleteContent"],
     (postId) =>
       instance.delete(`/post/${postId}`).then((res) => {
-        console.log(res.data)
-      navigate(-1)}),
+        console.log(res.data);
+        navigate(-1);
+      }),
     {
       onSuccess: () => {
         // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
@@ -110,93 +119,128 @@ const CommunityDetail = () => {
       },
     }
   );
+
+  const listImg = [room2, room1, jeju1, jeju2, jeju3, jeju4, jeju5, jeju6];
+
   return (
     <Container>
       <Image image={data.thumbnailURL}></Image>
       <Wrap>
-        <Content>
-          <div className="hashTag">
-            <p>#제주도 동부</p>
-            <p>#김녕해수욕장</p>
-            <p>#사람없는</p>
-          </div>
-          <div>
-            <h1>{data.title}</h1>
-            <User>
-              <div className="profileImage">
-                <img src={data.userImage} alt="프로필"></img>
-                <div className="profile">
-                  <div className="nickname">{data.nickname}</div>
-                  <div className="time">2시간 전</div>
+        <WrapLeft>
+          <Content>
+            <div className="hashTag">
+              <p>#제주도 동부</p>
+              <p>#김녕해수욕장</p>
+              <p>#사람없는</p>
+            </div>
+            <div>
+              <h1>{data.title}</h1>
+              <User>
+                <div className="profileImage">
+                  <img src={data.userImage} alt="프로필"></img>
+                  <div className="profile">
+                    <div className="nickname">{data.nickname}</div>
+                    <div className="time">2시간 전</div>
+                  </div>
+                </div>
+                <Button>
+                  {userId !== data.userId ? (
+                    <>
+                      <Share data={data}></Share>
+                      {data.islike ? (
+                        <button
+                          style={{ width: "40%" }}
+                          onClick={() => {
+                            userId
+                              ? unLike.mutate()
+                              : window.alert("로그인 후 이용해 주세요 :)");
+                          }}
+                        >
+                          좋아요
+                          <img
+                            className="unlikeIcon"
+                            src={likeIcon}
+                            alt="좋아요"
+                          />
+                        </button>
+                      ) : (
+                        <button
+                          style={{ width: "40%" }}
+                          onClick={() => {
+                            userId
+                              ? Like.mutate()
+                              : window.alert("로그인 후 이용해 주세요 :)");
+                          }}
+                        >
+                          좋아요
+                          <img
+                            className="unlikeIcon"
+                            src={unlikeIcon}
+                            alt="좋아요"
+                          />
+                        </button>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => {
+                          navigate(`/userwrite/${params.id}`);
+                        }}
+                      >
+                        수정
+                        <img className="editIcon" src={editIcon} alt="수정" />
+                      </button>
+                      <button
+                        onClick={() => {
+                          deleteContent.mutate(data.postId);
+                          navigate("/community");
+                        }}
+                      >
+                        삭제
+                        <img
+                          className="deleteIcon"
+                          src={deleteIcon}
+                          alt="삭제"
+                        />
+                      </button>
+                    </>
+                  )}
+                </Button>
+              </User>
+            </div>
+            <div className="post">
+              <Viewer initialValue={data.content}></Viewer>
+            </div>
+          </Content>
+          <WrapBottom>
+            <h2>포스팅에 나온 숙소보러가기</h2>
+            <div className="houseWrap">
+              <SlideImg
+                listImg={listImg}
+                width={"30.7%"}
+                height={"260px"}
+              ></SlideImg>
+              <div className="content">
+                <div className="title">
+                  <h2>해변근처의 게스트하우스</h2>
+                  <p>한달 살기 조건에 관한 간한 설명</p>
+                </div>
+                <div className="iconWrap">
+                  <div>
+                    <img src={starIcon} alt="star"></img>
+                    <p>5.0</p>
+                  </div>
+                  <img src={unsaveIcon} alt="save"></img>
                 </div>
               </div>
-              <Button>
-                {userId !== data.userId ? (
-                  <>
-                 <Share data={data}></Share>
-                    {/* <button onClick={() => {}}>
-                      공유
-                      <img className="shareIcon" src={shareIcon2} alt="공유" />
-                    </button> */}
-                    {data.islike ? (
-                      <button style={{ width: "40%" }} onClick={() => {
-                        unLike.mutate()
-
-                      }}>
-                        좋아요
-                        <img
-                          className="unlikeIcon"
-                          src={likeIcon}
-                          alt="좋아요"
-                        />
-                      </button>
-                    ) : (
-                      <button style={{ width: "40%" }} onClick={() => {
-                        Like.mutate()
-                      }}>
-                        좋아요
-                        <img
-                          className="unlikeIcon"
-                          src={unlikeIcon}
-                          alt="좋아요"
-                        />
-                      </button>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    <button
-                      onClick={() => {
-                        navigate(`/userwrite/${params.id}`);
-                      }}
-                    >
-                      수정
-                      <img className="editIcon" src={editIcon} alt="수정" />
-                    </button>
-                    <button
-                      onClick={() => {
-                        deleteContent.mutate(data.postId);
-                        navigate("/community");
-                      }}
-                    >
-                      삭제
-                      <img className="deleteIcon" src={deleteIcon} alt="삭제" />
-                    </button>
-                  </>
-                )}
-              </Button>
-            </User>
-          </div>
-          <div className="post">
-            <Viewer initialValue={data.content}></Viewer>
-          </div>
-        </Content>
-        <div className="otherContent">관련글</div>
+            </div>
+          </WrapBottom>
+        </WrapLeft>
+        <WrapRight>
+          <div className="otherContent">관련글</div>
+        </WrapRight>
       </Wrap>
-      <WrapBottom>
-        <h2>포스팅에 나온 숙소보러가기</h2>
-        <div></div>
-      </WrapBottom>
       <Count>
         <div className="likeShare">
           <div>
@@ -204,30 +248,31 @@ const CommunityDetail = () => {
             <p>스크랩 00개</p>
             <p>댓글 {commentData.length}개</p>
           </div>
-          {/* <img src={shareIcon} alt="공유하기" /> */}
           <Share2 data={data}></Share2>
         </div>
       </Count>
       <CommentWrap>
         <h3>댓글 00</h3>
-        <div className="comment">
-          <img src={userImage} alt="기본이미지"></img>
-          <div className="commentInput">
-            <input
-              ref={commentRef}
-              placeholder="칭찬과 격려의 댓글은 작성자에게 큰 힘이 됩니다."
-              onKeyPress={onKeyPress}
-            ></input>
-            <button
-              onClick={() => {
-                createComment.mutate(commentRef.current.value);
-                commentRef.current.value = "";
-              }}
-            >
-              입력
-            </button>
+        {userId && (
+          <div className="comment">
+            <img src={userImage} alt="기본이미지"></img>
+            <div className="commentInput">
+              <input
+                ref={commentRef}
+                placeholder="칭찬과 격려의 댓글은 작성자에게 큰 힘이 됩니다."
+                onKeyPress={onKeyPress}
+              ></input>
+              <button
+                onClick={() => {
+                  createComment.mutate(commentRef.current.value);
+                  commentRef.current.value = "";
+                }}
+              >
+                입력
+              </button>
+            </div>
           </div>
-        </div>
+        )}
       </CommentWrap>
       <CommentList data={commentData}></CommentList>
     </Container>
@@ -248,23 +293,21 @@ const Image = styled.div`
   background-size: cover;
 `;
 const Wrap = styled.div`
+  width: 70%;
+  margin: 0 auto 30px auto;
+  border-bottom: 1px solid;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  width: 70%;
-  margin-bottom: 80px;
-  .otherContent {
-    width: 32%;
-    height: 657px;
-    padding: 20px;
-    border-radius: 20px;
-    margin-left: 20px;
-    box-shadow: 0px 12px 42px rgba(0, 0, 0, 0.2);
-  }
 `;
+const WrapLeft = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 66.3%;
+`
 const Content = styled.div`
-  width: 70%;
-  height: 800px;
+  width: 100%;
+  /* height: 800px; */
   .hashTag {
     height: 45px;
     display: flex;
@@ -295,6 +338,10 @@ const Content = styled.div`
   }
   .post {
     margin-top: 50px;
+    .toastui-editor-contents {
+      /* height: 880px; */
+      /* overflow: auto; */
+    }
     .toastui-editor-contents p {
       /* font-weight: 300; */
       font-size: 18px;
@@ -302,6 +349,9 @@ const Content = styled.div`
     }
     .toastui-editor-contents img {
       border-radius: 20px;
+      width: 100%;
+      height: 614px;
+      object-fit: cover;
     }
   }
 `;
@@ -386,9 +436,8 @@ const Button = styled.div`
 const WrapBottom = styled.div`
   display: flex;
   flex-direction: column;
-  width: 70%;
-  margin: 151px 0 30px 0;
-  border-bottom: 1px solid;
+  width: 100%;
+  margin: 50px 0;
   h2 {
     font-style: normal;
     font-weight: 600;
@@ -396,15 +445,72 @@ const WrapBottom = styled.div`
     line-height: 38px;
     color: #48484a;
   }
-  div {
-    margin: 24px 0 50px 0;
-    width: 67%;
+  .houseWrap {
+   margin-top: 24px;
     height: 300px;
     border: none;
     background: #ffffff;
     box-shadow: 0px 12px 42px rgba(0, 0, 0, 0.16);
     border-radius: 20px;
+    display: flex;
+    flex-direction: row;
+    padding: 20px;
   }
+  .content {
+    margin-left: 14px;
+    width: 567px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    h2 {
+      font-style: normal;
+      font-weight: 700;
+      font-size: 32px;
+      line-height: 46px;
+      color: #828282;
+      margin-bottom: 20px;
+    }
+    p {
+      font-style: normal;
+      font-weight: 500;
+      font-size: 24px;
+      line-height: 140%;
+      color: #828282;
+    }
+  }
+  .iconWrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    div {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      p {
+        margin-left: 10px;
+      }
+    }
+    img {
+      width: 40px;
+      height: 40px;
+    }
+  }
+`;
+const WrapRight = styled.div`
+width: 45%;
+margin-left: 20px;
+ .otherContent {
+    position: sticky;
+    top: 50px;
+    width: 100%;
+    height: 657px;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0px 12px 42px rgba(0, 0, 0, 0.2);
+  }
+
+
 `;
 const Count = styled.div`
   width: 70%;
