@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { FaTimes,FaTimesCircle } from "react-icons/fa";
+import { FaTimes, FaTimesCircle } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
@@ -26,7 +26,7 @@ const HostWrite = () => {
   //     const { data } = await axios.get(`http://localhost:5001/testList/${id}`)
   //     return data
   // }
-  
+
   const { data } = useQuery(
     ["hostWrite", paramsId],
 
@@ -92,21 +92,22 @@ const HostWrite = () => {
 
   const queryClient = useQueryClient();
 
-  // const testWrite = async (hostData) => {
-  //   const { data } = await axios.post("http://localhost:5001/testList/",
-  //     hostData).then((res)=>console.log(res));
-  //     return data;
-  // };
+  const testWrite = async (hostData) => {
+    const { data } = await axios
+      .post("http://localhost:5001/testList/", hostData)
+      .then((res) => console.log(res));
+    return data;
+  };
 
-  // const postMutate = useMutation(testWrite, {
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries("hostWrite");
-  //   },
-  // });
+  const postMutate = useMutation(testWrite, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("hostWrite");
+    },
+  });
 
   const postMutation = useMutation(
-    (hostData,address) => {
-      return axios.post("http://localhost:5001/testList", hostData,address);
+    (hostData, address) => {
+      return axios.post("http://localhost:5001/testList", hostData, address);
     },
     {
       onSuccess: () => {
@@ -149,7 +150,7 @@ const HostWrite = () => {
       // formData.append("title",data.title)
       // formData.append("images",multiImgs)
       console.log("hello", data);
-      postMutation.mutate(data,address);
+      postMutation.mutate(data, address);
       setTestModal(true);
       setOpen(true);
     }
@@ -219,7 +220,10 @@ const HostWrite = () => {
                 <SortableItem key={`item-${v}`}>
                   <List>
                     <Img src={v} alt="이미지" />
-                    <DeleteIcon id="deleteIcon" onClick={() => deleteImage(index)} />
+                    <DeleteIcon
+                      id="deleteIcon"
+                      onClick={() => deleteImage(index)}
+                    />
                   </List>
                 </SortableItem>
               ))}
@@ -245,7 +249,7 @@ const HostWrite = () => {
           <h2>카테고리 *</h2>
           <div id="infoCategory">
             <Select
-              style={{ width: "100%", height: "50px",borderRadius:"10px" }}
+              style={{ width: "100%", height: "50px", borderRadius: "10px" }}
               {...register("category", {
                 required: "카테고리는 필수 선택사항입니다 :)",
               })}
@@ -274,12 +278,12 @@ const HostWrite = () => {
               {...register("houseInfo", {
                 required: "숙소형태는 필수 선택사항입니다 :)",
               })}
-              style={{ width: "100%", height: "50px",borderRadius:"10px" }}
+              style={{ width: "100%", height: "50px", borderRadius: "10px", fontStyle:"nomal"  }}
               displayEmpty
               inputProps={{ "aria-label": "Without label" }}
               defaultValue={data?.houseInfo ? data?.houseInfo : ""}
             >
-              <MenuItem value="" disabled={true}>
+              <MenuItem style={{fontWeight:500, lineHeight:"150%", color:"#8E8E93", fontStyle:"nomal"}} value="" disabled={true}>
                 숙소의 형태를 선택해주세요.
               </MenuItem>
               <MenuItem value="단독 또는 다세대 주택">
@@ -297,14 +301,14 @@ const HostWrite = () => {
         <InfoBox>
           <h2>주소 *</h2>
           <div className="regionInput">
-            <div style={{borderRadius:"10px"}}  className="mainAddress">
+            <div style={{ borderRadius: "10px" }} className="mainAddress">
               <input
                 placeholder="주소를 검색해 주세요."
                 // {...register("mainAddress", { required: true })}
                 // value={address}
                 readOnly
                 value={address || data?.mainAddress}
-                style={{borderRadius:"10px"}} 
+                style={{ borderRadius: "10px" }}
                 {...register("mainAddress")}
                 // defaultValue={address ? address : data?.mainAddress }
               />
@@ -312,12 +316,12 @@ const HostWrite = () => {
             </div>
             <input
               className="subAddress"
-              placeholder="상세 주소를 입력해 주세요."
+              placeholder="주소를 정확히 작성해야 지도에 표시됩니다."
               {...register("subAddress", {
                 required: "상세주소는 필수 선택사항입니다 :)",
               })}
               defaultValue={data?.subAddress ? data?.subAddress : ""}
-              style={{borderRadius:"10px"}}
+              style={{ borderRadius: "10px" }}
             ></input>
             {addressError ? (
               <ErrorP1>주소는 필수 선택사항입니다 :)</ErrorP1>
@@ -331,8 +335,8 @@ const HostWrite = () => {
           <h2>스텝을 구하시나요? *</h2>
           <div id="stepMainBox">
             <div id="stepBox">
-              <Select
-                style={{ width: "30.2%", borderRadius:"10px" }}
+              <MuiSelect
+                style={{ width: "30.2%", borderRadius: "10px", "fontWeight":"500" }}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
                 {...register("stepSelect", {
@@ -345,11 +349,11 @@ const HostWrite = () => {
                 </MenuItem>
                 <MenuItem value="예">예</MenuItem>
                 <MenuItem value="아니오">아니오</MenuItem>
-              </Select>
+              </MuiSelect>
               {hiddenSetp === "예" ? (
-                <div  id="stepInputBox">
+                <div id="stepInputBox">
                   <StepInput
-                    style={{borderRadius:"10px"}}
+                    style={{ borderRadius: "10px" }}
                     {...register("stepInfo", { required: true })}
                     placeholder="근무 형태를 입력해 주세요."
                     defaultValue={data?.stepInfo ? data?.stepInfo : ""}
@@ -394,7 +398,7 @@ const HostWrite = () => {
         />
       </HostForm>
       <Tag>
-        <h3>태그</h3>
+        <h2>태그</h2>
         <TagList
           maxLength={10}
           isModal={false}
@@ -432,7 +436,7 @@ const HouseBox = styled.div`
   width: 70%;
   display: flex;
   justify-content: flex-start;
-  h1{
+  h1 {
     font-size: 32px;
   }
 `;
@@ -474,7 +478,6 @@ const ImgBox = styled.div`
   .list {
     display: flex;
     flex-wrap: wrap;
-    
   }
 `;
 const List = styled.div`
@@ -482,11 +485,11 @@ const List = styled.div`
   flex-direction: row;
   cursor: grab;
   position: relative;
-  :hover{
-    img{
+  :hover {
+    img {
       opacity: 0.5;
     }
-    #deleteIcon{
+    #deleteIcon {
       display: block;
     }
   }
@@ -500,8 +503,6 @@ const Img = styled.img`
   /* position: relative; */
   user-select: none;
   pointer-events: none;
-  
-  
 `;
 const DeleteIcon = styled(FaTimesCircle)`
   font-size: 20px;
@@ -519,7 +520,6 @@ const DeleteIcon = styled(FaTimesCircle)`
   bottom: 245px;
   /* top:0px; */
   display: none;
-  
 `;
 
 const InfoBox = styled.div`
@@ -531,14 +531,18 @@ const InfoBox = styled.div`
   .regionInput {
     display: flex;
     flex-direction: column;
-    width: 50%;
+    width: 59.3%;
     margin-right: 272px;
   }
   .subAddress {
-    height: 50px;
-    border-radius: 5px;
+    height: 56px;
     padding: 10px;
-    border: 1px solid black;
+    border-radius: 10px;
+    border: 1px solid #c7c7cc;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 150%;
     // 크롬 자동완성 선택했을 때 인풋창 백그라운드 파란색되는거 막는 css
     :-webkit-autofill {
       -webkit-box-shadow: 0 0 0 1000px white inset;
@@ -554,11 +558,22 @@ const InfoBox = styled.div`
     border-radius: 5px;
     padding: 0 10px;
     margin-bottom: 10px;
+    border-radius: 10px;
+    border: 1px solid #c7c7cc;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 150%;
     input {
       width: 90%;
       border: none;
       outline: none;
-      height: 50px;
+      height: 56px;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 150%;
+
       // 크롬 자동완성 선택했을 때 인풋창 백그라운드 파란색되는거 막는 css
       :-webkit-autofill {
         -webkit-box-shadow: 0 0 0 1000px white inset;
@@ -574,18 +589,22 @@ const InfoBox = styled.div`
   #infoAddress {
     display: flex;
     flex-direction: column;
-    width: 50%;
+    width: 59.3%;
     margin-right: 272px;
     input {
-      height: 55px;
+      height: 56px;
       padding: 10px;
       border-radius: 10px;
-      border: 1px solid;
+      border: 1px solid #c7c7cc;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 150%;
     }
   }
   #infoHouse,
   #infoCategory {
-    width: 50%;
+    width: 59.3%;
     display: flex;
     flex-direction: column;
     margin-right: 272px;
@@ -594,15 +613,20 @@ const InfoBox = styled.div`
   #infoDes {
     /* height: 300px; */
     margin-right: 272px;
-    width: 50%;
+    width: 59.3%;
     display: flex;
     flex-direction: column;
     textarea {
       /* width: 71.5%; */
-      height: 300px;
+      height: 420px;
       border-radius: 10px;
       padding: 20px 10px;
       font-size: 15px;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 150%;
+      border: 1px solid #c7c7cc;
     }
   }
   h5 {
@@ -610,20 +634,20 @@ const InfoBox = styled.div`
   }
   #stepBox {
     width: 100%;
-    height: 50px;
+    height: 56px;
     display: flex;
     justify-content: space-between;
     margin-left: -5px;
     /* border: 1px solid; */
   }
   #stepInputBox {
-    width: 45%;
+    width: 48%;
     height: 70px;
     margin-right: 230px;
-    
   }
   #stepMainBox {
-    width: 70%;
+    width: 80%;
+    margin-right: -11px;
     /* height: 60px; */
     display: flex;
     flex-direction: column;
@@ -665,8 +689,12 @@ const InfoBox = styled.div`
       margin-bottom: 10px;
     }
   }
-  h2{
+  h2 {
+    font-family: "Pretendard";
+    font-style: normal;
+    font-weight: 600;
     font-size: 24px;
+    line-height: 29px;
   }
 `;
 
@@ -685,11 +713,15 @@ const ErrorP = styled.p`
 
 const StepInput = styled.input`
   width: 90%;
-  height: 50px;
+  height: 56px;
   padding: 10px;
-  border-radius: 5px;
-  border: 1px solid;
-  margin-right: -200px ;
+  border-radius: 10px;
+  margin-right: -200px;
+  border: 1px solid #c7c7cc;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 150%;
 `;
 const Tag = styled.div`
   display: flex;
@@ -698,5 +730,16 @@ const Tag = styled.div`
   width: 70%;
   margin: 0 auto;
   padding: 20px 0;
+  h2 {
+    font-family: "Pretendard";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29px;
+  }
 `;
+
+const MuiSelect = styled(Select)`
+
+`
 export default HostWrite;

@@ -1,12 +1,18 @@
 /* global kakao */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import back from "../assests/css/back.jpeg";
 import { MdOutlineCancel } from "react-icons/md";
 import "../assests/css/map.css";
+import { useRecoilValue } from "recoil";
+import { houseInfoMap } from "../recoil/atoms";
 const { kakao } = window;
 
 const Map = ({ search, MapRadius, isinfo }) => {
+  // const isHouseMap = useRecoilValue(houseInfoMap);
+ 
+  // console.log(isHouseMap[0].mainAddress)
+  
   useEffect(() => {
     let infowindow = new kakao.maps.InfoWindow({ 'border-radius':"30px" ,zIndex: 0 ,  removable:true} );
     const container = document.getElementById("map"); // 지도를 표시할 div
@@ -20,11 +26,11 @@ const Map = ({ search, MapRadius, isinfo }) => {
     // 주소-좌표 변환 객체를 생성합니다
     const geocoder = new kakao.maps.services.Geocoder();
     // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
-    const mapTypeControl = new kakao.maps.MapTypeControl();
+    // const mapTypeControl = new kakao.maps.MapTypeControl();
 
     // 지도에 컨트롤을 추가해야 지도위에 표시됩니다
     // kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
-    map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+    // map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
 
     // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
     const zoomControl = new kakao.maps.ZoomControl();
@@ -83,10 +89,8 @@ const Map = ({ search, MapRadius, isinfo }) => {
   // 550px 450px 600px
   return (
   
-    <Container >
-      {/* {isinfo ? (<div id="map" style={{ width: "100%", height: "550px" }}></div>) :  ("")}
-      {isdetail ? (<div id="map" style={{ width: "100%", height: "400px" }}></div>): ("")} */}
-      <div id="map" isinfo={isinfo}   ></div>
+    <Container MapRadius={MapRadius}>
+      <div id="map"></div>
     </Container>
   );
 };
@@ -103,7 +107,7 @@ const Container = styled.div`
   #map{
     width: 100%;
     height: 100%;
-    /* border-radius: ${(isinfo)=> isinfo.isinfo ? "20px":"none"}; */
+    border-radius: ${(props)=> props.MapRadius};
     /* height: ${(props)=> props.isinfo ? "550px":"400px"}; */
   }
 `;
