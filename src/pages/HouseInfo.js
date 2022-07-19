@@ -16,9 +16,12 @@ import quietVil from "../assests/css/조용한마을.png";
 import { Link, useNavigate } from "react-router-dom";
 import SlideImg from "../components/SlideImg";
 import Map from "../components/Map";
+import { useQuery } from "react-query";
+import axios from "axios";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { houseInfoMap } from "../recoil/atoms";
 
 const HouseInfo = () => {
-  const [isList, setIsList] = useState([]);
   const [leftPosition, setLeftPosition] = useState("");
   const [rigthPosition, setRigthPosition] = useState("");
   const [fleftPosition, setFLeftPosition] = useState("");
@@ -42,10 +45,26 @@ const HouseInfo = () => {
 
   const list = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   const listImg = [room2, room1, jeju1, jeju2, jeju3, jeju4, jeju5, jeju6];
-  useEffect(() => {
-    setIsList(list);
-  }, []);
 
+
+
+  const isHouseInfoMap = useSetRecoilState(houseInfoMap);
+  
+  const { data } = useQuery(
+    ["houseInfo"],
+
+    // ()=>getWriteData(paramsId),
+    () => {
+      return axios
+        .get(`http://localhost:5001/testList/`)
+        .then((res) => res.data);
+    },
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
+  console.log(data);
+  isHouseInfoMap(data);
   const onClick = (id) => {
     console.log(id);
     alert(id);
@@ -164,7 +183,7 @@ const HouseInfo = () => {
           id="spot"
         >
           <SpotMiniBox>
-            <img src={nearbySea} />
+            <img src={nearbySea} alt="해변"/>
           </SpotMiniBox>
           <span>해변</span>
           <SpotUnderBar ref={spotUnderlineRef} />
@@ -176,7 +195,7 @@ const HouseInfo = () => {
           id="spot"
         >
           <SpotMiniBox>
-            <img src={inside} />
+            <img src={inside} alt="내륙"/>
           </SpotMiniBox>
           <span>내륙</span>
         </div>
@@ -187,7 +206,7 @@ const HouseInfo = () => {
           id="spot"
         >
           <SpotMiniBox>
-            <img src={nearby} />
+            <img src={nearby} alt="관광지근처"/>
           </SpotMiniBox>
           <span>관광지 근처</span>
         </div>
@@ -198,7 +217,7 @@ const HouseInfo = () => {
           id="spot"
         >
           <SpotMiniBox>
-            <img src={quietVil} />
+            <img src={quietVil} alt="조용한 마을"/>
           </SpotMiniBox>
           <span>조용한 마을</span>
         </div>
@@ -231,17 +250,17 @@ const HouseInfo = () => {
             <div>추천순</div>
           </OrderingBox>
           <div style={{ fontSize: "22px",marginBottom:'18px' }} id="houseCount">
-            {isList.length} 개의 숙소
+            {data.length} 개의 숙소
           </div>
           <ListWrap>
-            {isList.map((item, idx) => {
+            {data.map((item, idx) => {
               return (
                 // <div id="testBox">
                   <ContentsListBox key={idx}>
                     <SlideImg listImg={listImg} width={'36.4%'} height={'220px'}/>
                     <DesBox>
-                      <StyledLink to={`/house/${idx}`}>
-                        <h2>해변근처의 게스트하우스ㅁㅁㅁ</h2>
+                      <StyledLink to={`/house/${item.id}`}>
+                        <h2>{item.title}</h2>
                       </StyledLink>
                       <div id="infoHouse">
                         <span>
@@ -264,7 +283,7 @@ const HouseInfo = () => {
                         </div>
                         <HeartIcon
                           onClick={() => {
-                            onClick(isList[idx]);
+                            onClick(data[idx]);
                           }}
                         />
                       </LikeBox>

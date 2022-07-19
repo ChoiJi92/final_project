@@ -17,10 +17,10 @@ import CommunityDetail from './pages/CommunityDetail';
 import ChatList from './pages/ChatList';
 import HouseInfo from './pages/HouseInfo';
 import HouseDetail from './pages/HouseDetail';
-import HouseInfoDetail from './pages/HouseDetail';
 import ChatRoom from './pages/ChatRoom';
 import HostWrite from './pages/HostWrite';
 import Share from './components/Share';
+import UserPolicy from './pages/UserPolicy';
 
 function App() {
  
@@ -38,11 +38,12 @@ function App() {
         <Route path="/hostwrite" element={<HostWrite/>} />
         <Route path="/hostwrite/:id" element={<HostWrite/>} />
         <Route path="/house" element={<HouseInfo/>} />
-        <Route path="/house/:id" element={<HouseInfoDetail/>} />
+        <Route path="/house/:id" element={<HouseDetail/>} />
         <Route path="/chat" element={<ChatList/>} />
         <Route path="/chatroom" element={<ChatRoom/>} />
         <Route path="/mypage" element={<Mypage />} />
         <Route path="/test" element={<Share />} />
+        <Route path="/userpolicy" element={<UserPolicy />} />
         <Route path='/oauth/kakao/callback' element={<KakaoRedirect/>}/>
         <Route path='/oauth/google/callback' element={<GoogleRedirect/>}/>
         <Route path='/oauth/naver/callback' element={<NaverRedirect/>}/>
