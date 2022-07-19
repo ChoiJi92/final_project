@@ -51,10 +51,12 @@ const ChatList = () => {
           <img src={searchIconBlack} alt="검색"></img>
         </div>
         <div className="keyword">
-          <div>인기 키워드</div>
-          <p># 키워드</p>
-          <p># 키워드</p>
-          <p># 키워드</p>
+          <div className="keywordTitle">인기 키워드</div>
+          <div className="keywordList">
+            <p># 키워드</p>
+            <p># 키워드</p>
+            <p># 키워드</p>
+          </div>
         </div>
       </Top>
       <Bottom>
@@ -63,11 +65,14 @@ const ChatList = () => {
             // onChange={handleChange}
             defaultValue="최신순"
             style={{
-              width: "23%",
-              height: "40px",
-              border: "1px solid black",
-              fontSize: "14px",
+              width: "26.3%",
+              height: "58px",
+              border: "1px solid #C7C7CC",
+              borderRadius: "10px",
+              fontSize: "20px",
               textAlign: "center",
+              fontStyle: "normal",
+              fontWeight: "400",
             }}
             displayEmpty
             inputProps={{ "aria-label": "Without label" }}
@@ -75,30 +80,48 @@ const ChatList = () => {
             <MenuItem value="최신순">최신순</MenuItem>
             <MenuItem value="인기순">인기순</MenuItem>
           </Select>
-          <RoomModal width={'30%'}></RoomModal>
+          <RoomModal width={"31.74%"}></RoomModal>
         </div>
         {data.map((v) => (
           <Card key={v.id}>
             <h3>{v.title}</h3>
             <div className="avatar">
               <div className="host">
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" sx={{ width: 40, height: 40 }} />
-            <p>방장 이름</p>
-            </div>
+                <Avatar
+                  alt="Remy Sharp"
+                  src="/static/images/avatar/1.jpg"
+                  sx={{ width: 36, height: 36 }}
+                />
+                <p>방장 이름</p>
+              </div>
               <AvatarGroup max={4}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" sx={{ width: 40, height: 40 }}/>
-                <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" sx={{ width: 40, height: 40 }}/>
-                <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" sx={{ width: 40, height: 40 }}/>
-                <Avatar alt="Agnes Walker" src="/static/images/avatar/4.jpg" sx={{ width: 40, height: 40 }}/>
+                <Avatar
+                  alt="Remy Sharp"
+                  src="/static/images/avatar/1.jpg"
+                  sx={{ width: 36, height: 36 }}
+                />
+                <Avatar
+                  alt="Travis Howard"
+                  src="/static/images/avatar/2.jpg"
+                  sx={{ width: 36, height: 36 }}
+                />
+                <Avatar
+                  alt="Cindy Baker"
+                  src="/static/images/avatar/3.jpg"
+                  sx={{ width: 36, height: 36 }}
+                />
+                <Avatar
+                  alt="Agnes Walker"
+                  src="/static/images/avatar/4.jpg"
+                  sx={{ width: 36, height: 36 }}
+                />
                 <Avatar
                   alt="Trevor Henderson"
                   src="/static/images/avatar/5.jpg"
-                  sx={{ width: 40, height: 40 }}
+                  sx={{ width: 36, height: 36 }}
                 />
               </AvatarGroup>
             </div>
-            {/* <div>내용들</div> */}
-            {/* <button>입장하기</button> */}
           </Card>
         ))}
       </Bottom>
@@ -107,10 +130,9 @@ const ChatList = () => {
 };
 const Top = styled.div`
   background-color: #e5e5ea;
-  height: 300px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
   .title {
     width: 40%;
@@ -118,12 +140,21 @@ const Top = styled.div`
     flex-direction: column;
     /* justify-content: space-between; */
     align-items: center;
-    margin-top: 20px;
+    margin-top: 70px;
     h2 {
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 32px;
+      line-height: 38px;
+      color: #636366;
     }
     p {
-      color: #626273;
+      color: #636366;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 24px;
     }
   }
   .search {
@@ -131,20 +162,25 @@ const Top = styled.div`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    border: 1px solid;
+    border: 1px solid #aeaeb2;
     border-radius: 10px;
-    height: 20%;
-    width: 30%;
+    height: 62px;
+    width: 29.17%;
+    /* width: 560px; */
     padding: 0 10px;
-    margin: 30px 0;
+    margin: 32px 0 25px 0;
     background-color: white;
     input {
       width: 95%;
       /* height: 50px; */
-      font-size: medium;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 24px;
       border: none;
       outline: none;
       ::placeholder {
+        color: #C7C7CC;
         text-align: center;
       }
     }
@@ -157,29 +193,47 @@ const Top = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-bottom: 20px;
-    div {
-      margin-right: 10px;
+    margin-bottom: 60px;
+    height: auto;
+    .keywordTitle {
+      margin-right: 20px;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 21px;
+      color: #2c2c2e;
+      white-space: nowrap;
     }
-    p {
-      width: 100px;
-      height: 27px;
-      /* border: 1px solid; */
-      border-radius: 20px;
+    .keywordList {
       display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-left: 10px;
-      background-color: white;
-      font-size: 14px;
+      flex-direction: row;
+      flex-wrap: wrap;
+      width: 100%;
+      p {
+        /* margin-top: 10px; */
+        width: 25.865%;
+        height: 35px;
+        border-radius: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 10px;
+        background-color: white;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 19px;
+        color: #3a3a3c;
+      }
     }
   }
 `;
 const Card = styled.div`
-  width: 40%;
-  border: 1px solid;
-  height: 150px;
+  width: 41.459%;
+  /* width: 796px; */
+  height: 190px;
   border-radius: 10px;
+  border: 1px solid #d1d1d6;
   padding: 15px;
   background-color: white;
   position: relative;
@@ -192,9 +246,14 @@ const Card = styled.div`
     }
   }
   h3 {
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29px;
+    color: #636366;
   }
-  .avatar{
+  .avatar {
     /* border: 1px solid; */
     width: 70%;
     display: flex;
@@ -202,14 +261,22 @@ const Card = styled.div`
     /* justify-content: space-between; */
     align-items: center;
   }
-  .host{
-      display: flex;
-      align-items: center;
-      margin-right: 40px;
-      p{
-        margin-left: 10px;
-      }
-
+  .host {
+    display: flex;
+    align-items: center;
+    margin-right: 40px;
+    p {
+      margin-left: 10px;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 20px;
+      line-height: 24px;
+      color: #636366;
+    }
+  }
+  .MuiAvatar-root {
+    width: 36px;
+    height: 36px;
   }
   button {
     display: none;
@@ -232,49 +299,21 @@ const Bottom = styled.div`
   justify-content: center;
   align-items: center;
   .header {
-    width: 40%;
-    height: 70px;
+    /* width: 40%; */
+    width: 41.459%;
+    height: 58px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin: 40px 0 20px 0;
     select {
       width: 20%;
-      height: 60%;
       border-radius: 10px;
+      border: 1px solid #c7c7cc;
       padding: 0 10px;
     }
-    
-    /* button {
-      width: 28%;
-      height: 60%;
-      border-radius: 10px;
-      background-color: #c7c7cc;
-      border: none;
-      cursor: pointer;
-    } */
   }
-  /* .keyword {
-    width: 40%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 20px;
-    div {
-      margin-right: 10px;
-    }
-    p {
-      width: 100px;
-      height: 25px;
-      border: 1px solid;
-      border-radius: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-left: 10px;
-    }
-  } */
 `;
 
 export default ChatList;

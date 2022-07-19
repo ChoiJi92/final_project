@@ -161,20 +161,18 @@ const Center = styled.div`
     height: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     cursor: pointer;
     div {
       font-size: 20px;
       font-weight: 400;
       line-height: 24px;
-      width: 22%;
       text-align: center;
     }
   }
 `;
 const User = styled.div`
-  width: 25%;
   display: flex;
   flex-direction: row;
 `;

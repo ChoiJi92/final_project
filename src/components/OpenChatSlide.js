@@ -105,6 +105,25 @@ const OpenChatSlide = ({rtl}) => {
         arrows: false,
         variableWidth: true,
 			} 
+		},{ 
+			breakpoint: 590, //화면 사이즈 768px일 때
+			settings: {	
+				//위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        // dots: true,
+        // arrows: mouseOver,
+        autoplay: true,
+        speed: 5000,
+        autoplaySpeed: 100,
+        cssEase: "linear",
+        pauseOnHover:true,
+        rtl:rtl,
+        arrows: false,
+        variableWidth: true,
+			} 
 		}
 	],
     appendDots: (dots) => (

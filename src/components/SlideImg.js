@@ -82,7 +82,7 @@ const SlideImg = (props) => {
         <SliderImg {...settings} {...arrows}>
           {listImg.map((item, idx) => {
             return (
-              <div onMouseLeave={mouseLeave} onMouseOver={mouseHover}>
+              <div onMouseLeave={mouseLeave} onMouseOver={mouseHover} key={idx}>
                 <img src={item} alt="이미지"/>
               </div>
             );
@@ -93,6 +93,7 @@ const SlideImg = (props) => {
           {listImg.map((item, idx) => {
             return (
               <img
+              key = {idx}
                 onMouseLeave={mouseLeave}
                 onMouseOver={mouseHover}
                 src={item}

@@ -26,7 +26,7 @@ const style = {
   p: 4,
 };
 
-const RoomModal = ({width}) => {
+const RoomModal = ({ width }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -77,7 +77,7 @@ const RoomModal = ({width}) => {
       >
         <Fade in={open}>
           <Box sx={style}>
-            <Container id="transition-modal-title" variant="h6" component="h2">
+            <Container id="transition-modal-title" variant="h6" component="div">
               <h1>챗방 만들기</h1>
               <img
                 className="cancel"
@@ -86,7 +86,7 @@ const RoomModal = ({width}) => {
                 onClick={handleClose}
               ></img>
             </Container>
-            <Middle id="transition-modal-description" sx={{ mt: 2 }}>
+            <Middle id="transition-modal-description" sx={{ mt: 2 }}component="div">
               <div className="roomName">
                 <h3>방 제목</h3>
                 <input
@@ -117,7 +117,6 @@ const RoomModal = ({width}) => {
               </div>
               <Btn onClick={createRoom}>생성</Btn>
             </Middle>
-            
           </Box>
         </Fade>
       </Modal>
@@ -125,14 +124,16 @@ const RoomModal = ({width}) => {
   );
 };
 const Wrap = styled.div`
-  /* width: 30%; */
-  width: ${(props)=>props.width};
-  height: 60%;
+  width: ${(props) => props.width};
+  height: 58px;
 `;
 const RoomButton = styled.button`
   width: 100%;
   height: 100%;
-  font-size: medium;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
   border-radius: 10px;
   background-color: #c7c7cc;
   border: none;

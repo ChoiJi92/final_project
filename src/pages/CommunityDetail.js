@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -29,7 +29,6 @@ const CommunityDetail = () => {
   const params = useParams();
   const navigate = useNavigate();
   const commentRef = useRef();
-
   const userId = localStorage.getItem("userId");
   const userImage = localStorage.getItem("userImage");
   const { data } = useQuery(
@@ -44,6 +43,8 @@ const CommunityDetail = () => {
       refetchOnWindowFocus: false, // 다른화면 갔다와도 재호출 안되게 함
     }
   );
+  const [like , setLike] = useState(data.islike)
+  
   // 코멘트 로드
   const loadComment = useQuery(
     ["loadComment"],
@@ -57,7 +58,7 @@ const CommunityDetail = () => {
       refetchOnWindowFocus: false, // 다른화면 갔다와도 재호출 안되게 함
     }
   );
-  const commentData = loadComment.data;
+  // const commentData = loadComment.data;
 
   // 코멘트 생성
   const createComment = useMutation(
@@ -101,8 +102,12 @@ const CommunityDetail = () => {
   );
   const onKeyPress = (e) => {
     if (e.key === "Enter") {
+      if(commentRef.current.value===""){
+        window.alert('댓글을 입력해 주세요 :)')
+      }else{
       createComment.mutate(commentRef.current.value);
       commentRef.current.value = "";
+      }
     }
   };
   const deleteContent = useMutation(
@@ -144,16 +149,17 @@ const CommunityDetail = () => {
                   </div>
                 </div>
                 <Button>
-                  {userId !== data.userId ? (
+                  {userId === data.userId ? (
                     <>
                       <Share data={data}></Share>
                       {data.islike ? (
                         <button
                           style={{ width: "40%" }}
                           onClick={() => {
-                            userId
-                              ? unLike.mutate()
-                              : window.alert("로그인 후 이용해 주세요 :)");
+                           
+                               unLike.mutate()
+                               setLike(false)
+                             
                           }}
                         >
                           좋아요
@@ -167,9 +173,10 @@ const CommunityDetail = () => {
                         <button
                           style={{ width: "40%" }}
                           onClick={() => {
-                            userId
-                              ? Like.mutate()
-                              : window.alert("로그인 후 이용해 주세요 :)");
+                           
+                              Like.mutate()
+                              setLike(true)
+                              
                           }}
                         >
                           좋아요
@@ -246,7 +253,7 @@ const CommunityDetail = () => {
           <div>
             <p>좋아요 {data.likeNum}개</p>
             <p>스크랩 00개</p>
-            <p>댓글 {commentData.length}개</p>
+            <p>댓글 {loadComment.data.length}개</p>
           </div>
           <Share2 data={data}></Share2>
         </div>
@@ -264,8 +271,12 @@ const CommunityDetail = () => {
               ></input>
               <button
                 onClick={() => {
+                  if(commentRef.current.value===""){
+                    window.alert('댓글을 입력해 주세요 :)')
+                  }else{
                   createComment.mutate(commentRef.current.value);
                   commentRef.current.value = "";
+                  }
                 }}
               >
                 입력
@@ -274,7 +285,7 @@ const CommunityDetail = () => {
           </div>
         )}
       </CommentWrap>
-      <CommentList data={commentData}></CommentList>
+      <CommentList data={loadComment.data}></CommentList>
     </Container>
   );
 };
@@ -419,7 +430,7 @@ const Button = styled.div`
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 35%;
+    width: 34.8%;
     height: 58px;
     border-radius: 10px;
     border: none;

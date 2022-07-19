@@ -13,15 +13,16 @@ const Comment = ({ value, index }) => {
   const userId = localStorage.getItem('userId')
   // 댓글 수정
   const updateComment = useMutation(
-    ["updateComment", value.commentId],
-    (comment) => {
+    ['updateComment'],
+    (comment) => 
       instance
-        .put(`/post/${params.id}/${value.commentId}`, { comment })
-        .then((res) => console.log(res.data));
-    },
+        .put(`/post/${params.id}/${value.commentId}`, {comment})
+        .then((res) => console.log(res.data))
+    ,
     {
       onSuccess: () => {
-        // update 성공하면 'detailContent'라는 key를 가진 친구가 실행
+        // update 성공하면 'loadComment'라는 key를 가진 친구가 실행
+        console.log('성공')
         queryClient.invalidateQueries("loadComment");
       },
     }
@@ -43,12 +44,13 @@ const Comment = ({ value, index }) => {
   const onKeyPress = (e) => {
     if (e.key === "Enter") {
       updateComment.mutate(commentRef.current.value);
-      commentRef.current.value = "";
+      // commentRef.current.value = "";
       setEdit(false);
     }
   };
   return (
     <Wrap key={value.commentId}>
+      <div className="userWrap">
       <img src={value.userImage} alt="프로필"></img>
       <div className="content">
         <h3 className="nickName">{value.nickname}</h3>
@@ -61,6 +63,7 @@ const Comment = ({ value, index }) => {
           <input onKeyPress={onKeyPress} autoFocus ref={commentRef}></input>
         )}
       </div>
+      </div>
       {userId === value.userId ?
       <>
       {!edit ? (
@@ -69,8 +72,7 @@ const Comment = ({ value, index }) => {
             onClick={() => {
               setEdit(true);
             }}
-          >
-            수정
+          >수정
             <img className="editIcon" src={editIcon} alt="수정" />
           </button>
           <button
@@ -86,9 +88,13 @@ const Comment = ({ value, index }) => {
         <Button>
           <button
             onClick={() => {
+              if(commentRef.current.value===""){
+                window.alert('댓글을 입력해 주세요:)')
+              }else{
               updateComment.mutate(commentRef.current.value);
-              commentRef.current.value = "";
+              // commentRef.current.value = "";
               setEdit(false);
+              }
             }}
           >
             등록
@@ -109,7 +115,14 @@ const Comment = ({ value, index }) => {
 const Wrap = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   margin-bottom: 53px;
+  width: 67.5%;
+  .userWrap{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+  }
   img {
     width: 96px;
     height: 96px;
@@ -117,7 +130,7 @@ const Wrap = styled.div`
     margin-right: 30px;
   }
   .content {
-    width: 40%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -150,38 +163,37 @@ const Wrap = styled.div`
   }
 `;
 const Button = styled.div`
-  width: 18%;
-  /* border: 1px solid; */
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  width: 50%;
+  .editIcon {
+    width: 32px;
+    height: 32px;
+    margin: 0 0 0 6px;
+  }
+  .deleteIcon {
+    width: 32px;
+    height: 32px;
+    margin: 0 0 0 6px;
+  }
   button {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 40%;
+    width: 41.22%;
     height: 58px;
     border-radius: 10px;
     border: none;
     margin-left: 20px;
     font-style: normal;
     font-weight: 500;
-    /* font-size: 24px; */
+    font-size: 24px;
     line-height: 160%;
     background-color: #e5e5ea;
-    color: #48484a;
+    color: #8E8E93;
     cursor: pointer;
-  }
-  .editIcon {
-    width: 25px;
-    height: 25px;
-    margin-left: 6px;
-  }
-  .deleteIcon {
-    width: 32px;
-    height: 32px;
-    margin-left: 10px;
   }
 `;
 export default Comment;

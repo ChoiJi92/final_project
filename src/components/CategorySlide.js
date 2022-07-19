@@ -55,37 +55,35 @@ const CategorySlide = (props) => {
     slidesToShow: 3,
     slidesToScroll: 1,
     // dots: true,
-    arrows:mouseOver,
+    arrows: mouseOver,
     variableWidth: true,
-    responsive: [ // 반응형 웹 구현 옵션
-		{  
-			breakpoint: 960, //화면 사이즈 960px일 때
-			settings: {
-				//위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
-        infinite: true,
-        speed: 500,
-        slidesToShow: 2,
-        slidesToScroll: 1,
-        dots: true,
-        arrows:mouseOver,
-        variableWidth: true,
-
-			} 
-		},
-		{ 
-			breakpoint: 768, //화면 사이즈 768px일 때
-			settings: {	
-				//위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        dots: true,
-        arrows:mouseOver,
-        variableWidth: true,
-			} 
-		}
-	],
+    responsive: [
+      // 반응형 웹 구현 옵션
+      {
+        breakpoint: 1459, //화면 사이즈 960px일 때
+        settings: {
+          //위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
+          infinite: true,
+          speed: 500,
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          arrows: mouseOver,
+          variableWidth: true,
+        },
+      },
+      {
+        breakpoint: 768, //화면 사이즈 768px일 때
+        settings: {
+          //위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
+          infinite: true,
+          speed: 500,
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          arrows: mouseOver,
+          variableWidth: true,
+        },
+      },
+    ],
     appendDots: (dots) => (
       <div
         style={{
@@ -116,71 +114,133 @@ const CategorySlide = (props) => {
   return (
     <ImgBox>
       <h2>Categories</h2>
-      {mouseOver ? 
-      <SliderImg {...settings} {...arrows}>
-        <Wrap>
-          <Card onMouseLeave={mouseLeave} onMouseOver={mouseHover} style={{ backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back})` }}>
-            <img src={beach} alt="beach"></img>
-            <p>해안가</p>
-          </Card>
-        </Wrap>
-        <Wrap>
-          <Card onMouseLeave={mouseLeave} onMouseOver={mouseHover} style={{ backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back2})` }}>
-            <img src={land} alt="land"></img>
-            <p>내륙</p>
-          </Card>
-        </Wrap>
-        <Wrap>
-          <Card onMouseLeave={mouseLeave} onMouseOver={mouseHover} style={{ backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back3})` }}>
-            <img src={town} alt="town"></img>
-            <p>조용한 마을</p>
-          </Card>
-        </Wrap>
-        <Wrap>
-          <Card onMouseLeave={mouseLeave} onMouseOver={mouseHover} style={{ backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back4})` }}>
-            <img src={trip} alt="trip"></img>
-            <p>관광지 근처</p>
-          </Card>
-        </Wrap>
-        <Wrap>
-          <Card  onMouseLeave={mouseLeave} onMouseOver={mouseHover} style={{ backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back6})` }}>
-            <img src={udo} alt="udo"></img>
-            <p>우도</p>
-          </Card>
-        </Wrap>
-      </SliderImg>
-      : <SliderImg {...settings}>
-      <Wrap>
-        <Card onMouseLeave={mouseLeave} onMouseOver={mouseHover} style={{ backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back})` }}>
-          <img src={beach} alt="beach"></img>
-          <p>해안가</p>
-        </Card>
-      </Wrap>
-      <Wrap>
-        <Card onMouseLeave={mouseLeave} onMouseOver={mouseHover} style={{ backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back2})` }}>
-          <img src={land} alt="land"></img>
-          <p>내륙</p>
-        </Card>
-      </Wrap>
-      <Wrap>
-        <Card onMouseLeave={mouseLeave} onMouseOver={mouseHover} style={{ backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back3})` }}>
-          <img src={town} alt="town"></img>
-          <p>조용한 마을</p>
-        </Card>
-      </Wrap>
-      <Wrap>
-        <Card onMouseLeave={mouseLeave} onMouseOver={mouseHover} style={{ backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back4})` }}>
-          <img src={trip} alt="trip"></img>
-          <p>관광지 근처</p>
-        </Card>
-      </Wrap>
-      <Wrap>
-        <Card onMouseLeave={mouseLeave} onMouseOver={mouseHover} style={{ backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back6})` }}>
-          <img src={udo} alt="udo"></img>
-          <p>우도</p>
-        </Card>
-      </Wrap>
-    </SliderImg>}
+      {mouseOver ? (
+        <SliderImg {...settings} {...arrows}>
+          <Wrap>
+            <Card
+              onMouseLeave={mouseLeave}
+              onMouseOver={mouseHover}
+              style={{
+                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back})`,
+              }}
+            >
+              <img src={beach} alt="beach"></img>
+              <p>해안가</p>
+            </Card>
+          </Wrap>
+          <Wrap>
+            <Card
+              onMouseLeave={mouseLeave}
+              onMouseOver={mouseHover}
+              style={{
+                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back2})`,
+              }}
+            >
+              <img src={land} alt="land"></img>
+              <p>내륙</p>
+            </Card>
+          </Wrap>
+          <Wrap>
+            <Card
+              onMouseLeave={mouseLeave}
+              onMouseOver={mouseHover}
+              style={{
+                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back3})`,
+              }}
+            >
+              <img src={town} alt="town"></img>
+              <p>조용한 마을</p>
+            </Card>
+          </Wrap>
+          <Wrap>
+            <Card
+              onMouseLeave={mouseLeave}
+              onMouseOver={mouseHover}
+              style={{
+                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back4})`,
+              }}
+            >
+              <img src={trip} alt="trip"></img>
+              <p>관광지 근처</p>
+            </Card>
+          </Wrap>
+          <Wrap>
+            <Card
+              onMouseLeave={mouseLeave}
+              onMouseOver={mouseHover}
+              style={{
+                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back6})`,
+              }}
+            >
+              <img src={udo} alt="udo"></img>
+              <p>우도</p>
+            </Card>
+          </Wrap>
+        </SliderImg>
+      ) : (
+        <SliderImg {...settings}>
+          <Wrap>
+            <Card
+              onMouseLeave={mouseLeave}
+              onMouseOver={mouseHover}
+              style={{
+                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back})`,
+              }}
+            >
+              <img src={beach} alt="beach"></img>
+              <p>해안가</p>
+            </Card>
+          </Wrap>
+          <Wrap>
+            <Card
+              onMouseLeave={mouseLeave}
+              onMouseOver={mouseHover}
+              style={{
+                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back2})`,
+              }}
+            >
+              <img src={land} alt="land"></img>
+              <p>내륙</p>
+            </Card>
+          </Wrap>
+          <Wrap>
+            <Card
+              onMouseLeave={mouseLeave}
+              onMouseOver={mouseHover}
+              style={{
+                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back3})`,
+              }}
+            >
+              <img src={town} alt="town"></img>
+              <p>조용한 마을</p>
+            </Card>
+          </Wrap>
+          <Wrap>
+            <Card
+              onMouseLeave={mouseLeave}
+              onMouseOver={mouseHover}
+              style={{
+                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back4})`,
+              }}
+            >
+              <img src={trip} alt="trip"></img>
+              <p>관광지 근처</p>
+            </Card>
+          </Wrap>
+          <Wrap>
+            <Card
+              onMouseLeave={mouseLeave}
+              onMouseOver={mouseHover}
+              style={{
+                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back6})`,
+              }}
+            >
+              <img src={udo} alt="udo"></img>
+              <p>우도</p>
+            </Card>
+          </Wrap>
+        </SliderImg>
+      )}
     </ImgBox>
   );
 };
@@ -188,15 +248,17 @@ const ImgBox = styled.div`
   width: 100%;
   height: 500px;
   margin: 100px 0;
+  
   h2 {
-    font-size: 56px;
+    font-style: normal;
     font-weight: 700;
-    line-height: 61.6px;
+    font-size: 56px;
+    line-height: 110%;
   }
 `;
 const SliderImg = styled(Slider)`
-width: 100%;
-  /* height: 406px; */
+  width: 100%;
+  height: auto;
   /* border: 1px solid; */
   .dots_custom {
     /* display: inline-block; */
@@ -231,7 +293,6 @@ const Wrap = styled.div`
   width: 100%;
   margin-right: 20px;
   /* height: 300px; */
-  
 `;
 const Card = styled.div`
   border-radius: 20px;
@@ -246,15 +307,15 @@ const Card = styled.div`
   background-size: cover;
   color: white;
   cursor: pointer;
-  :hover{
+  :hover {
     box-shadow: rgb(0 0 0 / 50%) 0px 5px 10px 0px;
-      transform: translateY(-10px);
+    transform: translateY(-10px);
   }
-  img{
+  img {
     width: 40%;
     margin-bottom: 20px;
   }
-  p{
+  p {
     font-size: 28px;
     font-weight: 700;
     line-height: 30.8px;
