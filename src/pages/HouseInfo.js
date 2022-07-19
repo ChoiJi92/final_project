@@ -150,6 +150,7 @@ const HouseInfo = () => {
     setSRigthPosition(e.currentTarget.offsetWidth + "px");
     setSecondtUnderbar(true);
   };
+  console.log("ha")
   return (
     <MainBox>
       <LiveMainBox>
