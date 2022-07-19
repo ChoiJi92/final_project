@@ -18,7 +18,7 @@ export const userShare = atom({
   default:[]
 });
 
-export const hostShare = atom({
+export const hostShareAndMap = atom({
   key:"hostShare",
   default:[]
 });
@@ -26,4 +26,9 @@ export const hostShare = atom({
 export const houseInfoMap = atom({
   key:"houseInfo",
   default:[]
+});
+
+export const houseDetailMap = atom({
+  key:"houseDetail",
+  default:[1,2,3]
 });

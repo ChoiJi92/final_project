@@ -21,23 +21,50 @@ import SlideImg from "../components/SlideImg";
 import DialogImg from "../components/DialogImg";
 import Map from "../components/Map";
 import Share from "../components/Share";
+import { useParams } from "react-router-dom";
+import { useSetRecoilState} from "recoil";
+import { hostShareAndMap } from "../recoil/atoms";
 
-const HouseInfoDetail = () => {
+const HouseDetail = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
-  const { isLoading, data } = useQuery(
-    "house",
+  // const { isLoading, data } = useQuery(
+  //   "house",
+  //   () => {
+  //     return axios.get("http://localhost:5001/post").then((res) => res.data);
+  //   },
+  //   {
+  //     refetchOnWindowFocus: false,
+  //   }
+  // );
+
+  // if (isLoading) {
+  //   return "loading...";
+  // }
+  const params = useParams();
+  const paramsId = params.id;
+  const isHostShareAndMap = useSetRecoilState(hostShareAndMap);
+  const { isLoading ,data } = useQuery(
+    ["houseDetail", paramsId],
+
+    // ()=>getWriteData(paramsId),
     () => {
-      return axios.get("http://localhost:5001/post").then((res) => res.data);
+      return axios
+        .get(`http://localhost:5001/testList/${paramsId}`)
+        .then((res) => res.data);
     },
     {
       refetchOnWindowFocus: false,
+      enabled: !!paramsId,
     }
   );
 
-  if (isLoading) {
+   if (isLoading) {
     return "loading...";
   }
 
+  console.log(data);
+  isHostShareAndMap(data);
+  // console.log(houseMapDetail)
   // console.log(data, isLoading);
   // const slideSetting = useSelector((state)=>state);
   // const list = useSelector((state) => state.postSlice.contents);
@@ -52,7 +79,7 @@ const HouseInfoDetail = () => {
   console.log(window.location.href);
 
   const listImg = [jeju7, jeju8, jeju9, jeju10, jeju11, jeju12, jeju13, jeju14];
-  const hashList = [0, 1, 3, 4, 5];
+  const hashList = [0, 1, 3,4,5,6,7];
 
   const MapRadius = "20px";
   return (
@@ -91,7 +118,7 @@ const HouseInfoDetail = () => {
             }}
           >
             <div>
-              <h1 style={{ fontSize: "48px" }}>해변 근처의 게스트하우스</h1>
+              <h1 style={{ fontSize: "48px" }}>{data?.title}</h1>
             </div>
             <div
               style={{
@@ -139,10 +166,10 @@ const HouseInfoDetail = () => {
           </MapBox>
           <div style={{ marginBottom: "30px" }}>
             <h2 style={{ marginTop: "20px", fontSize: "32px" }}>
-              제주도 어딘가, 어딘가
+              {data?.mainAddress}
             </h2>
             <h2 style={{ fontSize: "32px", opacity: "0.2" }}>
-              제주도 어딘가, 조용한 마을
+              {data?.subAddress}
             </h2>
           </div>
           <hr />
@@ -234,10 +261,9 @@ const InfoBox = styled.div`
 
 const HashMainBox = styled.div`
   width: 100%;
-  height: 130px;
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: 20px;
+  margin-bottom: 28px;
 `;
 
 const HashTagBox = styled.div`
@@ -313,4 +339,4 @@ const ImgDiv = styled.div`
   }
 `;
 
-export default HouseInfoDetail;
+export default HouseDetail;

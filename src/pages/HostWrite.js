@@ -149,6 +149,18 @@ const HostWrite = () => {
       // formData.append("stepSelect",data.stepSelect)
       // formData.append("title",data.title)
       // formData.append("images",multiImgs)
+    //   {
+    //   "title": "간장남들",
+    //   "category": "내륙",
+    //   "houseInfo": "아파트",
+    //   "fullAddress":"제주 서귀포시 안덕면 사계북로41번길 30",
+    //   "mainAddress":"",
+    //   "subAddress":"",
+    //   "stepSelect": "아니오",
+    //   "stepInfo":"",
+    //   "link": "",
+    //   "postContent": "ㅋㅋㅋㅋㅋ",
+    // }
       console.log("hello", data);
       postMutation.mutate(data, address);
       setTestModal(true);

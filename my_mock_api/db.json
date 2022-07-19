@@ -127,38 +127,54 @@
   ],
   "testList": [
     {
-      "title": "fffff",
+      "title": "하우스파티한담누리",
       "category": "내륙",
       "houseInfo": "게스트용 별채",
-      "mainAddress": "제주특별자치도 서귀포시 가가로 14",
-      "subAddress": "",
+      "mainAddress": "제주 제주시 애월읍 일주서로",
+      "subAddress": "6158",
+      "fullAddress":"제주 제주시 애월읍 일주서로 6158",
       "stepSelect": "아니오",
       "link": "ssssss",
       "postContent": "hhhhhh",
       "id": 1
     },
     {
-      "title": "제주도 푸른밤",
+      "title": "간장남들",
       "category": "내륙",
       "houseInfo": "아파트",
-      "mainAddress": "제주특별자치도 제주시 감수북길 18",
-      "subAddress": "1",
+      "mainAddress": "제주 서귀포시 안덕면 사계북로41번길",
+      "subAddress": "30",
+      "fullAddress":"제주 서귀포시 안덕면 사계북로41번길 30",
       "stepSelect": "아니오",
       "link": "",
       "postContent": "ㅋㅋㅋㅋㅋ",
       "id": 2
     },
     {
-      "title": "제주도입니다",
+      "title": "백패커스홈",
       "category": "내륙",
       "houseInfo": "게스트용 별채",
-      "mainAddress": "제주특별자치도 서귀포시 가가로 28-11",
-      "subAddress": "1",
+      "mainAddress": "제주 서귀포시 중정로 24-7",
+      "subAddress": "1층",
+      "fullAddress":"제주 서귀포시 중정로 24-7 1층",
       "stepSelect": "예",
       "link": "ㅇ",
       "postContent": "ㅇㅇㅇㅇ",
       "stepInfo": "ㅋㅋ",
       "id": 3
+    },
+    {
+      "title": "제주게토게스트하우스파티",
+      "category": "내륙",
+      "houseInfo": "게스트용 별채",
+      "mainAddress": "제주 서귀포시 남원읍 서의로154번길",
+      "subAddress": "69",
+      "fullAddress":"제주 서귀포시 남원읍 서의로154번길 69",
+      "stepSelect": "예",
+      "link": "ㅇ",
+      "postContent": "ㅇㅇㅇㅇ",
+      "stepInfo": "ㅋㅋ",
+      "id": 4
     }
   ],
   "room": [
