@@ -5,7 +5,7 @@ import MenuItem from "@mui/material/MenuItem";
 import RoomModal from "../components/RoomModal";
 import io from "socket.io-client";
 import instance from "../shared/axios";
-import enterIcon from '../assests/css/enterIcon.png'
+import enterIcon from "../assests/css/enterIcon.png";
 // const socketUrl = 'http://gudetama.shop'
 // const socketUrl = 'http://localhost:3000'
 // const socket = io('http://gudetama.shop')
@@ -18,91 +18,66 @@ import enterIcon from '../assests/css/enterIcon.png'
 
 const ChatRoom = () => {
   // const [isConnected, setIsConnected] = useState(socket.connected);
-  const [message, setMessage] = useState([]);
+  // const [message, setMessage] = useState([]);
   const [room, setRoom] = useState();
+  const [chat, setChat] = useState([])
   // const socket = io.connect()  // backurl 넣기
   const messageRef = useRef();
   const titleRef = useRef();
-  // const url = "http://gudetama.shop:3000/";
-  // const url = "https://www.mendorong-jeju.com";
-  // const url = "https://43.200.89.62";
-  // const url = "http://localhost:3000";
-  // const socket = io('ws//gudetama.shop/',{transports:['websocket']});
-  // const socket = io("http://gudetama.shop:3000",{transports:['polling','websocket']});
-  // const socket = io(url,{transports:['websocket']});
-  // const socket = io.connect(url,{path:'/socket.io'});
-  // console.log(socket);
-  // const socket = io(url, {
-  //   cors: {
-  //     origin: url,
-  //     credentials: true,
-  //   },
-  // });
-  // console.log(socket);
-  // const socket =  io.connect(url)
-
-  // let socket = io.connect(url,{transports:['websocket']});
-  // socket.connect()
-  // socket.current.emit('join-chatroom', 1, '최지')
-  // console.log(socket);
-  // socket.emit('join-room', 1, '최지')
-  // socket.on("receive message", (message) => {
-  //   setMessage([...message, message]);
-  //   console.log(message);
-  // });
-   const url = "https://www.mendorong-jeju.com";
+  const nickName = localStorage.getItem('nickName')
+  const userId = localStorage.getItem('userId')
+  const userImage = localStorage.getItem('userImage')
+  const url = "https://www.mendorong-jeju.com";
+  // let socket = io(url);
+  let socket;
+  // const socket = useRef();
   useEffect(() => {
-    console.log('연결')
-    const socket = io(url);
-    console.log(socket);
-    socket.emit("join-room", 1, "지훈");
-    socket.on("connect_error", (err) => {
-      console.log(`connect_error due to ${err.message}`);
-    });
-    //   window.addEventListener("beforeunload", (e) => {
-    //     e.preventDefault();
-    //     console.log(e)
-    //     e.returnValue = '';
-    // });
-    //   socket.current = io(url, {
-    //   cors: {
-    //       origin: url,
-    //       credentials: true,
-    //   },
-    // });
-
-    // socket = io(url);
-    //  socket= io.connect(url)
-    // // socket.current.emit('join-chatroom', 1, '최지')
-    // console.log(socket)
-    // socket.on("receive message",(message) =>{
-    //   setMessage([...message,message])
-    //   console.log(message)
-    // })
-    // socket.on('connect',()=>{
-    //   setIsConnected(true)
-    // })
-
-    // socket.on('disconnect',()=>{
-    //   setIsConnected(false)
-    // })
+    console.log("연결");
+    socket = io(url);
+    // socketRef.current = io.connect(url);
+    console.log('나는 이펙트 소켓',socket.id);
+    socket.emit("join-chatRoom", 1, userId);
+    socket.on("message",(messageChat,user,profileImage,roomId)=>{
+      console.log(messageChat,user,profileImage,roomId)
+      setChat([...chat,{user,messageChat,profileImage}])
+      console.log(chat)
+    })
     return () => {
-      // socket.disconnect();
+      socket.disconnect();
       // socket.off('connect');
       // socket.off('disconnect');
     };
-  }, [message]);
+  }, [chat]);
+  const sendMessage = (message) => {
+    console.log(message)
+    console.log(socket.id)
+    console.log('나는 메세지 소켓',socket)
+    socket.emit("chat_message", message, userId,'roomId');
+    console.log(message, userId)
+    messageRef.current.value = "";
+  };
   const joinRoom = () => {
+    console.log('나는 룸 소켓',socket)
+    console.log(socket.id)
     const roomName = titleRef.current.innerText;
-    const socket = io.connect(url,{path:'/socket.io'});
-  console.log(socket);
-    socket.emit("join-room", 1, "최지");
+    socket.emit("join-room", roomName, nickName,userImage);
+    console.log('룸입장')
+    socket.on("welcome",(user,roomId,a) =>{
+      console.log(user,roomId,a)
+    }) 
     setRoom(roomName);
   };
-  // const sendMessage = () => {
-  //   socket.current.emit("chat_message", messageRef.current.value, room);
-  //   messageRef.current.value = "";
-  // };
+  
+  const onKeyPress = (e) => {
+    if(e.key ==='Enter'){
+      console.log(socket.id)
+      console.log(messageRef.current.value)
+    console.log('나는 메세지 소켓',socket)
+    socket.emit("chat_message", messageRef.current.value, nickName, userImage, 'roomId');
+    console.log(messageRef.current.value, nickName, userImage)
+    messageRef.current.value = "";
+    }
+  }
   return (
     <Container>
       <Wrap>
@@ -132,21 +107,28 @@ const ChatRoom = () => {
                 <p>오픈 챗 방</p>
                 <h2>{room}</h2>
               </div>
-              <div className="messageList">
-                <img alt="프로필"></img>
+              <div className="chatWrap">
+            {chat.map((v,i) =>
+            <div className="messageList" key={i}>
+                <img src={v.profileImage} alt="프로필"></img>
                 <div className="message">
-                  <p>사용자1</p>
-                  <div>블라블라블라</div>
+                  <p>{v.user}</p>
+                  <div>{v.messageChat}</div>
                 </div>
               </div>
-            </div>
+             )}
+              </div>
+              </div>  
             <div className="chat">
-              <img className="profile" alt="프로필"></img>
+              <img className="profile" src={userImage} alt="프로필"></img>
               <div className="chatInput">
-                <input placeholder="입력해주세요!" ref={messageRef}></input>
-                <img className="enter" src={enterIcon} alt="입력"
+                <input placeholder="입력해주세요!" ref={messageRef} onKeyPress={onKeyPress}></input>
+                <img
+                  className="enter"
+                  src={enterIcon}
+                  alt="입력"
                   onClick={() => {
-                    // sendMessage();
+                    sendMessage(messageRef.current.value);
                   }}
                 />
               </div>
@@ -212,9 +194,9 @@ const ChatList = styled.div`
       padding: 30px 27px;
       border-bottom: 1px solid #c7c7cc;
       :hover {
-      background-color: #d1d1d6;
-      cursor: pointer;
-    }
+        background-color: #d1d1d6;
+        cursor: pointer;
+      }
       h3 {
         font-style: normal;
         font-weight: 600;
@@ -245,14 +227,15 @@ const Room = styled.div`
   flex-direction: column;
   justify-content: space-between;
   .messageWrap {
-    height: 100%;
+
+    height: 90%;
     /* padding: 10px; */
     border: 1px solid #c7c7cc;
     border-radius: 10px;
   }
   .title {
     padding: 20px;
-    border-bottom: 1px solid #C7C7CC;
+    border-bottom: 1px solid #c7c7cc;
     p {
       margin-bottom: 12px;
       font-style: normal;
@@ -262,9 +245,13 @@ const Room = styled.div`
       color: #aeaeb2;
     }
   }
+  .chatWrap{
+    height: 90%;
+    overflow-y: scroll;
+  }
   .messageList {
     display: flex;
-    padding: 21px 16px 11px 5px;
+    padding: 21px 16px 5px 11px;
     img {
       width: 34.51px;
       height: 34.51px;
@@ -305,7 +292,7 @@ const Room = styled.div`
     justify-content: space-between;
     align-items: center;
     width: 85%;
-    border: 0.556533px solid #C7C7CC;
+    border: 0.556533px solid #c7c7cc;
     border-radius: 10px;
     height: 60px;
     padding: 0 17px;

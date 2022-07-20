@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import styled from "styled-components";
 import cancelIcon from "../assests/css/cancelIcon.png";
 import pracImage from "../assests/css/back.jpeg";
-import mendorongLogo from "../assests/css/mendorongLogo.png";
+import mendorongLogo from "../assests/css/mendorong.webp";
 import Kakao from "./Kakao";
 import Naver from "./Naver";
 import Google from "./Google";
@@ -18,7 +18,7 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 500,
   bgcolor: "background.paper",
-  borderRadius: "10px",
+  borderRadius: "20px",
   boxShadow: 24,
   p: 2,
   outline: "none",

@@ -3,17 +3,12 @@ import styled from "styled-components";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import beach from "../assests/css/해안가.png";
-import land from "../assests/css/내륙2.png";
-import town from "../assests/css/조용한마을2.png";
-import trip from "../assests/css/관광지근처2.png";
-import udo from "../assests/css/우도2.png";
-import back from "../assests/css/배경1.png";
-import back2 from "../assests/css/배경2.png";
-import back3 from "../assests/css/배경3.png";
-import back4 from "../assests/css/배경4.png";
-import back5 from "../assests/css/배경5.png";
-import back6 from "../assests/css/배경6.png";
+import back from "../assests/css/배경1.webp";
+import back2 from "../assests/css/배경2.webp";
+import back3 from "../assests/css/배경3.webp";
+import back4 from "../assests/css/배경4.webp";
+import back5 from "../assests/css/배경5.webp";
+import back6 from "../assests/css/배경6.webp";
 
 const OpenChatSlide = ({rtl}) => {
   const [mouseOver, setMouseOver] = useState(false);
@@ -218,7 +213,7 @@ const OpenChatSlide = ({rtl}) => {
 const ImgBox = styled.div`
   width: 100%;
   /* height: 300px; */
-  margin: 10px auto;
+  margin: 10px auto 20px auto;
   display: flex;
   flex-wrap: nowrap;
   h2 {

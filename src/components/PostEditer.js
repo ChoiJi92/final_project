@@ -39,7 +39,7 @@ const PostEditer = ({setContent,setImageKey,content}) => {
         placeholder="내용을 입력해주세요."
         previewStyle="vertical" // 미리보기 스타일 지정
         height="500px" // 에디터 창 높이
-        // initialEditType="wysiwyg"// 초기 입력모드 설정(디폴트 markdown)
+        initialEditType="wysiwyg"// 초기 입력모드 설정(디폴트 markdown)
         hideModeSwitch={true}  // 한가지 입력모드만 사용하도록!
         useCommandShortcut={false} // 키보드 입력 컨트롤 방지
         plugins={[colorSyntax]}

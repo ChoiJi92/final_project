@@ -35,7 +35,7 @@ const CommunityDetail = () => {
     ["detailContent", params.id],
     () =>
       instance.get(`/post/${params.id}`).then((res) => {
-        console.log(res.data);
+        console.log(res.data.post[0]);
         return res.data.post[0];
       }),
     {
@@ -129,7 +129,7 @@ const CommunityDetail = () => {
 
   return (
     <Container>
-      <Image image={data.thumbnailURL}></Image>
+      <Image image={data.images[0].thumbnailURL}></Image>
       <Wrap>
         <WrapLeft>
           <Content>

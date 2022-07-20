@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Modal from "./Modal"; //modal
 import UserMenu from "./UserMenu";
 import searchIcon from "../assests/css/search.png";
 import cancelIcon from "../assests/css/cancelIcon.png";
