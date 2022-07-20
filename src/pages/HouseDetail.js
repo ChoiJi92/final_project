@@ -11,6 +11,7 @@ import jeju12 from "../assests/css/제주6.jpeg";
 import jeju13 from "../assests/css/제주8.jpeg";
 import jeju14 from "../assests/css/제주9.jpeg";
 import shareIcon2 from "../assests/css/shareIcon2.png";
+import unsaveIcon2 from "../assests/css/unsaveIcon2.jpeg";
 import scrap from "../assests/css/scrap.png";
 import { FaHeart, FaStar } from "react-icons/fa";
 import "slick-carousel/slick/slick.css";
@@ -22,8 +23,9 @@ import DialogImg from "../components/DialogImg";
 import Map from "../components/Map";
 import Share from "../components/Share";
 import { useParams } from "react-router-dom";
-import { useSetRecoilState} from "recoil";
+import { useSetRecoilState } from "recoil";
 import { hostShareAndMap } from "../recoil/atoms";
+import Share2 from "../components/Share2";
 
 const HouseDetail = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -43,7 +45,7 @@ const HouseDetail = () => {
   const params = useParams();
   const paramsId = params.id;
   const isHostShareAndMap = useSetRecoilState(hostShareAndMap);
-  const { isLoading ,data } = useQuery(
+  const { isLoading, data } = useQuery(
     ["houseDetail", paramsId],
 
     // ()=>getWriteData(paramsId),
@@ -58,7 +60,7 @@ const HouseDetail = () => {
     }
   );
 
-   if (isLoading) {
+  if (isLoading) {
     return "loading...";
   }
 
@@ -79,9 +81,14 @@ const HouseDetail = () => {
   console.log(window.location.href);
 
   const listImg = [jeju7, jeju8, jeju9, jeju10, jeju11, jeju12, jeju13, jeju14];
-  const hashList = [0, 1, 3,4,5,6,7];
+  const hashList = [0, 1, 3, 4];
 
   const MapRadius = "20px";
+
+  const shareClick = () =>{
+    Share();
+  }
+
   return (
     <Wrap>
       <div id="detailMainBox">
@@ -118,31 +125,37 @@ const HouseDetail = () => {
             }}
           >
             <div>
-              <h1 style={{ fontSize: "48px" }}>{data?.title}</h1>
+              <h1 style={{ width:"100%",border:"1px solid red", fontSize: "48px" }}>{data?.title}</h1>
+            </div>
+            <div style={{
+                display: "flex",
+                alignItems: "center",
+                // marginLeft: "210px",
+                marginBottom: "20px",
+              }}>
+            <div style={{
+                display: "flex",
+                alignItems: "center",
+                // marginBottom: "20px",
+              }}>
+              <span style={{ fontSize: "21px"}}>공유하기</span>
+              {/* <Share props /> */}
+              {/* <IconImg onClick={shareClick}  src={shareIcon2} alt="공유"/> */}
+              <Share  />
             </div>
             <div
               style={{
                 display: "flex",
                 alignItems: "center",
-                marginLeft: "170px",
-                marginBottom: "25px",
-              }}
-            >
-              <span style={{ fontSize: "21px" }}>공유하기</span>
-              <Share props />
-            </div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                marginBottom: "25px",
+                // marginBottom: "20px",
               }}
             >
               <span style={{ fontSize: "21px" }}>저장하기</span>
-              <IconImg src={scrap} />
+              <IconImg src={unsaveIcon2}  alt="저장"/>
+            </div>
             </div>
           </div>
-          <hr />
+          <hr style={{ marginTop: "20px"}}/>
           <div style={{ margin: "30px 0px 30px 0px", fontSize: "18px" }}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
             Pellentesque quam consequat massa sit aliquam. Dignissim nibh at
@@ -159,7 +172,7 @@ const HouseDetail = () => {
             pretium fermentum mi odio. Lorem massa elit morbi dolor. Orci tellus
             arcu, facilisis felis interdum.
           </div>
-          <hr />
+          <hr/>
           <h1 style={{ marginTop: "20px", fontSize: "48px" }}>숙소 위치</h1>
           <MapBox>
             <Map MapRadius={MapRadius} />
@@ -212,7 +225,7 @@ const ImgBox = styled.div`
   margin-top: 25px;
 `;
 const ImgInnerBox1 = styled.div`
-  width: 73.5%;
+  width: 66%;
   height: 600px;
   img {
     width: 100%;
@@ -240,7 +253,7 @@ const ImgInnerBox2 = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 20px;
-  width: 30%;
+  width: 32.3%;
   height: 600px;
   img {
     margin-top: 10px;
@@ -251,7 +264,7 @@ const ImgInnerBox2 = styled.div`
   }
 `;
 const InfoBox = styled.div`
-  width: 70%;
+  width: 66%;
   height: auto;
   margin-top: 200px;
   h1 {
@@ -276,6 +289,12 @@ const HashTagBox = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 18px;
+  margin-top: 20px;
+  font-family: "Pretendard";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 21px;
+  line-height: 25px;
 `;
 
 const IconImg = styled.img`
@@ -312,8 +331,8 @@ const StarIcon = styled(FaStar)`
 `;
 
 const ImgDiv = styled.div`
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 6px;
+  margin-bottom: 5px;
   width: 100%;
   height: 265px;
   background-image: url(${jeju2});
