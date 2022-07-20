@@ -6,19 +6,17 @@ import Fade from "@mui/material/Fade";
 import Typography from "@mui/material/Typography";
 import styled from "styled-components";
 import cancelIcon from "../assests/css/cancelIcon.png";
-import searchIcom from "../assests/css/search.png";
-import DaumPostCode from "react-daum-postcode";
 import instance from "../shared/axios";
 import { useMutation, useQueryClient } from "react-query";
 import TagList from "./TagList";
-import { NoEncryption } from "@mui/icons-material";
 
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: 500,
+  height: 600,
   bgcolor: "background.paper",
   borderRadius: "10px",
   outline: "none",
@@ -86,7 +84,11 @@ const RoomModal = ({ width }) => {
                 onClick={handleClose}
               ></img>
             </Container>
-            <Middle id="transition-modal-description" sx={{ mt: 2 }}component="div">
+            <Middle
+              id="transition-modal-description"
+              sx={{ mt: 2 }}
+              component="div"
+            >
               <div className="roomName">
                 <h3>방 제목</h3>
                 <input
@@ -115,8 +117,8 @@ const RoomModal = ({ width }) => {
                   setTagList={setTagList}
                 />
               </div>
-              <Btn onClick={createRoom}>생성</Btn>
             </Middle>
+            <Btn onClick={createRoom}>생성</Btn>
           </Box>
         </Fade>
       </Modal>
@@ -168,9 +170,16 @@ const Middle = styled(Typography)`
     input {
       padding: 10px;
       width: 80%;
-      height: 40px;
-      border-radius: 5px;
-      border: 1px solid;
+      height: 56px;
+      border: 1px solid #c7c7cc;
+      border-radius: 10px;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 150%;
+      ::placeholder {
+        color: #8e8e93;
+      }
     }
   }
   .userCount {
@@ -183,9 +192,16 @@ const Middle = styled(Typography)`
     input {
       padding: 10px;
       width: 80%;
-      height: 40px;
-      border-radius: 5px;
-      border: 1px solid;
+      height: 56px;
+      border: 1px solid #c7c7cc;
+      border-radius: 10px;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 150%;
+      ::placeholder {
+        color: #8e8e93;
+      }
       // input type number 일 때 오른쪽 화살표 없애는 css
       /* ::-webkit-outer-spin-button,
       ::-webkit-inner-spin-button{
@@ -201,7 +217,6 @@ const Middle = styled(Typography)`
     flex-direction: row;
     justify-content: space-between;
     margin-bottom: 30px;
-    /* border: 1px solid; */
     h3 {
       width: 25%;
     }
@@ -209,11 +224,17 @@ const Middle = styled(Typography)`
 `;
 const Btn = styled.button`
   width: 50%;
-  height: 40px;
+  height: 56px;
   margin: 0 auto;
-  font-size: medium;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 24px;
   border-radius: 10px;
   background-color: #c7c7cc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: none;
   cursor: pointer;
 `;

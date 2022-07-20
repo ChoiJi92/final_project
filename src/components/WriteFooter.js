@@ -55,7 +55,6 @@ const WriteFooter = ({ title, thumbnail, reset, getValues, open,setOpen,isHost})
             tempPost();
           }}
         ></input>
-        {/* <button type="submit">{params.id ? '수정 완료' : '완료'}</button> */}
         <CompleteModal open={open} setOpen={setOpen} isHost={isHost}/>
       </div>
     </Wrap>

@@ -6,9 +6,6 @@ import Divider from "@mui/material/Divider";
 import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import HostModal from "./HostModal";
-import Avatar from "@mui/material/Avatar";
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
 
 const UserMenu = ({ userImage, nickName }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -60,10 +57,12 @@ const UserMenu = ({ userImage, nickName }) => {
           </MenuItem>
         </Write>
         <MenuItem>
-          <HostModal></HostModal>
+          <HostModal close={handleClose}></HostModal>
         </MenuItem>
         <Divider />
-        <MenuItem onClick={handleClose}>마이페이지</MenuItem>
+        <MenuItem onClick={()=>{
+          handleClose()
+          navigate('/mypage')}}>마이페이지</MenuItem>
         <MenuItem
           onClick={() => {
             localStorage.clear();

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import {useNavigate} from 'react-router-dom'
 import styled from "styled-components";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -13,12 +14,13 @@ import KakaoShare from "../components/KakaoShare";
 
 const ChatList = () => {
   const [room, setRoom] = useState();
+  const navigate = useNavigate()
   const { data } = useQuery(
     ["loadChatRoom"],
     () =>
       instance.get("/room").then((res) => {
         console.log(res.data);
-        return res.data;
+        return res.data.allRoom;
       }),
     {
       refetchOnWindowFocus: false,
@@ -82,9 +84,11 @@ const ChatList = () => {
           </Select>
           <RoomModal width={"31.74%"}></RoomModal>
         </div>
-        {data.map((v) => (
-          <Card key={v.id}>
-            <h3>{v.title}</h3>
+      
+          <Card onClick={()=>{
+            navigate(`/chatroom/`)
+          }}>
+            <h3></h3>
             <div className="avatar">
               <div className="host">
                 <Avatar
@@ -123,7 +127,7 @@ const ChatList = () => {
               </AvatarGroup>
             </div>
           </Card>
-        ))}
+
       </Bottom>
     </>
   );

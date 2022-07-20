@@ -6,16 +6,16 @@ import Fade from "@mui/material/Fade";
 import Typography from "@mui/material/Typography";
 import styled from "styled-components";
 import cancelIcon from "../assests/css/cancelIcon.png";
-import mendorongLogo2 from "../assests/css/mendorongLogo2.png";
+import mendorong3 from "../assests/css/mendorong3.webp";
 import { useNavigate, useParams } from "react-router-dom";
 const style = {
   position: "absolute",
   top: "45%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 450,
+  width: 580,
   bgcolor: "background.paper",
-  borderRadius: "10px",
+  borderRadius: "30px",
   boxShadow: 24,
   p: 2,
   outline: "none",
@@ -24,7 +24,7 @@ const style = {
 const CompleteModal = ({ open, setOpen, isHost }) => {
   // const [open, setOpen] = useState(false);
   // const handleOpen = () => setOpen(true);
-  const params = useParams()
+  const params = useParams();
   const navigate = useNavigate();
   const handleClose = () => {
     navigate("/");
@@ -33,7 +33,7 @@ const CompleteModal = ({ open, setOpen, isHost }) => {
 
   return (
     <div>
-      <button>{params.id ? '수정' : '완료'}</button>
+      <button>{params.id ? "수정" : "완료"}</button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -55,8 +55,12 @@ const CompleteModal = ({ open, setOpen, isHost }) => {
                 onClick={handleClose}
               ></img>
             </Container>
-            <Middle id="transition-modal-description" sx={{ mt: 2 }} component="div">
-              <Img src={mendorongLogo2} alt="Logo"></Img>
+            <Middle
+              id="transition-modal-description"
+              sx={{ mt: 2 }}
+              component="div"
+            >
+              <Img src={mendorong3} alt="Logo"></Img>
               {isHost ? (
                 <>
                   <h2>숙소를 등록했습니다!</h2>
@@ -64,7 +68,11 @@ const CompleteModal = ({ open, setOpen, isHost }) => {
                 </>
               ) : (
                 <>
-                  <h2>{params.id ? "게시글을 수정했습니다!" : '게시글을 업로드했습니다!'}</h2>
+                  <h2>
+                    {params.id
+                      ? "게시글을 수정했습니다!"
+                      : "게시글을 업로드했습니다!"}
+                  </h2>
                   <p>커뮤니티에서 내가 쓴 글을 확인해보세요.</p>
                 </>
               )}
@@ -110,7 +118,7 @@ const Container = styled(Typography)`
   align-items: center;
   img {
     /* position: absolute; */
-    right: 10px;
+    /* right: 10px; */
     cursor: pointer;
   }
 `;
@@ -120,35 +128,44 @@ const Middle = styled(Typography)`
   justify-content: center;
   align-items: center;
   h2 {
-    font-size: 20px;
-    margin: 10px 0 5px 0;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 150%;
+    margin: 18px 0 6px 0;
+  }
+  p {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 22px;
   }
 `;
 const Img = styled.img`
-  width: 300px;
-  height: 250px;
-  margin: 0 auto;
+  width: 350px;
+  height: 280px;
+  margin: 23px auto 0 auto;
   position: relative;
-  bottom: 10px;
 `;
 const Btn = styled.div`
   width: 100%;
-  margin: 20px auto;
+  margin: 40px auto 20px auto;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   button {
-    height: 60px;
+    height: 79px;
     border: none;
-    border-radius: 10px;
-    margin-top: 10px;
-    font-size: large;
-    font-weight: bold;
+    border-radius: 20px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 150%;
     cursor: pointer;
   }
   .mywrite {
-    background-color: black;
+    background-color: #78aa43;
     color: white;
+    margin-bottom: 12px;
   }
   .home {
     background-color: white;
