@@ -6,7 +6,7 @@ import Fade from "@mui/material/Fade";
 import Typography from "@mui/material/Typography";
 import styled from "styled-components";
 import cancelIcon from "../assests/css/cancelIcon.png";
-import mendorongLogo2 from "../assests/css/mendorongLogo2.png";
+import mendorongLogo2 from "../assests/css/mendorong2.webp";
 import { useNavigate } from "react-router-dom";
 const style = {
   position: "absolute",
@@ -15,22 +15,23 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 450,
   bgcolor: "background.paper",
-  borderRadius: "10px",
+  borderRadius: "30px",
   boxShadow: 24,
   p: 2,
   outline: "none",
 };
 
-const HostModal = () => {
+const HostModal = ({close}) => {
   const navigate = useNavigate();
   const host = localStorage.getItem("host");
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
-    if (host) {
+    if (!host) {
       setOpen(true);
     }
     else{
       navigate('/hostwrite')
+      close()
     }
   };
   const handleClose = () => {

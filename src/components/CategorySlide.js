@@ -3,17 +3,20 @@ import styled from "styled-components";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import beach from "../assests/css/해안가.png";
-import land from "../assests/css/내륙2.png";
-import town from "../assests/css/조용한마을2.png";
-import trip from "../assests/css/관광지근처2.png";
-import udo from "../assests/css/우도2.png";
-import back from "../assests/css/배경1.png";
-import back2 from "../assests/css/배경2.png";
-import back3 from "../assests/css/배경3.png";
-import back4 from "../assests/css/배경4.png";
-import back5 from "../assests/css/배경5.png";
-import back6 from "../assests/css/배경6.png";
+import beach from "../assests/css/해안가.webp";
+import land from "../assests/css/내륙2.webp";
+import town from "../assests/css/조용한마을2.webp";
+import trip from "../assests/css/관광지근처2.webp";
+import icecream from "../assests/css/icecream2.webp";
+import sunrise from "../assests/css/sunrise2.webp";
+import prevIcon from "../assests/css/prevIcon.webp";
+import nextIcon from "../assests/css/nextIcon.webp";
+import back from "../assests/css/배경1.webp";
+import back2 from "../assests/css/배경2.webp";
+import back3 from "../assests/css/배경3.webp";
+import back4 from "../assests/css/배경4.webp";
+import back5 from "../assests/css/배경5.webp";
+import back6 from "../assests/css/배경6.webp";
 
 const CategorySlide = (props) => {
   const [mouseOver, setMouseOver] = useState(false);
@@ -24,7 +27,7 @@ const CategorySlide = (props) => {
         onMouseLeave={mouseLeave}
         onMouseOver={mouseHover}
         className={className}
-        style={{ ...style, display: "block", marginRight: "30px", opacity: 1 }}
+        style={{ ...style, display: "block", marginRight: "30px", opacity: 1 , background:`url(${nextIcon   })`}}
         onClick={onClick}
       />
     );
@@ -172,7 +175,7 @@ const CategorySlide = (props) => {
                 backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back6})`,
               }}
             >
-              <img src={udo} alt="udo"></img>
+              <img src={icecream} alt="icecream"></img>
               <p>우도</p>
             </Card>
           </Wrap>
@@ -235,7 +238,7 @@ const CategorySlide = (props) => {
                 backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back6})`,
               }}
             >
-              <img src={udo} alt="udo"></img>
+              <img src={icecream} alt="icecream"></img>
               <p>우도</p>
             </Card>
           </Wrap>

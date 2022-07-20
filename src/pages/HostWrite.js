@@ -9,18 +9,15 @@ import { FaImage } from "react-icons/fa";
 import SortableList, { SortableItem } from "react-easy-sort";
 import arrayMove from "array-move";
 import imageIcon from "../assests/css/imageIcon.png";
-import { MdCancel } from "react-icons/md";
 import AddressModal from "../components/AddressModal";
 import TagList from "../components/TagList";
 import { useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import axios from "axios";
-import Modal from "../components/Modal";
 
 const HostWrite = () => {
   const params = useParams();
   const paramsId = params.id;
-  const [testModal, setTestModal] = useState(false);
   const [open, setOpen] = useState(false);
   //   const getWriteData = async (id) => {
   //     const { data } = await axios.get(`http://localhost:5001/testList/${id}`)
@@ -163,7 +160,6 @@ const HostWrite = () => {
     // }
       console.log("hello", data);
       postMutation.mutate(data, address);
-      setTestModal(true);
       setOpen(true);
     }
     // else{
@@ -400,7 +396,6 @@ const HostWrite = () => {
             <ErrorP1>{errors.postContent?.message}</ErrorP1>
           </div>
         </InfoBox>
-        <Modal testModal={testModal} />
         <WriteFooter
           reset={reset}
           onSubmit={onSubmit}

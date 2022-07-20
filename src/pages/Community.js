@@ -3,10 +3,10 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import instance from "../shared/axios";
-import all from "../assests/css/모두보기.png";
-import land from "../assests/css/내륙.png";
-import tour from "../assests/css/관광지근처.png";
-import town from "../assests/css/조용한마을.png";
+import all from "../assests/css/해변근처.webp";
+import land from "../assests/css/내륙.webp";
+import tour from "../assests/css/관광지근처.webp";
+import town from "../assests/css/조용한마을.webp";
 import scrap from "../assests/css/scrap.png";
 import unlike from "../assests/css/unlikeIcon.png";
 import nextIcon from "../assests/css/nextIcon.png";
@@ -158,6 +158,7 @@ const Top = styled.div`
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
+    /* background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%) */                     
   }
   .rightImage {
     /* width: 433px; */

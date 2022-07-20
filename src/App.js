@@ -19,8 +19,8 @@ import HouseInfo from './pages/HouseInfo';
 import HouseDetail from './pages/HouseDetail';
 import ChatRoom from './pages/ChatRoom';
 import HostWrite from './pages/HostWrite';
-import Share from './components/Share';
 import UserPolicy from './pages/UserPolicy';
+import TestMap from './components/TestMap';
 
 function App() {
  
@@ -40,9 +40,9 @@ function App() {
         <Route path="/house" element={<HouseInfo/>} />
         <Route path="/house/:id" element={<HouseDetail/>} />
         <Route path="/chat" element={<ChatList/>} />
-        <Route path="/chatroom" element={<ChatRoom/>} />
+        <Route path="/chatroom/:id" element={<ChatRoom/>} />
         <Route path="/mypage" element={<Mypage />} />
-        <Route path="/test" element={<Share />} />
+        <Route path="/test" element={<TestMap />} />
         <Route path="/userpolicy" element={<UserPolicy />} />
         <Route path='/oauth/kakao/callback' element={<KakaoRedirect/>}/>
         <Route path='/oauth/google/callback' element={<GoogleRedirect/>}/>
