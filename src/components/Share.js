@@ -14,17 +14,29 @@ import Button from "@mui/material/Button";
 import Popover from "@mui/material/Popover";
 import PopupState, { bindTrigger, bindPopover } from "material-ui-popup-state";
 
-const Share = ({data}) => {
+const Share = ({ data }) => {
   const currentUrl = window.location.href;
   return (
     <PopupState variant="popover" popupId="demo-popup-popover">
       {(popupState) => (
         <Container>
-          <Btn {...bindTrigger(popupState)}>
+          {/* <Btn {...bindTrigger(popupState)}>
             공유
             <img className="shareIcon" src={shareIcon2} alt="공유" />
-          </Btn>
-		  
+          </Btn> */}
+          {data ? (
+            <Btn {...bindTrigger(popupState)}>
+              공유
+              <img className="shareIcon" src={shareIcon2} alt="공유" />
+            </Btn>
+          ) : (
+            <HouseImg
+              {...bindTrigger(popupState)}
+              src={shareIcon2}
+              alt="공유"
+            />
+          )}
+        
           <Popover
             {...bindPopover(popupState)}
             anchorOrigin={{
@@ -53,9 +65,13 @@ const Share = ({data}) => {
                   ></TwitterIcon>
                 </TwitterShareButton>
                 <CopyToClipboard text={currentUrl}>
-                  <URLShareButton onClick={()=>{
-					window.alert("클립보드에 복사되었습니다.")
-				  }}>URL</URLShareButton>
+                  <URLShareButton
+                    onClick={() => {
+                      window.alert("클립보드에 복사되었습니다.");
+                    }}
+                  >
+                    URL
+                  </URLShareButton>
                 </CopyToClipboard>
                 <KakaoShare data={data} />
               </GridContainer>
@@ -67,9 +83,9 @@ const Share = ({data}) => {
   );
 };
 const Container = styled.div`
-	margin-right: 20px;
-	width: 35%;
-`
+  margin-right: 20px;
+  width: 35%;
+`;
 const Btn = styled.div`
   display: flex;
   flex-direction: row;
@@ -117,4 +133,13 @@ const URLShareButton = styled.button`
     background-color: #a99fee;
   } */
 `;
+
+const HouseImg = styled.img`
+  width: 42px;
+  height: 42px;
+  margin-left: 10px;
+  margin-bottom: 5px;
+  cursor: pointer;
+`;
+
 export default Share;
