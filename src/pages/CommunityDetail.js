@@ -8,7 +8,7 @@ import { Viewer } from "@toast-ui/react-editor";
 import editIcon from "../assests/css/editIcon.png";
 import deleteIcon from "../assests/css/deleteIcon.png";
 import unlikeIcon from "../assests/css/unlikeIcon.webp";
-import likeIcon from "../assests/css/likeIcon.png";
+import likeIcon from "../assests/css/likeIcon.webp";
 import starIcon from "../assests/css/starIcon.png";
 import unsaveIcon from "../assests/css/unsaveIcon.png";
 import CommentList from "../components/CommentList";

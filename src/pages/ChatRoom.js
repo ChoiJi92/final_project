@@ -25,7 +25,6 @@ const ChatRoom = () => {
   const [chat, setChat] = useState([])
   // const socket = io.connect()  // backurl 넣기
   const messageRef = useRef();
-  const titleRef = useRef();
   const params = useParams()
   const navigate = useNavigate()
   const nickName = localStorage.getItem('nickName')
@@ -63,11 +62,11 @@ const ChatRoom = () => {
       setChat([...chat,{user,messageChat,profileImage}])
       console.log(chat)
     })
-    return () => {
-      socket.current.disconnect();
-      // socket.off('connect');
-      // socket.off('disconnect');
-    };
+    // return () => {
+    //   socket.current.disconnect();
+    //   // socket.off('connect');
+    //   // socket.off('disconnect');
+    // };
   }, []);
   const sendMessage = (message) => {
     console.log('나는 메세지 소켓',socket)

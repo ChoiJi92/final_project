@@ -11,6 +11,7 @@ import icecream from "../assests/css/icecream.webp";
 import sunrise from "../assests/css/sunrise.webp";
 import scrap from "../assests/css/scrap.png";
 import unlike from "../assests/css/whiteLike.webp";
+import like from "../assests/css/likeIcon.webp";
 import unlike2 from "../assests/css/unlikeIcon.webp";
 import commentIcon from "../assests/css/commentIcon.webp";
 import nextIcon from "../assests/css/nextIcon2.webp";
@@ -26,6 +27,7 @@ import jeju14 from "../assests/css/제주9.jpeg";
 
 const Community = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { data } = useQuery(
     ["content"],
     () =>
@@ -35,6 +37,30 @@ const Community = () => {
       }),
     {
       refetchOnWindowFocus: false, // 다른화면 갔다와도 재호출 안되게 함
+    }
+  );
+  const Like = useMutation(
+    ["Like"],
+    (id) => instance.post(`/like/${id}`).then((res) => console.log(res.data)),
+    {
+      onSuccess: () => {
+        // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
+        // queryClient.invalidateQueries("detailContent");
+      },
+    }
+  );
+  // 좋아요 취소
+  const unLike = useMutation(
+    ["unLike"],
+    (id) =>
+      instance
+        .delete(`/like/${id}/unlike`)
+        .then((res) => console.log(res.data)),
+    {
+      onSuccess: () => {
+        // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
+        // queryClient.invalidateQueries("detailContent");
+      },
     }
   );
   const title = "내 기준 제주에서 제일 예쁜 카페에요!!!";
@@ -92,17 +118,6 @@ const Community = () => {
               }
             }}
           ></img>
-          {/* <div
-            onClick={() => {
-              if (count < listImg.length - 1) {
-                setCount((prev) => prev + 1);
-              } else {
-                setCount(0);
-              }
-            }}
-          >
-           
-          </div> */}
           <h2>{title.slice(0, 18)}...</h2>
         </div>
       </Top>
@@ -147,7 +162,24 @@ const Community = () => {
               </h1>
               <div className="icon">
                 <div className="like">
-                  <img src={unlike2} alt="좋아요" />
+                  {v.islike ? (
+                    <img
+                      onClick={() => {
+                        unLike.mutate(v.postId);
+                      }}
+                      src={like}
+                      alt="좋아요"
+                    />
+                  ) : (
+                    <img
+                      onClick={() => {
+                        Like.mutate(v.postId);
+                      }}
+                      src={unlike2}
+                      alt="좋아요"
+                    />
+                  )}
+
                   <p>{v.likeNum}</p>
                 </div>
                 <div className="comment">
@@ -408,13 +440,9 @@ const Card = styled.div`
     }
   }
   .leftContent {
-    height: 90%;
-  }
-  div {
-    position: relative;
+    /* height: 100%; */
     width: 60%;
-    /* height: 80%; */
-    /* border: 1px solid; */
+    position: relative;
   }
   .user {
     color: #aeaeb2;
@@ -431,12 +459,14 @@ const Card = styled.div`
     line-height: 62px;
   }
   .icon {
-    /* position: absolute; */
+    position: absolute;
+    bottom: 0;
     display: flex;
     flex-direction: row;
     .like {
       display: flex;
       flex-direction: row;
+      margin-right: 40px;
       p {
         margin-left: 12px;
         font-style: normal;

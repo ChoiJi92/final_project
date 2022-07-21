@@ -15,6 +15,7 @@ import KakaoShare from "../components/KakaoShare";
 const ChatList = () => {
   const [room, setRoom] = useState();
   const navigate = useNavigate();
+  const queryClient =useQueryClient()
   const { data } = useQuery(
     ["loadChatRoom"],
     () =>
@@ -27,7 +28,12 @@ const ChatList = () => {
     }
   );
   const joinRoom = useMutation((roomId) =>
-    instance.post(`/room/${roomId}`).then((res) => console.log(res.data))
+    instance.post(`/room/${roomId}`).then((res) => console.log(res.data)),{
+       onSuccess: () => {
+        // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
+        queryClient.invalidateQueries("loadDetailRoom");
+    }
+  }
   );
   const onChange = (e) => {
     setRoom(e.target.value);
@@ -37,6 +43,7 @@ const ChatList = () => {
     if (e.key === "Enter") {
     }
   };
+
   return (
     <>
       <Top>
@@ -107,28 +114,28 @@ const ChatList = () => {
               </div>
               <AvatarGroup max={4}>
                 <Avatar
-                  alt="Remy Sharp"
-                  src="/static/images/avatar/1.jpg"
+                  alt={v.roomUserNickname[0]}
+                  src={v.roomUserImg[0]}
                   sx={{ width: 36, height: 36 }}
                 />
                 <Avatar
-                  alt="Travis Howard"
-                  src="/static/images/avatar/2.jpg"
+                  alt={v.roomUserNickname[0]}
+                  src={v.roomUserImg[0]}
                   sx={{ width: 36, height: 36 }}
                 />
                 <Avatar
-                  alt="Cindy Baker"
-                  src="/static/images/avatar/3.jpg"
+                  alt={v.roomUserNickname[0]}
+                  src={v.roomUserImg[0]}
                   sx={{ width: 36, height: 36 }}
                 />
                 <Avatar
-                  alt="Agnes Walker"
-                  src="/static/images/avatar/4.jpg"
+                  alt={v.roomUserNickname[0]}
+                  src={v.roomUserImg[0]}
                   sx={{ width: 36, height: 36 }}
                 />
                 <Avatar
-                  alt="Trevor Henderson"
-                  src="/static/images/avatar/5.jpg"
+                  alt={v.roomUserNickname[0]}
+                  src={v.roomUserImg[0]}
                   sx={{ width: 36, height: 36 }}
                 />
               </AvatarGroup>

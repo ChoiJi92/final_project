@@ -25,7 +25,7 @@ export const hostShareAndMap = atom({
 
 export const houseInfoMap = atom({
   key:"houseInfo",
-  default:[]
+  default:['제주 서귀포시 중정로 24-7 1층']
 });
 
 export const houseDetailMap = atom({
