@@ -251,8 +251,7 @@ const HouseInfo = () => {
       <div id="contentsMapBox">
         <ContentsBox>
           <OrderingBox>
-            <div>날짜</div>
-            <div>인원</div>
+            <div>숙소형태</div>
             <div>위치별</div>
             <div>추천순</div>
           </OrderingBox>
@@ -414,7 +413,7 @@ const OrderingBox = styled.div`
   justify-content: space-between;
   margin: 20px 0px 20px 10px;
   div {
-    width: 25%;
+    width: 30%;
     height: 50px;
     border: 1px solid black;
     margin: 0px 15px 0px 5px;

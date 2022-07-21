@@ -20,7 +20,7 @@ const Mypage = () => {
   const userImage = localStorage.getItem("userImage");
   const email = localStorage.getItem("email");
   const host = localStorage.getItem("host");
-  const list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const list = [1];
 
   const likeClick = () => {
     setMyLike((prev) => !prev);
@@ -28,7 +28,8 @@ const Mypage = () => {
   const writeClick = () => {
     setMyWrite((prev) => !prev);
   };
-
+  console.log(list.length)
+  
   return (
     <MainBox>
       <ProfileBox>
@@ -50,17 +51,64 @@ const Mypage = () => {
 
       <MyDefaultBox>
         <div id="mylike">
-          <h1>내 좋아요</h1>
+          <div id="myInfo">
+            <h1>내 좋아요</h1>
+            <h1>저장함</h1>
+          </div>
           {/* 좋아요 3개 이상일 시 아이콘 보이게 해야함 */}
+          
           <span>
-            {myLike ? (
+          {list.length >= 4 ? (
+              <>
+              {myLike ? (
               <DownIcon onClick={likeClick} />
             ) : (
               <UpIcon onClick={likeClick} />
-            )}
+            )}</>
+            ) : ("")}
           </span>
         </div>
         {myLike ? (
+        <>
+          {list.length === 0 ? (
+          <EmptyImgBox>
+            <img src={mypageImg} alt="없어요 이미지"/>
+            <span>아직 좋아요 한 글이 없어요.</span>
+          </EmptyImgBox>
+        ) : (
+          <DefaultImgBox style={{"width":`calc(33.33333333%*${list.slice(0,3).length})`}}>
+          {list.slice(0,3).map((item, idx)=>(
+              <img style={{}} src={jeju1}/>
+          ))}
+          </DefaultImgBox>
+       
+        ) }
+        </>
+        ) : 
+        ("")}
+        
+        {myLike ? ("") : (<HiddenMyLikeBox>
+            {list.map((item, idx) => {
+              return (
+                <div key={idx} id="listBox">
+                  <img src={jeju1} />
+                  <span style={{ marginTop: "5px" }}>해변가 근처 숙소</span>
+                  <div id="icons">
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <StarIcon />
+                      <span style={{ marginLeft: "10px" }}>4.5</span>
+                    </div>
+                    <HeartIcon />
+                  </div>
+                </div>
+              );
+            })}
+          </HiddenMyLikeBox>)}
+        {/* <HiddenMyLikeBox>
+          
+        </HiddenMyLikeBox> */}
+        
+        {/* {myLike ? (
           <DefaultImgBox>
             <img src={jeju1} />
             <img src={jeju1} />
@@ -89,19 +137,30 @@ const Mypage = () => {
               );
             })}
           </HiddenMyLikeBox>
-        )}
+        )} */}
       </MyDefaultBox>
-
-      <MyDefaultBox>
+        <TestImgBox>
+        <img src={jeju1} />
+        <img src={jeju1} />
+      
+        </TestImgBox>
+      {/* <MyDefaultBox>
         <div id="myWrite">
-          <h1>내가 쓴 글</h1>
-          {/* 쓴 글 3개 이상일 시 아이콘 보이게 해야함 */}
+          <div id="myInfo">
+            <h1>내가 쓴 글</h1>
+            <h1>내 숙소</h1>
+          </div>
+          쓴 글 3개 이상일 시 아이콘 보이게 해야함
           <span>
-            {myWrite ? (
+            {list.length >= 4 ? (
+              <>
+              {myWrite ? (
               <DownIcon onClick={writeClick} />
             ) : (
               <UpIcon onClick={writeClick} />
-            )}
+            )}</>
+            ) : ("")}
+            
           </span>
         </div>
         {myWrite ? (
@@ -134,7 +193,7 @@ const Mypage = () => {
             })}
           </HiddenMyLikeBox>
         )}
-      </MyDefaultBox>
+      </MyDefaultBox> */}
     </MainBox>
   );
 };
@@ -200,6 +259,8 @@ const ProfileBox = styled.div`
 const MyDefaultBox = styled.div`
   width: 45%;
   margin-top: 100px;
+  /* border: 1px solid red; */
+  border: 1px solid red;
   #mylike {
     display: flex;
     justify-content: space-between;
@@ -216,22 +277,42 @@ const MyDefaultBox = styled.div`
   h1 {
     margin-left: 35px;
     margin-bottom: 10px;
+    border: 1px solid red;
+  }
+  #myInfo{
+    display: flex;
+    flex-wrap: nowrap;
   }
 `;
 
 const DefaultImgBox = styled.div`
-  width: 100%;
+  /* width: auto; */
+  /* min-width: 35%; */
+  /* min-width: 30%; */
+  /* max-width: 100%; */
+  /* width : calc(33.3%*${(props)=>props.props}); */
   height: 270px;
   margin-top: 10px;
   display: flex;
+  /* flex-wrap: wrap; */
   justify-content: space-between;
   align-items: center;
   border-radius: 10px;
   background-color: #f2f2f7;
+  padding: 20px;
+  /* border: 1px solid blue; */
   img {
-    width: 30%;
+    width: 100%;
     height: 230px;
-    margin: 0px 10px 0px 10px;
+    /* margin: 0px 10px 0px 15px; */
+    /* margin-right: 5px; */
+  }
+  #testBox{
+    display: flex;
+    max-width: 100%;
+    min-width: 30%;
+    border: 1px solid red;
+    
   }
 `;
 const HiddenMyLikeBox = styled.div`
@@ -271,5 +352,32 @@ const UpIcon = styled(FaChevronUp)`
 const DownIcon = styled(FaChevronDown)``;
 
 const CommentIcon = styled(FaRegComment)``;
+
+const EmptyImgBox = styled.div`
+  width: 100%;
+  height: 270px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  background-color: #f2f2f7;
+`
+
+const TestImgBox = styled.div`
+display: flex;
+
+align-items: center;
+  width: 30%;
+  max-width: 45%;
+  height: 300px;
+  border: 1px solid red;
+  img{
+    width: 30%;
+    height: 230px;
+    margin: 0px 10px 0px 15px;
+  }
+`
 
 export default Mypage;
