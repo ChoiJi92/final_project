@@ -8,6 +8,7 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import reportWebVitals from "./reportWebVitals";
 import ScrollToTop from "./components/ScrollToTop";
 import {RecoilRoot} from 'recoil'
+import Loading from "./pages/Loading";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const queryClient = new QueryClient({
@@ -23,7 +24,7 @@ root.render(
       {/* devtools */}
       {/* <ReactQueryDevtools initialIsOpen={true} /> */}
       <RecoilRoot>
-      <Suspense fallback={<div>로딩 중 입니다! :)</div>}>
+      <Suspense fallback={<Loading></Loading>}>
       <BrowserRouter>
       <ScrollToTop/>
         <App />

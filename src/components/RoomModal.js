@@ -49,6 +49,9 @@ const RoomModal = ({ width }) => {
     } else if (!userCountRef.current.value) {
       window.alert("방 인원을 정해주세요 :)");
     } else {
+      console.log(roomNameRef.current.value)
+      console.log(userCountRef.current.value)
+      console.log(tagList)
       const data = {
         title: roomNameRef.current.value,
         max: userCountRef.current.value,

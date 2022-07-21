@@ -22,6 +22,7 @@ import HostWrite from './pages/HostWrite';
 import UserPolicy from './pages/UserPolicy';
 
 import TestMap from './components/TestMap';
+import Error from './pages/Error';
 
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
         <Route path='/oauth/kakao/callback' element={<KakaoRedirect/>}/>
         <Route path='/oauth/google/callback' element={<GoogleRedirect/>}/>
         <Route path='/oauth/naver/callback' element={<NaverRedirect/>}/>
+        <Route path="*" element={<Error/>} />
       </Routes>
       {/* <Footer/> */}
     </div>

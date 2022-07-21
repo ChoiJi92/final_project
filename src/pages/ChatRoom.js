@@ -6,6 +6,8 @@ import RoomModal from "../components/RoomModal";
 import io from "socket.io-client";
 import instance from "../shared/axios";
 import enterIcon from "../assests/css/enterIcon.png";
+import { useQuery } from "react-query";
+import { useNavigate, useParams } from "react-router-dom";
 // const socketUrl = 'http://gudetama.shop'
 // const socketUrl = 'http://localhost:3000'
 // const socket = io('http://gudetama.shop')
@@ -24,57 +26,78 @@ const ChatRoom = () => {
   // const socket = io.connect()  // backurl 넣기
   const messageRef = useRef();
   const titleRef = useRef();
+  const params = useParams()
+  const navigate = useNavigate()
   const nickName = localStorage.getItem('nickName')
   const userId = localStorage.getItem('userId')
   const userImage = localStorage.getItem('userImage')
   const url = "https://www.mendorong-jeju.com";
+  const { data } = useQuery(
+    ["loadDetailRoom",params.id],
+    () =>
+      instance.get(`/room/${params.id}`).then((res) => {
+        console.log(res.data);
+        return res.data;
+      }).catch((err)=>{
+        console.log(err)
+      }),
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
   // let socket = io(url);
-  let socket;
-  // const socket = useRef();
+  // let socket= io(url)
+  const socket = useRef();
   useEffect(() => {
     console.log("연결");
-    socket = io(url);
+    socket.current = io(url);
     // socketRef.current = io.connect(url);
-    console.log('나는 이펙트 소켓',socket.id);
-    socket.emit("join-chatRoom", 1, userId);
-    socket.on("message",(messageChat,user,profileImage,roomId)=>{
+    console.log('나는 이펙트 소켓',socket);
+    socket.current.emit("join-room", params.id);
+    console.log('소켓',socket);
+    socket.current.on('welcome',(nickname) =>{
+      console.log(nickname)
+    })
+    socket.current.on("message",(messageChat,user,profileImage,roomId)=>{
       console.log(messageChat,user,profileImage,roomId)
       setChat([...chat,{user,messageChat,profileImage}])
       console.log(chat)
     })
     return () => {
-      socket.disconnect();
+      socket.current.disconnect();
       // socket.off('connect');
       // socket.off('disconnect');
     };
-  }, [chat]);
+  }, []);
   const sendMessage = (message) => {
-    console.log(message)
-    console.log(socket.id)
     console.log('나는 메세지 소켓',socket)
-    socket.emit("chat_message", message, userId,'roomId');
+    if(message===""){
+      return
+    }else{
+    socket.current.emit("chat_message", message, userId,params.id);
     console.log(message, userId)
     messageRef.current.value = "";
+    }
   };
-  const joinRoom = () => {
-    console.log('나는 룸 소켓',socket)
-    console.log(socket.id)
-    const roomName = titleRef.current.innerText;
-    socket.emit("join-room", roomName, nickName,userImage);
-    console.log('룸입장')
-    socket.on("welcome",(user,roomId,a) =>{
-      console.log(user,roomId,a)
-    }) 
-    setRoom(roomName);
-  };
+  // const joinRoom = () => {
+  //   console.log('나는 룸 소켓',socket)
+  //   console.log(socket.id)
+  //   const roomName = titleRef.current.innerText;
+  //   socket.emit("join-room", roomName, nickName,userImage);
+  //   console.log('룸입장')
+  //   socket.on("welcome",(user,roomId,a) =>{
+  //     console.log(user,roomId,a)
+  //   }) 
+  //   setRoom(roomName);
+  // };
   
   const onKeyPress = (e) => {
     if(e.key ==='Enter'){
-      console.log(socket.id)
+      // console.log(socket.id)
       console.log(messageRef.current.value)
     console.log('나는 메세지 소켓',socket)
-    socket.emit("chat_message", messageRef.current.value, nickName, userImage, 'roomId');
-    console.log(messageRef.current.value, nickName, userImage)
+    socket.current.emit("chat_message", messageRef.current.value, userId, params.id);
+    console.log('엔터쳣을때',messageRef.current.value, userId, params.id)
     messageRef.current.value = "";
     }
   }
@@ -88,14 +111,13 @@ const ChatRoom = () => {
               <div className="hostChat">호스트와 대화</div>
             </Header>
             <div className="chat">
-              <div onClick={joinRoom}>
-                <h3 ref={titleRef}>서귀포 한달 살기 중, 밥친구 구해요.</h3>
-                <p>참여자 00명</p>
-              </div>
-              <div>
-                <h3>서귀포 한달 살기 중, 친구 구해요.</h3>
-                <p>참여자 00명</p>
-              </div>
+              {data.chatingRooms.map((v,i) => 
+              <div key={v.roomId} onClick={()=>{
+                navigate(`/chatroom/${v.roomId}`)
+              }}>
+                <h3>{v.title}</h3>
+                <p>참여자 {v.roomUserNum}명</p>
+              </div>)}
             </div>
             <div className="chatButton">
               <RoomModal width={"91.09%"}></RoomModal>
@@ -105,7 +127,7 @@ const ChatRoom = () => {
             <div className="messageWrap">
               <div className="title">
                 <p>오픈 챗 방</p>
-                <h2>{room}</h2>
+                <h2>{data.Room.title}</h2>
               </div>
               <div className="chatWrap">
             {chat.map((v,i) =>

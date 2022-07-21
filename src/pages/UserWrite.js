@@ -370,7 +370,7 @@ const Container = styled.div`
   cursor: pointer;
   div {
     /* width: 434px; */
-    width: 21%;
+    width: 22.6042%;
     height: 270px;
     border: none;
     border-radius: 10px;
@@ -397,7 +397,7 @@ const Container = styled.div`
   button {
     z-index: ${(props) => props.background && "-1"};
     margin-top: 44px;
-    width: 57.5%;
+    width: 58.068%;
     height: 52px;
     border: none;
     background: #aeaeb2;
@@ -623,7 +623,7 @@ const InputWrap = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-bottom: 70px;
+    margin-bottom: 120px;
     padding-bottom: 20px;
     input {
       width: 80%;

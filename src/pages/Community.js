@@ -7,9 +7,14 @@ import all from "../assests/css/해변근처.webp";
 import land from "../assests/css/내륙.webp";
 import tour from "../assests/css/관광지근처.webp";
 import town from "../assests/css/조용한마을.webp";
+import icecream from "../assests/css/icecream.webp";
+import sunrise from "../assests/css/sunrise.webp";
 import scrap from "../assests/css/scrap.png";
-import unlike from "../assests/css/unlikeIcon.png";
-import nextIcon from "../assests/css/nextIcon.png";
+import unlike from "../assests/css/whiteLike.webp";
+import unlike2 from "../assests/css/unlikeIcon.webp";
+import commentIcon from "../assests/css/commentIcon.webp";
+import nextIcon from "../assests/css/nextIcon2.webp";
+import prevIcon from "../assests/css/prevIcon2.webp";
 import jeju7 from "../assests/css/제주1.jpeg";
 import jeju8 from "../assests/css/제주2.jpeg";
 import jeju9 from "../assests/css/제주3.jpg";
@@ -32,17 +37,29 @@ const Community = () => {
       refetchOnWindowFocus: false, // 다른화면 갔다와도 재호출 안되게 함
     }
   );
-    const title = "내 기준 제주에서 제일 예쁜 카페에요!!!"
+  const title = "내 기준 제주에서 제일 예쁜 카페에요!!!";
   const listImg = [jeju7, jeju8, jeju9, jeju10, jeju11, jeju12, jeju13, jeju14];
   const [count, setCount] = useState(0);
   return (
     <Container>
-      <Top>
-        <div
-          className="leftImage"
-          style={{ backgroundImage: `url(${listImg[count]})` }}
-        >
+      <Top
+        rightImage={listImg[count < listImg.length - 1 ? count + 1 : 0]}
+        leftImage={listImg[count]}
+      >
+        <div className="leftImage">
           <Wrap>
+            <img
+              className="prevIcon"
+              src={prevIcon}
+              alt="다음"
+              onClick={() => {
+                if (count <= 0) {
+                  setCount((prev) => prev + 7);
+                } else {
+                  setCount(count - 1);
+                }
+              }}
+            ></img>
             <h2>이직 전 제주에서 한달동안 힐링하기</h2>
             <div className="wrap">
               <div className="user">
@@ -63,15 +80,19 @@ const Community = () => {
             </div>
           </Wrap>
         </div>
-        <div
-          className="rightImage"
-          style={{
-            backgroundImage: `url(${
-              listImg[count < listImg.length - 1 ? count + 1 : 0]
-            })`,
-          }}
-        >
-          <div
+        <div className="rightImage">
+          <img
+            src={nextIcon}
+            alt="다음"
+            onClick={() => {
+              if (count < listImg.length - 1) {
+                setCount((prev) => prev + 1);
+              } else {
+                setCount(0);
+              }
+            }}
+          ></img>
+          {/* <div
             onClick={() => {
               if (count < listImg.length - 1) {
                 setCount((prev) => prev + 1);
@@ -80,9 +101,9 @@ const Community = () => {
               }
             }}
           >
-            <img src={nextIcon} alt="다음"></img>
-          </div>
-          <h2>{title.slice(0,18)}...</h2>
+           
+          </div> */}
+          <h2>{title.slice(0, 18)}...</h2>
         </div>
       </Top>
       <Middle>
@@ -103,11 +124,11 @@ const Community = () => {
           <p>조용한 마을</p>
         </div>
         <div>
-          <div></div>
+          <img src={icecream} alt="우도"></img>
           <p>우도</p>
         </div>
         <div>
-          <div></div>
+          <img src={sunrise} alt="성산일출봉"></img>
           <p>성산일출봉</p>
         </div>
       </Middle>
@@ -124,11 +145,22 @@ const Community = () => {
               >
                 {v.title}
               </h1>
-              <div className="like">
-                좋아요{v.likeNum}개, 댓글{v.commentNum}개
+              <div className="icon">
+                <div className="like">
+                  <img src={unlike2} alt="좋아요" />
+                  <p>{v.likeNum}</p>
+                </div>
+                <div className="comment">
+                  <img src={commentIcon} alt="댓글" />
+                  <p>{v.commentNum}</p>
+                </div>
               </div>
             </div>
-            <img src={v.thumbnailURL} alt="이미지"></img>
+            <img
+              className="thumnail"
+              src={v.images[0].thumbnailURL}
+              alt="이미지"
+            ></img>
           </Card>
         ))}
       </Bottom>
@@ -147,18 +179,27 @@ const Top = styled.div`
   flex-direction: row;
   margin: 40px 0 50px 0;
   overflow: hidden;
+
   .leftImage {
-    /* width: 887px; */
     width: 66%;
     height: 500px;
-    /* border: 1px solid; */
     border-radius: 20px;
     margin-right: 20px;
     position: relative;
+    background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 0.5) 100%
+      ),
+      url(${(props) => props.leftImage});
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: center center;
     background-size: cover;
-    /* background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%) */                     
+    :hover {
+      .prevIcon {
+        display: flex;
+      }
+    }
   }
   .rightImage {
     /* width: 433px; */
@@ -172,12 +213,18 @@ const Top = styled.div`
     justify-content: flex-end;
     /* align-items: center; */
     position: relative;
+    background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 0.5) 100%
+      ),
+      url(${(props) => props.rightImage});
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: center center;
     background-size: cover;
     overflow: hidden;
     :hover {
-      div {
+      img {
         display: flex;
       }
     }
@@ -209,6 +256,13 @@ const Top = styled.div`
       font-size: 32px;
       line-height: 46px;
     }
+    img {
+      display: none;
+      position: absolute;
+      top: 40%;
+      right: -10px;
+      cursor: pointer;
+    }
   }
 `;
 const Wrap = styled.div`
@@ -223,6 +277,13 @@ const Wrap = styled.div`
   /* border: 1px solid black; */
   color: white;
   white-space: nowrap;
+  .prevIcon {
+    position: absolute;
+    bottom: 180px;
+    left: -10px;
+    display: none;
+    cursor: pointer;
+  }
   h2 {
     font-weight: 700;
     font-size: 32px;
@@ -341,7 +402,7 @@ const Card = styled.div`
     .title {
       color: #64b5f6;
     }
-    img {
+    .thumnail {
       box-shadow: rgb(0 0 0 / 50%) 0px 5px 10px 0px;
       transform: translateY(-10px);
     }
@@ -369,15 +430,36 @@ const Card = styled.div`
     font-size: 52px;
     line-height: 62px;
   }
-  .like {
-    position: absolute;
-    bottom: 0;
-    font-weight: 600;
-    font-size: 32px;
-    line-height: 38px;
-    color: #636366;
+  .icon {
+    /* position: absolute; */
+    display: flex;
+    flex-direction: row;
+    .like {
+      display: flex;
+      flex-direction: row;
+      p {
+        margin-left: 12px;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 27px;
+        line-height: 32px;
+        color: #aeaeb2;
+      }
+    }
+    .comment {
+      display: flex;
+      flex-direction: row;
+      p {
+        margin-left: 12px;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 27px;
+        line-height: 32px;
+        color: #aeaeb2;
+      }
+    }
   }
-  img {
+  .thumnail {
     border: none;
     width: 39%;
     border-radius: 20px;

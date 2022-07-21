@@ -8,12 +8,13 @@ import styled from "styled-components";
 import cancelIcon from "../assests/css/cancelIcon.png";
 import mendorongLogo2 from "../assests/css/mendorong2.webp";
 import { useNavigate } from "react-router-dom";
+import HostRegistModal from "./HostRegistModal";
 const style = {
   position: "absolute",
   top: "45%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 450,
+  width: 580,
   bgcolor: "background.paper",
   borderRadius: "30px",
   boxShadow: 24,
@@ -21,17 +22,16 @@ const style = {
   outline: "none",
 };
 
-const HostModal = ({close}) => {
+const HostModal = ({ close }) => {
   const navigate = useNavigate();
   const host = localStorage.getItem("host");
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
-    if (!host) {
+    if (host === "false") {
       setOpen(true);
-    }
-    else{
-      navigate('/hostwrite')
-      close()
+    } else {
+      navigate("/hostwrite");
+      close();
     }
   };
   const handleClose = () => {
@@ -69,20 +69,11 @@ const HostModal = ({close}) => {
               component="div"
             >
               <Img src={mendorongLogo2} alt="Logo"></Img>
-
               <h2>숙소는 호스트만 등록할 수 있어요!</h2>
               <p>멘도롱제주의 호스트가 되어주시겠어요?</p>
             </Middle>
             <Btn>
-              <button
-                className="mywrite"
-                onClick={() => {
-                  navigate("/mypage");
-                  setOpen(false);
-                }}
-              >
-                호스트 되기
-              </button>
+              <HostRegistModal></HostRegistModal>
               <button
                 className="home"
                 onClick={() => {
@@ -118,34 +109,44 @@ const Middle = styled(Typography)`
   justify-content: center;
   align-items: center;
   h2 {
-    font-size: 20px;
-    margin: 10px 0 5px 0;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 150%;
+    margin-bottom: 6px;
+  }
+  p {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 150%;
   }
 `;
 const Img = styled.img`
-  width: 300px;
-  height: 250px;
-  margin: 0 auto;
+  width: 310px;
+  height: 200px;
+  margin: 80px auto 43px auto;
   position: relative;
-  bottom: 10px;
 `;
 const Btn = styled.div`
   width: 100%;
-  margin: 20px auto;
+  /* width: 540px; */
+  margin: 40px auto 20px auto;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   button {
-    height: 60px;
+    width: 540px;
+    height: 79px;
     border: none;
-    border-radius: 10px;
+    border-radius: 20px;
     margin-top: 10px;
-    font-size: large;
-    font-weight: bold;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 150%;
     cursor: pointer;
-  }
-  .mywrite {
-    background-color: black;
+    background: #78AA43;
     color: white;
   }
   .home {
