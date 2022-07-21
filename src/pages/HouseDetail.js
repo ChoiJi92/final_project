@@ -26,9 +26,13 @@ import { useParams } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { hostShareAndMap } from "../recoil/atoms";
 import Share2 from "../components/Share2";
+import HouseReviewModal from "../components/HouseReviewModal";
+import Profile from "../components/Profile";
 
 const HouseDetail = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [moreReview, setMoreReview] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   // const { isLoading, data } = useQuery(
   //   "house",
   //   () => {
@@ -82,13 +86,17 @@ const HouseDetail = () => {
 
   const listImg = [jeju7, jeju8, jeju9, jeju10, jeju11, jeju12, jeju13, jeju14];
   const hashList = [0, 1, 3, 4];
-
+  const reviewList = [0, 1, 2,3,4];
   const MapRadius = "20px";
 
-  const shareClick = () =>{
+  const shareClick = () => {
     Share();
-  }
+  };
+  const reviewClick = () => {
+    setMoreReview((prev) => !prev);
+  };
 
+  const reviewText = "숙소도 깨끗하고 침구류가 편해서 푹 잘 잤어요! :) 호스트 분도 너무 친절하시고, 정성스레 준비해주신 조식도 맛있어요.dkdkddkdkdkasasdadsadsads";
   return (
     <Wrap>
       <div id="detailMainBox">
@@ -111,6 +119,8 @@ const HouseDetail = () => {
             {/* <div></div> */}
           </ImgInnerBox2>
         </ImgBox>
+        <div style={{"display":"flex","flexDirection":"row"}}>
+          
         <InfoBox>
           <HashMainBox>
             {hashList.map((item, idx) => (
@@ -125,37 +135,49 @@ const HouseDetail = () => {
             }}
           >
             <div>
-              <h1 style={{ width:"100%",border:"1px solid red", fontSize: "48px" }}>{data?.title}</h1>
-            </div>
-            <div style={{
-                display: "flex",
-                alignItems: "center",
-                // marginLeft: "210px",
-                marginBottom: "20px",
-              }}>
-            <div style={{
-                display: "flex",
-                alignItems: "center",
-                // marginBottom: "20px",
-              }}>
-              <span style={{ fontSize: "21px"}}>공유하기</span>
-              {/* <Share props /> */}
-              {/* <IconImg onClick={shareClick}  src={shareIcon2} alt="공유"/> */}
-              <Share  />
+              <h1
+                style={{
+                  width: "100%",
+                  border: "1px solid red",
+                  fontSize: "48px",
+                }}
+              >
+                {data?.title}
+              </h1>
             </div>
             <div
               style={{
                 display: "flex",
                 alignItems: "center",
-                // marginBottom: "20px",
+                // marginLeft: "210px",
+                marginBottom: "20px",
               }}
             >
-              <span style={{ fontSize: "21px" }}>저장하기</span>
-              <IconImg src={unsaveIcon2}  alt="저장"/>
-            </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  // marginBottom: "20px",
+                }}
+              >
+                <span style={{ fontSize: "21px" }}>공유하기</span>
+                {/* <Share props /> */}
+                {/* <IconImg onClick={shareClick}  src={shareIcon2} alt="공유"/> */}
+                <Share />
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  // marginBottom: "20px",
+                }}
+              >
+                <span style={{ fontSize: "21px" }}>저장하기</span>
+                <IconImg src={unsaveIcon2} alt="저장" />
+              </div>
             </div>
           </div>
-          <hr style={{ marginTop: "20px"}}/>
+          <hr style={{ marginTop: "20px" }} />
           <div style={{ margin: "30px 0px 30px 0px", fontSize: "18px" }}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
             Pellentesque quam consequat massa sit aliquam. Dignissim nibh at
@@ -172,7 +194,7 @@ const HouseDetail = () => {
             pretium fermentum mi odio. Lorem massa elit morbi dolor. Orci tellus
             arcu, facilisis felis interdum.
           </div>
-          <hr/>
+          <hr />
           <h1 style={{ marginTop: "20px", fontSize: "48px" }}>숙소 위치</h1>
           <MapBox>
             <Map MapRadius={MapRadius} />
@@ -190,36 +212,87 @@ const HouseDetail = () => {
             <div>
               <StarIcon />
               <span>4.99</span>
-              <span style={{ marginLeft: "10px" }}> 후기 00개</span>
+              <span style={{ marginLeft: "10px" }}> 후기 {reviewList.length}개</span>
             </div>
             <div>
               <span style={{ fontSize: "32px", textDecoration: "underline" }}>
+              <HouseReviewModal />
                 나도 후기 남기기
               </span>
             </div>
-          </ReviewMainBox>
+          </ReviewMainBox >
+          <ReviewListBox >
+            {/* 후기 작성 부분 */}
+            {reviewList.slice(0, 4).map((item, idx) => (
+              // 후기 디테일 페이지 클릭해서 모달창 데이타 보여줄 예정
+              <ReviewBox>
+                {/* 프로필 부분에서 재사용 하기 위해 일단 컴포넌트로 나눔 */}
+                <Profile />
+                <div id="reviewDetail">
+                  {/* {reviewText.length >=30 ? (reviewText.slice(0,33),+"..."):(reviewText)}
+                  {reviewText.slice(0,33)} */}
+                  숙소도 깨끗하고 침구류가 편해서 푹 잘 잤어요! :) 호스트
+                      분도 너무 친절하시고, 정성스레...
+                </div>
+                {/* 후기 디테일 부분에서 글자수길면 slice해서 ... 보여질 예정 */}
+              </ReviewBox>
+            ))}
+             {moreReview ? (
+              <>
+                {reviewList.slice(4).map((item, idx) => (
+                  // 후기 디테일 페이지 클릭해서 모달창 데이타 보여줄 예정
+                  <ReviewBox>
+                    {/* 프로필 부분에서 재사용 하기 위해 일단 컴포넌트로 나눔 */}
+                    <Profile />
+                    <div id="reviewDetail">
+                      숙소도 깨끗하고 침구류가 편해서 푹 잘 잤어요! :) 호스트
+                      분도 너무 친절하시고, 정성스레...
+                    </div>
+                    {/* 후기 디테일 부분에서 글자수 slice해서 ... 보여질 예정 */}
+                  </ReviewBox>
+                ))}
+              </>
+            ) : (
+              ""
+            )}
+            {reviewList.length >= 5 ? (
+              <MoreReview moreReview={moreReview} onClick={reviewClick}>
+                후기 {reviewList.length - 4}개 더보기
+              </MoreReview>
+            ) : (
+              ""
+            )}
+
+    
+          
+        
+          </ReviewListBox>
         </InfoBox>
+        <RightBarBox>
+          <div id="srollBar"></div>
+        </RightBarBox>
+        </div>
       </div>
     </Wrap>
   );
 };
 
 const Wrap = styled.div`
-  height: auto;
-  margin: auto;
+  /* height: auto; */
+  /* margin: auto; */
   width: 100%;
   display: flex;
   justify-content: center;
   #detailMainBox {
     width: 70%;
-    /* display: flex;
+    display: flex;
         justify-content: center;
-        flex-direction: column; */
+        flex-direction: column;
   }
 `;
 
 const ImgBox = styled.div`
-  height: 400px;
+  height: 600px;
   display: flex;
   justify-content: space-between;
   margin-top: 25px;
@@ -266,7 +339,7 @@ const ImgInnerBox2 = styled.div`
 const InfoBox = styled.div`
   width: 66%;
   height: auto;
-  margin-top: 200px;
+
   h1 {
     margin-bottom: 20px;
   }
@@ -357,5 +430,69 @@ const ImgDiv = styled.div`
     line-height: 150%;
   }
 `;
+
+const ReviewListBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  padding: 0;
+  justify-content: space-between;
+  /* border: 1px solid red; */
+`;
+
+const ReviewBox = styled.div`
+  width: 48%;
+  height: 204px;
+  margin-top: 25px;
+  /* margin-right: 10px; */
+  #reviewDetail {
+    margin-top: 10px;
+    padding: 20px;
+    font-family: "Pretendard";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 21px;
+    line-height: 150%;
+    width: 100%;
+  }
+
+  background: #f2f2f7;
+  border-radius: 20px;
+`;
+const MoreReview = styled.div`
+  width: 28%;
+  height: 50px;
+  border: 1px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Pretendard";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 21px;
+  line-height: 25px;
+  opacity: 0.5;
+  margin: 40px 0px 10px 0px;
+  border-radius: 10px;
+  display: ${(props)=>props.moreReview ? "none" : ""};
+`;
+
+const RightBarBox = styled.div`
+  width: 32.3%;
+  /* height: 646px; */
+  border: 1px solid red;
+  margin-left: 20px;
+  #srollBar{
+    /* top: 50px; */
+    position: sticky;
+    height: 646px;
+    
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 0px 12px 42px rgba(0, 0, 0, 0.2);
+  }
+`
+
 
 export default HouseDetail;

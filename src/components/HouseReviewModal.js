@@ -1,0 +1,160 @@
+import React, { useRef, useState } from "react";
+import cancelIcon from "../assests/css/cancelIcon.png";
+import Backdrop from "@mui/material/Backdrop";
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
+import Fade from "@mui/material/Fade";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Rating from "@mui/material/Rating";
+import Stack from "@mui/material/Stack";
+import { useForm } from "react-hook-form";
+import styled from "styled-components";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "46%",
+  bgcolor: "background.paper",
+  borderRadius: "30px",
+  boxShadow: 24,
+  p: 4,
+};
+
+const HouseReviewModal = () => {
+  const [open, setOpen] = React.useState(false);
+  const [score, setScore] = useState(0);
+  const starRef = useRef();
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const { register, handleSubmit,formState: { errors }, } = useForm({ defaultValues: {} });
+
+  const reviewSubmit = (data) => {
+    // console.log(starRef);
+    console.log(data);
+    // console.log(score)
+  }
+  // const handleChange = () => {
+  //   setScore(score)
+  // }
+  console.log(score)
+  return (
+    <>
+      <Button onClick={handleOpen}>
+        Open modal
+      </Button>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <Box sx={style}>
+            <Main id="transition-modal-title" variant="h6" component="h2">
+              <div id="mainReview">
+                <img
+                  className="cancel"
+                  src={cancelIcon}
+                  alt="닫기"
+                  onClick={handleClose}
+                />
+                <h3>후기 남기기</h3>
+              </div>
+            </Main>
+            <StarReview>별점을 남겨주세요</StarReview>
+            <Main>
+            <Stack>
+                <Rating
+                
+                  style={{ fontSize: "60px" }}
+                  name="half-rating"
+                  // defaultValue={score}
+                  precision={0.5}
+                  ref={starRef}
+                  value={score}
+                  onChange={(event, newValue) => {
+                    setScore(newValue);
+                  }}
+                />
+              </Stack>
+            
+            </Main>
+            <StarReview style={{"marginTop": "57px"}}>상세후기를 남겨주세요.</StarReview>
+            
+            <Main id="transition-modal-description" sx={{ mt: 2 }}>
+              <ReviewForm onSubmit={handleSubmit(reviewSubmit)}>
+              
+                <textarea
+                placeholder="내용을 입력해주세요."
+                {...register("review", {
+                  required: "내용을 입력해주세요 :)",
+                })}
+                />
+                <button>등록</button>
+              </ReviewForm>
+            </Main>
+            <ErrorMsg>{errors.review?.message}</ErrorMsg>
+          </Box>
+        </Fade>
+      </Modal>
+      </>
+  );
+};
+
+const Main = styled(Typography)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    left: 20px;
+  }
+  h3 {
+    font-weight: 500;
+    font-size: 36px;
+    line-height: 150%;
+  }
+  #mainReview {
+    display: flex;
+    justify-content: space-between;
+  }
+`;
+
+const StarReview = styled.h4`
+  margin: 20px 0px 20px 0px;
+  font-family: "Pretendard";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 26px;
+  line-height: 150%;
+`;
+
+const ReviewForm = styled.form`
+  width: 100%;
+  textarea{
+    width: 100%;
+    height: 273px;
+    border-radius: 20px;
+    background-color: #F2F2F7;
+    border: none;
+    padding: 20px;
+    font-size: 28px;
+  }
+`
+
+const ErrorMsg = styled.p`
+
+`
+
+export default HouseReviewModal;
