@@ -18,7 +18,7 @@ const GoogleRedirect = () => {
         localStorage.setItem('token',response.data.users.token)  
         localStorage.setItem('userId',response.data.users.userId)  
         localStorage.setItem('nickName',response.data.users.nickname)  
-        localStorage.setItem('userImage',response.data.users.userImage)  
+        localStorage.setItem('userImage',response.data.users.userImageURL)  
         localStorage.setItem('host',response.data.users.host)
         localStorage.setItem('email',response.data.users.email)
         console.log("로그인 확인");
