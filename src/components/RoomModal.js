@@ -40,6 +40,7 @@ const RoomModal = ({ width }) => {
       onSuccess: () => {
         // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
         queryClient.invalidateQueries("loadChatRoom");
+        queryClient.invalidateQueries("loadDetailRoom");
       },
     }
   );

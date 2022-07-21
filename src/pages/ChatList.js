@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -10,12 +10,11 @@ import instance from "../shared/axios";
 import searchIconBlack from "../assests/css/searchIconBlack.png";
 import { Link } from "react-router-dom";
 import RoomModal from "../components/RoomModal";
-import KakaoShare from "../components/KakaoShare";
 
 const ChatList = () => {
   const [room, setRoom] = useState();
   const navigate = useNavigate();
-  const queryClient =useQueryClient()
+  const queryClient = useQueryClient();
   const { data } = useQuery(
     ["loadChatRoom"],
     () =>
@@ -27,13 +26,15 @@ const ChatList = () => {
       refetchOnWindowFocus: false,
     }
   );
-  const joinRoom = useMutation((roomId) =>
-    instance.post(`/room/${roomId}`).then((res) => console.log(res.data)),{
-       onSuccess: () => {
-        // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
-        queryClient.invalidateQueries("loadDetailRoom");
-    }
-  }
+  const joinRoom = useMutation(
+    (roomId) =>
+      instance.post(`/room/${roomId}`).then((res) => {
+        console.log(res.data);
+        navigate(`/chatroom/${roomId}`);
+      }).catch((err)=>{
+        window.alert(err.response.data.msg)
+      })
+   
   );
   const onChange = (e) => {
     setRoom(e.target.value);
@@ -98,8 +99,7 @@ const ChatList = () => {
           <Card
             key={v.roomId}
             onClick={() => {
-              joinRoom.mutate(v.roomId)
-              navigate(`/chatroom/${v.roomId}`);
+              joinRoom.mutate(v.roomId);
             }}
           >
             <h3>{v.title}</h3>
@@ -113,31 +113,14 @@ const ChatList = () => {
                 <p>{v.hostNickname}</p>
               </div>
               <AvatarGroup max={4}>
-                <Avatar
-                  alt={v.roomUserNickname[0]}
-                  src={v.roomUserImg[0]}
-                  sx={{ width: 36, height: 36 }}
-                />
-                <Avatar
-                  alt={v.roomUserNickname[0]}
-                  src={v.roomUserImg[0]}
-                  sx={{ width: 36, height: 36 }}
-                />
-                <Avatar
-                  alt={v.roomUserNickname[0]}
-                  src={v.roomUserImg[0]}
-                  sx={{ width: 36, height: 36 }}
-                />
-                <Avatar
-                  alt={v.roomUserNickname[0]}
-                  src={v.roomUserImg[0]}
-                  sx={{ width: 36, height: 36 }}
-                />
-                <Avatar
-                  alt={v.roomUserNickname[0]}
-                  src={v.roomUserImg[0]}
-                  sx={{ width: 36, height: 36 }}
-                />
+                {v.roomUserImg.map((v, i) => (
+                  <Avatar
+                    key={i}
+                    alt={`${v}-${i}`}
+                    src={v}
+                    sx={{ width: 36, height: 36 }}
+                  />
+                ))}
               </AvatarGroup>
             </div>
           </Card>
