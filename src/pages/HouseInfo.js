@@ -13,6 +13,8 @@ import inside from "../assests/css/내륙.webp";
 import nearby from "../assests/css/관광지근처.webp";
 import nearbySea from "../assests/css/해변근처.webp";
 import quietVil from "../assests/css/조용한마을.webp";
+import icecream from "../assests/css/icecream.webp";
+import sunrise from "../assests/css/sunrise.webp";
 import { Link, useNavigate } from "react-router-dom";
 import SlideImg from "../components/SlideImg";
 import Map from "../components/Map";
@@ -228,7 +230,9 @@ const HouseInfo = () => {
           onClick={menuOnClick}
           id="spot"
         >
-          <SpotMiniBox />
+          <SpotMiniBox>
+            <img src={icecream} alt="우도"/>
+          </SpotMiniBox>
           <span>우도</span>
         </div>
         <div
@@ -237,7 +241,9 @@ const HouseInfo = () => {
           onClick={menuOnClick}
           id="spot"
         >
-          <SpotMiniBox />
+          <SpotMiniBox>
+            <img src={sunrise} alt="성산일출봉"/>
+          </SpotMiniBox>
           <span>성산일출봉</span>
         </div>
       </SpotMainBox>

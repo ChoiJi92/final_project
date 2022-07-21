@@ -8,15 +8,20 @@ import back2 from "../assests/css/배경2.webp";
 import starIcon from "../assests/css/starIcon.png";
 import unsaveIcon from "../assests/css/unsaveIcon.png";
 import cancelIcon from "../assests/css/cancelIcon.png";
-import {Map, MapMarker,CustomOverlayMap,RemovableCustomOverlayStyle } from "react-kakao-maps-sdk";
+import {
+  Map,
+  MapMarker,
+  CustomOverlayMap,
+  RemovableCustomOverlayStyle,
+} from "react-kakao-maps-sdk";
 /*global kakao*/
 const { kakao } = window;
 const TestMap = () => {
-//   const isHouseInfoMap = useRecoilValue(houseInfoMap);
+  //   const isHouseInfoMap = useRecoilValue(houseInfoMap);
   const [info, setInfo] = useState();
   const [markers, setMarkers] = useState([]);
   const [map, setMap] = useState();
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
   // console.log(isHouseInfoMap);
   const { data } = useQuery(
     ["houseInfo"],
@@ -43,32 +48,31 @@ const TestMap = () => {
     let markers = [];
     const bounds = new kakao.maps.LatLngBounds();
     map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
-    geocoder.addressSearch()
-    for(let i = 0; i <data.length; i++){
-        geocoder.addressSearch(data[i].fullAddress, function(result, status){
-            if(status === kakao.maps.services.Status.OK){
-              console.log(result ,"It's result")
-              console.log(result[0].x, result[0].y)
-                // const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-                // markers.push({
-                //     position:coords
-                // });
-                markers.push({
-                  position:{
-                    lat: result[0].y,
-                    lng: result[0].x,
-                  }
-                  ,content: result[0].address_name,
-                });
-                bounds.extend(new kakao.maps.LatLng(result[0].y, result[0].x));
-                console.log(markers)
-            }
-            setMarkers(markers);
-            map.setBounds(bounds);
-        })
-        
+    geocoder.addressSearch();
+    for (let i = 0; i < data.length; i++) {
+      geocoder.addressSearch(data[i].fullAddress, function (result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+          console.log(result, "It's result");
+          console.log(result[0].x, result[0].y);
+          // const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+          // markers.push({
+          //     position:coords
+          // });
+          markers.push({
+            position: {
+              lat: result[0].y,
+              lng: result[0].x,
+            },
+            content: result[0].address_name,
+          });
+          bounds.extend(new kakao.maps.LatLng(result[0].y, result[0].x));
+          console.log(markers);
+        }
+        setMarkers(markers);
+        map.setBounds(bounds);
+      });
     }
-   
+
     // ps.keywordSearch((data, status, _pagination) => {
     //   if (status === kakao.maps.services.Status.OK) {
     //     // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
@@ -96,15 +100,24 @@ const TestMap = () => {
     // });
   }, [map]);
   const btnClick = () => {
-    console.log("")
-  }
-  
+    console.log("");
+  };
+  // let a = document
+  //   .querySelectorAll("#map > div > div > div")[5]
+  //   ?.querySelectorAll("div:last-child")[5];
+  // console.log(a);
+
+  const mapClick = (marker) => {
+    setInfo(marker);
+    let b = document.querySelectorAll("#map > div > div > div>div")[1]
+    // console.log(b.remove());
+  };
   return (
-    
     <Map // 로드뷰를 표시할 Container
+      id={`map`}
       center={{
         lat: 34.3616666,
-        lng: 127.5291666
+        lng: 127.5291666,
       }}
       style={{
         width: "100%",
@@ -117,42 +130,50 @@ const TestMap = () => {
         <MapBox
           key={`${marker.position.lat},${marker.position.lng}`}
           position={marker.position}
-          onClick={() => setInfo(marker)}
+          onClick={() => {
+            mapClick(marker);
+          }}
           // style={{"display":"none"}}
         >
-          {info &&info.content === marker.content && (
+          {info && info.content === marker.content && (
             // <MapBox>
             // <div style={{color:"#000" ,"width":"100px","height":"100px", "borderRadius":"10px"}}>{marker.content}</div>
             // <button onClick={() => setInfo("")}>x</button>
             // <button onClick={btnClick}>a</button>
             // </MapBox>
             <CustomOverlayMap position={marker.position}>
-            <Wrap className="wrap">
-              <div className="info">
-                <div className="title">
-                  <img
-                    src={cancelIcon}
-                    className="close"
-                    onClick={() => setInfo("")}
-                    alt="닫기"
-                  ></img>
-                </div>
-                <div className="body">
-                  <div className="desc">
-                    <div className="house">해변근처의 게스트하우스</div>
-                    <div className="iconWrap">
-                      <div>
-                        <img src={starIcon} alt="별점"></img>
-                        <p>5.0</p>
+              <Wrap className="wrap">
+                <div className="info">
+                  <div className="title">
+                    <img
+                      src={cancelIcon}
+                      className="close"
+                      onClick={() => setInfo("")}
+                      alt="닫기"
+                    ></img>
+                  </div>
+                  <div className="body">
+                    <div className="desc">
+                      <div className="house">해변근처의 게스트하우스</div>
+                      <div className="iconWrap">
+                        <div>
+                          <img src={starIcon} alt="별점"></img>
+                          <p>5.0</p>
+                        </div>
+                        <img
+                          onClick={() => {
+                            console.log(marker);
+                          }}
+                          src={unsaveIcon}
+                          alt="저장"
+                        ></img>
                       </div>
-                      <img onClick={()=>{console.log(marker)}} src={unsaveIcon} alt="저장"></img>
+                      <div></div>
                     </div>
-                    <div></div>
                   </div>
                 </div>
-              </div>
-            </Wrap>
-          </CustomOverlayMap>
+              </Wrap>
+            </CustomOverlayMap>
           )}
         </MapBox>
       ))}
@@ -168,7 +189,7 @@ const MapBox = styled(MapMarker)`
   display: none;
   width: 300px;
   height: 200px;
-`
+`;
 
 // const MapBox = styled.div`
 //   border-radius: 30px;

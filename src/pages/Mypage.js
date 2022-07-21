@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import jeju1 from "../assests/css/jeju1.jpeg";
+import mypageImg from "../assests/css/mypageImg.webp";
 import styled from "styled-components";
 import {
   FaChevronDown,
@@ -50,6 +51,7 @@ const Mypage = () => {
       <MyDefaultBox>
         <div id="mylike">
           <h1>내 좋아요</h1>
+          {/* 좋아요 3개 이상일 시 아이콘 보이게 해야함 */}
           <span>
             {myLike ? (
               <DownIcon onClick={likeClick} />
@@ -93,6 +95,7 @@ const Mypage = () => {
       <MyDefaultBox>
         <div id="myWrite">
           <h1>내가 쓴 글</h1>
+          {/* 쓴 글 3개 이상일 시 아이콘 보이게 해야함 */}
           <span>
             {myWrite ? (
               <DownIcon onClick={writeClick} />
