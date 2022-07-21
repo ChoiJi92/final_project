@@ -21,7 +21,8 @@ import ChatRoom from './pages/ChatRoom';
 import HostWrite from './pages/HostWrite';
 import UserPolicy from './pages/UserPolicy';
 
-import TestMap from './components/TestMap';
+import TestMap from './pages/TestMap';
+import TestMap2 from './components/TestMap2';
 import Error from './pages/Error';
 
 
@@ -46,6 +47,7 @@ function App() {
         <Route path="/chatroom/:id" element={<ChatRoom/>} />
         <Route path="/mypage" element={<Mypage />} />
         <Route path="/test" element={<TestMap />} />
+        <Route path="/testmap" element={<TestMap2 />} />
 
         <Route path="/userpolicy" element={<UserPolicy />} />
         <Route path='/oauth/kakao/callback' element={<KakaoRedirect/>}/>
