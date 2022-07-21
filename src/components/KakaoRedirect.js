@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import instance from "../shared/axios";
+import Loading from "../pages/Loading";
 
 const KakaoRedirect = () => {
   const navigate = useNavigate()
@@ -22,7 +23,7 @@ const KakaoRedirect = () => {
         localStorage.setItem('token',response.data.users.token)  
         localStorage.setItem('userId',response.data.users.userId)
         localStorage.setItem('nickName',response.data.users.nickname)  
-        localStorage.setItem('userImage',response.data.users.userImage)
+        localStorage.setItem('userImage',response.data.users.userImageURL)
         localStorage.setItem('host',response.data.users.host)
         localStorage.setItem('email',response.data.users.email)
         console.log("로그인 확인");
@@ -38,7 +39,7 @@ const KakaoRedirect = () => {
   },[])
 
   return (
-    <div>로그인 중입니다...</div>
+    <Loading/>
   )
 };
 

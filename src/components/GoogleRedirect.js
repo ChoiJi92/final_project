@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import Loading from '../pages/Loading';
 import instance from '../shared/axios';
 
 const GoogleRedirect = () => {
@@ -32,7 +33,7 @@ const GoogleRedirect = () => {
     googleLogin()
   },[])
     return (
-      <div>로그인 중입니다...</div>
+      <Loading/>
     );
 };
 

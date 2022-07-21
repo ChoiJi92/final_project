@@ -41,7 +41,7 @@ const Mypage = () => {
         <div id="btn">
           <button>개인 정보 수정</button>
           {/* {host && <button>호스트 되기</button> } */}
-          {host ? <button onClick={()=>{
+          {host === "true" ? <button onClick={()=>{
             navigate('/hostwrite')
           }}>숙소 등록</button> : <HostRegistModal></HostRegistModal>}
         </div>
@@ -189,6 +189,7 @@ const ProfileBox = styled.div`
       font-size: 20px;
       line-height: 24px;
       color: #636366;
+      cursor: pointer;
     }
   }
 `;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -14,7 +14,7 @@ import KakaoShare from "../components/KakaoShare";
 
 const ChatList = () => {
   const [room, setRoom] = useState();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { data } = useQuery(
     ["loadChatRoom"],
     () =>
@@ -25,6 +25,9 @@ const ChatList = () => {
     {
       refetchOnWindowFocus: false,
     }
+  );
+  const joinRoom = useMutation((roomId) =>
+    instance.post(`/room/${roomId}`).then((res) => console.log(res.data))
   );
   const onChange = (e) => {
     setRoom(e.target.value);
@@ -84,19 +87,23 @@ const ChatList = () => {
           </Select>
           <RoomModal width={"31.74%"}></RoomModal>
         </div>
-      
-          <Card onClick={()=>{
-            navigate(`/chatroom/`)
-          }}>
-            <h3></h3>
+        {data.map((v, i) => (
+          <Card
+            key={v.roomId}
+            onClick={() => {
+              joinRoom.mutate(v.roomId)
+              navigate(`/chatroom/${v.roomId}`);
+            }}
+          >
+            <h3>{v.title}</h3>
             <div className="avatar">
               <div className="host">
                 <Avatar
-                  alt="Remy Sharp"
-                  src="/static/images/avatar/1.jpg"
+                  alt="호스트 이미지"
+                  src={v.hostImg}
                   sx={{ width: 36, height: 36 }}
                 />
-                <p>방장 이름</p>
+                <p>{v.hostNickname}</p>
               </div>
               <AvatarGroup max={4}>
                 <Avatar
@@ -127,7 +134,7 @@ const ChatList = () => {
               </AvatarGroup>
             </div>
           </Card>
-
+        ))}
       </Bottom>
     </>
   );
@@ -184,7 +191,7 @@ const Top = styled.div`
       border: none;
       outline: none;
       ::placeholder {
-        color: #C7C7CC;
+        color: #c7c7cc;
         text-align: center;
       }
     }
@@ -238,7 +245,7 @@ const Card = styled.div`
   height: 190px;
   border-radius: 10px;
   border: 1px solid #d1d1d6;
-  padding: 15px;
+  padding: 20px;
   background-color: white;
   position: relative;
   margin-bottom: 20px;

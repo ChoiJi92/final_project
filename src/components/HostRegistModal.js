@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -37,7 +37,7 @@ const HostRegistModal = () => {
         console.log(res.data)
         setIshost(res.data.result)
         localStorage.setItem('host',res.data.result)
-  }).catch((err)=>{console.log(err)})
+  }).catch((err)=>{console.log(err)})   
   })
   return (
     <div>

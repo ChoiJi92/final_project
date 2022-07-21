@@ -6,7 +6,15 @@ import { useRecoilValue } from "recoil";
 import { useMutation } from "react-query";
 import instance from "../shared/axios";
 import CompleteModal from "./CompleteModal";
-const WriteFooter = ({ title, thumbnail, reset, getValues, open,setOpen,isHost}) => {
+const WriteFooter = ({
+  title,
+  thumbnail,
+  reset,
+  getValues,
+  open,
+  setOpen,
+  isHost,
+}) => {
   const params = useParams();
   const navigate = useNavigate();
   const address = useRecoilValue(addressState);
@@ -45,7 +53,7 @@ const WriteFooter = ({ title, thumbnail, reset, getValues, open,setOpen,isHost})
             console.log("취소");
           }
         }}
-        value="등록 취소"
+        value="작성 취소"
       ></input>
       <div className="post">
         <input
@@ -55,14 +63,14 @@ const WriteFooter = ({ title, thumbnail, reset, getValues, open,setOpen,isHost})
             tempPost();
           }}
         ></input>
-        <CompleteModal open={open} setOpen={setOpen} isHost={isHost}/>
+        <CompleteModal open={open} setOpen={setOpen} isHost={isHost} />
       </div>
     </Wrap>
   );
 };
 const Wrap = styled.footer`
   width: 100%;
-  height: 80px;
+  height: 100px;
   position: fixed;
   background-color: lightgray;
   bottom: 0;
@@ -72,15 +80,18 @@ const Wrap = styled.footer`
   justify-content: space-between;
   align-items: center;
   input {
-    width: 130px;
-    height: 50px;
-    border-radius: 7px;
-    border: 1px solid black;
+    width: 180px;
+    height: 68px;
+    border: 1px solid #8e8e93;
+    border-radius: 10px;
     background-color: transparent;
-    font-size: medium;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 24px;
     cursor: pointer;
     :hover {
-      background-color: gray;
+      background: #8e8e93;
       color: white;
     }
   }
@@ -88,16 +99,19 @@ const Wrap = styled.footer`
     display: flex;
   }
   button {
-    width: 130px;
-    height: 50px;
-    border-radius: 7px;
-    border: 1px solid black;
+    width: 180px;
+    height: 68px;
+    border-radius: 10px;
+    border: 1px solid #8e8e93;
     background-color: transparent;
-    font-size: medium;
     margin-left: 10px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 24px;
     cursor: pointer;
     :hover {
-      background-color: gray;
+      background: #8e8e93;
       color: white;
     }
   }

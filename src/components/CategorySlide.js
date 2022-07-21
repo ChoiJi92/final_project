@@ -17,6 +17,8 @@ import back3 from "../assests/css/배경3.webp";
 import back4 from "../assests/css/배경4.webp";
 import back5 from "../assests/css/배경5.webp";
 import back6 from "../assests/css/배경6.webp";
+import back7 from "../assests/css/배경7.webp";
+import back8 from "../assests/css/배경8.webp";
 
 const CategorySlide = (props) => {
   const [mouseOver, setMouseOver] = useState(false);
@@ -27,7 +29,16 @@ const CategorySlide = (props) => {
         onMouseLeave={mouseLeave}
         onMouseOver={mouseHover}
         className={className}
-        style={{ ...style, display: "block", marginRight: "30px", opacity: 1 , background:`url(${nextIcon   })`}}
+        style={{
+          ...style,
+          display: "block",
+          marginRight: "-20px",
+          // opacity: 1,
+          width: "90px",
+          height: "90px",
+          background: `url(${nextIcon})`,
+          backdropFilter:'blur(10px)'
+        }}
         onClick={onClick}
       />
     );
@@ -43,9 +54,13 @@ const CategorySlide = (props) => {
         style={{
           ...style,
           display: "block",
-          marginLeft: "25px",
+          marginLeft: "-20px",
+          width: "90px",
+          height: "90px",
+          background: `url(${prevIcon})`,
           zIndex: 1,
           opacity: 1,
+          backdropFilter:'blur(10px)'
         }}
         onClick={onClick}
       />
@@ -124,7 +139,7 @@ const CategorySlide = (props) => {
               onMouseLeave={mouseLeave}
               onMouseOver={mouseHover}
               style={{
-                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back})`,
+                backgroundImage: `linear-gradient( 0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back})`,
               }}
             >
               <img src={beach} alt="beach"></img>
@@ -136,7 +151,7 @@ const CategorySlide = (props) => {
               onMouseLeave={mouseLeave}
               onMouseOver={mouseHover}
               style={{
-                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back2})`,
+                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back3})`,
               }}
             >
               <img src={land} alt="land"></img>
@@ -148,7 +163,7 @@ const CategorySlide = (props) => {
               onMouseLeave={mouseLeave}
               onMouseOver={mouseHover}
               style={{
-                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back3})`,
+                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back8})`,
               }}
             >
               <img src={town} alt="town"></img>
@@ -160,7 +175,7 @@ const CategorySlide = (props) => {
               onMouseLeave={mouseLeave}
               onMouseOver={mouseHover}
               style={{
-                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back4})`,
+                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back2})`,
               }}
             >
               <img src={trip} alt="trip"></img>
@@ -177,6 +192,18 @@ const CategorySlide = (props) => {
             >
               <img src={icecream} alt="icecream"></img>
               <p>우도</p>
+            </Card>
+          </Wrap>
+          <Wrap>
+            <Card
+              onMouseLeave={mouseLeave}
+              onMouseOver={mouseHover}
+              style={{
+                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back7})`,
+              }}
+            >
+              <img src={sunrise} alt="sunrise"></img>
+              <p>성산일출봉</p>
             </Card>
           </Wrap>
         </SliderImg>
@@ -199,7 +226,7 @@ const CategorySlide = (props) => {
               onMouseLeave={mouseLeave}
               onMouseOver={mouseHover}
               style={{
-                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back2})`,
+                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back3})`,
               }}
             >
               <img src={land} alt="land"></img>
@@ -211,7 +238,7 @@ const CategorySlide = (props) => {
               onMouseLeave={mouseLeave}
               onMouseOver={mouseHover}
               style={{
-                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back3})`,
+                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back8})`,
               }}
             >
               <img src={town} alt="town"></img>
@@ -223,7 +250,7 @@ const CategorySlide = (props) => {
               onMouseLeave={mouseLeave}
               onMouseOver={mouseHover}
               style={{
-                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back4})`,
+                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back2})`,
               }}
             >
               <img src={trip} alt="trip"></img>
@@ -242,6 +269,18 @@ const CategorySlide = (props) => {
               <p>우도</p>
             </Card>
           </Wrap>
+          <Wrap>
+            <Card
+              onMouseLeave={mouseLeave}
+              onMouseOver={mouseHover}
+              style={{
+                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back7})`,
+              }}
+            >
+              <img src={sunrise} alt="sunrise"></img>
+              <p>성산일출봉</p>
+            </Card>
+          </Wrap>
         </SliderImg>
       )}
     </ImgBox>
@@ -251,7 +290,12 @@ const ImgBox = styled.div`
   width: 100%;
   height: 500px;
   margin: 100px 0;
-  
+  .slick-prev:before {
+    display: none;
+  }
+  .slick-next:before {
+    display: none;
+  }
   h2 {
     font-style: normal;
     font-weight: 700;
@@ -306,8 +350,10 @@ const Card = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-blend-mode: multiply, normal;
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center center;
   color: white;
   cursor: pointer;
   :hover {
