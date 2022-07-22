@@ -12,7 +12,21 @@ import parasol from "../assests/css/parasol.webp";
 import lighthouse from "../assests/css/lighthouse.webp";
 import palmTree from "../assests/css/palmtree.webp";
 import dolhaleubang from "../assests/css/dolhaleubang.webp";
+import { useQuery } from "react-query";
+import instance from "../shared/axios";
 const Main = () => {
+  const { data } = useQuery(
+    ["loadChatRoom"],
+    () =>
+      instance.get("/room").then((res) => {
+        console.log(res.data);
+        return res.data.allRoom;
+      }),
+    {
+      // retry:0,
+      refetchOnWindowFocus: false,
+    }
+  );
   return (
     <Container>
       <div
@@ -64,8 +78,8 @@ const Main = () => {
       </RegionWrap>
       <OpenChat>
         <h2>Popular openchat</h2>
-        <OpenChatSlide rtl={false}/>
-        <OpenChatSlide rtl={true}/>
+        <OpenChatSlide data={data.slice(0,5)} rtl={false}/>
+        <OpenChatSlide data={data.slice(0,5)} rtl={true}/>
       </OpenChat>
     </Container>
   );

@@ -8,21 +8,8 @@ import instance from "../shared/axios";
 import enterIcon from "../assests/css/enterIcon.png";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
-// const socketUrl = 'http://gudetama.shop'
-// const socketUrl = 'http://localhost:3000'
-// const socket = io('http://gudetama.shop')
-// const socket = io(socketUrl, {
-//   cors: {
-//       origin: socketUrl,
-//       credentials: true,
-//   },
-// });
 
 const ChatRoom = () => {
-  // const [isConnected, setIsConnected] = useState(socket.connected);
-  // const [message, setMessage] = useState([]);
-  // const [room, setRoom] = useState();
-  // const socket = io.connect()  // backurl 넣기
   const messageRef = useRef();
   const chatBoxRef = useRef();
   const params = useParams();
@@ -31,8 +18,6 @@ const ChatRoom = () => {
   const userId = localStorage.getItem("userId");
   const userImage = localStorage.getItem("userImage");
   const url = "https://www.mendorong-jeju.com";
-  // let socket = io(url);
-  // let socket= io(url)
   const socket = useRef();
   const scrollToBottom = () => {
     if (chatBoxRef.current) {
@@ -66,8 +51,6 @@ const ChatRoom = () => {
     socket.current.on("welcome", (nickname) => {
       console.log(nickname);
     });
-    console.log(chat);
-    // setChat([...chat,...data.loadChat.map(v => ({messageChat:v.chat,profileImage:v.userImg,user:v.userNickname}))])
     return () => {
       socket.current.disconnect();
     };
@@ -138,7 +121,7 @@ console.log(chat)
             </Header>
             <div className="chat">
               {data.chatingRooms.map((v, i) => (
-                <div className= {v.roomId === params.id ? 'currentChatRoom' : 'chatRoom'}
+                <div className= {v.roomId === Number(params.id) ? 'currentChatRoom' : 'chatRoom'}
                   key={v.roomId}
                   onClick={() => {
                     navigate(`/chatroom/${v.roomId}`);
@@ -213,7 +196,7 @@ console.log(chat)
 const Container = styled.div`
   /* align-items: center; */
   margin-top: 40px;
-  margin-bottom: 70px;
+  margin-bottom: 50px;
 `;
 const Wrap = styled.div`
   display: flex;

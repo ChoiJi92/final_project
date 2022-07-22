@@ -1,18 +1,20 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Avatar from "@mui/material/Avatar";
+import Badge from "@mui/material/Badge";
 import AvatarGroup from "@mui/material/AvatarGroup";
+import saveIcon from '../assests/css/saveIcon.png'
 import instance from "../shared/axios";
 import searchIconBlack from "../assests/css/searchIconBlack.png";
 import { Link } from "react-router-dom";
 import RoomModal from "../components/RoomModal";
 
 const ChatList = () => {
-  const [room, setRoom] = useState();
+  const searchRef = useRef()
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { data } = useQuery(
@@ -26,20 +28,23 @@ const ChatList = () => {
       refetchOnWindowFocus: false,
     }
   );
-  const joinRoom = useMutation(
-    (roomId) =>
-      instance.post(`/room/${roomId}`).then((res) => {
+  const joinRoom = useMutation((roomId) =>
+    instance
+      .post(`/room/${roomId}`)
+      .then((res) => {
         console.log(res.data);
         navigate(`/chatroom/${roomId}`);
-      }).catch((err)=>{
-        window.alert(err.response.data.msg)
       })
-   
+      .catch((err) => {
+        window.alert(err.response.data.msg);
+      })
   );
-  const onChange = (e) => {
-    setRoom(e.target.value);
-  };
-  const searchRoom = () => {};
+  // const searchRoom = useQuery(['searchRoom'],()=>
+  // instance.get(`/room/search`,{params:{search:searchRef.current.value}}).then((res)=>{
+  //   console.log(res)
+  // }))
+  
+  // const searchRoom = () => {};
   const onKeyPress = (e) => {
     if (e.key === "Enter") {
     }
@@ -58,8 +63,7 @@ const ChatList = () => {
         <div className="search">
           <input
             placeholder="채팅방 검색하기"
-            onChange={onChange}
-            value={room || ""}
+            ref={searchRef}
           ></input>
           <img src={searchIconBlack} alt="검색"></img>
         </div>
@@ -105,11 +109,17 @@ const ChatList = () => {
             <h3>{v.title}</h3>
             <div className="avatar">
               <div className="host">
-                <Avatar
-                  alt="호스트 이미지"
-                  src={v.hostImg}
-                  sx={{ width: 36, height: 36 }}
-                />
+                <Badge
+                  overlap="circular"
+                  anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                  badgeContent={<img style={{width:'17px',height:'17px'}} src={saveIcon} alt="호스트"></img>}
+                >
+                  <Avatar
+                    alt="호스트 이미지"
+                    src={v.hostImg}
+                    sx={{ width: 36, height: 36 }}
+                  />
+                </Badge>
                 <p>{v.hostNickname}</p>
               </div>
               <AvatarGroup max={4}>
@@ -266,6 +276,7 @@ const Card = styled.div`
     display: flex;
     align-items: center;
     margin-right: 40px;
+    width: 100px;
     p {
       margin-left: 10px;
       font-style: normal;
