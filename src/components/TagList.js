@@ -1,9 +1,7 @@
-import { SettingsAccessibility } from "@mui/icons-material";
 import React, { useState } from "react";
-import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { tagState } from "../recoil/atoms";
-const TagList = ({ tagList, setTagList, maxLength, isModal }) => {
+
+const TagList = ({ tagList, setTagList, maxLength, width,margin }) => {
   // const [tagList, setTagList] = useRecoilState(tagState);
   const [tag, setTag] = useState();
 
@@ -26,7 +24,8 @@ const TagList = ({ tagList, setTagList, maxLength, isModal }) => {
       className="tag"
       length={tagList.length}
       maxLength={maxLength}
-      isModal={isModal}
+      width={width}
+      margin={margin}
     >
       {tagList.map((v, i) => (
         <div
@@ -50,8 +49,8 @@ const TagList = ({ tagList, setTagList, maxLength, isModal }) => {
 };
 
 const Tag = styled.div`
-  width: ${(props) => (props.isModal ? "100%" : "75%")};
-  margin-right: ${(props) => (props.isModal ? "0" : "64px")};
+  width: ${(props) => (props.width)};
+  margin-right: ${(props) => (props.margin)};
   margin-bottom: 80px;
   display: flex;
   flex-wrap: wrap;

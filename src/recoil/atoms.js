@@ -1,8 +1,8 @@
 import {atom} from 'recoil'
 
-export const addressState = atom({
-    key: 'addressState',
-    default:''
+export const chatState = atom({
+    key: 'chatState',
+    default:[]
 })
 export const contentState = atom({
   key: 'contentState',

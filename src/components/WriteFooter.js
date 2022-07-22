@@ -1,8 +1,6 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { addressState, contentState } from "../recoil/atoms";
-import { useRecoilValue } from "recoil";
 import { useMutation } from "react-query";
 import instance from "../shared/axios";
 import CompleteModal from "./CompleteModal";
@@ -14,11 +12,11 @@ const WriteFooter = ({
   open,
   setOpen,
   isHost,
+  address,
+  content
 }) => {
   const params = useParams();
   const navigate = useNavigate();
-  const address = useRecoilValue(addressState);
-  const content = useRecoilValue(contentState);
   const temporary = useMutation(["tempPost"], (formData) =>
     instance.post("/post", formData).then((res) => {
       console.log(res.data);

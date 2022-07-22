@@ -98,7 +98,7 @@ const Header = () => {
 const Container = styled.div`
   width: 100%;
   height: 120px;
-  border-bottom: 2px solid;
+  border-bottom: 2px solid #E5E5EA;
 `;
 const Wrap = styled.div`
   width: 70%;
