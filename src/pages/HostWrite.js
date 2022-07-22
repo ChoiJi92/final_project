@@ -408,7 +408,8 @@ const HostWrite = () => {
         <h2>태그</h2>
         <TagList
           maxLength={10}
-          isModal={false}
+          width= {'75%'}
+          margin={'64px'}
           tagList={tagList}
           setTagList={setTagList}
         />

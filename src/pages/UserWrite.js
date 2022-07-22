@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import instance from "../shared/axios";
 import WriteFooter from "../components/WriteFooter";
+import TagList from "../components/TagList";
 
 const UserWrite = () => {
   const params = useParams();
@@ -40,6 +41,7 @@ const UserWrite = () => {
   const [thumbnailKey, setThumbnailKey] = useState(data?.thumbnailKey);
   const [modalOpen, setModalOpen] = useState(false);
   const [address, setAddress] = useState(data?.mainAddress);
+  const [tagList, setTagList] = useState([]);
   // const address = useRecoilValue(addressState);
   const [content, setContent] = useState();
   const [imageKey, setImageKey] = useState([]);
@@ -143,6 +145,7 @@ const UserWrite = () => {
       // }
       formData.append("title", title);
       formData.append("content", content);
+      formData.append("tagList",tagList)
       formData.append("mainAddress", address ? address : data.mainAddress);
       formData.append("subAddress", data.subAddress);
       formData.append("category", data.category);
@@ -208,6 +211,16 @@ const UserWrite = () => {
         setImageKey={setImageKey}
         content={data?.content}
       ></PostEditer>
+      <Tag>
+        <h2>태그</h2>
+        <TagList
+          maxLength={10}
+          width={'80%'}
+          margin={'0px'}
+          tagList={tagList}
+          setTagList={setTagList}
+        />
+      </Tag>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <InputWrap>
           <h2>방문하신 숙소에 대한 포스팅인가요?</h2>
@@ -343,6 +356,8 @@ const UserWrite = () => {
           open={open}
           setOpen={setOpen}
           isHost={false}
+          address={address}
+          content={content}
         ></WriteFooter>
       </Form>
     </Wrap>
@@ -407,6 +422,19 @@ const Container = styled.div`
     font-size: 21px;
     line-height: 150%;
     color: #636366;
+  }
+`;
+const Tag = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 50%;
+  margin: 0 auto;
+  h2 {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 46px;
   }
 `;
 const Title = styled.div`

@@ -38,6 +38,12 @@ const ChatList = () => {
       .catch((err) => {
         window.alert(err.response.data.msg);
       })
+      // ,{
+      //   onSuccess: () => {
+      //     // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
+      //     queryClient.invalidateQueries("loadDetailRoom");
+      //   },
+      // }
   );
   // const searchRoom = useQuery(['searchRoom'],()=>
   // instance.get(`/room/search`,{params:{search:searchRef.current.value}}).then((res)=>{

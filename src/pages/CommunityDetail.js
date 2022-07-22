@@ -11,6 +11,7 @@ import unlikeIcon from "../assests/css/unlikeIcon.webp";
 import likeIcon from "../assests/css/likeIcon.webp";
 import starIcon from "../assests/css/starIcon.png";
 import unsaveIcon from "../assests/css/unsaveIcon.png";
+import commentIcon from "../assests/css/commentIcon.webp";
 import CommentList from "../components/CommentList";
 import Share from "../components/Share";
 import Share2 from "../components/Share2";
@@ -31,6 +32,7 @@ const CommunityDetail = () => {
   const commentRef = useRef();
   const userId = localStorage.getItem("userId");
   const userImage = localStorage.getItem("userImage");
+  const [islike, setIslike] = useState(false);
   const { data } = useQuery(
     ["detailContent", params.id],
     () =>
@@ -43,8 +45,8 @@ const CommunityDetail = () => {
       refetchOnWindowFocus: false, // 다른화면 갔다와도 재호출 안되게 함
     }
   );
-  const [like , setLike] = useState(data.islike)
-  
+  const [like, setLike] = useState(data.islike);
+
   // 코멘트 로드
   const loadComment = useQuery(
     ["loadComment"],
@@ -102,11 +104,11 @@ const CommunityDetail = () => {
   );
   const onKeyPress = (e) => {
     if (e.key === "Enter") {
-      if(commentRef.current.value===""){
-        window.alert('댓글을 입력해 주세요 :)')
-      }else{
-      createComment.mutate(commentRef.current.value);
-      commentRef.current.value = "";
+      if (commentRef.current.value === "") {
+        window.alert("댓글을 입력해 주세요 :)");
+      } else {
+        createComment.mutate(commentRef.current.value);
+        commentRef.current.value = "";
       }
     }
   };
@@ -156,10 +158,8 @@ const CommunityDetail = () => {
                         <button
                           style={{ width: "40%" }}
                           onClick={() => {
-                           
-                               unLike.mutate()
-                               setLike(false)
-                             
+                            unLike.mutate();
+                            setLike(false);
                           }}
                         >
                           좋아요
@@ -173,10 +173,8 @@ const CommunityDetail = () => {
                         <button
                           style={{ width: "40%" }}
                           onClick={() => {
-                           
-                              Like.mutate()
-                              setLike(true)
-                              
+                            Like.mutate();
+                            setLike(true);
                           }}
                         >
                           좋아요
@@ -245,13 +243,41 @@ const CommunityDetail = () => {
           </WrapBottom>
         </WrapLeft>
         <WrapRight>
-          <div className="otherContent">관련글</div>
-          <div>
-            <img></img>
-            <div>
-              <h3></h3>
-              
+          <div className="otherContent">
+            <h2>글쓴이의 다른 글</h2>
+            <div className="otherWrap">
+              <img src={jeju1} alt="back"></img>
+              <div className="card">
+                <h3>글 제목</h3>
+                <div className="icon">
+                  <div className="like">
+                    {islike ? (
+                      <img
+                        onClick={() => {
+                          setIslike(false);
+                        }}
+                        src={likeIcon}
+                        alt="좋아요"
+                      />
+                    ) : (
+                      <img
+                        onClick={() => {
+                          setIslike(true);
+                        }}
+                        src={unlikeIcon}
+                        alt="좋아요"
+                      />
+                    )}
+                    <p>00개</p>
+                  </div>
+                  <div className="comment">
+                    <img src={commentIcon} alt="댓글" />
+                    <p>00개</p>
+                  </div>
+                </div>
+              </div>
             </div>
+            <button>글쓴이 글 더 보러가기</button>
           </div>
         </WrapRight>
       </Wrap>
@@ -259,14 +285,14 @@ const CommunityDetail = () => {
         <div className="likeShare">
           <div>
             <p>좋아요 {data.likeNum}개</p>
-            <p>스크랩 00개</p>
+            {/* <p>스크랩 00개</p> */}
             <p>댓글 {loadComment.data.length}개</p>
           </div>
           <Share2 data={data}></Share2>
         </div>
       </Count>
       <CommentWrap>
-        <h3>댓글 00</h3>
+        <h3>댓글</h3>
         {userId && (
           <div className="comment">
             <img src={userImage} alt="기본이미지"></img>
@@ -278,11 +304,11 @@ const CommunityDetail = () => {
               ></input>
               <button
                 onClick={() => {
-                  if(commentRef.current.value===""){
-                    window.alert('댓글을 입력해 주세요 :)')
-                  }else{
-                  createComment.mutate(commentRef.current.value);
-                  commentRef.current.value = "";
+                  if (commentRef.current.value === "") {
+                    window.alert("댓글을 입력해 주세요 :)");
+                  } else {
+                    createComment.mutate(commentRef.current.value);
+                    commentRef.current.value = "";
                   }
                 }}
               >
@@ -322,7 +348,7 @@ const WrapLeft = styled.div`
   flex-direction: column;
   justify-content: space-between;
   width: 66.3%;
-`
+`;
 const Content = styled.div`
   width: 100%;
   /* height: 800px; */
@@ -464,7 +490,7 @@ const WrapBottom = styled.div`
     color: #48484a;
   }
   .houseWrap {
-   margin-top: 24px;
+    margin-top: 24px;
     height: 300px;
     border: none;
     background: #ffffff;
@@ -516,19 +542,102 @@ const WrapBottom = styled.div`
   }
 `;
 const WrapRight = styled.div`
-width: 45%;
-margin-left: 20px;
- .otherContent {
+  width: 32.22%;
+  margin-left: 20px;
+  .otherContent {
     position: sticky;
     top: 50px;
     width: 100%;
     height: 657px;
-    padding: 20px;
+    padding: 28px 20px 20px 20px;
     border-radius: 20px;
     box-shadow: 0px 12px 42px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    h2 {
+      font-style: normal;
+      font-weight: 600;
+      font-size: 28px;
+      line-height: 33px;
+      color: #48484a;
+      margin-bottom: 38px;
+    }
+    button {
+      width: 100%;
+      height: 66px;
+      background: #e5e5ea;
+      border-radius: 10px;
+      border: none;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 20px;
+      line-height: 24px;
+      color: #636366;
+      cursor: pointer;
+    }
   }
-
-
+  .otherWrap {
+    height: 120px;
+    width: 100%;
+    img {
+      width: 120px;
+      height: 120px;
+      margin-right: 20px;
+    }
+    display: flex;
+  }
+  .card {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    justify-content: space-between;
+    h3 {
+      font-style: normal;
+      font-weight: 600;
+      font-size: 21px;
+      line-height: 140%;
+    }
+  }
+  .icon {
+    display: flex;
+    flex-direction: row;
+    .like {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-right: 10px;
+      img {
+        width: 32px;
+        height: 32px;
+        margin-right:5px;
+        cursor: pointer;
+      }
+      p {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 27px;
+        line-height: 32px;
+        color: #aeaeb2;
+      }
+    }
+    .comment {
+      display: flex;
+      flex-direction: row;
+      img {
+        width: 32px;
+        height: 32px;
+        margin-right:5px;
+      }
+      p {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 27px;
+        line-height: 32px;
+        color: #aeaeb2;
+      }
+    }
+  }
 `;
 const Count = styled.div`
   width: 70%;

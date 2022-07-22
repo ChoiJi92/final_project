@@ -4,6 +4,8 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Typography from "@mui/material/Typography";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 import styled from "styled-components";
 import cancelIcon from "../assests/css/cancelIcon.png";
 import instance from "../shared/axios";
@@ -29,6 +31,7 @@ const RoomModal = ({ width }) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [tagList, setTagList] = useState([]);
+  const [userCount, setUserCount]=useState()
   const queryClient = useQueryClient();
   const roomNameRef = useRef();
   const userCountRef = useRef();
@@ -44,18 +47,21 @@ const RoomModal = ({ width }) => {
       },
     }
   );
+  const userCountChange = (event) => {
+    setUserCount(event.target.value);
+  };
   const createRoom = () => {
     if (!roomNameRef.current.value) {
       window.alert("방 제목을 입력해 주세요 :)");
-    } else if (!userCountRef.current.value) {
+    } else if (!userCount) {
       window.alert("방 인원을 정해주세요 :)");
     } else {
       console.log(roomNameRef.current.value)
-      console.log(userCountRef.current.value)
+      console.log(userCount)
       console.log(tagList)
       const data = {
         title: roomNameRef.current.value,
-        max: userCountRef.current.value,
+        max: userCount,
         hashTag: tagList,
       };
       createChatRoom.mutate(data);
@@ -99,25 +105,47 @@ const RoomModal = ({ width }) => {
                 <input
                   id="roomName"
                   ref={roomNameRef}
-                  placeholder="방 제목을 입력해 주세요 :)"
+                  placeholder="방 제목을 입력해 주세요."
                 ></input>
               </div>
               <div className="userCount">
                 <h3>인원</h3>
-                <input
-                  id="userCount"
-                  ref={userCountRef}
-                  type="number"
-                  placeholder="방 인원을 정해주세요 :)"
-                  min="2"
-                  max="10"
-                ></input>
+                <Select
+                defaultValue=""
+                onChange={userCountChange}
+                style={{
+                  width: "80%",
+                  height: "56px",
+                  border: "0px solid #C7C7CC",
+                  fontStyle: "normal",
+                  fontWeight: "500",
+                  fontSize: "18px",
+                  lineHeight: "150%",
+                  borderRadius: "10px",
+                }}
+                displayEmpty
+                inputProps={{ "aria-label": "Without label" }}
+              >
+                <MenuItem value="" disabled={true}>
+                  채팅방 인원을 선택해주세요.
+                </MenuItem>
+                <MenuItem value="2">
+                  2
+                </MenuItem>
+                <MenuItem value="3">3</MenuItem>
+                <MenuItem value="4">4</MenuItem>
+                <MenuItem value="5">5</MenuItem>
+                <MenuItem value="6">6</MenuItem>
+                <MenuItem value="7">7</MenuItem>
+                <MenuItem value="8">8</MenuItem>
+              </Select>
               </div>
               <div className="hashTag">
                 <h3>태그</h3>
                 <TagList
                   maxLength={5}
-                  isModal={true}
+                  width= {'100%'}
+                  margin={'0'}
                   tagList={tagList}
                   setTagList={setTagList}
                 />

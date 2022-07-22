@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import ReactDOM from "react-dom";
 import styled from "styled-components";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -8,16 +9,20 @@ import instance from "../shared/axios";
 import enterIcon from "../assests/css/enterIcon.png";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { chatState } from "../recoil/atoms";
 
 const ChatRoom = () => {
   const messageRef = useRef();
   const chatBoxRef = useRef();
   const params = useParams();
   const navigate = useNavigate();
+  const [chat, setChat] = useRecoilState(chatState);
+  const [host, setHost] = useState(false);
   const nickName = localStorage.getItem("nickName");
   const userId = localStorage.getItem("userId");
   const userImage = localStorage.getItem("userImage");
-  const url = "https://www.mendorong-jeju.com";
+  const url = process.env.REACT_APP_BASE_URL;
   const socket = useRef();
   const scrollToBottom = () => {
     if (chatBoxRef.current) {
@@ -31,6 +36,13 @@ const ChatRoom = () => {
         .get(`/room/${params.id}`)
         .then((res) => {
           console.log(res.data);
+          setChat([
+            ...res.data.loadChat.map((v) => ({
+              messageChat: v.chat,
+              profileImage: v.userImg,
+              user: v.userNickname,
+            })),
+          ]);
           return res.data;
         })
         .catch((err) => {
@@ -40,29 +52,33 @@ const ChatRoom = () => {
       refetchOnWindowFocus: false,
     }
   );
-  const [chat, setChat] = useState([...data.loadChat.map(v => ({messageChat:v.chat,profileImage:v.userImg,user:v.userNickname}))]);
+
   useEffect(() => {
     console.log("연결");
     socket.current = io(url);
     // socketRef.current = io.connect(url);
-    console.log("나는 이펙트 소켓", socket);
-    socket.current.emit("join-room", params.id);
+    console.log("나는 이펙트 소켓", socket.current);
+    socket.current.emit("join-room", params.id, userId);
     console.log("소켓", socket);
-    socket.current.on("welcome", (nickname) => {
-      console.log(nickname);
-    });
+    console.log("111111", chat);
+
     return () => {
       socket.current.disconnect();
     };
   }, []);
+
   useEffect(() => {
     socket.current.on("message", (messageChat, user, profileImage, roomId) => {
       console.log(messageChat, user, profileImage, roomId);
       setChat([...chat, { user, messageChat, profileImage }]);
     });
     scrollToBottom();
+    socket.current.on("welcome", (nickname) => {
+      // console.log(nickname);
+      setChat([...chat, { messageChat: `${nickname}님이 입장하셨습니다.` }]);
+      console.log(chat);
+    });
   }, [chat]);
-console.log(chat)
   const sendMessage = (message) => {
     console.log("나는 메세지 소켓", socket);
     if (message !== "") {
@@ -75,39 +91,35 @@ console.log(chat)
       messageRef.current.value = "";
     }
   };
-
-  // const joinRoom = () => {
-  //   console.log('나는 룸 소켓',socket)
-  //   console.log(socket.id)
-  //   const roomName = titleRef.current.innerText;
-  //   socket.emit("join-room", roomName, nickName,userImage);
-  //   console.log('룸입장')
-  //   socket.on("welcome",(user,roomId,a) =>{
-  //     console.log(user,roomId,a)
-  //   })
-  //   setRoom(roomName);
-  // };
+  const leaveRoom = (roomId) => {
+    socket.current.emit("leave-room", roomId, userId);
+    socket.current.on("bye", (nickname) => {
+      console.log(nickname, "님이 퇴장하셨습니다.");
+      setChat([...chat, { messageChat: `${nickname}님이 퇴장하셨습니다.` }]);
+    });
+    navigate("/chat");
+  };
 
   const onKeyPress = (e) => {
     if (e.key === "Enter") {
-      console.log(messageRef.current.value);
-      console.log("나는 메세지 소켓", socket);
-      socket.current.emit(
-        "chat_message",
-        messageRef.current.value,
-        userId,
-        params.id
-      );
-      setChat([
-        ...chat,
-        {
-          messageChat: messageRef.current.value,
-          user: nickName,
-          profileImage: userImage,
-        },
-      ]);
-      console.log(chat)
-      messageRef.current.value = "";
+      if (messageRef.current.value !== "") {
+        socket.current.emit(
+          "chat_message",
+          messageRef.current.value,
+          userId,
+          params.id
+        );
+        setChat([
+          ...chat,
+          {
+            messageChat: messageRef.current.value,
+            user: nickName,
+            profileImage: userImage,
+          },
+        ]);
+        console.log(chat);
+        messageRef.current.value = "";
+      }
     }
   };
   return (
@@ -115,20 +127,51 @@ console.log(chat)
       <Wrap>
         <ChatWrap>
           <ChatList>
-            <Header>
-              <div className="openChat">오픈챗방</div>
-              <div className="hostChat">호스트와 대화</div>
+            <Header host={host}>
+              <div
+                className="openChat"
+                onClick={() => {
+                  setHost(false);
+                }}
+              >
+                오픈챗방
+              </div>
+              <div
+                className="hostChat"
+                onClick={() => {
+                  setHost(true);
+                }}
+              >
+                호스트와 대화
+              </div>
             </Header>
             <div className="chat">
               {data.chatingRooms.map((v, i) => (
-                <div className= {v.roomId === Number(params.id) ? 'currentChatRoom' : 'chatRoom'}
+                <div
+                  className={
+                    v.roomId === Number(params.id)
+                      ? "currentChatRoom"
+                      : "chatRoom"
+                  }
                   key={v.roomId}
-                  onClick={() => {
-                    navigate(`/chatroom/${v.roomId}`);
-                  }}
                 >
-                  <h3>{v.title}</h3>
-                  <p>참여자 {v.roomUserNum}명</p>
+                  <h3
+                    onClick={() => {
+                      navigate(`/chatroom/${v.roomId}`);
+                    }}
+                  >
+                    {v.title}
+                  </h3>
+                  <div className="btn">
+                    <p>참여자 {v.roomUserNum}명</p>
+                    <button
+                      onClick={() => {
+                        leaveRoom(v.roomId);
+                      }}
+                    >
+                      방 나가기
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -143,29 +186,35 @@ console.log(chat)
                 <h2>{data.Room.title}</h2>
               </div>
               <div className="chatWrap" ref={chatBoxRef}>
-                {chat.map((v, i) => 
-                  (v.user !== nickName ? (
-                    i===0 || v.user !== chat[i-1].user ? (
-                      <div className="messageList" key={i}>
-                        <img src={v.profileImage} alt="프로필"></img>
-                        <div className="message">
-                          <p>{v.user}</p>
-                          <div>{v.messageChat}</div>
+                {chat.map((v, i) =>
+                  v.user !== nickName ? (
+                    i === 0 || v.user !== chat[i - 1].user ? (
+                      !v.user ? (
+                        <p className="notice" key={`${v.messageChat}-${i}`}>
+                          {v.messageChat}
+                        </p>
+                      ) : (
+                        <div className="messageList" key={i}>
+                          <img src={v.profileImage} alt="프로필"></img>
+                          <div className="message">
+                            <p>{v.user}</p>
+                            <div>{v.messageChat}</div>
+                          </div>
                         </div>
-                      </div>
+                      )
                     ) : (
                       <div className="sameUserMessage" key={i}>
                         <div className="message">
                           <div>{v.messageChat}</div>
                         </div>
                       </div>
-                    ))
-                   : (
+                    )
+                  ) : (
                     <div className="myMessageList" key={i}>
                       <div className="myMessage">{v.messageChat}</div>
                     </div>
-                  ))
-                  )}
+                  )
+                )}
               </div>
             </div>
             <div className="chat">
@@ -228,9 +277,15 @@ const Header = styled.div`
     align-items: center;
     margin-right: 17px;
     cursor: pointer;
-    :hover {
+    /* :hover {
       border-bottom: 2px solid;
-    }
+    } */
+  }
+  .openChat {
+    border-bottom: ${(props) => !props.host && "3px solid #48484A"};
+  }
+  .hostChat {
+    border-bottom: ${(props) => props.host && "3px solid #48484A"};
   }
 `;
 const ChatList = styled.div`
@@ -243,7 +298,7 @@ const ChatList = styled.div`
   .chat {
     height: 90%;
     overflow-y: auto;
-    .currentChatRoom{
+    .currentChatRoom {
       padding: 30px 27px;
       border-bottom: 1px solid #c7c7cc;
       background-color: #d1d1d6;
@@ -261,10 +316,31 @@ const ChatList = styled.div`
         line-height: 21px;
         color: #8e8e93;
       }
+      .btn {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        button {
+          width: 30%;
+          height: 30px;
+          font-style: normal;
+          font-weight: 600;
+          font-size: 15px;
+          line-height: 24px;
+          background: #f2f2f7;
+          border-radius: 10px;
+          border: none;
+          cursor: pointer;
+        }
+      }
     }
     .chatRoom {
       padding: 30px 27px;
       border-bottom: 1px solid #c7c7cc;
+      button {
+        display: none;
+      }
       :hover {
         background-color: #d1d1d6;
         cursor: pointer;
@@ -332,7 +408,7 @@ const Room = styled.div`
       margin-right: 11px;
     }
   }
-  .sameUserMessage{
+  .sameUserMessage {
     display: flex;
     margin-bottom: 10px;
     margin-left: 45.51px;
@@ -354,6 +430,10 @@ const Room = styled.div`
       border: 1px solid;
       border-radius: 5.56533px 11.1307px 11.1307px 11.1307px;
       padding: 10px;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 13.3568px;
+      line-height: 16px;
     }
   }
   .myMessage {
@@ -361,6 +441,24 @@ const Room = styled.div`
     background: #d1d1d6;
     color: white;
     padding: 10px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 13.3568px;
+    line-height: 16px;
+  }
+  .notice {
+    text-align: center;
+    border: 1px solid;
+    width: 55%;
+    margin: 10px auto;
+    border-radius: 20px;
+    background-color: #d1d1d6;
+    border: none;
+    padding: 5px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 13.3568px;
+    line-height: 16px;
   }
   .chat {
     display: flex;

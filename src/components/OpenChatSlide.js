@@ -47,7 +47,7 @@ const OpenChatSlide = ({ rtl, data }) => {
   const settings = {
     infinite: true,
     speed: 500,
-    slidesToShow: 4,
+    slidesToShow: 3,
     slidesToScroll: 1,
     // dots: true,
     // arrows: mouseOver,
@@ -67,7 +67,7 @@ const OpenChatSlide = ({ rtl, data }) => {
           //위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
           infinite: true,
           speed: 500,
-          slidesToShow: 3,
+          slidesToShow: 2,
           slidesToScroll: 1,
           // dots: true,
           // arrows: mouseOver,
@@ -182,7 +182,7 @@ const ImgBox = styled.div`
 `;
 const SliderImg = styled(Slider)`
   width: 100%;
-  height: 100px;
+  height: 152px;
   .dots_custom {
     /* display: inline-block; */
     /* vertical-align: middle; */
@@ -213,15 +213,15 @@ const SliderImg = styled(Slider)`
   }
 `;
 const Wrap = styled.div`
-  /* border: 1px solid red; */
   width: 100%;
   margin-right: 30px;
   /* height: 300px; */
 `;
 const Card = styled.div`
   border-radius: 20px;
-  width: 350px;
-  height: 100px;
+  width: 524px;
+  height: 152px;
+  border: 1px solid;
   display: flex;
   flex-direction: column;
   justify-content: center;
