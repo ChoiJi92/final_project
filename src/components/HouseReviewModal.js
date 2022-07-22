@@ -98,7 +98,7 @@ const HouseReviewModal = () => {
                   required: "내용을 입력해주세요 :)",
                 })}
                 />
-                <button>등록</button>
+                <Btn>등록</Btn>
               </ReviewForm>
             </Main>
             <ErrorMsg>{errors.review?.message}</ErrorMsg>
@@ -155,6 +155,15 @@ const ReviewForm = styled.form`
 
 const ErrorMsg = styled.p`
 
+`
+
+const Btn = styled.button`
+  width: 100%;
+  height: 50px;
+  border-radius: 20px;
+  border: none;
+  font-size: 25px;
+  cursor: pointer;
 `
 
 export default HouseReviewModal;

@@ -482,6 +482,7 @@ const ImgBox = styled.div`
   height: auto;
   display: flex;
   flex-wrap: wrap;
+  /* border: 1px solid red; */
   .list {
     display: flex;
     flex-wrap: wrap;
