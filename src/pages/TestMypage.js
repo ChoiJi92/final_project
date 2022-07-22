@@ -12,15 +12,15 @@ import {
 import HostRegistModal from "../components/HostRegistModal";
 import { useNavigate } from "react-router-dom";
 
-const Mypage = () => {
+const TestMypage = () => {
   const [myLike, setMyLike] = useState(true);
   const [myWrite, setMyWrite] = useState(true);
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const nickName = localStorage.getItem("nickName");
   const userImage = localStorage.getItem("userImage");
   const email = localStorage.getItem("email");
   const host = localStorage.getItem("host");
-  const list = [1];
+  const list = [];
 
   const likeClick = () => {
     setMyLike((prev) => !prev);
@@ -28,8 +28,8 @@ const Mypage = () => {
   const writeClick = () => {
     setMyWrite((prev) => !prev);
   };
-  console.log(list.length);
-
+  console.log(list.length)
+  
   return (
     <MainBox>
       <ProfileBox>
@@ -43,56 +43,84 @@ const Mypage = () => {
         <div id="btn">
           <button>개인 정보 수정</button>
           {/* {host && <button>호스트 되기</button> } */}
-          {host === "true" ? (
-            <button
-              onClick={() => {
-                navigate("/hostwrite");
-              }}
-            >
-              숙소 등록
-            </button>
-          ) : (
-            <HostRegistModal></HostRegistModal>
-          )}
+          {host === "true" ? <button onClick={()=>{
+            navigate('/hostwrite')
+          }}>숙소 등록</button> : <HostRegistModal></HostRegistModal>}
         </div>
       </ProfileBox>
 
-      <MyDefaultBoxTop>
+      <MyDefaultBox>
         <div id="mylike">
           <div id="myInfo">
             <h1>내 좋아요</h1>
             <h1>저장함</h1>
           </div>
-
+          {/* 좋아요 3개 이상일 시 아이콘 보이게 해야함 */}
+          
           <span>
-            {myLike ? (
+          {list.length >= 4 ? (
+              <>
+              {myLike ? (
               <DownIcon onClick={likeClick} />
             ) : (
               <UpIcon onClick={likeClick} />
-            )}
+            )}</>
+            ) : ("")}
           </span>
         </div>
         {myLike ? (
-          <>
-            {list.length === 0 ? (
-              <EmptyImgBox>
-                <img src={mypageImg} alt="없어요 이미지" />
-                <span>아직 좋아요 한 글이 없어요.</span>
-              </EmptyImgBox>
-            ) : (
-              <DefaultImgBox>
-                
-                {list.slice(0, 3).map((item, idx) => (
-                  <img style={{}} src={jeju1} />
-                ))}
-                
-              </DefaultImgBox>
-            )}
-          </>
+        <>
+          {list.length === 0 ? (
+          <EmptyImgBox>
+            <img src={mypageImg} alt="없어요 이미지"/>
+            <span>아직 좋아요 한 글이 없어요.</span>
+          </EmptyImgBox>
+        ) : (
+          <DefaultImgBox >
+            {/* <div id="imgTest"> */}
+          {list.slice(0,3).map((item, idx)=>(
+            
+              <img style={{}} src={jeju1}/>
+              
+          ))}
+          {/* </div> */}
+          </DefaultImgBox>
+       
+        ) }
+        </>
+        ) : 
+        ("")}
+        
+        {myLike ? ("") : (<HiddenMyLikeBox>
+            {list.map((item, idx) => {
+              return (
+                <div key={idx} id="listBox">
+                  <img src={jeju1} />
+                  <span style={{ marginTop: "5px" }}>해변가 근처 숙소</span>
+                  <div id="icons">
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <StarIcon />
+                      <span style={{ marginLeft: "10px" }}>4.5</span>
+                    </div>
+                    <HeartIcon />
+                  </div>
+                </div>
+              );
+            })}
+          </HiddenMyLikeBox>)}
+        {/* <HiddenMyLikeBox>
+          
+        </HiddenMyLikeBox> */}
+        
+        {/* {myLike ? (
+          <DefaultImgBox>
+            <img src={jeju1} />
+            <img src={jeju1} />
+            <img src={jeju1} />
+          </DefaultImgBox>
         ) : (
           ""
         )}
-
         {myLike ? (
           ""
         ) : (
@@ -113,11 +141,15 @@ const Mypage = () => {
               );
             })}
           </HiddenMyLikeBox>
-        )}
-        
-      </MyDefaultBoxTop>
+        )} */}
+      </MyDefaultBox>
+        {/* <TestImgBox>
+        <img src={jeju1} />
+        <img src={jeju1} />
+        <img src={jeju1} />
       
-      <MyDefaultBoxBottom>
+        </TestImgBox> */}
+      {/* <MyDefaultBox>
         <div id="myWrite">
           <div id="myInfo">
             <h1>내가 쓴 글</h1>
@@ -139,7 +171,8 @@ const Mypage = () => {
         {myWrite ? (
           <DefaultImgBox>
             <img src={jeju1} />
-            
+            <img src={jeju1} />
+            <img src={jeju1} />
           </DefaultImgBox>
         ) : (
           ""
@@ -165,7 +198,7 @@ const Mypage = () => {
             })}
           </HiddenMyLikeBox>
         )}
-      </MyDefaultBoxBottom>
+      </MyDefaultBox> */}
     </MainBox>
   );
 };
@@ -231,7 +264,7 @@ const ProfileBox = styled.div`
   }
 `;
 
-const MyDefaultBoxTop = styled.div`
+const MyDefaultBox = styled.div`
   /* width: 45%; */
   /* margin-top: 100px; */
   margin-top: 74px;
@@ -243,7 +276,7 @@ const MyDefaultBoxTop = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: 1px solid blue;
+    border:  1px solid blue;
   }
   #myWrite {
     display: flex;
@@ -258,7 +291,7 @@ const MyDefaultBoxTop = styled.div`
     margin-bottom: 10px;
     border: 1px solid red;
   }
-  #myInfo {
+  #myInfo{
     display: flex;
     flex-wrap: nowrap;
   }
@@ -272,7 +305,7 @@ const DefaultImgBox = styled.div`
   /* width: auto; */
   position: absolute;
   /* max-width: 100%; */
-  /* width : calc(33.3%*${(props) => props.props}); */
+  /* width : calc(33.3%*${(props)=>props.props}); */
   height: 270px;
   margin-top: 10px;
   display: flex;
@@ -283,7 +316,7 @@ const DefaultImgBox = styled.div`
   background-color: #f2f2f7;
   padding: 20px 0px 20px 20px;
   /* border: 1px solid blue; */
-
+  
   img {
     width: 252px;
     height: 230px;
@@ -291,24 +324,22 @@ const DefaultImgBox = styled.div`
     /* margin: 0px 10px 0px 5px; */
     margin-right: 20px;
   }
-  #testBox {
+  #testBox{
     display: flex;
     max-width: 100%;
     min-width: 30%;
     border: 1px solid red;
+    
   }
 `;
 const HiddenMyLikeBox = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  /* justify-content: space-between; */
+  justify-content: space-between;
   height: auto;
-  /* padding-left: 20px; */
-  margin-left: 10px;
-  margin-top: 5px;
   #listBox {
-    width: 30.3%;
+    width: 30%;
     display: flex;
     flex-direction: column;
     margin: 25px 10px 0px 10px;
@@ -349,41 +380,21 @@ const EmptyImgBox = styled.div`
   align-items: center;
   border-radius: 10px;
   background-color: #f2f2f7;
-`;
+`
 
-
-const MyDefaultBoxBottom = styled.div`
-   /* width: 45%; */
-  /* margin-top: 100px; */
-  /* margin-top: 300px; */
-  /* border: 1px solid red; */
+const TestImgBox = styled.div`
+display: flex;
+flex-wrap: wrap;
+align-items: center;
+  /* width: 30%; */
+  max-width: 45%;
+  /* height: 300px; */
   border: 1px solid red;
-  /* display: flex; */
-  /* flex-direction: column; */
-  #mylike {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border: 1px solid blue;
-  }
-  #myWrite {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  span {
-    cursor: pointer;
-  }
-  h1 {
-    margin-left: 35px;
-    margin-bottom: 10px;
-    border: 1px solid red;
-  }
-  #myInfo {
-    display: flex;
-    flex-wrap: nowrap;
+  img{
+    width: 200px;
+    height: 230px;
+    margin: 0px 10px 0px 15px;
   }
 `
 
-
-export default Mypage;
+export default TestMypage;
