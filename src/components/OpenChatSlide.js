@@ -10,10 +10,10 @@ import back4 from "../assests/css/배경4.webp";
 import back5 from "../assests/css/배경5.webp";
 import back6 from "../assests/css/배경6.webp";
 
-const OpenChatSlide = ({rtl}) => {
+const OpenChatSlide = ({ rtl, data }) => {
   const [mouseOver, setMouseOver] = useState(false);
   const SampleNextArrow = (props) => {
-    const { className, style, onClick} = props;
+    const { className, style, onClick } = props;
     return (
       <div
         onMouseLeave={mouseLeave}
@@ -55,72 +55,73 @@ const OpenChatSlide = ({rtl}) => {
     speed: 5000,
     autoplaySpeed: 100,
     cssEase: "linear",
-    pauseOnHover:true,
-    rtl:rtl,
+    pauseOnHover: true,
+    rtl: rtl,
     arrows: false,
     variableWidth: true,
-    responsive: [ // 반응형 웹 구현 옵션
-		{  
-			breakpoint: 960, //화면 사이즈 960px일 때
-			settings: {
-				//위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
-        infinite: true,
-        speed: 500,
-        slidesToShow: 3,
-        slidesToScroll: 1,
-        // dots: true,
-        // arrows: mouseOver,
-        autoplay: true,
-        speed: 5000,
-        autoplaySpeed: 100,
-        cssEase: "linear",
-        pauseOnHover:true,
-        rtl:rtl,
-        arrows: false,
-        variableWidth: true,
-
-			} 
-		},
-		{ 
-			breakpoint: 768, //화면 사이즈 768px일 때
-			settings: {	
-				//위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
-        infinite: true,
-        speed: 500,
-        slidesToShow: 2,
-        slidesToScroll: 1,
-        // dots: true,
-        // arrows: mouseOver,
-        autoplay: true,
-        speed: 5000,
-        autoplaySpeed: 100,
-        cssEase: "linear",
-        pauseOnHover:true,
-        rtl:rtl,
-        arrows: false,
-        variableWidth: true,
-			} 
-		},{ 
-			breakpoint: 590, //화면 사이즈 768px일 때
-			settings: {	
-				//위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        // dots: true,
-        // arrows: mouseOver,
-        autoplay: true,
-        speed: 5000,
-        autoplaySpeed: 100,
-        cssEase: "linear",
-        pauseOnHover:true,
-        rtl:rtl,
-        arrows: false,
-        variableWidth: true,
-			} 
-		}
-	],
+    responsive: [
+      // 반응형 웹 구현 옵션
+      {
+        breakpoint: 960, //화면 사이즈 960px일 때
+        settings: {
+          //위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
+          infinite: true,
+          speed: 500,
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          // dots: true,
+          // arrows: mouseOver,
+          autoplay: true,
+          speed: 5000,
+          autoplaySpeed: 100,
+          cssEase: "linear",
+          pauseOnHover: true,
+          rtl: rtl,
+          arrows: false,
+          variableWidth: true,
+        },
+      },
+      {
+        breakpoint: 768, //화면 사이즈 768px일 때
+        settings: {
+          //위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
+          infinite: true,
+          speed: 500,
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          // dots: true,
+          // arrows: mouseOver,
+          autoplay: true,
+          speed: 5000,
+          autoplaySpeed: 100,
+          cssEase: "linear",
+          pauseOnHover: true,
+          rtl: rtl,
+          arrows: false,
+          variableWidth: true,
+        },
+      },
+      {
+        breakpoint: 590, //화면 사이즈 768px일 때
+        settings: {
+          //위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
+          infinite: true,
+          speed: 500,
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          // dots: true,
+          // arrows: mouseOver,
+          autoplay: true,
+          speed: 5000,
+          autoplaySpeed: 100,
+          cssEase: "linear",
+          pauseOnHover: true,
+          rtl: rtl,
+          arrows: false,
+          variableWidth: true,
+        },
+      },
+    ],
     appendDots: (dots) => (
       <div
         style={{
@@ -148,64 +149,23 @@ const OpenChatSlide = ({rtl}) => {
   const mouseLeave = () => {
     setMouseOver(false);
   };
+  const backList = [back, back2, back3, back4, back5, back6];
   return (
     <ImgBox>
       <SliderImg {...settings} {...arrows}>
-        <Wrap>
-          <Card
-            onMouseLeave={mouseLeave}
-            onMouseOver={mouseHover}
-            style={{
-              backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back})`,
-            }}
-          >
-            <p>우도 근처 숙소서 한달살이 중</p>
-          </Card>
-        </Wrap>
-        <Wrap>
-          <Card
-            onMouseLeave={mouseLeave}
-            onMouseOver={mouseHover}
-            style={{
-              backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back2})`,
-            }}
-          >
-            <p>한달 살며 심심한 사람 모여라</p>
-          </Card>
-        </Wrap>
-        <Wrap>
-          <Card
-            onMouseLeave={mouseLeave}
-            onMouseOver={mouseHover}
-            style={{
-              backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back3})`,
-            }}
-          >
-            <p>곽지 해변 근처 숙소 추천해 주세요</p>
-          </Card>
-        </Wrap>
-        <Wrap>
-          <Card
-            onMouseLeave={mouseLeave}
-            onMouseOver={mouseHover}
-            style={{
-              backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back4})`,
-            }}
-          >
-            <p>서귀포 한달살기 중, 밥친구 구해요</p>
-          </Card>
-        </Wrap>
-        <Wrap>
-          <Card
-            onMouseLeave={mouseLeave}
-            onMouseOver={mouseHover}
-            style={{
-              backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back6})`,
-            }}
-          >
-            <p>우도 근처 숙소서 한달살이 중</p>
-          </Card>
-        </Wrap>
+        {data.map((v, i) => (
+          <Wrap key={v.roomId}>
+            <Card
+              onMouseLeave={mouseLeave}
+              onMouseOver={mouseHover}
+              style={{
+                background: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${backList[i]}) no-repeat center center`,backgroundSize:'cover'
+              }}
+            >
+              <p>{v.title}</p>
+            </Card>
+          </Wrap>
+        ))}
       </SliderImg>
     </ImgBox>
   );

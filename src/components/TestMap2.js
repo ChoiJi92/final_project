@@ -1,28 +1,42 @@
-import React, { useEffect, useState } from "react";
-import { Map, MapMarker, CustomOverlayMap } from "react-kakao-maps-sdk";
+import React, { useEffect, useRef, useState } from "react";
+import { Map, MapMarker, CustomOverlayMap, ZoomControl } from "react-kakao-maps-sdk";
 import styled from "styled-components";
 import back2 from "../assests/css/배경2.webp";
 import starIcon from "../assests/css/starIcon.png";
 import unsaveIcon from "../assests/css/unsaveIcon.png";
+import saveIcon from "../assests/css/saveIcon.png";
 import cancelIcon from "../assests/css/cancelIcon.png";
 import { useRecoilValue } from "recoil";
 import { houseInfoMap } from "../recoil/atoms";
-import { ContentPasteSearchOutlined } from "@mui/icons-material";
+import { useQuery } from "react-query";
+import axios from "axios";
 const TestMap2 = () => {
   const { kakao } = window;
   const [isOpen, setIsOpen] = useState(false);
   const [map, setMap] = useState();
   const [markers, setMarkers] = useState([]);
   const [info, setInfo] = useState();
-  const isHouseInfoMap = useRecoilValue(houseInfoMap);
+  const [save, setSave] = useState(false)
+  const { data } = useQuery(
+    ["houseInfo"],
+    // ()=>getWriteData(paramsId),
+    () => {
+      return axios
+        .get(`http://localhost:5001/testList/`)
+        .then((res) => res.data);
+    },
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
   // console.log(isHouseInfoMap);
   useEffect(() => {
     // if (!map) return;
     let geocoder = new kakao.maps.services.Geocoder();
-    console.log(isHouseInfoMap);
     let markers = [];
-    for (let i = 0; i < isHouseInfoMap.length; i++) {
-      geocoder.addressSearch(isHouseInfoMap[i], function (result, status) {
+    const bounds = new kakao.maps.LatLngBounds();
+    for (let i = 0; i < data.length; i++) {
+      geocoder.addressSearch(data[i].fullAddress, function (result, status) {
         // 정상적으로 검색이 완료됐으면
         if (status === kakao.maps.services.Status.OK) {
           // let content = `<div id= "label" class ="label">카카오!</div>`;
@@ -33,12 +47,12 @@ const TestMap2 = () => {
               lat: result[0].y,
               lng: result[0].x,
             },
-            content: isHouseInfoMap[i],
+            content: data[i],
           });
           // console.log(markers);
-          // bounds.extend(new kakao.maps.LatLng(result[0].y, result[0].x))
+          bounds.extend(new kakao.maps.LatLng(result[0].y, result[0].x))
           // console.log(bounds)
-          const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+          // const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
           // 결과값으로 받은 위치를 마커로 표시합니다
           // const marker = new kakao.maps.Marker({
           //   map: map,
@@ -46,24 +60,22 @@ const TestMap2 = () => {
           //   // image:jeju1,
           // });
           // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-          map.setCenter(coords);
-          // map.setBounds(bounds);
+          // map.setCenter(coords);
+
         }
         setMarkers(markers);
+        map.setBounds(bounds);
       });
     }
-    let a = document.querySelectorAll('#map > div > div > div')[5]?.querySelectorAll('div:last-child')[5]
-    
   }, [map]);
-  // console.log(markers);
-  const mapOpen = () =>{
- 
-    let a = document.querySelectorAll('#map > div > div > div')[5]?.querySelectorAll('div:last-child')[5]
-    let b = document.querySelectorAll('#map > div > div > div ')[5]
-
-    console.log(a)
-    console.log(b)
-    
+  const mapRef = useRef()
+  const zoomIn = () => {
+    const map = mapRef.current
+    map.setLevel(map.getLevel() - 1)
+  }
+  const zoomOut = () => {
+    const map = mapRef.current
+    map.setLevel(map.getLevel() + 1)
   }
 
   return (
@@ -77,21 +89,36 @@ const TestMap2 = () => {
         }}
         style={{
           // 지도의 크기
-          width: "100%",
+          width: "50%",
           height: "450px",
         }}
         level={10} // 지도의 확대 레벨
         onCreate={setMap}
       >
+         <div className="custom_zoomcontrol radius_border">
+            <span onClick={zoomIn}>
+              <img
+                src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png"
+                alt="확대"
+              />
+            </span>
+            <span onClick={zoomOut}>
+              <img
+                src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png"
+                alt="축소"
+              />
+            </span>
+          </div>
+        {/* <ZoomControl position={kakao.maps.ControlPosition.TOPRIGHT} /> */}
         {markers.map((v) => (
+          <>
           <MapMarker
             position={v.position}
             onClick={() => {
-              mapOpen()
               setInfo(v);
               setIsOpen(true);
             }}
-          >
+          />
             {isOpen && info.content === v.content && (
               <CustomOverlayMap position={v.position}>
                 <Wrap >
@@ -112,7 +139,12 @@ const TestMap2 = () => {
                             <img src={starIcon} alt="별점"></img>
                             <p>5.0</p>
                           </div>
-                          <img src={unsaveIcon} alt="저장"></img>
+                          {save ?<img onClick={()=>{
+                            setSave(false)
+                          }} src={saveIcon} alt="저장"></img>:<img onClick={()=>{
+                            setSave(true)
+                          }} src={unsaveIcon} alt="저장"></img> }
+                          
                         </div>
                       </div>
                     </div>
@@ -120,7 +152,7 @@ const TestMap2 = () => {
                 </Wrap>
               </CustomOverlayMap>
             )}
-          </MapMarker>
+            </>
         ))}
       </Map>
     </>
@@ -189,6 +221,7 @@ const Wrap = styled.div`
     img {
       width: 26px;
       height: 26px;
+      cursor: pointer;
     }
   }
 `;

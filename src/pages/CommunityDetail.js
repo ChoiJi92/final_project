@@ -35,8 +35,8 @@ const CommunityDetail = () => {
     ["detailContent", params.id],
     () =>
       instance.get(`/post/${params.id}`).then((res) => {
-        console.log(res.data.post[0]);
-        return res.data.post[0];
+        console.log(res.data.allPost[0]);
+        return res.data.allPost[0];
       }),
     {
       // retry: false, // 재호출 안하기
@@ -246,6 +246,13 @@ const CommunityDetail = () => {
         </WrapLeft>
         <WrapRight>
           <div className="otherContent">관련글</div>
+          <div>
+            <img></img>
+            <div>
+              <h3></h3>
+              
+            </div>
+          </div>
         </WrapRight>
       </Wrap>
       <Count>

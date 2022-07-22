@@ -9,17 +9,17 @@ import { hostShareAndMap, houseDetailMap, houseInfoMap } from "../recoil/atoms";
 import { Link, useParams } from "react-router-dom";
 import jeju1 from "../assests/css/jeju1.jpeg";
 import unsaveIcon2 from "../assests/css/unsaveIcon2.jpeg";
+import saveIcon from "../assests/css/saveIcon.png";
 
 const { kakao } = window;
 
 const Map = ({ search, MapRadius, isinfo }) => {
   const isHouseInfoMap = useRecoilValue(houseInfoMap);
   const isHouseDetailMap = useRecoilValue(hostShareAndMap);
-
+  const [save, setSave] = useState(false)
   // console.log(isHouseMap[0].mainAddress)
   const params = useParams();
   const paramsId = params.id;
-  console.log(paramsId);
 
   useEffect(() => {
     
@@ -126,13 +126,27 @@ const Map = ({ search, MapRadius, isinfo }) => {
               // 커스텀 오버레이를 지도에 표시합니다
               // customOverlay.setMap(map);
               // 마커에 클릭이벤트를 등록
-              
+             window.test = ()=> {
+              let image = document.querySelector('.saveImg')
+              console.log(image)
+              console.log(save)
+              if(save){
+                image.src=unsaveIcon2
+                setSave(false)
+                console.log(save)
+                console.log(image)
+              }else{
+              image.src=saveIcon
+              setSave(true)
+              console.log(save)
+              console.log(image)
+              }
+             }
+             console.log(save)
               kakao.maps.event.addListener(marker, "click", function () {
                 // 마커를 클릭하면 장소명이 인포윈도우에 표출
                 infowindow.setContent(
-                  
                   `
-          
                   <div class="card">
                       <div class="backimage">
                         <img class="houseImg" src=${jeju1} alt="jeju"/>
@@ -145,12 +159,11 @@ const Map = ({ search, MapRadius, isinfo }) => {
                           <span>1</span>
                           <span>2</span>
                         </div>
-                        <img onclick="test()" class="saveImg" src=${unsaveIcon2} alt="haha"/>
+                        <img onclick='test()' class="saveImg" src=${unsaveIcon2} alt="haha"/>
                       <div/>
                   </div>
                   
                   `
-                  
                 );
                 
                 infowindow.open(map, marker);

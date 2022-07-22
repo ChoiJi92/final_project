@@ -33,9 +33,9 @@ const CategorySlide = (props) => {
           ...style,
           display: "block",
           marginRight: "-20px",
-          // opacity: 1,
           width: "90px",
           height: "90px",
+          borderRadius:'50%',
           background: `url(${nextIcon})`,
           backdropFilter:'blur(10px)'
         }}
@@ -58,6 +58,7 @@ const CategorySlide = (props) => {
           width: "90px",
           height: "90px",
           background: `url(${prevIcon})`,
+          borderRadius:'50%',
           zIndex: 1,
           opacity: 1,
           backdropFilter:'blur(10px)'

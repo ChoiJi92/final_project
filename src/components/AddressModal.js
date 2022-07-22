@@ -14,7 +14,7 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 550,
+    width: 600,
     bgcolor: 'background.paper',
     borderRadius:'10px',
     boxShadow: 24,
@@ -66,7 +66,7 @@ const AddressModal = ({setAddress}) => {
                 <img className="cancel" src={cancelIcon} alt="닫기" onClick={handleClose}></img>
               </Container>
               <Middle id="transition-modal-description" sx={{ mt: 2 }} component="div">
-              <DaumPostCode style={{height:'90%'}} onComplete={handleComplete} className="post-code" />
+              <DaumPostCode style={{height:'80%'}} onComplete={handleComplete} className="post-code" />
               </Middle>
             </Box>
           </Fade>

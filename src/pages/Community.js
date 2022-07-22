@@ -399,6 +399,7 @@ const Middle = styled.div`
     /* align-items: center; */
     cursor: pointer;
     :hover {
+      transition: .6s ease-out;
       border-bottom: 3px solid #9090a0;
     }
     img {
