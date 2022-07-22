@@ -4,7 +4,7 @@ import naverLogo from '../assests/css/네이버로고.png'
 const Naver = () => {
     const clientId = process.env.REACT_APP_NAVER_CLIENT_ID
     // const REDIRECT_URI = "http://localhost:3000/oauth/naver/callback";
-    const REDIRECT_URI = `${process.env.REACT_APP_BASE_URL}/oauth/naver/callback`;
+    const REDIRECT_URI = "https://mendorong-jeju.co.kr/oauth/naver/callback";
     const NAVER_AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&state=test&redirect_uri=${REDIRECT_URI}`
   return (
     <Button onClick={()=>{
