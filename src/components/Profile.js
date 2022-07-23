@@ -19,8 +19,9 @@ const Main = styled.div`
     display: flex;
     align-items: center;
     margin: 15px 10px 0px 20px;
+    width: 100%;
     img{
-        width: 16.45%;
+        width: 22.7%;
         height: 70px;
         border-radius: 50%;
     }

@@ -10,6 +10,8 @@ import jeju11 from "../assests/css/제주5.jpg";
 import jeju12 from "../assests/css/제주6.jpeg";
 import jeju13 from "../assests/css/제주8.jpeg";
 import jeju14 from "../assests/css/제주9.jpeg";
+import editIcon from "../assests/css/editIcon.png";
+import deleteIcon from "../assests/css/deleteIcon.png";
 import shareIcon2 from "../assests/css/shareIcon2.png";
 import unsaveIcon2 from "../assests/css/unsaveIcon2.jpeg";
 import scrap from "../assests/css/scrap.png";
@@ -28,19 +30,31 @@ import { hostShareAndMap } from "../recoil/atoms";
 import Share2 from "../components/Share2";
 import HouseReviewModal from "../components/HouseReviewModal";
 import Profile from "../components/Profile";
+import ReviewDetailModal from "../components/ReviewDetailModal";
 
 const HouseDetail = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [moreReview, setMoreReview] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-  
+  const [reviewModalOpen, setReviewModalOpen] = useState(false);
+
+
   const openModal = () => {
     setModalOpen(true);
-  }
+  };
 
   const closeModal = () => {
     setModalOpen(false);
+  };
+
+  const openModalReview = () => {
+    setReviewModalOpen(true);
+  };
+
+  const closeModalReview = () => {
+    setReviewModalOpen(false);
   }
+
   // const { isLoading, data } = useQuery(
   //   "house",
   //   () => {
@@ -104,8 +118,17 @@ const HouseDetail = () => {
     setMoreReview((prev) => !prev);
   };
 
+  const deleteClick = () => {
+    alert("후기 삭제!")
+  }
+
   const reviewText =
     "숙소도 깨끗하고 침구류가 편해서 푹 잘 잤어요! :) 호스트 분도 너무 친절하시고, 정성스레 준비해주신 조식도 맛있어요.dkdkddkdkdkasasdadsadsads";
+
+  // console.log(reviewText.length);
+  const a =
+    "숙소도 깨끗하고 침구류가 편해서 푹 잘 잤어요! :) 호스트 분도 너무 친절하시고, 정성스레...";
+  // console.log(a.slice(0, 30) + "...");
   return (
     <Wrap>
       <div id="detailMainBox">
@@ -226,7 +249,16 @@ const HouseDetail = () => {
                 </span>
               </div>
               <div>
-                <span onClick={openModal} style={{ fontSize: "32px", textDecoration: "underline", "cursor":"pointer" }}>나도 후기 남기기</span>
+                <span
+                  onClick={openModal}
+                  style={{
+                    fontSize: "32px",
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                  }}
+                >
+                  나도 후기 남기기
+                </span>
                 <HouseReviewModal open={modalOpen} close={closeModal} />
               </div>
             </ReviewMainBox>
@@ -236,13 +268,20 @@ const HouseDetail = () => {
                 // 후기 디테일 페이지 클릭해서 모달창 데이타 보여줄 예정
                 <ReviewBox>
                   {/* 프로필 부분에서 재사용 하기 위해 일단 컴포넌트로 나눔 */}
-                  <Profile />
-                  <div id="reviewDetail">
-                    {/* {reviewText.length >=30 ? (reviewText.slice(0,33),+"..."):(reviewText)}
-                  {reviewText.slice(0,33)} */}
-                    숙소도 깨끗하고 침구류가 편해서 푹 잘 잤어요! :) 호스트 분도
-                    너무 친절하시고, 정성스레...
+                  <div id="profileBox">
+                    <Profile />
+                    <div id="iconBox">
+                      <img onClick={openModal} src={editIcon} alt="수정" />
+                      <img onClick={deleteClick} src={deleteIcon} alt="삭제" />
+                    </div>
                   </div>
+                  <div onClick={openModalReview} id="reviewDetail">
+                    {reviewText.length >= 45
+                      ? `${reviewText.slice(0, 45)} ...`
+                      : reviewText}
+                  </div>
+                  {/* 리뷰 디테일 모달에서 props 데이터 넘겨줘서 보여줄 예정 */}
+                  <ReviewDetailModal review={reviewText} open={reviewModalOpen} close={closeModalReview} />
                   {/* 후기 디테일 부분에서 글자수길면 slice해서 ... 보여질 예정 */}
                 </ReviewBox>
               ))}
@@ -252,10 +291,17 @@ const HouseDetail = () => {
                     // 후기 디테일 페이지 클릭해서 모달창 데이타 보여줄 예정
                     <ReviewBox>
                       {/* 프로필 부분에서 재사용 하기 위해 일단 컴포넌트로 나눔 */}
-                      <Profile />
-                      <div id="reviewDetail">
-                        숙소도 깨끗하고 침구류가 편해서 푹 잘 잤어요! :) 호스트
-                        분도 너무 친절하시고, 정성스레...
+                      <div id="profileBox">
+                        <Profile />
+                        <div id="iconBox">
+                          {/* <img src={editIcon} alt="수정" />
+                          <img src={deleteIcon} alt="삭제" /> */}
+                        </div>
+                      </div>
+                      <div onClick={openModalReview} id="reviewDetail">
+                        {reviewText.length >= 45
+                          ? `${reviewText.slice(0, 45)} ...`
+                          : reviewText}
                       </div>
                       {/* 후기 디테일 부분에서 글자수 slice해서 ... 보여질 예정 */}
                     </ReviewBox>
@@ -266,7 +312,9 @@ const HouseDetail = () => {
               )}
               {reviewList.length >= 5 ? (
                 <MoreReview moreReview={moreReview} onClick={reviewClick}>
-                  후기 {reviewList.length - 4}개 더보기
+                  {moreReview
+                    ? `후기 ${reviewList.length - 4}개 접기`
+                    : `후기 ${reviewList.length - 4}개 더보기`}
                 </MoreReview>
               ) : (
                 ""
@@ -469,13 +517,33 @@ const ReviewBox = styled.div`
     font-size: 21px;
     line-height: 150%;
     width: 100%;
+    cursor: pointer;
+    :hover{
+      color: #3498db;
+    }
   }
-
   background: #f2f2f7;
   border-radius: 20px;
+  #profileBox {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+  #iconBox {
+    width: 25%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 10px;
+    img{
+     width: 32px;
+     height: 32px;
+     cursor: pointer;
+    }
+  }
 `;
 const MoreReview = styled.div`
-  width: 28%;
+  width: 100%;
   height: 50px;
   border: 1px solid;
   display: flex;
@@ -489,7 +557,8 @@ const MoreReview = styled.div`
   opacity: 0.5;
   margin: 40px 0px 10px 0px;
   border-radius: 10px;
-  display: ${(props) => (props.moreReview ? "none" : "")};
+  cursor: pointer;
+  /* display: ${(props) => (props.moreReview ? "none" : "")}; */
 `;
 
 const RightBarBox = styled.div`
@@ -506,7 +575,6 @@ const RightBarBox = styled.div`
     border-radius: 20px;
     box-shadow: 0px 12px 42px rgba(0, 0, 0, 0.2);
     padding: 20px;
-
   }
   #barTitle {
     width: 100%;
@@ -526,12 +594,10 @@ const RightBarBox = styled.div`
   #barDes {
     width: 100%;
     height: 350px;
-
   }
   #btnBox {
     width: 100%;
     height: 150px;
-
   }
 `;
 

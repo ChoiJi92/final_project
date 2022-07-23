@@ -96,11 +96,14 @@ const HouseReviewModal = (props) => {
               <ReviewForm onSubmit={handleSubmit(reviewSubmit)}>
               
                 <textarea
+                //defailtValue 수정할 때 값 불러와야 함
+                defaultValue={""}
                 placeholder="내용을 입력해주세요."
                 {...register("review", {
                   required: "내용을 입력해주세요 :)",
                 })}
                 />
+                {/* 버튼에서 등록 수정버튼 만들어야 함 */}
                 <Btn>등록</Btn>
               </ReviewForm>
             </Main>
