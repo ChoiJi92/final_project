@@ -33,6 +33,14 @@ const HouseDetail = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [moreReview, setMoreReview] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  
+  const openModal = () => {
+    setModalOpen(true);
+  }
+
+  const closeModal = () => {
+    setModalOpen(false);
+  }
   // const { isLoading, data } = useQuery(
   //   "house",
   //   () => {
@@ -218,10 +226,8 @@ const HouseDetail = () => {
                 </span>
               </div>
               <div>
-                <span style={{ fontSize: "32px", textDecoration: "underline" }}>
-                  <HouseReviewModal />
-                  나도 후기 남기기
-                </span>
+                <span onClick={openModal} style={{ fontSize: "32px", textDecoration: "underline", "cursor":"pointer" }}>나도 후기 남기기</span>
+                <HouseReviewModal open={modalOpen} close={closeModal} />
               </div>
             </ReviewMainBox>
             <ReviewListBox>

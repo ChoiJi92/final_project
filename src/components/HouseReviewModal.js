@@ -23,12 +23,14 @@ const style = {
   p: 4,
 };
 
-const HouseReviewModal = () => {
-  const [open, setOpen] = React.useState(false);
+const HouseReviewModal = (props) => {
+  // const [open, setOpen] = React.useState(false);
+
+  const {open, close} = props;
   const [score, setScore] = useState(0);
   const starRef = useRef();
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  // const handleOpen = () => setOpen(true);
+  // const handleClose = () => setOpen(false);
   const { register, handleSubmit,formState: { errors }, } = useForm({ defaultValues: {} });
 
   const reviewSubmit = (data) => {
@@ -42,14 +44,14 @@ const HouseReviewModal = () => {
   console.log(score)
   return (
     <>
-      <Button onClick={handleOpen}>
+      {/* <Button onClick={handleOpen}>
         Open modal
-      </Button>
+      </Button> */}
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         open={open}
-        onClose={handleClose}
+        onClose={close}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
@@ -60,13 +62,14 @@ const HouseReviewModal = () => {
           <Box sx={style}>
             <Main id="transition-modal-title" variant="h6" component="h2">
               <div id="mainReview">
+            
+                <h3>후기 남기기</h3>
                 <img
                   className="cancel"
                   src={cancelIcon}
                   alt="닫기"
-                  onClick={handleClose}
+                  onClick={close}
                 />
-                <h3>후기 남기기</h3>
               </div>
             </Main>
             <StarReview>별점을 남겨주세요</StarReview>
@@ -118,7 +121,8 @@ const Main = styled(Typography)`
     width: 40px;
     height: 40px;
     position: absolute;
-    left: 20px;
+    right: 20px;
+    cursor: pointer;
   }
   h3 {
     font-weight: 500;

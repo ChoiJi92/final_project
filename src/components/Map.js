@@ -130,17 +130,19 @@ const Map = ({ search, MapRadius, isinfo }) => {
               let image = document.querySelector('.saveImg')
               console.log(image)
               console.log(save)
-              if(save){
-                image.src=unsaveIcon2
-                setSave(false)
-                console.log(save)
-                console.log(image)
-              }else{
-              image.src=saveIcon
-              setSave(true)
-              console.log(save)
-              console.log(image)
-              }
+              setSave((prev)=>!prev)
+              
+              // if(save){
+              //   image.src=unsaveIcon2
+              //   setSave(false)
+              //   console.log(save)
+              //   console.log(image)
+              // }else{
+              // image.src=saveIcon
+              // setSave(true)
+              // console.log(save)
+              // console.log(image)
+              // }
              }
              console.log(save)
               kakao.maps.event.addListener(marker, "click", function () {

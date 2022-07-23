@@ -113,7 +113,7 @@ const HouseInfo = () => {
   const autoLiveClick = () => {
     liveUnderlineRef.current.style.left =
       liveFirstBox.current.offsetLeft + "px";
-    liveUnderlineRef.current.style.width =
+      liveUnderlineRef.current.style.width =
       liveFirstBox.current.offsetWidth + "px";
     setSFLeftPosition(liveFirstBox.current.offsetLeft + "px");
     setSFRigthPosition(liveFirstBox.current.offsetWidth + "px");
