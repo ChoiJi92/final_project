@@ -95,7 +95,10 @@ const MyInfoModal = (props) => {
     if(isImgUrl === ""){
       console.log(isnickChange, userImage, "위")
       console.log(nickRef.current.value)
-      updateMutation.mutate(nickRef.current.value);
+      const data = {
+        nickname:nickRef.current.value
+      }
+      updateMutation.mutate({data});
       console.log(updateMutation);
     }else{
       console.log(isnickChange, isImgUrl, "아래")
@@ -205,8 +208,8 @@ const MyImg = styled.img`
 `;
 
 const CancelImg = styled.img`
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   position: absolute;
   right: 20px;
   cursor: pointer;

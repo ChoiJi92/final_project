@@ -442,8 +442,6 @@ const DesBox = styled.div`
   width: 100%;
   height: 220px;
   margin-left: 20px;
-  h3 {
-  }
   span {
     margin-bottom: 10px;
   }
