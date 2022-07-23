@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import jeju1 from "../assests/css/jeju1.jpeg";
 import mypageImg from "../assests/css/mypageImg.webp";
 import styled from "styled-components";
@@ -11,24 +11,110 @@ import {
 } from "react-icons/fa";
 import HostRegistModal from "../components/HostRegistModal";
 import { useNavigate } from "react-router-dom";
+import MyInfoModal from "../components/MyInfoModal";
 
 const Mypage = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+
   const [myLike, setMyLike] = useState(true);
   const [myWrite, setMyWrite] = useState(true);
+  const [mySave, setMySave] = useState(true);
+  const [myHouse, setMyHouse] = useState(true);
+  // true
+  const myLikeList = [1, 2];
+
+  // false
+  const mySaveList = [];
+
+  const myWriteList = [1, 2];
+  const myHoseList = [];
+
+  //topbox는 첫 렌더링 될 때 myLikeList를 보여줌
+  const [topBox, setTopBox] = useState(true);
+
+  //bottomBox는 첫 렌더링 될 때 myWriteList를 보여줌
+  const [bottomBox, setBottomBox] = useState(true);
+
+  console.log(topBox, "위에 박스");
+  console.log(bottomBox, "아래 박스");
+
+  const bottomWrite = useRef(null);
+  const bottomHouse = useRef(null);
+  const topLike = useRef(null);
+  const topSave = useRef(null);
+
   const navigate = useNavigate();
   const nickName = localStorage.getItem("nickName");
   const userImage = localStorage.getItem("userImage");
   const email = localStorage.getItem("email");
   const host = localStorage.getItem("host");
-  const list = [1];
+
+  useEffect(() => {
+    autoBottomClick();
+    autoTopClick();
+  }, []);
+
+  const openModal = () => {
+    setModalOpen(true);
+  }
+
+  const closeModal = () => {
+    setModalOpen(false);
+  }
 
   const likeClick = () => {
     setMyLike((prev) => !prev);
   };
+  const saveClick = () => {
+    setMySave((prev) => !prev);
+  };
+
   const writeClick = () => {
     setMyWrite((prev) => !prev);
   };
-  console.log(list.length);
+
+  const houseClick = () => {
+    setMyHouse((prev) => !prev);
+  };
+
+  // console.log(list.length);
+  const autoTopClick = (e) => {
+    topSave.current.style.opacity = 0.4;
+  };
+
+  const myLikeInfoClick = () => {
+    topSave.current.style.opacity = 0.4;
+    topLike.current.style.opacity = "";
+    setTopBox(true);
+  };
+
+  const mySaveInfoClick = () => {
+    topSave.current.style.opacity = "";
+    topLike.current.style.opacity = 0.4;
+    setTopBox(false);
+  };
+
+  const autoBottomClick = (e) => {
+    // bottomRef.current.style.left = bottomWrite.current.offsetLeft + "px";
+    // bottomRef.current.style.width = bottomWrite.current.offsetWidth + "px";
+    bottomHouse.current.style.opacity = 0.4;
+  };
+
+  const myWriteInfoClick = (e) => {
+    // bottomRef.current.style.left = e.currentTarget.offsetLeft + "px";
+    // bottomRef.current.style.width = e.currentTarget.offsetWidth + "px";
+    bottomWrite.current.style.opacity = "";
+    bottomHouse.current.style.opacity = 0.4;
+    setBottomBox(true);
+  };
+
+  const myHouseInfoClick = (e) => {
+    // bottomRef.current.style.left = e.currentTarget.offsetLeft + "px";
+    // bottomRef.current.style.width = e.currentTarget.offsetWidth + "px";
+    bottomWrite.current.style.opacity = 0.4;
+    bottomHouse.current.style.opacity = "";
+    setBottomBox(false);
+  };
 
   return (
     <MainBox>
@@ -41,7 +127,8 @@ const Mypage = () => {
           </div>
         </div>
         <div id="btn">
-          <button>개인 정보 수정</button>
+          <button onClick={openModal}>개인 정보 수정</button>
+          <MyInfoModal open={modalOpen} close={closeModal}/>
           {/* {host && <button>호스트 되기</button> } */}
           {host === "true" ? (
             <button
@@ -60,110 +147,257 @@ const Mypage = () => {
       <MyDefaultBoxTop>
         <div id="mylike">
           <div id="myInfo">
-            <h1>내 좋아요</h1>
-            <h1>저장함</h1>
+            <h1 ref={topLike} onClick={myLikeInfoClick}>
+              내 좋아요
+            </h1>
+            <h1 ref={topSave} onClick={mySaveInfoClick}>
+              저장함
+            </h1>
           </div>
-
-          <span>
-            {myLike ? (
-              <DownIcon onClick={likeClick} />
-            ) : (
-              <UpIcon onClick={likeClick} />
-            )}
-          </span>
+          {topBox ? (
+            <span>
+              {myLikeList.length === 0 ? (
+                ""
+              ) : (
+                <>
+                  {myLike ? (
+                    <DownIcon onClick={likeClick} />
+                  ) : (
+                    <UpIcon onClick={likeClick} />
+                  )}
+                </>
+              )}
+            </span>
+          ) : (
+            <span>
+              {mySaveList.length === 0 ? (
+                ""
+              ) : (
+                <>
+                  {mySave ? (
+                    <DownIcon onClick={saveClick} />
+                  ) : (
+                    <UpIcon onClick={saveClick} />
+                  )}
+                </>
+              )}
+            </span>
+          )}
         </div>
-        {myLike ? (
+        {topBox ? (
           <>
-            {list.length === 0 ? (
-              <EmptyImgBox>
-                <img src={mypageImg} alt="없어요 이미지" />
-                <span>아직 좋아요 한 글이 없어요.</span>
-              </EmptyImgBox>
+            {myLike ? (
+              <>
+                {myLikeList.length === 0 ? (
+                  <EmptyImgBox>
+                    <img src={mypageImg} alt="없어요 이미지" />
+                    <span>아직 좋아요 한 글이 없어요.</span>
+                  </EmptyImgBox>
+                ) : (
+                  <DefaultImgBox>
+                    {myLikeList.slice(0, 3).map((item, idx) => (
+                      <img style={{}} src={jeju1} />
+                    ))}
+                  </DefaultImgBox>
+                )}
+              </>
             ) : (
-              <DefaultImgBox>
-                
-                {list.slice(0, 3).map((item, idx) => (
-                  <img style={{}} src={jeju1} />
-                ))}
-                
-              </DefaultImgBox>
+              ""
+            )}
+            {myLike ? (
+              ""
+            ) : (
+              <HiddenMyLikeBox>
+                {myLikeList.map((item, idx) => {
+                  return (
+                    <div key={idx} id="listBox">
+                      <img src={jeju1} />
+                      <span style={{ marginTop: "5px" }}>해변가 근처 숙소</span>
+                      <div id="icons">
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          <StarIcon />
+                          <span style={{ marginLeft: "10px" }}>4.5</span>
+                        </div>
+                        <HeartIcon />
+                      </div>
+                    </div>
+                  );
+                })}
+              </HiddenMyLikeBox>
             )}
           </>
         ) : (
-          ""
-        )}
-
-        {myLike ? (
-          ""
-        ) : (
-          <HiddenMyLikeBox>
-            {list.map((item, idx) => {
-              return (
-                <div key={idx} id="listBox">
-                  <img src={jeju1} />
-                  <span style={{ marginTop: "5px" }}>해변가 근처 숙소</span>
-                  <div id="icons">
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <StarIcon />
-                      <span style={{ marginLeft: "10px" }}>4.5</span>
+          // 마이 세이브 박스 렌더링
+          <>
+            {mySave ? (
+              <>
+                {mySaveList.length === 0 ? (
+                  <EmptyImgBox>
+                    <img src={mypageImg} alt="없어요 이미지" />
+                    <span>아직 저장한 숙소가 없어요.</span>
+                  </EmptyImgBox>
+                ) : (
+                  <DefaultImgBox>
+                    {mySaveList.slice(0, 3).map((item, idx) => (
+                      <img style={{}} src={jeju1} />
+                    ))}
+                  </DefaultImgBox>
+                )}
+              </>
+            ) : (
+              ""
+            )}
+            {mySave ? (
+              ""
+            ) : (
+              <HiddenMyLikeBox>
+                {mySaveList.map((item, idx) => {
+                  return (
+                    <div key={idx} id="listBox">
+                      <img src={jeju1} />
+                      <span style={{ marginTop: "5px" }}>해변가 근처 숙소</span>
+                      <div id="icons">
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          <StarIcon />
+                          <span style={{ marginLeft: "10px" }}>4.5</span>
+                        </div>
+                        <HeartIcon />
+                      </div>
                     </div>
-                    <HeartIcon />
-                  </div>
-                </div>
-              );
-            })}
-          </HiddenMyLikeBox>
+                  );
+                })}
+              </HiddenMyLikeBox>
+            )}
+          </>
         )}
-        
       </MyDefaultBoxTop>
-      
+
       <MyDefaultBoxBottom>
         <div id="myWrite">
           <div id="myInfo">
-            <h1>내가 쓴 글</h1>
-            <h1>내 숙소</h1>
+            <h1 ref={bottomWrite} onClick={myWriteInfoClick}>
+              내가 쓴 글
+            </h1>
+            <h1 ref={bottomHouse} onClick={myHouseInfoClick}>
+              내 숙소
+            </h1>
+            {/* <BottomUnderbar ref={bottomRef} /> */}
           </div>
-          쓴 글 3개 이상일 시 아이콘 보이게 해야함
-          <span>
-            {list.length >= 4 ? (
-              <>
-              {myWrite ? (
-              <DownIcon onClick={writeClick} />
-            ) : (
-              <UpIcon onClick={writeClick} />
-            )}</>
-            ) : ("")}
-            
-          </span>
+          {bottomBox ? (
+            <span>
+              {myWriteList.length === 0 ? (
+                ""
+              ) : (
+                <>
+                  {myWrite ? (
+                    <DownIcon onClick={writeClick} />
+                  ) : (
+                    <UpIcon onClick={writeClick} />
+                  )}
+                </>
+              )}
+            </span>
+          ) : (
+            <span>
+              {myHoseList.length === 0 ? (
+                ""
+              ) : (
+                <>
+                  {myHouse ? (
+                    <DownIcon onClick={houseClick} />
+                  ) : (
+                    <UpIcon onClick={houseClick} />
+                  )}
+                </>
+              )}
+            </span>
+          )}
         </div>
-        {myWrite ? (
-          <DefaultImgBox>
-            <img src={jeju1} />
-            
-          </DefaultImgBox>
-        ) : (
-          ""
-        )}
-        {myWrite ? (
-          ""
-        ) : (
-          <HiddenMyLikeBox>
-            {list.map((item, idx) => {
-              return (
-                <div key={idx} id="listBox">
-                  <img src={jeju1} />
-                  <span style={{ marginTop: "5px" }}>내가 쓴 글 제목</span>
-                  <div id="icons">
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <CommentIcon />
-                      <span style={{ marginLeft: "10px" }}>00개</span>
+        {bottomBox ? (
+          <>
+            {myWrite ? (
+              <>
+                {myWriteList.length === 0 ? (
+                  <EmptyImgBox>
+                    <img src={mypageImg} alt="없어요 이미지" />
+                    <span>아직 내가 쓴 글이 없어요.</span>
+                  </EmptyImgBox>
+                ) : (
+                  <DefaultImgBox>
+                    {myWriteList.slice(0, 3).map((item, idx) => (
+                      <img style={{}} src={jeju1} />
+                    ))}
+                  </DefaultImgBox>
+                )}
+              </>
+            ) : (
+              ""
+            )}
+            {myWrite ? (
+              ""
+            ) : (
+              <HiddenMyLikeBox>
+                {myWriteList.map((item, idx) => {
+                  return (
+                    <div key={idx} id="listBox">
+                      <img src={jeju1} />
+                      <span style={{ marginTop: "5px" }}>내가 쓴 글 제목</span>
+                      <div id="icons">
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          <CommentIcon />
+                          <span style={{ marginLeft: "10px" }}>00개</span>
+                        </div>
+                        <HeartIcon />
+                      </div>
                     </div>
-                    <HeartIcon />
-                  </div>
-                </div>
-              );
-            })}
-          </HiddenMyLikeBox>
+                  );
+                })}
+              </HiddenMyLikeBox>
+            )}
+          </>
+        ) : (
+          // 마이 하우스 박스 렌더링
+          <>
+            {myHouse ? (
+              <>
+                {myHoseList.length === 0 ? (
+                  <EmptyImgBox>
+                    <img src={mypageImg} alt="없어요 이미지" />
+                    <span>아직 내 숙소가 없어요.</span>
+                  </EmptyImgBox>
+                ) : (
+                  <DefaultImgBox>
+                    {myHoseList.slice(0, 3).map((item, idx) => (
+                      <img style={{}} src={jeju1} />
+                    ))}
+                  </DefaultImgBox>
+                )}
+              </>
+            ) : (
+              ""
+            )}
+            {myHouse ? (
+              ""
+            ) : (
+              <HiddenMyLikeBox>
+                {myHoseList.map((item, idx) => {
+                  return (
+                    <div key={idx} id="listBox">
+                      <img src={jeju1} />
+                      <span style={{ marginTop: "5px" }}>해변가 근처 숙소</span>
+                      <div id="icons">
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          <StarIcon />
+                          <span style={{ marginLeft: "10px" }}>4.5</span>
+                        </div>
+                        <HeartIcon />
+                      </div>
+                    </div>
+                  );
+                })}
+              </HiddenMyLikeBox>
+            )}
+          </>
         )}
       </MyDefaultBoxBottom>
     </MainBox>
@@ -178,7 +412,7 @@ const MainBox = styled.div`
   flex-direction: column;
   justify-content: center;
   /* align-items: center; */
-  border: 1px solid black;
+
   margin: 0 auto;
 `;
 
@@ -236,14 +470,12 @@ const MyDefaultBoxTop = styled.div`
   /* margin-top: 100px; */
   margin-top: 74px;
   /* border: 1px solid red; */
-  border: 1px solid red;
   /* display: flex; */
   /* flex-direction: column; */
   #mylike {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: 1px solid blue;
   }
   #myWrite {
     display: flex;
@@ -256,7 +488,7 @@ const MyDefaultBoxTop = styled.div`
   h1 {
     margin-left: 35px;
     margin-bottom: 10px;
-    border: 1px solid red;
+    cursor: pointer;
   }
   #myInfo {
     display: flex;
@@ -270,7 +502,7 @@ const DefaultImgBox = styled.div`
   /* min-width: 35%; */
   /* min-width: 30%; */
   /* width: auto; */
-  position: absolute;
+  /* position: absolute; */
   /* max-width: 100%; */
   /* width : calc(33.3%*${(props) => props.props}); */
   height: 270px;
@@ -295,7 +527,6 @@ const DefaultImgBox = styled.div`
     display: flex;
     max-width: 100%;
     min-width: 30%;
-    border: 1px solid red;
   }
 `;
 const HiddenMyLikeBox = styled.div`
@@ -351,20 +582,18 @@ const EmptyImgBox = styled.div`
   background-color: #f2f2f7;
 `;
 
-
 const MyDefaultBoxBottom = styled.div`
-   /* width: 45%; */
-  /* margin-top: 100px; */
+  /* width: 45%; */
+  margin-top: 20px;
   /* margin-top: 300px; */
   /* border: 1px solid red; */
-  border: 1px solid red;
+
   /* display: flex; */
   /* flex-direction: column; */
   #mylike {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: 1px solid blue;
   }
   #myWrite {
     display: flex;
@@ -377,13 +606,18 @@ const MyDefaultBoxBottom = styled.div`
   h1 {
     margin-left: 35px;
     margin-bottom: 10px;
-    border: 1px solid red;
+    cursor: pointer;
+    /* opacity: 0.4; */
+    /* border: 1px solid red; */
   }
   #myInfo {
     display: flex;
     flex-wrap: nowrap;
   }
-`
-
+  #bottomUnderbar {
+    border: 1px solid green;
+    width: auto;
+  }
+`;
 
 export default Mypage;
