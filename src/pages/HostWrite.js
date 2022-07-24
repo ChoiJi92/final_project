@@ -14,6 +14,7 @@ import TagList from "../components/TagList";
 import { useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import axios from "axios";
+import instance from "../shared/axios";
 
 const HostWrite = () => {
   const params = useParams();
@@ -58,6 +59,8 @@ const HostWrite = () => {
     },
   });
   const [multiImgs, setMultiImgs] = useState([]);
+  const [imgFileList, setImgFileList] = useState([]);
+
   const [tagList, setTagList] = useState([]);
   const [addressError, setAddressError] = useState(false);
   const [address, setAddress] = useState("");
@@ -69,16 +72,21 @@ const HostWrite = () => {
 
   const onImgChange = (e) => {
     const imgLists = e.target.files;
-
+    console.log(imgLists, "이거 타겟");
     let imgUrlLists = [...multiImgs];
+    let testList = [];
     for (let i = 0; i < imgLists.length; i++) {
       const currentImageUrl = URL.createObjectURL(imgLists[i]);
+      
+      testList.push(imgLists[i]);
+  
       imgUrlLists.push(currentImageUrl);
     }
     if (imgUrlLists.length > 8) {
       imgUrlLists = imgUrlLists.slice(0, 8);
     }
     setMultiImgs(imgUrlLists);
+    setImgFileList(testList);
   };
   const imgClick = () => {
     currentImg.current.click();
@@ -89,18 +97,24 @@ const HostWrite = () => {
 
   const queryClient = useQueryClient();
 
-  const testWrite = async (hostData) => {
-    const { data } = await axios
-      .post("http://localhost:5001/testList/", hostData)
-      .then((res) => console.log(res));
-    return data;
-  };
+  // const testWrite =  useMutation() => {
+  //   const { data } = instance.post("/host", hostData)
+  //     .then((res) => console.log(res));
+  //   return data;
+  // };
+  const testWrite = useMutation((data)=>{
+    instance.post(`/host`, data).then((res)=>{
+        console.log(res.data)
+        // setIshost(res.data.result)
+        // localStorage.setItem('host',res.data.result)
+  }).catch((err)=>{console.log(err,"why")})   
+  })
 
-  const postMutate = useMutation(testWrite, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("hostWrite");
-    },
-  });
+  // const postMutate = useMutation(testWrite, {
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries("hostWrite");
+  //   },
+  // });
 
   const postMutation = useMutation(
     (hostData, address) => {
@@ -135,32 +149,35 @@ const HostWrite = () => {
       console.log("hi");
       updateMutation.mutate(data);
     } else {
-      // const formData = new FormData();
-      // formData.append("category",data.category)
-      // formData.append("houseInfo",data.houseInfo)
-      // formData.append("link",data.link)
-      // formData.append("mainAddress",data.address)
-      // formData.append("subAddress",data.subAddress)
-      // formData.append("postContent",data.postContent)
-      // formData.append("stepInfo",data.stepInfo)
-      // formData.append("stepSelect",data.stepSelect)
-      // formData.append("title",data.title)
+      const formData = new FormData();
+      formData.append("category",data.category)
+      formData.append("houseInfo",data.houseInfo)
+      formData.append("link",data.link)
+      formData.append("mainAddress",address)
+      formData.append("subAddress",data.subAddress)
+      formData.append("postContent",data.postContent)
+      formData.append("stepInfo",data.stepInfo)
+      formData.append("stepSelect",data.stepSelect)
+      formData.append("title",data.title)
+      testWrite.mutate(formData);
+      // imgFileList.forEach((item)=> formData.append("images", item))
       // formData.append("images",multiImgs)
     //   {
     //   "title": "간장남들",
     //   "category": "내륙",
     //   "houseInfo": "아파트",
-    //   "fullAddress":"제주 서귀포시 안덕면 사계북로41번길 30",
     //   "mainAddress":"",
     //   "subAddress":"",
     //   "stepSelect": "아니오",
     //   "stepInfo":"",
     //   "link": "",
     //   "postContent": "ㅋㅋㅋㅋㅋ",
+    //   "tagList": [],
     // }
-      console.log("hello", data);
-      postMutation.mutate(data, address);
+      // console.log("hello", data);
+      // postMutation.mutate(data, address);
       setOpen(true);
+      
     }
     // else{
     //   console.log(tag)
@@ -172,7 +189,7 @@ const HostWrite = () => {
   };
 
   const hiddenSetp = watch("stepSelect");
-  // console.log(data)
+  console.log(imgFileList);
   return (
     <Wrap>
       <HostForm onSubmit={handleSubmit(onSubmit)}>

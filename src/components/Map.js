@@ -20,7 +20,7 @@ const Map = ({ search, MapRadius, isinfo }) => {
   // console.log(isHouseMap[0].mainAddress)
   const params = useParams();
   const paramsId = params.id;
-
+  console.log(save)
   useEffect(() => {
     
     let infowindow = new kakao.maps.InfoWindow({
