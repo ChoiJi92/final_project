@@ -24,10 +24,12 @@ import UserPolicy from './pages/UserPolicy';
 import TestMap from './pages/TestMap';
 import TestMap2 from './components/TestMap2';
 import Error from './pages/Error';
+import TestPage from './pages/TestPage';
+import LoginError from './pages/LoginError';
 
 
 function App() {
- 
+ const userId = localStorage.getItem('userId')
   return (
     <div className="App">
       <GlobalStyles />
@@ -37,17 +39,18 @@ function App() {
         <Route path="/posts" element={<Posts />} />
         <Route path="/community" element={<Community />} />
         <Route path="/community/:id" element={<CommunityDetail />} />
-        <Route path="/userwrite" element={<UserWrite />} />
-        <Route path="/userwrite/:id" element={<UserWrite />} />
-        <Route path="/hostwrite" element={<HostWrite/>} />
-        <Route path="/hostwrite/:id" element={<HostWrite/>} />
+        <Route path="/userwrite" element={userId ? <UserWrite /> : <LoginError/>} />
+        <Route path="/userwrite/:id" element={userId ? <UserWrite /> : <LoginError/>} />
+        <Route path="/hostwrite" element={userId ? <HostWrite/> : <LoginError/>} />
+        <Route path="/hostwrite/:id" element={userId ? <HostWrite/> : <LoginError/>} />
         <Route path="/house" element={<HouseInfo/>} />
         <Route path="/house/:id" element={<HouseDetail/>} />
         <Route path="/chat" element={<ChatList/>} />
-        <Route path="/chatroom/:id" element={<ChatRoom/>} />
-        <Route path="/mypage" element={<Mypage />} />
+        <Route path="/chatroom/:id" element={userId ? <ChatRoom/> : <LoginError/>} />
+        <Route path="/mypage" element={userId ? <Mypage /> : <LoginError/>} />
         <Route path="/test" element={<TestMap />} />
         <Route path="/testmap" element={<TestMap2 />} />
+        <Route path="/testpage" element={<TestPage />} />
 
         <Route path="/userpolicy" element={<UserPolicy />} />
         <Route path='/oauth/kakao/callback' element={<KakaoRedirect/>}/>

@@ -117,7 +117,7 @@ const CommunityDetail = () => {
     (postId) =>
       instance.delete(`/post/${postId}`).then((res) => {
         console.log(res.data);
-        navigate(-1);
+        navigate("/community");
       }),
     {
       onSuccess: () => {
@@ -144,14 +144,14 @@ const CommunityDetail = () => {
               <h1>{data.title}</h1>
               <User>
                 <div className="profileImage">
-                  <img src={data.userImage} alt="프로필"></img>
+                  <img src={data.images[0].userImageURL} alt="프로필"></img>
                   <div className="profile">
                     <div className="nickname">{data.nickname}</div>
                     <div className="time">2시간 전</div>
                   </div>
                 </div>
                 <Button>
-                  {userId === data.userId ? (
+                  {userId !== data.userId ? (
                     <>
                       <Share data={data}></Share>
                       {data.islike ? (
@@ -199,7 +199,7 @@ const CommunityDetail = () => {
                       <button
                         onClick={() => {
                           deleteContent.mutate(data.postId);
-                          navigate("/community");
+                          
                         }}
                       >
                         삭제

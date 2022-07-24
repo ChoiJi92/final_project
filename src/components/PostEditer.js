@@ -17,8 +17,8 @@ const PostEditer = ({setContent,setImageKey,content}) => {
   // const [,setContent] = useRecoilState(contentState)
     const editorRef = useRef();
     const onChange = ()=>{
-        // setContent(editorRef.current?.getInstance().getHTML())
-        setContent(editorRef.current?.getInstance().getMarkdown())
+        setContent(editorRef.current?.getInstance().getHTML())
+        // setContent(editorRef.current?.getInstance().getMarkdown())
         // console.log(editorRef.current?.getInstance().getHTML())
     }
       // Toast-UI Editor 에 HTML 표시
@@ -27,8 +27,8 @@ const PostEditer = ({setContent,setImageKey,content}) => {
     const htmlString = content;
 
     // 2. Editor DOM 내용에 HTML 주입
-    // editorRef.current?.getInstance().setHTML(htmlString);
-    editorRef.current?.getInstance().setMarkdown(htmlString);
+    editorRef.current?.getInstance().setHTML(htmlString);
+    // editorRef.current?.getInstance().setMarkdown(htmlString);
     // editorRef.current?.getInstance().setHTML(data[2]?.content);
   }, []);
   return (

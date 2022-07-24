@@ -11,3 +11,39 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+@font-face {
+  font-family: 'Noto Sans KR';
+  font-style: normal;
+  font-weight: 100;
+  src: url("assests/fonts/NotoSansKR-Light.woff2") format('woff2'),
+  url("assests/fonts/NotoSansKR-Light.woff") format('woff'),
+  url("assests/fonts/NotoSansKR-Light.otf") format('opentype')
+}
+
+@font-face {
+  font-family: 'Noto Sans KR';
+  font-style: normal;
+  font-weight: normal;
+  src: url("assests/fonts/NotoSansKR-Regular.woff2") format('woff2'),
+  url("assests/fonts/NotoSansKR-Regular.woff") format('woff'),
+  url("assests/fonts/NotoSansKR-Regular.otf") format('opentype')
+}
+
+
+@font-face {
+  font-family: 'Noto Sans KR';
+  font-style: normal;
+  font-weight: 500;
+  src: url("assests/fonts/NotoSansKR-Medium.woff2") format('woff2'),
+  url("assests/fonts/NotoSansKR-Medium.woff") format('woff'),
+  url("assests/fonts/NotoSansKR-Medium.otf") format('opentype')
+}
+
+@font-face {
+  font-family: 'Noto Sans KR';
+  font-style: normal;
+  font-weight: bold;
+  src: url("assests/fonts/NotoSansKR-Bold.woff2") format('woff2'),
+  url("assests/fonts/NotoSansKR-Bold.woff") format('woff'),
+  url("assests/fonts/NotoSansKR-Bold.otf") format('opentype')
+}

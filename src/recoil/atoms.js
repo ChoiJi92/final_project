@@ -4,6 +4,22 @@ export const chatState = atom({
     key: 'chatState',
     default:[]
 })
+export const myPostList = atom({
+  key: 'myPostList',
+  default:[]
+})
+export const myLikeList = atom({
+  key: 'myLikeList',
+  default:[]
+})
+export const mySaveList = atom({
+  key: 'mySaveList',
+  default:[]
+})
+export const myHostList = atom({
+  key: 'myHostList',
+  default:[]
+})
 export const contentState = atom({
   key: 'contentState',
   default:''
