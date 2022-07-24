@@ -54,6 +54,8 @@ const ReviewDetailModal = (props) => {
                 />
                 </div>
             </Main>
+            <Main id="transition-modal-title" variant="h6" component="h2">
+            </Main>
           </Box>
         </Fade>
       </Modal>

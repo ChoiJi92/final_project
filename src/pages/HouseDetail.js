@@ -24,7 +24,7 @@ import SlideImg from "../components/SlideImg";
 import DialogImg from "../components/DialogImg";
 import Map from "../components/Map";
 import Share from "../components/Share";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { hostShareAndMap } from "../recoil/atoms";
 import Share2 from "../components/Share2";
@@ -37,10 +37,16 @@ const HouseDetail = () => {
   const [moreReview, setMoreReview] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
-
-
+  const userId = localStorage.getItem("userId");
+  const navigate = useNavigate();
   const openModal = () => {
-    setModalOpen(true);
+    if(!userId){
+      //로그인이 필요한 페이지 입니다.
+      navigate("/")
+    }else{
+      setModalOpen(true);
+    }
+    
   };
 
   const closeModal = () => {
@@ -259,6 +265,7 @@ const HouseDetail = () => {
                 >
                   나도 후기 남기기
                 </span>
+                
                 <HouseReviewModal open={modalOpen} close={closeModal} />
               </div>
             </ReviewMainBox>
