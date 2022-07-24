@@ -12,11 +12,13 @@ import instance from "../shared/axios";
 import searchIconBlack from "../assests/css/searchIconBlack.png";
 import { Link } from "react-router-dom";
 import RoomModal from "../components/RoomModal";
+import LoginError from "./LoginError";
 
 const ChatList = () => {
   const searchRef = useRef()
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const userId = localStorage.getItem('userId')
   const { data } = useQuery(
     ["loadChatRoom"],
     () =>
@@ -109,7 +111,9 @@ const ChatList = () => {
           <Card
             key={v.roomId}
             onClick={() => {
-              joinRoom.mutate(v.roomId);
+              userId ? 
+              joinRoom.mutate(v.roomId) : <LoginError></LoginError>
+              
             }}
           >
             <h3>{v.title}</h3>

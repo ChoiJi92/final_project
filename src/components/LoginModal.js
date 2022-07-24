@@ -6,7 +6,6 @@ import Fade from "@mui/material/Fade";
 import Typography from "@mui/material/Typography";
 import styled from "styled-components";
 import cancelIcon from "../assests/css/cancelIcon.png";
-import pracImage from "../assests/css/back.jpeg";
 import mendorongLogo from "../assests/css/mendorong.webp";
 import Kakao from "./Kakao";
 import Naver from "./Naver";
@@ -30,7 +29,7 @@ const LoginModal = () => {
   const handleClose = () => setOpen(false);
   return (
     <div >
-      <div style={{marginLeft:'30px',fontSize:'23px'}} className="login" onClick={handleOpen}>로그인</div>
+      <div style={{fontSize:'23px'}} className="login" onClick={handleOpen}>로그인</div>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

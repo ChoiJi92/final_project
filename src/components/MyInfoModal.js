@@ -23,23 +23,26 @@ const style = {
   p: 4,
 };
 
-const MyInfoModal = (props) => {
-
+const MyInfoModal = () => {
   const userImage = localStorage.getItem("userImage");
   const nickName = localStorage.getItem("nickName");
   const userId = localStorage.getItem("userId");
-  const { open, close } = props;
-  
+  // const { open, close } = props;
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const currentImg = useRef(null);
-  
-  const [isImgChnage, setIsImgChange] = useState(true); 
+
+  const [isImgChnage, setIsImgChange] = useState(true);
 
   const nickRef = useRef(null);
   const [isImgUrl, setIsImgUrl] = useState("");
+  const [profile,setProfile] = useState() 
   const [isnickChange, setIsNickChange] = useState(nickName);
-  
+
   const queryClient = useQueryClient();
-  
+
   // console.log(userImage, nickName);
   //   const handleOpen = () => setOpen(true);
   //   const handleClose = () => setOpen(false);
@@ -49,71 +52,54 @@ const MyInfoModal = (props) => {
 
   const onImgChange = (e) => {
     const userImgChange = e.target.files;
+    setProfile(e.target.files[0])
     const myImgChangeURl = URL.createObjectURL(userImgChange[0]);
-    setIsImgUrl(myImgChangeURl)
+    setIsImgUrl(myImgChangeURl);
     setIsImgChange(false);
   };
-
-
-  const onNickChange = (e) => {
-    setIsNickChange(e.target.value);
-  }
-  const updateMutation = useMutation((data)=>{
-    instance.put(`/oauth/mypage/${userId}/nick`,{data}).then((res)=>{
-        console.log(res.data)
-        // setIshost(res.data.result)
-        // localStorage.setItem('host',res.data.result)
-  }).catch((err)=>{console.log(err,"why")})   
-  })
- 
-  // const hostRegister = useMutation((CNU)=>{
-  //   console.log(CNU)
-  //   instance.put('/oauth/mypage/checkCNU',{CNU}).then((res)=>{
-  //       console.log(res.data)
-  //       setIshost(res.data.result)
-  //       localStorage.setItem('host',res.data.result)
-  // }).catch((err)=>{console.log(err)})   
-  // })
-
-  // const updateMutation = useMutation(
-  //   (data) => {
-  //     return instance.put(
-  //       `oauth/mypage/${userId}/nick`,
-  //       data
-  //     ).then((res)=>{
-  //       console.log(res.data, "user changed!")
-  //     });
-  //   },
-  //   {
-  //     onSuccess: () => {
-  //       queryClient.invalidateQueries("hostWrite");
-  //     },
-  //   }
-  // );
+  const updateMutation = useMutation((formData) => {
+    instance
+      .put(
+        `/oauth/mypage/${userId}/img`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res.data);
+        localStorage.setItem('userImage',res.data.userImageURL[0])
+        handleClose()
+        window.location.reload()
+      })
+      .catch((err) => {
+        console.log(err, "why");
+      });
+  });
 
   const userInfoChangeClick = () => {
-    if(isImgUrl === ""){
-      console.log(isnickChange, userImage, "위")
-      console.log(nickRef.current.value)
-      const data = {
-        nickname:nickRef.current.value
-      }
-      updateMutation.mutate({data});
-      console.log(updateMutation);
-    }else{
-      console.log(isnickChange, isImgUrl, "아래")
-      console.log(JSON.stringify(isImgUrl))
-      updateMutation.mutate(JSON.stringify(isImgUrl))
-    }
-  }
-
+    console.log("이미지", isImgUrl);
+    const formData = new FormData();
+    formData.append("images", profile);
+    updateMutation.mutate(formData)
+  };
   return (
-    <>
+    <div>
+      <img src={userImage}
+      alt="프로필이미지"
+      style={{cursor:'pointer'}}
+        onClick={() => {
+          handleOpen();
+        }}
+      >
+      </img>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         open={open}
-        onClose={() => {close(setIsImgChange(true),setIsImgUrl(""))}}
+        onClose={handleClose}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
@@ -124,18 +110,21 @@ const MyInfoModal = (props) => {
           <Box sx={style}>
             <Main id="transition-modal-title" variant="h6" component="h2">
               <div id="profileTitle">
-                <h3>개인 정보 수정</h3>
+                <h3>프로필 이미지 수정</h3>
                 <CancelImg
                   className="cancel"
                   src={cancelIcon}
                   alt="닫기"
-                  onClick={() => {close(setIsImgChange(true),setIsImgUrl(""))}}
+                  onClick={() => {
+                    handleClose()
+                    setIsImgUrl("")
+                  }}
                 />
               </div>
             </Main>
-            <Main>
+            <Main component="div">
               <div id="imgBox">
-                {isImgChnage ? (<MyImg src={userImage}/>) : (<MyImg src={isImgUrl}/>)}
+                <MyImg src={isImgUrl ? isImgUrl : userImage}></MyImg>
                 <input
                   style={{ display: "none", outline: "none" }}
                   ref={currentImg}
@@ -144,18 +133,20 @@ const MyInfoModal = (props) => {
                   onChange={onImgChange}
                 />
                 <button onClick={imgChangeClick}>프로필 이미지 선택</button>
-              </div>
-            </Main>
-            <Main>
-              <div id="nickNameBox">
-                <input ref={nickRef} value={isnickChange ?  isnickChange : ""} onChange={onNickChange} />
-                <button onClick={userInfoChangeClick}>저장</button>
+                <button
+                className="save"
+                  onClick={() => {
+                    userInfoChangeClick();
+                  }}
+                >
+                  저장
+                </button>
               </div>
             </Main>
           </Box>
         </Fade>
       </Modal>
-    </>
+    </div>
   );
 };
 
@@ -182,13 +173,13 @@ const Main = styled(Typography)`
       cursor: pointer;
     }
   }
-  #nickNameBox{
+  #nickNameBox {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     margin-top: 30px;
-    button{
+    button {
       padding: 10px 15px;
       border: none;
       background-color: #f2f2f7;

@@ -25,7 +25,7 @@ const UserWrite = () => {
     () =>
       instance.get(`/post/${params.id}`).then((res) => {
         console.log(res.data);
-        return res.data.post[0];
+        return res.data.allPost[0];
       }),
     {
       enabled: !!params.id, // params.id가 있을때만 query실행
@@ -36,7 +36,7 @@ const UserWrite = () => {
 
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState(data?.title);
-  const [preview, setPreview] = useState(data?.thumbnailURL);
+  const [preview, setPreview] = useState(data?.images[0].thumbnailURL);
   const [thumbnail, setThumbnail] = useState();
   const [thumbnailKey, setThumbnailKey] = useState(data?.thumbnailKey);
   const [modalOpen, setModalOpen] = useState(false);
@@ -92,7 +92,9 @@ const UserWrite = () => {
             "Content-Type": "multipart/form-data",
           },
         })
-        .then((res) => console.log(res.data)),
+        .then((res) => {
+          setOpen(true);
+          console.log(res.data)}),
     {
       onSuccess: () => {
         // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
@@ -125,6 +127,7 @@ const UserWrite = () => {
     console.log(thumbnail);
     console.log(thumbnailKey);
     console.log(address);
+    console.log(tagList);
     console.log("저장");
     console.log(imageKey.filter((v) => !content.includes(v)));
     if (!thumbnail && !preview) {
@@ -163,12 +166,12 @@ const UserWrite = () => {
       if (!params.id) {
         console.log("저장");
         createPost.mutate(formData);
-        setOpen(true);
+        // setOpen(true);
       } else {
         console.log(params.id);
         console.log("여기와야대!");
         updatePost.mutate(formData);
-        setOpen(true);
+        // setOpen(true);
       }
     }
   };
