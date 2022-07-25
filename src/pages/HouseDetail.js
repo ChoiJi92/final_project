@@ -12,6 +12,12 @@ import jeju13 from "../assests/css/제주8.jpeg";
 import jeju14 from "../assests/css/제주9.jpeg";
 import editIcon from "../assests/css/editIcon.png";
 import deleteIcon from "../assests/css/deleteIcon.png";
+import inside from "../assests/css/내륙.webp";
+import 관광지근처 from "../assests/css/관광지근처.webp";
+import 해변근처 from "../assests/css/해변근처.webp";
+import 조용한마을 from "../assests/css/조용한마을.webp";
+import icecream from "../assests/css/icecream.webp";
+import sunrise from "../assests/css/sunrise.webp";
 import shareIcon2 from "../assests/css/shareIcon2.png";
 import unsaveIcon2 from "../assests/css/unsaveIcon2.jpeg";
 import scrap from "../assests/css/scrap.png";
@@ -31,6 +37,8 @@ import Share2 from "../components/Share2";
 import HouseReviewModal from "../components/HouseReviewModal";
 import Profile from "../components/Profile";
 import ReviewDetailModal from "../components/ReviewDetailModal";
+import LoginModal from "../components/LoginModal";
+import LoginError from "./LoginError";
 
 const HouseDetail = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -40,13 +48,13 @@ const HouseDetail = () => {
   const userId = localStorage.getItem("userId");
   const navigate = useNavigate();
   const openModal = () => {
-    if(!userId){
+    if (!userId) {
       //로그인이 필요한 페이지 입니다.
-      navigate("/")
-    }else{
+      // navigate("/")
+      alert("로그인이 필요합니다.");
+    } else {
       setModalOpen(true);
     }
-    
   };
 
   const closeModal = () => {
@@ -59,7 +67,7 @@ const HouseDetail = () => {
 
   const closeModalReview = () => {
     setReviewModalOpen(false);
-  }
+  };
 
   // const { isLoading, data } = useQuery(
   //   "house",
@@ -96,7 +104,7 @@ const HouseDetail = () => {
     return "loading...";
   }
 
-  console.log(data);
+  
   isHostShareAndMap(data);
   // console.log(houseMapDetail)
   // console.log(data, isLoading);
@@ -110,7 +118,7 @@ const HouseDetail = () => {
   const closeDialog = () => {
     setDialogOpen(false);
   };
-  console.log(window.location.href);
+
 
   const listImg = [jeju7, jeju8, jeju9, jeju10, jeju11, jeju12, jeju13, jeju14];
   const hashList = [0, 1, 3, 4];
@@ -125,16 +133,19 @@ const HouseDetail = () => {
   };
 
   const deleteClick = () => {
-    alert("후기 삭제!")
-  }
+    alert("후기 삭제!");
+  };
 
   const reviewText =
     "숙소도 깨끗하고 침구류가 편해서 푹 잘 잤어요! :) 호스트 분도 너무 친절하시고, 정성스레 준비해주신 조식도 맛있어요.dkdkddkdkdkasasdadsadsads";
 
   // console.log(reviewText.length);
-  const a =
-    "숙소도 깨끗하고 침구류가 편해서 푹 잘 잤어요! :) 호스트 분도 너무 친절하시고, 정성스레...";
-  // console.log(a.slice(0, 30) + "...");
+  // let testData = 관광지근처;
+  // // testData = 내륙;
+  // testData = 관광지근처;
+  // console.log(관광지근처,해변근처,조용한마을,jeju14);
+  console.log(data.category);
+  
   return (
     <Wrap>
       <div id="detailMainBox">
@@ -169,6 +180,7 @@ const HouseDetail = () => {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
+                
               }}
             >
               <div>
@@ -215,6 +227,20 @@ const HouseDetail = () => {
               </div>
             </div>
             <hr style={{ marginTop: "20px" }} />
+            <SubInfoBox>
+                <div>
+                  <img src={data.category} alt={data.category} />
+                  {data.category}
+                </div>
+                <div>
+                  {/* <img /> */}
+                  {data.houseInfo}
+                </div>
+                <div>
+                  {/* <img /> */}
+                  {data.stepSelect}
+                </div>
+            </SubInfoBox>
             <div style={{ margin: "30px 0px 30px 0px", fontSize: "18px" }}>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit.
               Pellentesque quam consequat massa sit aliquam. Dignissim nibh at
@@ -265,8 +291,7 @@ const HouseDetail = () => {
                 >
                   나도 후기 남기기
                 </span>
-                
-                <HouseReviewModal open={modalOpen} close={closeModal} />
+                <HouseReviewModal userId={userId} open={modalOpen} close={closeModal} />
               </div>
             </ReviewMainBox>
             <ReviewListBox>
@@ -288,10 +313,15 @@ const HouseDetail = () => {
                       : reviewText}
                   </div>
                   {/* 리뷰 디테일 모달에서 props 데이터 넘겨줘서 보여줄 예정 */}
-                  <ReviewDetailModal review={reviewText} open={reviewModalOpen} close={closeModalReview} />
+
                   {/* 후기 디테일 부분에서 글자수길면 slice해서 ... 보여질 예정 */}
                 </ReviewBox>
               ))}
+              <ReviewDetailModal
+                review={reviewText}
+                open={reviewModalOpen}
+                close={closeModalReview}
+              />
               {moreReview ? (
                 <>
                   {reviewList.slice(4).map((item, idx) => (
@@ -334,7 +364,9 @@ const HouseDetail = () => {
                 <h3>{data?.title}</h3>
                 <span>{data?.fullAddress}</span>
               </div>
-              <div id="barDes"></div>
+              <div id="barDes">
+
+              </div>
               <div id="btnBox">
                 <HostBtn>호스트와 대화해보기</HostBtn>
               </div>
@@ -375,20 +407,6 @@ const ImgInnerBox1 = styled.div`
     margin-top: 10px;
     border-radius: 30px;
   }
-  /* .slick-prev:before {
-    display: block;
-    opacity: 1; // 기존에 숨어있던 화살표 버튼이 보이게
-    color: black; // 버튼 색은 검은색으로
-    left: 0;
-    margin-right: -30px;
-    z-index: 3;
-  }
-  .slick-next:before {
-    display: block;
-    opacity: 1;
-    color: black;
-    margin-left: -50px;
-  } */
 `;
 
 const ImgInnerBox2 = styled.div`
@@ -425,7 +443,7 @@ const HashTagBox = styled.div`
   width: 173px;
   height: 45px;
   border-radius: 10px;
-  background-color: #f2f2f7;
+  background-color: #f7f3ef;
   margin-right: 20px;
   display: flex;
   justify-content: center;
@@ -525,11 +543,11 @@ const ReviewBox = styled.div`
     line-height: 150%;
     width: 100%;
     cursor: pointer;
-    :hover{
+    :hover {
       color: #3498db;
     }
   }
-  background: #f2f2f7;
+  background-color: #f7f3ef;
   border-radius: 20px;
   #profileBox {
     width: 100%;
@@ -542,17 +560,16 @@ const ReviewBox = styled.div`
     justify-content: space-between;
     align-items: center;
     margin-right: 10px;
-    img{
-     width: 32px;
-     height: 32px;
-     cursor: pointer;
+    img {
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
     }
   }
 `;
 const MoreReview = styled.div`
   width: 100%;
   height: 50px;
-  border: 1px solid;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -561,10 +578,11 @@ const MoreReview = styled.div`
   font-weight: 500;
   font-size: 21px;
   line-height: 25px;
-  opacity: 0.5;
   margin: 40px 0px 10px 0px;
   border-radius: 10px;
   cursor: pointer;
+  background-color: #F7F3EF;
+
   /* display: ${(props) => (props.moreReview ? "none" : "")}; */
 `;
 
@@ -612,7 +630,7 @@ const HostBtn = styled.button`
   width: 100%;
   height: 66px;
   border-radius: 10px;
-  background: #d9d9d9;
+  background: #f7f3ef;
   border: none;
   font-family: "Pretendard";
   font-style: normal;
@@ -620,6 +638,28 @@ const HostBtn = styled.button`
   font-size: 20px;
   line-height: 24px;
   cursor: pointer;
+`;
+
+const SubInfoBox = styled.div`
+  width: 100%;
+  height: 117px;
+  background: #f7f3ef;
+  border-radius: 20px;
+  margin-top: 30px;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* padding: 30px; */
+  padding: 0px 60px;
+  div{
+    width: 30%;
+    height: 50px;
+    border: 1px solid red;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 
 export default HouseDetail;

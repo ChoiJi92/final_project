@@ -128,7 +128,7 @@
   "testList": [
     {
       "title": "하우스파티한담누리",
-      "category": "내륙",
+      "category": "icecream",
       "houseInfo": "게스트용 별채",
       "mainAddress": "제주 제주시 애월읍 일주서로",
       "subAddress": "6158",
@@ -140,7 +140,7 @@
     },
     {
       "title": "간장남들",
-      "category": "내륙",
+      "category": "해변근처",
       "houseInfo": "아파트",
       "mainAddress": "제주 서귀포시 안덕면 사계북로41번길",
       "subAddress": "30",
@@ -152,7 +152,7 @@
     },
     {
       "title": "백패커스홈",
-      "category": "내륙",
+      "category": "조용한 마을",
       "houseInfo": "게스트용 별채",
       "mainAddress": "제주 서귀포시 중정로 24-7",
       "subAddress": "1층",

@@ -26,7 +26,7 @@ const style = {
 const HouseReviewModal = (props) => {
   // const [open, setOpen] = React.useState(false);
 
-  const {open, close} = props;
+  const {open, close, userId} = props;
   const [score, setScore] = useState(0);
   const starRef = useRef();
   // const handleOpen = () => setOpen(true);
@@ -41,7 +41,7 @@ const HouseReviewModal = (props) => {
   // const handleChange = () => {
   //   setScore(score)
   // }
-  console.log(score)
+  console.log(userId)
   return (
     <>
       {/* <Button onClick={handleOpen}>
@@ -77,7 +77,7 @@ const HouseReviewModal = (props) => {
             <Stack>
                 <Rating
                 
-                  style={{ fontSize: "60px" }}
+                  style={{ fontSize: "60px",color:"#2A7047" }}
                   name="half-rating"
                   // defaultValue={score}
                   precision={0.5}
@@ -171,6 +171,7 @@ const Btn = styled.button`
   border: none;
   font-size: 25px;
   cursor: pointer;
+  background-color: #f7f3ef;
 `
 
 export default HouseReviewModal;
