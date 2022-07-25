@@ -16,7 +16,12 @@ import editIcon from "../assests/css/editIcon.png";
 import { useMutation, useQuery } from "react-query";
 import instance from "../shared/axios";
 import { useRecoilState } from "recoil";
-import { myPostList,myLikeList,myHostList,mySaveList } from "../recoil/atoms";
+import {
+  myPostList,
+  myLikeList,
+  myHostList,
+  mySaveList,
+} from "../recoil/atoms";
 
 const TestPage = () => {
   const [myLike, setMyLike] = useState(true);
@@ -39,24 +44,27 @@ const TestPage = () => {
   const email = localStorage.getItem("email");
   const host = localStorage.getItem("host");
 
-  const { data } = useQuery(["loadMyPage"], () =>
-    instance
-      .get(`oauth/mypage/${userId}`)
-      .then((res) => {
-        console.log(res.data);
-        return (
-        //   setMyLikePost(res.data.mylikespost), setMyPost(res.data.mypostinfo)
-        res.data
-        );
-      })
-      .catch((err) => {
-        console.log(err);
-      }),{
-        onSuccess: (data) => {
-            setMyLikePost(data.mylikespost)
-            setMyPost(data.mypostinfo)
-        }
-      }
+  const { data } = useQuery(
+    ["loadMyPage"],
+    () =>
+      instance
+        .get(`oauth/mypage/${userId}`)
+        .then((res) => {
+          console.log(res.data);
+          return (
+            //   setMyLikePost(res.data.mylikespost), setMyPost(res.data.mypostinfo)
+            res.data
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+        }),
+    {
+      onSuccess: (data) => {
+        setMyLikePost(data.mylikespost);
+        setMyPost(data.mypostinfo);
+      },
+    }
   );
   const nickNameUpdate = useMutation((nickname) => {
     instance
@@ -79,7 +87,6 @@ const TestPage = () => {
             {isEdit ? (
               <div className="nickname">
                 <input ref={nicknameRef} defaultValue={nickName}></input>
-                {/* <img src={editIcon} alt="닉네임 변경"></img> */}
                 <div className="btn">
                   <button
                     onClick={() => {
@@ -136,7 +143,7 @@ const TestPage = () => {
               onClick={() => {
                 setMyLike(true);
               }}
-              style={{ opacity: `${myLike}? '1' : '0.4'` }}
+              style={{ opacity: myLike ? "1" : "0.4" }}
             >
               내 좋아요
             </h1>
@@ -144,7 +151,7 @@ const TestPage = () => {
               onClick={() => {
                 setMyLike(false);
               }}
-              style={{ opacity: `${!myLike}? '1' : '0.4'` }}
+              style={{ opacity: myLike ? "0.4" : "1" }}
             >
               저장함
             </h1>
@@ -287,6 +294,7 @@ const TestPage = () => {
               onClick={() => {
                 setMyWrite(true);
               }}
+              style={{ opacity: myWrite ? "1" : "0.4" }}
             >
               내가 쓴 글
             </h1>
@@ -294,6 +302,7 @@ const TestPage = () => {
               onClick={() => {
                 setMyWrite(false);
               }}
+              style={{ opacity: myWrite ? "0.4" : "1" }}
             >
               내 숙소
             </h1>
@@ -457,6 +466,7 @@ const ProfileBox = styled.div`
   }
   #profile {
     margin-bottom: 21px;
+    width: 100%;
     .nickname {
       display: flex;
       flex-direction: row;
@@ -480,10 +490,14 @@ const ProfileBox = styled.div`
         border: 1px solid #c7c7cc;
         border-radius: 10px;
         margin-right: 20px;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 150%;
       }
       .btn {
         height: 100%;
-        width: 40%;
+        width: 30%;
         button {
           border: none;
           height: 100%;
@@ -491,6 +505,10 @@ const ProfileBox = styled.div`
           background: #e5e5ea;
           border-radius: 10px;
           margin-right: 10px;
+          font-style: normal;
+          font-weight: 500;
+          font-size: 18px;
+          line-height: 150%;
           cursor: pointer;
         }
       }

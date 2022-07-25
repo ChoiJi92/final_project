@@ -345,7 +345,7 @@ const Wrap = styled.div`
 const Card = styled.div`
   border-radius: 20px;
   margin-top: 30px;
-  width: 321px;
+  width: 317px;
   height: 406px;
   display: flex;
   flex-direction: column;

@@ -41,7 +41,14 @@ const HostModal = ({ close }) => {
 
   return (
     <div>
-      <div onClick={handleOpen}>숙소 등록하기</div>
+      <div 
+       style={{
+        fontStyle: "normal",
+        fontWeight: "500",
+        fontSize: "20px",
+        lineHeight: "120%",
+      }}
+      onClick={handleOpen}>숙소 등록하기</div>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

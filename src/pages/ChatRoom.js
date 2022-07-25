@@ -11,7 +11,7 @@ import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { chatState } from "../recoil/atoms";
-
+import { useBeforeunload } from "react-beforeunload";
 const ChatRoom = () => {
   const messageRef = useRef();
   const chatBoxRef = useRef();
@@ -52,6 +52,15 @@ const ChatRoom = () => {
       refetchOnWindowFocus: false,
     }
   );
+  // const preventClose = (e) => {  e.preventDefault();  e.returnValue = "";} //Chrome에서 동작하도록; deprecated}; 
+  // useEffect(() => {  (() => {    
+  //   window.addEventListener("beforeunload", preventClose);  
+  // })();   
+  // return () => {    
+  //   window.removeEventListener("beforeunload", preventClose);  
+  // };}, []);
+
+  // useBeforeunload((event) => event.preventDefault());
 
   useEffect(() => {
     console.log("연결");
@@ -59,8 +68,6 @@ const ChatRoom = () => {
     // socketRef.current = io.connect(url);
     console.log("나는 이펙트 소켓", socket.current);
     socket.current.emit("join-room", params.id, userId);
-    console.log("소켓", socket);
-    console.log("111111", chat);
 
     return () => {
       socket.current.disconnect();
@@ -189,7 +196,7 @@ const ChatRoom = () => {
                 {chat.map((v, i) =>
                   v.user !== nickName ? (
                     i === 0 || v.user !== chat[i - 1].user ? (
-                      !v.user ? (
+                      v.user==='system' ? (
                         <p className="notice" key={`${v.messageChat}-${i}`}>
                           {v.messageChat}
                         </p>
@@ -203,11 +210,18 @@ const ChatRoom = () => {
                         </div>
                       )
                     ) : (
+                      v.user==='system' ? (
+                        <p className="notice" key={`${v.messageChat}-${i}`}>
+                          {v.messageChat}
+                        </p>
+                      ):
+                      (
                       <div className="sameUserMessage" key={i}>
                         <div className="message">
                           <div>{v.messageChat}</div>
                         </div>
                       </div>
+                      )
                     )
                   ) : (
                     <div className="myMessageList" key={i}>

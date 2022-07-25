@@ -19,6 +19,7 @@ const style = {
   boxShadow: 24,
   p: 2,
   outline: "none",
+  background: 'linear-gradient(0deg, rgba(246, 243, 239, 0.5), rgba(246, 243, 239, 0.5)), #FFFFFF',
 };
 
 const CompleteModal = ({ open, setOpen, isHost }) => {
@@ -30,10 +31,9 @@ const CompleteModal = ({ open, setOpen, isHost }) => {
     navigate("/");
     setOpen(false);
   };
-
   return (
     <div>
-      <button>{params.id ? "수정" : "완료"}</button>
+      <button style={{background:'linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), #EEE9E4',color:'white'}}>{params.id ? "수정" : "완료"}</button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -163,7 +163,7 @@ const Btn = styled.div`
     cursor: pointer;
   }
   .mywrite {
-    background-color: #78aa43;
+    background:linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), #EEE9E4;
     color: white;
     margin-bottom: 12px;
   }

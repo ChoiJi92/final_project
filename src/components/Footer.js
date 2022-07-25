@@ -1,20 +1,19 @@
 import React from "react";
 import styled from "styled-components";
-import instagram from '../assests/css/instagram.png'
+import {useNavigate} from 'react-router-dom'
 const Footer = () => {
+  const navigate = useNavigate()
   return (
     <Wrap>
-      <div className="title">멘도롱제주</div>
-      <div className="service">
-        <p>서비스 소개</p>
-        <p>운영정책</p>
-        <p>문의하기</p>
-        <p>광고문의</p>
-      </div>
-      <div className="ad">
-        <img src={instagram} alt=""></img>
-        <img src={instagram} alt=""></img>
-        <img src={instagram} alt=""></img>
+      <div className="wrap">
+        <div className="title">멘도롱제주</div>
+        <div className="service">
+          <p onClick={()=>{
+            navigate('/userpolicy')
+          }}>개인정보 처리 방침</p>
+          <p>문의하기</p>
+          <p>인스타그램</p>
+        </div>
       </div>
     </Wrap>
   );
@@ -22,38 +21,44 @@ const Footer = () => {
 
 const Wrap = styled.footer`
   width: 100%;
-  height: 100px;
-  position : relative;
-  border-top: 2px solid;
+  height: 200px;
+  position: relative;
   bottom: 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  font-size: large;
+  /* justify-content: space-between; */
+  /* align-items: center; */
+  background: #f7f3ef;
+  .wrap {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: 70%;
+  }
   .title {
     width: 25%;
-    text-align: center;
-    
+    margin-bottom: 20px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 110%;
+    margin-top: 62.27px;
+    opacity: 0.2;
+    /* text-align: center; */
   }
   .service {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    width: 30%;
     white-space: nowrap;
-  }
-  .ad {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 25%;
-    justify-content: center;
-    img{
-        width: 40px;
-        height: 40px;
-        margin-right: 15px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 110%;
+    p {
+      opacity: 0.2;
+      margin-right: 60px;
+      cursor: pointer;
+      :hover{
+        opacity: 1;
+      }
     }
   }
 `;
