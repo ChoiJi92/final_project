@@ -7,7 +7,8 @@ import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import styled from "styled-components";
-
+import Profile from "./Profile";
+import { FaStar } from "react-icons/fa";
 const style = {
   position: "absolute",
   top: "50%",
@@ -54,7 +55,19 @@ const ReviewDetailModal = (props) => {
                 />
                 </div>
             </Main>
-            <Main id="transition-modal-title" variant="h6" component="h2">
+            <MainProfile id="transition-modal-title" variant="h6" component="h2">
+              <div id="profle">
+              <Profile/>
+              </div>
+              <div id="score">
+                <StarIcon/>
+                <span>4.5</span>
+              </div>
+            </MainProfile>
+            <Main>
+              <div id="reviewDetail">
+                {review}
+              </div>
             </Main>
           </Box>
         </Fade>
@@ -67,6 +80,7 @@ const Main = styled(Typography)`
   display: flex;
   justify-content: center;
   align-items: center;
+  /* width: 66.3%; */
   #reviewTitle{
     display: flex;
     justify-content: space-between;
@@ -83,6 +97,43 @@ const Main = styled(Typography)`
     line-height: 150%;
   }
   }
+  #reviewDetail{
+    background-color: #F7F3EF;
+    width: 100%;
+    height: 300px;
+    border-radius: 20px; 
+    margin-top: 35px;
+    padding: 35px;
+    font-size: 20px;
+  }
+
+`
+
+const MainProfile = styled(Typography)`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  #profle{
+    width: 60.3%;
+  }
+  #score{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    margin-right: 20px;
+    span{
+      opacity: 0.5;
+      margin-top: 5px;
+    }
+  }
+`
+
+const StarIcon = styled(FaStar)`
+  width: 25px;
+  height: 25px;
+  opacity: 0.7;
+  color: #2A7047;
 `
  
 export default ReviewDetailModal;

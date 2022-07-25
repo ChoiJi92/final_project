@@ -9,6 +9,8 @@ import jeju3 from "../assests/css/jeju3.jpeg";
 import jeju4 from "../assests/css/jeju4.jpeg";
 import jeju5 from "../assests/css/jeju5.jpeg";
 import jeju6 from "../assests/css/jeju6.jpeg";
+import MenuItem from "@mui/material/MenuItem";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import inside from "../assests/css/내륙.webp";
 import nearby from "../assests/css/관광지근처.webp";
 import nearbySea from "../assests/css/해변근처.webp";
@@ -17,11 +19,13 @@ import icecream from "../assests/css/icecream.webp";
 import sunrise from "../assests/css/sunrise.webp";
 import { Link, useNavigate } from "react-router-dom";
 import SlideImg from "../components/SlideImg";
+import unsaveIcon2 from "../assests/css/unsaveIcon2.jpeg";
 import Map from "../components/Map";
 import { useQuery } from "react-query";
 import axios from "axios";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { houseInfoMap } from "../recoil/atoms";
+import FormControl from '@mui/material/FormControl';
 
 const HouseInfo = () => {
   const [leftPosition, setLeftPosition] = useState("");
@@ -48,10 +52,8 @@ const HouseInfo = () => {
   const list = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   const listImg = [room2, room1, jeju1, jeju2, jeju3, jeju4, jeju5, jeju6];
 
-
-
   const isHouseInfoMap = useSetRecoilState(houseInfoMap);
-  
+
   const { data } = useQuery(
     ["houseInfo"],
 
@@ -113,7 +115,7 @@ const HouseInfo = () => {
   const autoLiveClick = () => {
     liveUnderlineRef.current.style.left =
       liveFirstBox.current.offsetLeft + "px";
-      liveUnderlineRef.current.style.width =
+    liveUnderlineRef.current.style.width =
       liveFirstBox.current.offsetWidth + "px";
     setSFLeftPosition(liveFirstBox.current.offsetLeft + "px");
     setSFRigthPosition(liveFirstBox.current.offsetWidth + "px");
@@ -152,7 +154,7 @@ const HouseInfo = () => {
     setSRigthPosition(e.currentTarget.offsetWidth + "px");
     setSecondtUnderbar(true);
   };
-  console.log("ha")
+  console.log("ha");
   return (
     <MainBox>
       <LiveMainBox>
@@ -186,7 +188,7 @@ const HouseInfo = () => {
           id="spot"
         >
           <SpotMiniBox>
-            <img src={nearbySea} alt="해변"/>
+            <img src={nearbySea} alt="해변" />
           </SpotMiniBox>
           <span>해변</span>
           <SpotUnderBar ref={spotUnderlineRef} />
@@ -196,9 +198,10 @@ const HouseInfo = () => {
           onMouseOver={menuOnOver}
           onClick={menuOnClick}
           id="spot"
+          // style={{"opacity":"0.3"}}
         >
           <SpotMiniBox>
-            <img src={inside} alt="내륙"/>
+            <img src={inside} alt="내륙" />
           </SpotMiniBox>
           <span>내륙</span>
         </div>
@@ -209,7 +212,7 @@ const HouseInfo = () => {
           id="spot"
         >
           <SpotMiniBox>
-            <img src={nearby} alt="관광지근처"/>
+            <img src={nearby} alt="관광지근처" />
           </SpotMiniBox>
           <span>관광지 근처</span>
         </div>
@@ -220,7 +223,7 @@ const HouseInfo = () => {
           id="spot"
         >
           <SpotMiniBox>
-            <img src={quietVil} alt="조용한 마을"/>
+            <img src={quietVil} alt="조용한 마을" />
           </SpotMiniBox>
           <span>조용한 마을</span>
         </div>
@@ -231,7 +234,7 @@ const HouseInfo = () => {
           id="spot"
         >
           <SpotMiniBox>
-            <img src={icecream} alt="우도"/>
+            <img src={icecream} alt="우도" />
           </SpotMiniBox>
           <span>우도</span>
         </div>
@@ -242,7 +245,7 @@ const HouseInfo = () => {
           id="spot"
         >
           <SpotMiniBox>
-            <img src={sunrise} alt="성산일출봉"/>
+            <img src={sunrise} alt="성산일출봉" />
           </SpotMiniBox>
           <span>성산일출봉</span>
         </div>
@@ -251,50 +254,101 @@ const HouseInfo = () => {
       <div id="contentsMapBox">
         <ContentsBox>
           <OrderingBox>
-            <div>숙소형태</div>
-            <div>위치별</div>
-            <div>추천순</div>
+            
+              <Select
+                style={{ width: "30%", height: "50px", borderRadius: "10px" }}
+                displayEmpty
+                inputProps={{ "aria-label": "Without label" }}
+                defaultValue={""}
+              >
+                <MenuItem value="" disabled={true}>
+                  숙소형태
+                </MenuItem>
+                <MenuItem value="단독 또는 다세대">단독</MenuItem>
+                <MenuItem value="호텔">호텔</MenuItem>
+                <MenuItem value="관광지 근처">관광지 근처</MenuItem>
+                <MenuItem value="조용한 마을">조용한 마을</MenuItem>
+                <MenuItem value="우도">우도</MenuItem>
+                <MenuItem value="성산일출봉">성산일출봉</MenuItem>
+              </Select>
+      
+            
+              <Select
+                style={{ width: "30%", height: "50px", borderRadius: "10px" }}
+                displayEmpty
+                inputProps={{ "aria-label": "Without label" }}
+                defaultValue={""}
+              >
+                <MenuItem value="" disabled={true}>
+                  위치별
+                </MenuItem>
+                <MenuItem value="east">동쪽</MenuItem>
+                <MenuItem value="west">서쪽</MenuItem>
+                <MenuItem value="south">남쪽</MenuItem>
+                <MenuItem value="north">북쪽</MenuItem>
+              </Select>
+            
+              <Select
+                style={{ width: "30%", height: "50px", borderRadius: "10px" }}
+                displayEmpty
+                inputProps={{ "aria-label": "Without label" }}
+                defaultValue={""}
+              >
+                <MenuItem value="" disabled={true}>
+                  추천순
+                </MenuItem>
+                <MenuItem value="별점순">별점순</MenuItem>
+  
+              </Select>
           </OrderingBox>
-          <div style={{ fontSize: "22px",marginBottom:'18px' }} id="houseCount">
+          <div
+            style={{ fontSize: "22px", marginBottom: "18px" }}
+            id="houseCount"
+          >
             {data.length} 개의 숙소
           </div>
           <ListWrap>
             {data.map((item, idx) => {
               return (
                 // <div id="testBox">
-                  <ContentsListBox key={idx}>
-                    <SlideImg listImg={listImg} width={'36.4%'} height={'220px'}/>
-                    <DesBox>
-                      <StyledLink to={`/house/${item.id}`}>
-                        <h2>{item.title}</h2>
-                      </StyledLink>
-                      <div id="infoHouse">
-                        <span>
-                          한달살기의 조건에 관한 설명 ...한달살기의 조건에 관한
-                          설명 ...한달살기의 조건에 관한 설명 ...
+                <ContentsListBox key={idx}>
+                  <SlideImg
+                    listImg={listImg}
+                    width={"36.4%"}
+                    height={"220px"}
+                  />
+                  <DesBox>
+                    <StyledLink to={`/house/${item.id}`}>
+                      <h2>{item.title}</h2>
+                    </StyledLink>
+                    <div id="infoHouse">
+                      <span>
+                        한달살기의 조건에 관한 설명 ...한달살기의 조건에 관한
+                        설명 ...한달살기의 조건에 관한 설명 ...
+                      </span>
+                    </div>
+                    <span>000,000원 1박</span>
+                    <LikeBox>
+                      <div style={{}}>
+                        <StarIcon />
+                        <span
+                          style={{
+                            margin: "5px 0px 3px 5px",
+                            fontSize: "27px",
+                          }}
+                        >
+                          4.0
                         </span>
                       </div>
-                      <span>000,000원 1박</span>
-                      <LikeBox>
-                        <div style={{}}>
-                          <StarIcon />
-                          <span
-                            style={{
-                              margin: "5px 0px 3px 5px",
-                              fontSize: "27px",
-                            }}
-                          >
-                            4.0
-                          </span>
-                        </div>
-                        <HeartIcon
-                          onClick={() => {
-                            onClick(data[idx]);
-                          }}
-                        />
-                      </LikeBox>
-                    </DesBox>
-                  </ContentsListBox>
+                      <SaveImg
+                      src={unsaveIcon2}
+                        onClick={() => {
+                          onClick(data[idx]);
+                        }}
+                      />
+                    </LikeBox>
+                  </DesBox>
+                </ContentsListBox>
                 // </div>
               );
             })}
@@ -404,18 +458,19 @@ const ContentsBox = styled.div`
   }
 `;
 const ListWrap = styled.div`
-    /* border: 1px solid red; */
-    overflow-y: auto;
-    padding: 0 10px;
-`
+  /* border: 1px solid red; */
+  overflow-y: auto;
+  padding: 0 10px;
+`;
 const OrderingBox = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 20px 0px 20px 10px;
+  /* border: 1px solid red; */
   div {
-    width: 30%;
+    /* width: 30%; */
     height: 50px;
-    border: 1px solid black;
+    /* border: 1px solid blue; */
     margin: 0px 15px 0px 5px;
     display: flex;
     justify-content: center;
@@ -464,13 +519,15 @@ const LikeBox = styled.div`
   }
 `;
 
-const HeartIcon = styled(FaHeart)`
-  color: gray;
-  cursor: pointer;
-  font-size: 25px;
-`;
+
+
+const SaveImg = styled.img`
+
+`
+
 const StarIcon = styled(FaStar)`
   font-size: 25px;
+  color: #2A7047;
 `;
 
 const MapBox = styled.div`
