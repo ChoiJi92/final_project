@@ -255,12 +255,14 @@ const UserWrite = () => {
                 style={{
                   width: "100%",
                   height: "56px",
-                  border: "1px solid #C7C7CC",
+                  border: "none",
+                  paddingLeft:'5px', 
                   fontStyle: "normal",
                   fontWeight: "500",
                   fontSize: "18px",
                   lineHeight: "150%",
                   borderRadius: "10px",
+                  background: '#F7F3EF',
                 }}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
@@ -291,12 +293,14 @@ const UserWrite = () => {
                 style={{
                   width: "100%",
                   height: "56px",
-                  border: "1px solid #C7C7CC",
+                  border: "none",
+                  paddingLeft:'5px', 
                   fontStyle: "normal",
                   fontWeight: "500",
                   fontSize: "18px",
                   lineHeight: "150%",
                   borderRadius: "10px",
+                  background: '#F7F3EF',
                 }}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
@@ -304,12 +308,12 @@ const UserWrite = () => {
                 <MenuItem value="" disabled={true}>
                   숙소의 형태를 선택해주세요.
                 </MenuItem>
-                <MenuItem value="단독 또는 다세대 주택">
-                  단독 또는 다세대 주택
+                <MenuItem value="게스트하우스">
+                  게스트하우스
                 </MenuItem>
-                <MenuItem value="아파트">아파트</MenuItem>
-                <MenuItem value="게스트용 별채">게스트용 별채</MenuItem>
-                <MenuItem value="호텔">호텔</MenuItem>
+                <MenuItem value="독채 펜션">독채 펜션</MenuItem>
+                <MenuItem value="펜션">펜션</MenuItem>
+                <MenuItem value="민박">민박</MenuItem>
               </Select>
               <p className="errorMessage">
                 {errors.type?.type === "required" &&
@@ -324,20 +328,20 @@ const UserWrite = () => {
                 <input
                   placeholder="주소를 검색해 주세요."
                   {...register("mainAddress")}
-                  value={address || ""}
-                  // defaultValue={address}
-                  // readOnly
+                  // value={address || ""}
+                  defaultValue={address}
+                  readOnly
                 ></input>
                 <AddressModal setAddress={setAddress} />
               </div>
               <input
                 className="subAddress"
                 placeholder="상세 주소를 입력해 주세요."
-                {...register("subAddress", { required: true })}
+                {...register("subAddress")}
                 defaultValue={data?.subAddress ? data.subAddress : ""}
               ></input>
               <p className="errorMessage">
-                {errors.subAddress?.type === "required" &&
+                {!address &&
                   "지역은 필수 입력사항 입니다 :)"}
               </p>
             </div>
@@ -391,8 +395,8 @@ const Container = styled.div`
     width: 22.6042%;
     height: 270px;
     border: none;
-    border-radius: 10px;
-    background: #e5e5ea;
+    border-radius: 20px;
+    background: #F7F3EF;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -418,7 +422,7 @@ const Container = styled.div`
     width: 58.068%;
     height: 52px;
     border: none;
-    background: #aeaeb2;
+    background: #EEE9E4;
     border-radius: 10px;
     font-style: normal;
     font-weight: 500;
@@ -520,21 +524,22 @@ const InputWrap = styled.div`
     input {
       width: 100%;
       height: 56px;
+      background: #F7F3EF;
       border-radius: 10px;
       font-style: normal;
       font-weight: 500;
       font-size: 18px;
       line-height: 150%;
-      padding: 10px;
-      border: 1px solid #c7c7cc;
+      padding: 20px;
+      border: none;
       margin-bottom: 10px;
       ::placeholder {
         color: #8e8e93;
       }
       // 크롬 자동완성 선택했을 때 인풋창 백그라운드 파란색되는거 막는 css
       :-webkit-autofill {
-        -webkit-box-shadow: 0 0 0 1000px white inset;
-        box-shadow: 0 0 0 1000px white inset;
+        -webkit-box-shadow: 0 0 0 1000px #F7F3EF inset;
+        box-shadow: 0 0 0 1000px #F7F3EF inset;
       }
     }
   }
@@ -560,6 +565,7 @@ const InputWrap = styled.div`
       border-radius: 5px;
       padding: 10px;
       margin-bottom: 10px;
+      
     }
   }
   .type {
@@ -606,8 +612,8 @@ const InputWrap = styled.div`
     .subAddress {
       height: 40px;
       border-radius: 5px;
-      padding: 10px;
-      border: 1px solid #c7c7cc;
+      padding: 20px;
+      border: none;
       border-radius: 10px;
       margin-bottom: 10px;
       height: 56px;
@@ -615,6 +621,7 @@ const InputWrap = styled.div`
       font-weight: 500;
       font-size: 18px;
       line-height: 150%;
+      background: #F7F3EF;
       // 크롬 자동완성 선택했을 때 인풋창 백그라운드 파란색되는거 막는 css
       :-webkit-autofill {
         -webkit-box-shadow: 0 0 0 1000px white inset;
@@ -627,10 +634,11 @@ const InputWrap = styled.div`
       justify-content: space-between;
       align-items: center;
       height: 56px;
-      border: 1px solid #c7c7cc;
+      border: none;
       border-radius: 10px;
-      padding: 0 10px;
+      padding: 0 20px;
       margin-bottom: 10px;
+      background: #F7F3EF;
       input {
         width: 90%;
         border: none;
@@ -639,6 +647,7 @@ const InputWrap = styled.div`
         font-weight: 500;
         font-size: 18px;
         line-height: 150%;
+        background: #F7F3EF;
         // 크롬 자동완성 선택했을 때 인풋창 백그라운드 파란색되는거 막는 css
         :-webkit-autofill {
           -webkit-box-shadow: 0 0 0 1000px white inset;
@@ -659,13 +668,14 @@ const InputWrap = styled.div`
     input {
       width: 80%;
       height: 56px;
-      border: 1px solid #c7c7cc;
+      border: none;
       border-radius: 10px;
-      padding: 10px;
+      padding: 20px;
       font-style: normal;
       font-weight: 500;
       font-size: 18px;
       line-height: 150%;
+      background: #F7F3EF;
       // 크롬 자동완성 선택했을 때 인풋창 백그라운드 파란색되는거 막는 css
       :-webkit-autofill {
         -webkit-box-shadow: 0 0 0 1000px white inset;

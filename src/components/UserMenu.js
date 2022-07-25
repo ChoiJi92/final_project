@@ -27,9 +27,9 @@ const UserMenu = ({ userImage, nickName }) => {
         onClick={handleClick}
       >
         <div style={{ color: "black" }}>{nickName}</div>
-          <img src={userImage} alt="프로필"></img>
+        <img src={userImage} alt="프로필"></img>
       </Wrap>
-      <Menu
+      <MenuWrap
         id="basic-menu"
         anchorEl={anchorEl}
         open={open}
@@ -45,12 +45,19 @@ const UserMenu = ({ userImage, nickName }) => {
               handleClose();
             }}
             style={{
+              fontStyle: "normal",
+              fontWeight: "700",
+              fontSize: "20px",
+              lineHeight: "120%",
               display: "flex",
               justifyContent: "center",
+              height: "62px",
               color: "white",
               border: "none",
               borderRadius: "10px",
-              backgroundColor: "#9090A0",
+              marginBottom:'20px',
+              background:
+                "linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), #EEE9E4",
             }}
           >
             글쓰러 가기
@@ -59,11 +66,30 @@ const UserMenu = ({ userImage, nickName }) => {
         <MenuItem>
           <HostModal close={handleClose}></HostModal>
         </MenuItem>
-        <Divider />
-        <MenuItem onClick={()=>{
-          handleClose()
-          navigate('/mypage')}}>마이페이지</MenuItem>
+        <Divider  style={{margin:'20px 0'}}/>
         <MenuItem
+          style={{
+            fontStyle: "normal",
+            fontWeight: "500",
+            fontSize: "20px",
+            lineHeight: "120%",
+            marginBottom:'10px'
+          }}
+          onClick={() => {
+            navigate("/mypage");
+            handleClose(null);
+          }}
+        >
+          마이페이지
+        </MenuItem>
+        <MenuItem
+          style={{
+            fontStyle: "normal",
+            fontWeight: "500",
+            fontSize: "20px",
+            lineHeight: "120%",
+            color: "#AEAEB2" 
+          }}
           onClick={() => {
             localStorage.clear();
             handleClose();
@@ -72,10 +98,16 @@ const UserMenu = ({ userImage, nickName }) => {
         >
           로그아웃
         </MenuItem>
-      </Menu>
+      </MenuWrap>
     </>
   );
 };
+const MenuWrap=styled(Menu)`
+.MuiPaper-root {
+  border-radius: 20px;
+  padding: 10px;
+}
+`
 const Wrap = styled(Button)`
   display: flex;
   flex-direction: row;
@@ -86,25 +118,7 @@ const Wrap = styled(Button)`
     font-weight: 500;
     line-height: 34.75px;
     color: black;
-    margin-right:10px;
-  }
-  img {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-  }
-`;
-const User = styled.div`
-width: 100%;
-border: 1px solid;
-display: flex;
-flex-direction: row;
-  div {
-    /* width: 100%; */
-    font-size: 24px;
-    font-weight: 500;
-    line-height: 34.75px;
-    color: black;
+    margin-right: 10px;
   }
   img {
     width: 32px;

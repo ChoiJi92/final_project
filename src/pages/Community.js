@@ -14,6 +14,7 @@ import unlike from "../assests/css/whiteLike.webp";
 import like from "../assests/css/likeIcon.webp";
 import unlike2 from "../assests/css/unlikeIcon.webp";
 import commentIcon from "../assests/css/commentIcon.webp";
+import commentIcon2 from "../assests/css/commentIcon2.webp";
 import nextIcon from "../assests/css/nextIcon2.webp";
 import prevIcon from "../assests/css/prevIcon2.webp";
 import jeju7 from "../assests/css/제주1.jpeg";
@@ -24,10 +25,12 @@ import jeju11 from "../assests/css/제주5.jpg";
 import jeju12 from "../assests/css/제주6.jpeg";
 import jeju13 from "../assests/css/제주8.jpeg";
 import jeju14 from "../assests/css/제주9.jpeg";
+import Footer from "../components/Footer";
 
 const Community = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const [category, setCategory] = useState("all");
   const { data } = useQuery(
     ["content"],
     () =>
@@ -67,136 +70,173 @@ const Community = () => {
   const listImg = [jeju7, jeju8, jeju9, jeju10, jeju11, jeju12, jeju13, jeju14];
   const [count, setCount] = useState(0);
   return (
-    <Container>
-      <Top
-        rightImage={listImg[count < listImg.length - 1 ? count + 1 : 0]}
-        leftImage={listImg[count]}
-      >
-        <div className="leftImage">
-          <Wrap>
+    <>
+      <Container>
+        <Top
+          rightImage={listImg[count < listImg.length - 1 ? count + 1 : 0]}
+          leftImage={listImg[count]}
+        >
+          <div className="leftImage">
+            <Wrap>
+              <img
+                className="prevIcon"
+                src={prevIcon}
+                alt="다음"
+                onClick={() => {
+                  if (count <= 0) {
+                    setCount((prev) => prev + 7);
+                  } else {
+                    setCount(count - 1);
+                  }
+                }}
+              ></img>
+              <h2>이직 전 제주에서 한달동안 힐링하기</h2>
+              <div className="wrap">
+                <div className="user">
+                  <img alt="프로필"></img>
+                  <p>최지훈</p>
+                </div>
+                <div className="like">
+                  <div>
+                    <img src={unlike} alt="좋아요"></img>
+                    <p>00개</p>
+                  </div>
+                  <div>
+                    <img src={commentIcon2} alt="공유"></img>
+                    <p>00개</p>
+                  </div>
+                  <button>보러가기</button>
+                </div>
+              </div>
+            </Wrap>
+          </div>
+          <div className="rightImage">
             <img
-              className="prevIcon"
-              src={prevIcon}
+              src={nextIcon}
               alt="다음"
               onClick={() => {
-                if (count <= 0) {
-                  setCount((prev) => prev + 7);
+                if (count < listImg.length - 1) {
+                  setCount((prev) => prev + 1);
                 } else {
-                  setCount(count - 1);
+                  setCount(0);
                 }
               }}
             ></img>
-            <h2>이직 전 제주에서 한달동안 힐링하기</h2>
-            <div className="wrap">
-              <div className="user">
-                <img alt="프로필"></img>
-                <p>최지훈</p>
-              </div>
-              <div className="like">
-                <div>
-                  <img src={unlike} alt="좋아요"></img>
-                  <p>00개</p>
-                </div>
-                <div>
-                  <img src={scrap} alt="공유"></img>
-                  <p>00개</p>
-                </div>
-                <button>보러가기</button>
-              </div>
-            </div>
-          </Wrap>
-        </div>
-        <div className="rightImage">
-          <img
-            src={nextIcon}
-            alt="다음"
+            <h2>{title.slice(0, 18)}...</h2>
+          </div>
+        </Top>
+        <Middle category={category}>
+          <div
+            className="all"
             onClick={() => {
-              if (count < listImg.length - 1) {
-                setCount((prev) => prev + 1);
-              } else {
-                setCount(0);
-              }
+              setCategory("all");
             }}
-          ></img>
-          <h2>{title.slice(0, 18)}...</h2>
-        </div>
-      </Top>
-      <Middle>
-        <div>
-          <img src={all} alt="모두보기"></img>
-          <p>모두보기</p>
-        </div>
-        <div>
-          <img src={land} alt="내륙"></img>
-          <p>내륙</p>
-        </div>
-        <div>
-          <img src={tour} alt="관광지 근처"></img>
-          <p>관광지 근처</p>
-        </div>
-        <div>
-          <img src={town} alt="조용한 마을"></img>
-          <p>조용한 마을</p>
-        </div>
-        <div>
-          <img src={icecream} alt="우도"></img>
-          <p>우도</p>
-        </div>
-        <div>
-          <img src={sunrise} alt="성산일출봉"></img>
-          <p>성산일출봉</p>
-        </div>
-      </Middle>
-      <Bottom>
-        {data.map((v) => (
-          <Card key={v.postId}>
-            <div className="leftContent">
-              <div className="user">{v.nickname}</div>
-              <h1
-                className="title"
-                onClick={() => {
-                  navigate(`/community/${v.postId}`);
-                }}
-              >
-                {v.title}
-              </h1>
-              <div className="icon">
-                <div className="like">
-                  {v.islike ? (
-                    <img
-                      onClick={() => {
-                        unLike.mutate(v.postId);
-                      }}
-                      src={like}
-                      alt="좋아요"
-                    />
-                  ) : (
-                    <img
-                      onClick={() => {
-                        Like.mutate(v.postId);
-                      }}
-                      src={unlike2}
-                      alt="좋아요"
-                    />
-                  )}
+          >
+            <img src={all} alt="모두보기"></img>
+            <p>모두보기</p>
+          </div>
+          <div
+            className="land"
+            onClick={() => {
+              setCategory("land");
+            }}
+          >
+            <img src={land} alt="내륙"></img>
+            <p>내륙</p>
+          </div>
+          <div
+            className="tour"
+            onClick={() => {
+              setCategory("tour");
+            }}
+          >
+            <img src={tour} alt="관광지 근처"></img>
+            <p>관광지 근처</p>
+          </div>
+          <div
+            className="town"
+            onClick={() => {
+              setCategory("town");
+            }}
+          >
+            <img src={town} alt="조용한 마을"></img>
+            <p>조용한 마을</p>
+          </div>
+          <div
+            className="icecream"
+            onClick={() => {
+              setCategory("icecream");
+            }}
+          >
+            <img src={icecream} alt="우도"></img>
+            <p>우도</p>
+          </div>
+          <div
+            className="sunrise"
+            onClick={() => {
+              setCategory("sunrise");
+            }}
+          >
+            <img src={sunrise} alt="성산일출봉"></img>
+            <p>성산일출봉</p>
+          </div>
+        </Middle>
+        <Bottom>
+          {data.map((v) => (
+            <Card key={v.postId}>
+              <div className="leftContent">
+                <div className="user">{v.nickname}</div>
+                <h1
+                  className="title"
+                  onClick={() => {
+                    navigate(`/community/${v.postId}`);
+                  }}
+                >
+                  {v.title}
+                </h1>
+                <div className="icon">
+                  <div className="like">
+                    {v.islike ? (
+                      <img
+                        onClick={() => {
+                          unLike.mutate(v.postId);
+                        }}
+                        src={like}
+                        alt="좋아요"
+                      />
+                    ) : (
+                      <img
+                        onClick={() => {
+                          Like.mutate(v.postId);
+                        }}
+                        src={unlike2}
+                        alt="좋아요"
+                      />
+                    )}
 
-                  <p>{v.likeNum}</p>
-                </div>
-                <div className="comment">
-                  <img src={commentIcon} alt="댓글" />
-                  <p>{v.commentNum}</p>
+                    <p>{v.likeNum}</p>
+                  </div>
+                  <div className="comment">
+                    <img
+                      style={{ paddingTop: "20px" }}
+                      src={commentIcon}
+                      alt="댓글"
+                    />
+                    <p>{v.commentNum}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-            <img
-              className="thumnail"
-              src={v.images[0].thumbnailURL}
-              alt="이미지"
-            ></img>
-          </Card>
-        ))}
-      </Bottom>
-    </Container>
+              <img
+                className="thumnail"
+                src={v.images[0].thumbnailURL}
+                alt="이미지"
+              ></img>
+            </Card>
+          ))}
+        </Bottom>
+      </Container>
+      <Footer />
+    </>
   );
 };
 
@@ -388,7 +428,7 @@ const Middle = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  border-bottom: 1px solid;
+  border-bottom: 1px solid #e5e5ea;
   div {
     /* border: 1px solid; */
     width: 200px;
@@ -396,21 +436,30 @@ const Middle = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /* align-items: center; */
     cursor: pointer;
     :hover {
-      transition: .6s ease-out;
-      border-bottom: 3px solid #9090a0;
+      /* border-bottom: 5px solid #8E8E93; */
+      * {
+        opacity: 1;
+      }
     }
     img {
       width: 60px;
       height: 60px;
       margin: 0 auto;
+      opacity: 0.2;
     }
     p {
       margin-top: 5px;
       color: #828282;
       text-align: center;
+      opacity: 0.2;
+    }
+  }
+  .${(props) => props.category} {
+    border-bottom: 5px solid #8e8e93;
+    * {
+      opacity: 1;
     }
   }
 `;
@@ -464,6 +513,7 @@ const Card = styled.div`
     bottom: 0;
     display: flex;
     flex-direction: row;
+    border: 1px solid;
     .like {
       display: flex;
       flex-direction: row;

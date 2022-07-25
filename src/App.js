@@ -58,7 +58,7 @@ function App() {
         <Route path='/oauth/naver/callback' element={<NaverRedirect/>}/>
         <Route path="*" element={<Error/>} />
       </Routes>
-      {/* <Footer/> */}
+
     </div>
   );
 }

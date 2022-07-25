@@ -9,7 +9,7 @@ import LoginModal from "./LoginModal";
 
 const Header = () => {
   const [search, setSearch] = useState(false);
-  const [menu, setMenu] = useState();
+  const [menu, setMenu] = useState("");
   const searchRef = useRef();
   const navigate = useNavigate();
   const nickName = localStorage.getItem("nickName");
@@ -26,7 +26,7 @@ const Header = () => {
           src={jejuLogo}
           alt="로고"
         ></img>
-        <Center search={search}>
+        <Center search={search} menu={menu}>
           <img
             className="search"
             src={searchIcon}
@@ -50,7 +50,7 @@ const Header = () => {
           ) : (
             <div className="menu">
               <div
-                style={{ color: menu === "house" ? "gray" : "black" }}
+                className="house"
                 onClick={() => {
                   setMenu("house");
                   navigate("/house");
@@ -59,7 +59,7 @@ const Header = () => {
                 숙소 찾기
               </div>
               <div
-                style={{ color: menu === "community" ? "gray" : "black" }}
+                className="community"
                 onClick={() => {
                   setMenu("community");
                   navigate("/community");
@@ -68,10 +68,11 @@ const Header = () => {
                 유저 커뮤니티
               </div>
               <div
-                style={{ color: menu === "chat" ? "gray" : "black" }}
+                className="chat"
                 onClick={() => {
-                  navigate("/chat");
                   setMenu("chat");
+                  navigate("/chat");
+                  
                 }}
               >
                 오픈 채팅방
@@ -98,7 +99,7 @@ const Header = () => {
 const Container = styled.div`
   width: 100%;
   height: 120px;
-  border-bottom: 2px solid #E5E5EA;
+  border-bottom: 2px solid #e5e5ea;
 `;
 const Wrap = styled.div`
   width: 70%;
@@ -162,14 +163,26 @@ const Center = styled.div`
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
-    cursor: pointer;
     div {
-      font-size: 20px;
+      font-style: normal;
       font-weight: 400;
-      line-height: 24px;
+      font-size: 20px;
+      line-height: 120%;
       text-align: center;
+      color: #828282;
+      cursor: pointer;
+      :hover{
+        color: #636366;
+        font-weight: 1000;
+        
+      }
     }
+    .${(props) => props.menu} {
+    color: #636366;
+    font-weight: 1000;
   }
+  }
+ 
 `;
 const User = styled.div`
   display: flex;

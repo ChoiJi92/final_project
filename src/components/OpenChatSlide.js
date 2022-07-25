@@ -47,7 +47,7 @@ const OpenChatSlide = ({ rtl, data }) => {
   const settings = {
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: data.length>=3 ? 3 : data.length,
     slidesToScroll: 1,
     // dots: true,
     // arrows: mouseOver,

@@ -7,27 +7,30 @@ import CategorySlide from "../components/CategorySlide";
 import map from "../assests/css/map.webp";
 import flower from "../assests/css/flower.webp";
 import flower2 from "../assests/css/flower2.webp";
-import hanlabong from "../assests/css/hanrabong.webp";
+import hanrabong from "../assests/css/hanrabong.webp";
 import parasol from "../assests/css/parasol.webp";
 import lighthouse from "../assests/css/lighthouse.webp";
 import palmTree from "../assests/css/palmtree.webp";
 import dolhaleubang from "../assests/css/dolhaleubang.webp";
+import jeju from "../assests/css/jeju.webp";
 import { useQuery } from "react-query";
 import instance from "../shared/axios";
+import Footer from "../components/Footer";
 const Main = () => {
-  const { data } = useQuery(
-    ["loadChatRoom"],
-    () =>
-      instance.get("/room").then((res) => {
-        console.log(res.data);
-        return res.data.allRoom;
-      }),
-    {
-      // retry:0,
-      refetchOnWindowFocus: false,
-    }
-  );
+  // const { data } = useQuery(
+  //   ["loadChatRoom"],
+  //   () =>
+  //     instance.get("/room").then((res) => {
+  //       console.log(res.data);
+  //       return res.data.allRoom;
+  //     }),
+  //   {
+  //     // retry:0,
+  //     refetchOnWindowFocus: false,
+  //   }
+  // );
   return (
+    <>
     <Container>
       <div
         style={{
@@ -53,35 +56,49 @@ const Main = () => {
       <RegionWrap>
         <h2>Find accommodation by region</h2>
         <div className="region">
-          <div className=" dolhaleubang">
-            <div></div>
+          <div className=" eastArea">
+            <div>
+              <p className="title">East area</p>
+              <p>Jeju-si, Jocheon-eup, Aewol-eup</p>
+            </div>
+            <img src={lighthouse} alt="등대"></img>
+            <img src={parasol} alt="파라솔"></img>
           </div>
-          <div className="flower">
-            <div></div>
+          <div className="westArea">
+            <img src={dolhaleubang} alt="돌하르방"></img>
+            <div>
+              <p className="title">West area</p>
+              <p>Hallim-eup, Hangyeong-myeon, Daejeong-eup, Andeok-myeon</p>
+            </div>
+            <img src={palmTree} alt="야자수"></img>
           </div>
-          <div className="lighthouse">
-            <div></div>
+          <div className="southArea">
+            <img src={flower} alt="꽃"></img>
+            <img src={flower2} alt="꽃"></img>
+            <div>
+              <p className="title">South area</p>
+              <p>Jungmun, Seogwipo-si, Namwon-eup</p>
+            </div>
           </div>
-          <div className="parasol">
-            <div></div>
-          </div>
-          <div className="palmTree">
-            <div></div>
-          </div>
-          <div className="hanlabong">
-            <div></div>
-          </div>
-          <div className="flower2">
-            <div></div>
+          <div className="northArea">
+            <div>
+              <p className="title">North area</p>
+              <p>Gujwa-eup, Seongsan-eup, Pyoseon-myeon Udo-myeon</p>
+            </div>
+            <img src={jeju} alt="해녀"></img>
+            <img src={hanrabong} alt="한라봉"></img>
           </div>
         </div>
       </RegionWrap>
       <OpenChat>
         <h2>Popular openchat</h2>
-        <OpenChatSlide data={data.slice(0,5)} rtl={false}/>
-        <OpenChatSlide data={data.slice(0,5)} rtl={true}/>
+        {/* <OpenChatSlide data={data.slice(0,5)} rtl={false}/> */}
+        {/* <OpenChatSlide data={data.slice(0,5)} rtl={true}/> */}
       </OpenChat>
+      
     </Container>
+    <Footer/>
+    </>
   );
 };
 
@@ -101,12 +118,11 @@ const Container = styled.div`
   }
 `;
 const RegionWrap = styled.div`
-  position: relative;
   width: 70%;
-  margin: 0 auto 166px auto;
+  margin: 0 auto 114px auto;
 
   h2 {
-    margin-bottom: 166px;
+    margin-bottom: 50px;
     white-space: nowrap;
     font-style: normal;
     font-weight: 700;
@@ -114,121 +130,180 @@ const RegionWrap = styled.div`
     line-height: 110%;
   }
   .region {
-    background: url(${map}) no-repeat;
-    background-size: cover;
-    transform-origin: center;
-    width: 1200px;
+    width: 100%;
     /* width: 88.87%; */
-    height: 691px;
-    margin: 0 auto;
-    @media screen and (min-width: 1366px) and (max-width: 1919px) {
+    /* @media screen and (min-width: 1366px) and (max-width: 1919px) {
       transform: scale(0.75);
     }
     @media screen and (min-width: 865px) and (max-width: 1365px) {
       transform: scale(0.55);
     }
     @media screen and (min-width: 601px) and (max-width: 864px) {
-      transform: scale(0.35);
-    }
+      transform: scale(0.35); */
   }
-  .dolhaleubang{
-    position: absolute;
+  .eastArea {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+    width: 100%;
     div {
-      left: 40px;
-      top: 350px;
-      position: relative;
-      width: 200px;
+      width: 63.76%;
       height: 200px;
-      background: url(${dolhaleubang}) no-repeat;
+      background: #f7f3ef;
+      border-radius: 60px;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       cursor: pointer;
+      .title {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 72px;
+        line-height: 110%;
+        color: #2c2c2e;
+      }
+      p {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 28px;
+        line-height: 42px;
+        color: #000000;
+        opacity: 0.2;
+      }
       :hover {
-        transform: scale(1.1);
+        background: #eee9e4;
+        .title {
+          opacity: 1;
+        }
       }
     }
+    img {
+      margin-left: 20px;
+    }
   }
-  .flower {
-    position: absolute;
+  .westArea {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+    width: 100%;
     div {
-      left: 280px;
-      top: 30px;
-      position: relative;
-      width: 200px;
+      width: 63.76%;
       height: 200px;
-      background: url(${flower}) no-repeat;
+      background: #f7f3ef;
+      border-radius: 60px;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin: 0 20px;
       cursor: pointer;
+      .title {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 72px;
+        line-height: 110%;
+        color: #2c2c2e;
+      }
+      p {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 28px;
+        line-height: 42px;
+        color: #000000;
+        opacity: 0.2;
+      }
       :hover {
-        transform: scale(1.1);
+        background: #eee9e4;
+        .title {
+          opacity: 1;
+        }
       }
     }
   }
-  .lighthouse {
+  .southArea {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+    width: 100%;
     div {
-      position: relative;
-      left: 440px;
-      bottom: 30px;
-      width: 200px;
+      width: 63.76%;
       height: 200px;
-      background: url(${lighthouse}) no-repeat;
+      background: #f7f3ef;
+      border-radius: 60px;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       cursor: pointer;
+      .title {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 72px;
+        line-height: 110%;
+        color: #2c2c2e;
+      }
+      p {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 28px;
+        line-height: 42px;
+        color: #000000;
+        opacity: 0.2;
+      }
       :hover {
-        transform: scale(1.1);
+        background: #eee9e4;
+        .title {
+          opacity: 1;
+        }
       }
     }
+    img {
+      margin-right: 20px;
+    }
   }
-  .parasol {
+  .northArea {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
     div {
-      position: relative;
-      left: 900px;
-      bottom: 250px;
-      width: 200px;
+      width: 63.76%;
       height: 200px;
-      background: url(${parasol}) no-repeat;
+      background: #f7f3ef;
+      border-radius: 60px;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       cursor: pointer;
+      .title {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 72px;
+        line-height: 110%;
+        color: #2c2c2e;
+      }
+      p {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 28px;
+        line-height: 42px;
+        color: #000000;
+        opacity: 0.2;
+      }
       :hover {
-        transform: scale(1.1);
+        background: #eee9e4;
+        .title {
+          opacity: 1;
+        }
       }
     }
-  }
-  .palmTree {
-    div {
-      position: relative;
-      left: 810px;
-      bottom: 140px;
-      width: 226.75px;
-      height: 221.3px;
-      background: url(${palmTree}) no-repeat;
-      cursor: pointer;
-      :hover {
-        transform: scale(1.1);
-      }
-    }
-  }
-  .hanlabong {
-    div {
-      position: relative;
-      left: 650px;
-      bottom: 200px;
-      width: 200px;
-      height: 200px;
-      background: url(${hanlabong}) no-repeat;
-      cursor: pointer;
-      :hover {
-        transform: scale(1.1);
-      }
-    }
-  }
-  .flower2 {
-    div {
-      position: relative;
-      left: 230px;
-      bottom: 380px;
-      width: 200px;
-      height: 200px;
-      background: url(${flower2}) no-repeat;
-      cursor: pointer;
-      :hover {
-        transform: scale(1.1);
-      }
+    img {
+      margin-left: 20px;
     }
   }
 `;

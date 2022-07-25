@@ -20,10 +20,11 @@ const style = {
   width: 500,
   height: 'auto',
   bgcolor: "background.paper",
-  borderRadius: "10px",
+  borderRadius: "30px",
   outline: "none",
   boxShadow: 24,
   p: 4,
+  background: 'linear-gradient(0deg, rgba(246, 243, 239, 0.5), rgba(246, 243, 239, 0.5)), #FFFFFF' 
 };
 
 const RoomModal = ({ width }) => {
@@ -116,7 +117,8 @@ const RoomModal = ({ width }) => {
                 style={{
                   width: "80%",
                   height: "56px",
-                  border: "0px solid #C7C7CC",
+                  border: "none",
+                  background: '#F7F3EF',
                   fontStyle: "normal",
                   fontWeight: "500",
                   fontSize: "18px",
@@ -170,7 +172,8 @@ const RoomButton = styled.button`
   font-size: 20px;
   line-height: 24px;
   border-radius: 10px;
-  background-color: #c7c7cc;
+  background:linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), #EEE9E4;;
+  color: white;
   border: none;
   cursor: pointer;
   outline: none;
@@ -185,7 +188,7 @@ const Container = styled(Typography)`
   }
   img {
     position: absolute;
-    right: 10px;
+    right: 20px;
     cursor: pointer;
   }
 `;
@@ -201,10 +204,11 @@ const Middle = styled(Typography)`
     justify-content: space-between;
     margin-bottom: 20px;
     input {
-      padding: 10px;
+      padding: 20px;
       width: 80%;
       height: 56px;
-      border: 1px solid #c7c7cc;
+      border: none;
+      background: #F7F3EF;
       border-radius: 10px;
       font-style: normal;
       font-weight: 500;
@@ -217,7 +221,6 @@ const Middle = styled(Typography)`
   }
   .userCount {
     width: 100%;
-
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -264,7 +267,8 @@ const Btn = styled.button`
   font-size: 18px;
   line-height: 24px;
   border-radius: 10px;
-  background-color: #c7c7cc;
+  background:linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), #EEE9E4;
+  color: white;
   display: flex;
   justify-content: center;
   align-items: center;

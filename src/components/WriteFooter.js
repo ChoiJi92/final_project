@@ -70,7 +70,7 @@ const Wrap = styled.footer`
   width: 100%;
   height: 100px;
   position: fixed;
-  background-color: lightgray;
+  background-color:  #F7F3EF;;
   bottom: 0;
   padding: 0 250px;
   display: flex;
@@ -87,10 +87,13 @@ const Wrap = styled.footer`
     font-weight: 600;
     font-size: 18px;
     line-height: 24px;
+    opacity: 0.2;
     cursor: pointer;
     :hover {
-      background: #8e8e93;
+      opacity: 1;
+      background:linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), #EEE9E4;
       color: white;
+      border: none;
     }
   }
   .post {
@@ -100,8 +103,7 @@ const Wrap = styled.footer`
     width: 180px;
     height: 68px;
     border-radius: 10px;
-    border: 1px solid #8e8e93;
-    background-color: transparent;
+    border: none;
     margin-left: 10px;
     font-style: normal;
     font-weight: 600;
