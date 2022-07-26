@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import jeju1 from "../assests/css/jeju1.jpeg";
 import jeju2 from "../assests/css/jeju2.jpeg";
@@ -12,6 +12,7 @@ import jeju13 from "../assests/css/제주8.jpeg";
 import jeju14 from "../assests/css/제주9.jpeg";
 import editIcon from "../assests/css/editIcon.png";
 import deleteIcon from "../assests/css/deleteIcon.png";
+import stepImg from "../assests/css/mypageImg.webp";
 import inside from "../assests/css/내륙.webp";
 import 관광지근처 from "../assests/css/관광지근처.webp";
 import 해변근처 from "../assests/css/해변근처.webp";
@@ -20,11 +21,15 @@ import icecream from "../assests/css/icecream.webp";
 import sunrise from "../assests/css/sunrise.webp";
 import shareIcon2 from "../assests/css/shareIcon2.png";
 import unsaveIcon2 from "../assests/css/unsaveIcon2.jpeg";
+import step from "../assests/css/step.webp"; 
 import scrap from "../assests/css/scrap.png";
+
+
+
 import { FaHeart, FaStar } from "react-icons/fa";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useQuery } from "react-query";
+import { QueryClient, useMutation, useQuery } from "react-query";
 import axios from "axios";
 import SlideImg from "../components/SlideImg";
 import DialogImg from "../components/DialogImg";
@@ -39,12 +44,14 @@ import Profile from "../components/Profile";
 import ReviewDetailModal from "../components/ReviewDetailModal";
 import LoginModal from "../components/LoginModal";
 import LoginError from "./LoginError";
+import instance from "../shared/axios";
 
 const HouseDetail = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [moreReview, setMoreReview] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
+  const [testNumber, setTestNumber] = useState(0);
   const userId = localStorage.getItem("userId");
   const navigate = useNavigate();
   const openModal = () => {
@@ -83,28 +90,59 @@ const HouseDetail = () => {
   //   return "loading...";
   // }
   const params = useParams();
-  const paramsId = params.id;
+  const hostId = params.id;
   const isHostShareAndMap = useSetRecoilState(hostShareAndMap);
-  const { isLoading, data } = useQuery(
-    ["houseDetail", paramsId],
+  const {  data } = useQuery(
+    ["houseDetail", hostId],
 
     // ()=>getWriteData(paramsId),
     () => {
-      return axios
-        .get(`http://localhost:5001/testList/${paramsId}`)
+      return instance
+        .get(`/host/${hostId}`)
         .then((res) => res.data);
     },
     {
       refetchOnWindowFocus: false,
-      enabled: !!paramsId,
+      enabled: !!hostId,
     }
   );
+  const reviewDetail = useQuery(
+    ["reviweDetail", hostId],
 
-  if (isLoading) {
-    return "loading...";
+    // ()=>getWriteData(paramsId),
+    () => {
+      return instance
+        .get(`/review/${hostId}/review`)
+        .then((res) => res.data.reviews);
+    },
+    {
+      refetchOnWindowFocus: false,
+      enabled: !!hostId,
+    }
+  );
+  console.log(reviewDetail.data)
+  // const queryClient = QueryClient();
+  const testDelete = useMutation(
+    () => {
+      return instance.delete(
+        `/host/${hostId}`
+      );
+    },
+    
+  );
+    console.log(data.findAllAcc);
+  // if (isLoading) {
+  //   return "loading...";
+  // }
+  let testscore = 0
+useEffect(()=>{
+  for(let i = 0; i < reviewDetail.data.length; i++){
+    testscore = +reviewDetail.data[i].starpoint
+    console.log(reviewDetail.data[i].starpoint)
   }
-
-  
+},[])
+console.log(testscore, reviewDetail.data.length)
+console.log(testscore);
   isHostShareAndMap(data);
   // console.log(houseMapDetail)
   // console.log(data, isLoading);
@@ -143,9 +181,16 @@ const HouseDetail = () => {
   // let testData = 관광지근처;
   // // testData = 내륙;
   // testData = 관광지근처;
-  // console.log(관광지근처,해변근처,조용한마을,jeju14);
+  console.log(관광지근처,해변근처,조용한마을);
   console.log(data.category);
   
+
+
+
+  const onDelete = (id) => {
+    testDelete.mutate(id);
+    navigate("/house")
+  }
   return (
     <Wrap>
       <div id="detailMainBox">
@@ -180,26 +225,29 @@ const HouseDetail = () => {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                
+                // border: "1px solid green"
               }}
             >
-              <div>
+              <div style={{width:"100%"}}>
                 <h1
                   style={{
                     width: "100%",
-                    border: "1px solid red",
+                    // border: "1px solid red",
                     fontSize: "48px",
                   }}
                 >
-                  {data?.title}
+                  {data.findAllAcc?.title}
                 </h1>
               </div>
               <div
                 style={{
                   display: "flex",
-                  alignItems: "center",
+                  // alignItems: "center",
                   // marginLeft: "210px",
                   marginBottom: "20px",
+                  justifyContent:"flex-end",
+                  // border: "1px solid red",
+                  width:"100%"
                 }}
               >
                 <div
@@ -207,6 +255,12 @@ const HouseDetail = () => {
                     display: "flex",
                     alignItems: "center",
                     // marginBottom: "20px",
+                    // border: "1px solid blue",
+                    // marginRight:"50px",
+                    justifyContent:"center",
+                    width: "35%"
+                    
+                    
                   }}
                 >
                   <span style={{ fontSize: "21px" }}>공유하기</span>
@@ -219,6 +273,9 @@ const HouseDetail = () => {
                     display: "flex",
                     alignItems: "center",
                     // marginBottom: "20px",
+                    justifyContent:"center",
+                    // border: "1px solid blue",
+                    // width: "30%"
                   }}
                 >
                   <span style={{ fontSize: "21px" }}>저장하기</span>
@@ -229,16 +286,16 @@ const HouseDetail = () => {
             <hr style={{ marginTop: "20px" }} />
             <SubInfoBox>
                 <div>
-                  <img src={data.category} alt={data.category} />
-                  {data.category}
+                  {/* <img src={require(`../assests/css/${data.findAllAcc.category}.webp`)} alt={data.category} /> */}
+                  {data.findAllAcc.category}
                 </div>
                 <div>
-                  {/* <img /> */}
-                  {data.houseInfo}
+                  {/* <img src={require(`../assests/css/${data.findAllAcc.houseInfo}.webp`)} alt={data.houseInfo} /> */}
+                  {data.findAllAcc.houseInfo}
                 </div>
                 <div>
-                  {/* <img /> */}
-                  {data.stepSelect}
+                  <img src={step}/>
+                  {data.stepSelect === "예" ? ("스텝 모집중"):("스텝 모집 없음")}
                 </div>
             </SubInfoBox>
             <div style={{ margin: "30px 0px 30px 0px", fontSize: "18px" }}>
@@ -274,10 +331,12 @@ const HouseDetail = () => {
             <ReviewMainBox>
               <div>
                 <StarIcon />
-                <span>4.99</span>
+                {/* <span>4.99</span> */}
+                {/* {reviewDetail.data.map((item, idx)=>(
+                  <span>{item.starpoint}</span>
+                ))} */}
                 <span style={{ marginLeft: "10px" }}>
-                  {" "}
-                  후기 {reviewList.length}개
+                  후기 {reviewDetail.data.length}개
                 </span>
               </div>
               <div>
@@ -296,7 +355,7 @@ const HouseDetail = () => {
             </ReviewMainBox>
             <ReviewListBox>
               {/* 후기 작성 부분 */}
-              {reviewList.slice(0, 4).map((item, idx) => (
+              {reviewDetail.data.slice(0, 4).map((item, idx) => (
                 // 후기 디테일 페이지 클릭해서 모달창 데이타 보여줄 예정
                 <ReviewBox>
                   {/* 프로필 부분에서 재사용 하기 위해 일단 컴포넌트로 나눔 */}
@@ -308,9 +367,9 @@ const HouseDetail = () => {
                     </div>
                   </div>
                   <div onClick={openModalReview} id="reviewDetail">
-                    {reviewText.length >= 45
-                      ? `${reviewText.slice(0, 45)} ...`
-                      : reviewText}
+                    {item.review.length >= 45
+                      ? `${item.review.slice(0, 45)} ...`
+                      : item.review}
                   </div>
                   {/* 리뷰 디테일 모달에서 props 데이터 넘겨줘서 보여줄 예정 */}
 
@@ -324,7 +383,7 @@ const HouseDetail = () => {
               />
               {moreReview ? (
                 <>
-                  {reviewList.slice(4).map((item, idx) => (
+                  {reviewDetail.data.slice(4).map((item, idx) => (
                     // 후기 디테일 페이지 클릭해서 모달창 데이타 보여줄 예정
                     <ReviewBox>
                       {/* 프로필 부분에서 재사용 하기 위해 일단 컴포넌트로 나눔 */}
@@ -347,11 +406,11 @@ const HouseDetail = () => {
               ) : (
                 ""
               )}
-              {reviewList.length >= 5 ? (
+              {reviewDetail.data.length >= 5 ? (
                 <MoreReview moreReview={moreReview} onClick={reviewClick}>
                   {moreReview
-                    ? `후기 ${reviewList.length - 4}개 접기`
-                    : `후기 ${reviewList.length - 4}개 더보기`}
+                    ? `후기 ${reviewDetail.data.length - 4}개 접기`
+                    : `후기 ${reviewDetail.data.length - 4}개 더보기`}
                 </MoreReview>
               ) : (
                 ""
@@ -364,14 +423,26 @@ const HouseDetail = () => {
                 <h3>{data?.title}</h3>
                 <span>{data?.fullAddress}</span>
               </div>
+              <div id="barTag">
+                {hashList.slice(0,4).map((item, idx)=>(
+                  <HashTagBox></HashTagBox>
+                ))}
+              </div>
               <div id="barDes">
-
+                {data?.findAllAcc.stepInfo ? (data.findAllAcc.stepInfo) : (
+                <>
+                <img style={{"width":"50%"}} src={stepImg}/>
+                  <span>스텝 모집이 없어요.</span>
+                </>)}
               </div>
               <div id="btnBox">
                 <HostBtn>호스트와 대화해보기</HostBtn>
               </div>
             </div>
           </RightBarBox>
+        </div>
+        <div>
+          <button onClick={()=>{onDelete(data.findAllAcc.hostId)}}>삭제</button>
         </div>
       </div>
     </Wrap>
@@ -488,6 +559,7 @@ const ReviewMainBox = styled.div`
 const StarIcon = styled(FaStar)`
   font-size: 35px;
   margin-right: 20px;
+  color: #2A7047;
 `;
 
 const ImgDiv = styled.div`
@@ -604,7 +676,7 @@ const RightBarBox = styled.div`
   #barTitle {
     width: 100%;
     height: 100px;
-
+    /* border: 1px solid red; */
     display: flex;
     flex-direction: column;
     h3 {
@@ -618,11 +690,25 @@ const RightBarBox = styled.div`
   }
   #barDes {
     width: 100%;
-    height: 350px;
+    height: 250px;
+    border: 1px solid #e5e5ea;
+    border-radius: 20px;
+    margin-top: 30px;
+    padding:30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
   #btnBox {
     width: 100%;
     height: 150px;
+    margin-top: 20px;
+  }
+  #barTag{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
   }
 `;
 
@@ -655,10 +741,18 @@ const SubInfoBox = styled.div`
   div{
     width: 30%;
     height: 50px;
-    border: 1px solid red;
+    /* border: 1px solid red; */
     display: flex;
     align-items: center;
     justify-content: center;
+    font-weight: 400;
+    font-size: 21px;
+    line-height: 30px;
+    img{
+      width: 38px;
+      height: 38px;
+      margin-right: 15px;
+    }
   }
 `;
 

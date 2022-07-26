@@ -10,6 +10,9 @@ import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
+import { useMutation, useQueryClient } from "react-query";
+import instance from "../shared/axios";
+import { useParams } from "react-router-dom";
 
 const style = {
   position: "absolute",
@@ -29,14 +32,36 @@ const HouseReviewModal = (props) => {
   const {open, close, userId} = props;
   const [score, setScore] = useState(0);
   const starRef = useRef();
+  const params = useParams();
+  const hostId = params.id;
+  console.log(hostId,"its hostId")
   // const handleOpen = () => setOpen(true);
   // const handleClose = () => setOpen(false);
   const { register, handleSubmit,formState: { errors }, } = useForm({ defaultValues: {} });
 
+  const queryClient = useQueryClient();
+  const testReview = useMutation((testData)=>{
+    instance.post(`/review/${hostId}/review`, testData).then((res)=>{
+        console.log(res.data)
+  }).catch((err)=>{console.log(err,"why")})   
+  },
+  {
+    onSuccess: () => {
+      // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
+      queryClient.invalidateQueries("reviweDetail");
+    },
+  })
+  console.log(parseFloat(2.5))
+  
   const reviewSubmit = (data) => {
-    // console.log(starRef);
-    console.log(data);
-    // console.log(score)
+    console.log(starRef);
+    console.log(data.review, "its data");
+    console.log(typeof(score))
+    const testData = {
+      review:data.review,
+      starpoint:score
+    }
+    testReview.mutate(testData);
   }
   // const handleChange = () => {
   //   setScore(score)

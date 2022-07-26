@@ -26,6 +26,7 @@ import axios from "axios";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { houseInfoMap } from "../recoil/atoms";
 import FormControl from '@mui/material/FormControl';
+import instance from "../shared/axios";
 
 const HouseInfo = () => {
   const [leftPosition, setLeftPosition] = useState("");
@@ -54,21 +55,39 @@ const HouseInfo = () => {
 
   const isHouseInfoMap = useSetRecoilState(houseInfoMap);
 
+  // const { data } = useQuery(
+  //   ["houseInfo"],
+
+  //   // ()=>getWriteData(paramsId),
+  //   () => {
+  //     return instance
+  //       .get(`/host`)
+  //       .then((res) => res.data);
+  //   },
+  //   {
+  //     refetchOnWindowFocus: false,
+  //   }
+  // );
+
   const { data } = useQuery(
     ["houseInfo"],
-
-    // ()=>getWriteData(paramsId),
-    () => {
-      return axios
-        .get(`http://localhost:5001/testList/`)
-        .then((res) => res.data);
-    },
-    {
-      refetchOnWindowFocus: false,
-    }
+    () =>
+      instance
+        .get(`/host`)
+        .then((res) => {
+          console.log(res.data);
+          return (
+            res.data
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+        }),
+    
   );
-  console.log(data);
-  isHouseInfoMap(data);
+  console.log(data.findAllAcc);
+  // console.log(res.data);
+  // isHouseInfoMap(data.images[0]);
   const onClick = (id) => {
     console.log(id);
     alert(id);
@@ -95,18 +114,18 @@ const HouseInfo = () => {
 
   //마우스 올릴시 메뉴 언더바 이동
   const menuOnOver = (e) => {
-    spotUnderlineRef.current.style.left = e.currentTarget.offsetLeft + "px";
-    spotUnderlineRef.current.style.width = e.currentTarget.offsetWidth + "px";
+    // spotUnderlineRef.current.style.left = e.currentTarget.offsetLeft + "px";
+    // spotUnderlineRef.current.style.width = e.currentTarget.offsetWidth + "px";
   };
   //마우스 나오면 기존 클릭되어있던 position으로 이동
   const menuLeave = () => {
-    if (firstUnderbar === true) {
-      spotUnderlineRef.current.style.left = leftPosition;
-      spotUnderlineRef.current.style.width = rigthPosition;
-    } else {
-      spotUnderlineRef.current.style.left = fleftPosition;
-      spotUnderlineRef.current.style.width = frigthPosition;
-    }
+    // if (firstUnderbar === true) {
+    //   spotUnderlineRef.current.style.left = leftPosition;
+    //   spotUnderlineRef.current.style.width = rigthPosition;
+    // } else {
+    //   spotUnderlineRef.current.style.left = fleftPosition;
+    //   spotUnderlineRef.current.style.width = frigthPosition;
+    // }
   };
 
   // const isInfo = window.location.href.slice(22,27);
@@ -186,6 +205,7 @@ const HouseInfo = () => {
           onMouseOver={menuOnOver}
           onClick={menuOnClick}
           id="spot"
+          // style={{"opacity":"0.7"}}
         >
           <SpotMiniBox>
             <img src={nearbySea} alt="해변" />
@@ -199,6 +219,7 @@ const HouseInfo = () => {
           onClick={menuOnClick}
           id="spot"
           // style={{"opacity":"0.3"}}
+          style={{"opacity":"0.2"}}
         >
           <SpotMiniBox>
             <img src={inside} alt="내륙" />
@@ -255,11 +276,14 @@ const HouseInfo = () => {
         <ContentsBox>
           <OrderingBox>
             
-              <Select
-                style={{ width: "30%", height: "50px", borderRadius: "10px" }}
+              <StyleSelect
+                style={{ width: "30%", height: "50px", borderRadius: "10px",underline:"none"  }}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
                 defaultValue={""}
+                disableUnderline
+                notchedOutline
+                
               >
                 <MenuItem value="" disabled={true}>
                   숙소형태
@@ -270,14 +294,16 @@ const HouseInfo = () => {
                 <MenuItem value="조용한 마을">조용한 마을</MenuItem>
                 <MenuItem value="우도">우도</MenuItem>
                 <MenuItem value="성산일출봉">성산일출봉</MenuItem>
-              </Select>
+              </StyleSelect>
       
             
               <Select
-                style={{ width: "30%", height: "50px", borderRadius: "10px" }}
+                style={{ width: "30%", height: "50px", borderRadius: "10px",backgroundColor:"#f7f3ef", border:"none" }}
                 displayEmpty
-                inputProps={{ "aria-label": "Without label" }}
+                inputProps={{ "aria-label": "Without label",disableUnderline: true }}
                 defaultValue={""}
+                disableUnderline
+                
               >
                 <MenuItem value="" disabled={true}>
                   위치별
@@ -289,8 +315,10 @@ const HouseInfo = () => {
               </Select>
             
               <Select
-                style={{ width: "30%", height: "50px", borderRadius: "10px" }}
+                style={{ width: "30%", height: "50px", borderRadius: "10px",backgroundColor:"#f7f3ef" }}
                 displayEmpty
+                disableUnderline
+                
                 inputProps={{ "aria-label": "Without label" }}
                 defaultValue={""}
               >
@@ -305,10 +333,10 @@ const HouseInfo = () => {
             style={{ fontSize: "22px", marginBottom: "18px" }}
             id="houseCount"
           >
-            {data.length} 개의 숙소
+            {data.findAllAcc.length} 개의 숙소
           </div>
           <ListWrap>
-            {data.map((item, idx) => {
+            {data.findAllAcc.map((item, idx) => {
               return (
                 // <div id="testBox">
                 <ContentsListBox key={idx}>
@@ -318,7 +346,7 @@ const HouseInfo = () => {
                     height={"220px"}
                   />
                   <DesBox>
-                    <StyledLink to={`/house/${item.id}`}>
+                    <StyledLink to={`/house/${item.hostId}`}>
                       <h2>{item.title}</h2>
                     </StyledLink>
                     <div id="infoHouse">
@@ -327,13 +355,12 @@ const HouseInfo = () => {
                         설명 ...한달살기의 조건에 관한 설명 ...
                       </span>
                     </div>
-                    <span>000,000원 1박</span>
                     <LikeBox>
                       <div style={{}}>
                         <StarIcon />
                         <span
                           style={{
-                            margin: "5px 0px 3px 5px",
+                            margin: "5px 0px 3px 20px",
                             fontSize: "27px",
                           }}
                         >
@@ -354,9 +381,9 @@ const HouseInfo = () => {
             })}
           </ListWrap>
         </ContentsBox>
-        <MapBox>
+        {/* <MapBox>
           <Map isinfo={"isinfo"} />
-        </MapBox>
+        </MapBox> */}
       </div>
     </MainBox>
   );
@@ -374,7 +401,8 @@ const MainBox = styled.div`
 const SpotMainBox = styled.div`
   width: 100%;
   height: 120px;
-  border: 1px solid black;
+  border-top: 1px solid #e5e5ea;
+  border-bottom: 1px solid #e5e5ea;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -477,8 +505,23 @@ const OrderingBox = styled.div`
     align-items: center;
     border-radius: 10px;
     font-size: 21px;
+    /* background-color: #f7f3ef; */
   }
 `;
+
+const StyleSelect = styled(Select)`
+  height: 50px;
+    /* border: 1px solid blue; */
+    border: none;
+    outline: none;
+    margin: 0px 15px 0px 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    font-size: 21px;
+    background-color: #f7f3ef;
+`
 
 const ContentsListBox = styled.div`
   height: 260px;
@@ -522,7 +565,7 @@ const LikeBox = styled.div`
 
 
 const SaveImg = styled.img`
-
+  cursor: pointer;
 `
 
 const StarIcon = styled(FaStar)`
