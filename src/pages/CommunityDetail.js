@@ -37,11 +37,12 @@ const CommunityDetail = () => {
     ["detailContent", params.id],
     () =>
       instance.get(`/post/${params.id}`).then((res) => {
-        console.log(res.data.allPost[0]);
+        console.log(res.data.allPost[0].content.replace('https://yushin-s3.s3.ap-northeast-2.amazonaws.com/images/c997be2f-e4e5-4a09-b771-a57419b2e492.webp','aaaa'));
         return res.data.allPost[0];
       }),
     {
       // retry: false, // 재호출 안하기
+      enabled:!!params.id,
       refetchOnWindowFocus: false, // 다른화면 갔다와도 재호출 안되게 함
     }
   );
@@ -277,7 +278,9 @@ const CommunityDetail = () => {
                 </div>
               </div>
             </div>
-            <button>글쓴이 글 더 보러가기</button>
+            <button onClick={()=>{
+              navigate(`/userpage/${data.userId}`)
+            }}>글쓴이 글 더 보러가기</button>
           </div>
         </WrapRight>
       </Wrap>
@@ -368,7 +371,7 @@ const Content = styled.div`
       height: 45px;
       border-radius: 10px;
       border: none;
-      background: #c7c7cc;
+      background: #F7F3EF;
       font-size: 21px;
       font-weight: 600;
       line-height: 25.06px;
@@ -391,12 +394,12 @@ const Content = styled.div`
       font-size: 18px;
       line-height: 150%;
     }
-    .toastui-editor-contents img {
+    /* .toastui-editor-contents img {
       border-radius: 20px;
       width: 100%;
       height: 614px;
       object-fit: cover;
-    }
+    } */
   }
 `;
 const User = styled.div`
@@ -472,7 +475,7 @@ const Button = styled.div`
     font-weight: 500;
     font-size: 24px;
     line-height: 160%;
-    background-color: #e5e5ea;
+    background-color: #F7F3EF;
     color: #48484a;
     cursor: pointer;
   }
@@ -551,7 +554,8 @@ const WrapRight = styled.div`
     height: 657px;
     padding: 28px 20px 20px 20px;
     border-radius: 20px;
-    box-shadow: 0px 12px 42px rgba(0, 0, 0, 0.2);
+    background: #FDFCFB;
+    box-shadow: 0px 12px 42px #EEE9E4;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -566,7 +570,7 @@ const WrapRight = styled.div`
     button {
       width: 100%;
       height: 66px;
-      background: #e5e5ea;
+      background: #F7F3EF;
       border-radius: 10px;
       border: none;
       font-style: normal;

@@ -6,11 +6,13 @@ import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import Avatar from "@mui/material/Avatar";
+import Badge from "@mui/material/Badge";
 import styled from "styled-components";
 import { current } from "@reduxjs/toolkit";
 import { useMutation, useQueryClient } from "react-query";
 import instance from "../shared/axios";
-
+import profileEdit from "../assests/css/profileEdit.webp";
 const style = {
   position: "absolute",
   top: "50%",
@@ -20,6 +22,7 @@ const style = {
   bgcolor: "background.paper",
   borderRadius: "30px",
   boxShadow: 24,
+  outline: "none",
   p: 4,
 };
 
@@ -31,14 +34,13 @@ const MyInfoModal = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
   const currentImg = useRef(null);
 
   const [isImgChnage, setIsImgChange] = useState(true);
 
   const nickRef = useRef(null);
   const [isImgUrl, setIsImgUrl] = useState("");
-  const [profile,setProfile] = useState() 
+  const [profile, setProfile] = useState();
   const [isnickChange, setIsNickChange] = useState(nickName);
 
   const queryClient = useQueryClient();
@@ -52,27 +54,23 @@ const MyInfoModal = () => {
 
   const onImgChange = (e) => {
     const userImgChange = e.target.files;
-    setProfile(e.target.files[0])
+    setProfile(e.target.files[0]);
     const myImgChangeURl = URL.createObjectURL(userImgChange[0]);
     setIsImgUrl(myImgChangeURl);
     setIsImgChange(false);
   };
   const updateMutation = useMutation((formData) => {
     instance
-      .put(
-        `/oauth/mypage/${userId}/img`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      )
+      .put(`/oauth/mypage/${userId}/img`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         console.log(res.data);
-        localStorage.setItem('userImage',res.data.userImageURL[0])
-        handleClose()
-        window.location.reload()
+        localStorage.setItem("userImage", res.data.userImageURL[0]);
+        handleClose();
+        window.location.reload();
       })
       .catch((err) => {
         console.log(err, "why");
@@ -83,18 +81,31 @@ const MyInfoModal = () => {
     console.log("이미지", isImgUrl);
     const formData = new FormData();
     formData.append("images", profile);
-    updateMutation.mutate(formData)
+    updateMutation.mutate(formData);
   };
   return (
     <div>
-      <img src={userImage}
-      alt="프로필이미지"
-      style={{cursor:'pointer'}}
-        onClick={() => {
-          handleOpen();
-        }}
+      <Badge
+        overlap="circular"
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        badgeContent={
+          <img
+            style={{ width: "24px", height: "24px" }}
+            src={profileEdit}
+            alt="프로필수정"
+          ></img>
+        }
       >
-      </img>
+        <Avatar
+          alt="프로필 이미지"
+          src={userImage}
+          sx={{ width: 72, height: 72 }}
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            handleOpen();
+          }}
+        />
+      </Badge>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -116,8 +127,8 @@ const MyInfoModal = () => {
                   src={cancelIcon}
                   alt="닫기"
                   onClick={() => {
-                    handleClose()
-                    setIsImgUrl("")
+                    handleClose();
+                    setIsImgUrl("");
                   }}
                 />
               </div>
@@ -125,22 +136,17 @@ const MyInfoModal = () => {
             <Main component="div">
               <div id="imgBox">
                 <MyImg src={isImgUrl ? isImgUrl : userImage}></MyImg>
-                <input
-                  style={{ display: "none", outline: "none" }}
-                  ref={currentImg}
-                  type={"file"}
-                  accept={"image/*"}
-                  onChange={onImgChange}
-                />
+                <div className="btn">
                 <button onClick={imgChangeClick}>프로필 이미지 선택</button>
                 <button
-                className="save"
+                  className="save"
                   onClick={() => {
                     userInfoChangeClick();
                   }}
                 >
                   저장
                 </button>
+                </div>
               </div>
             </Main>
           </Box>
@@ -158,44 +164,60 @@ const Main = styled(Typography)`
   #profileTitle {
     display: flex;
     justify-content: space-between;
+    h3 {
+      font-style: normal;
+      font-weight: 600;
+      font-size: 32px;
+      line-height: 38px;
+      margin-bottom: 90px;
+    }
   }
   #imgBox {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 100%;
+    .btn{
+      margin-top: 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
     button {
-      padding: 10px 15px;
+      /* width: 540px; */
+      width: 88.82%;
+      height: 79px;
+      /* padding: 10px 15px; */
       border: none;
-      background-color: #f2f2f7;
-      border-radius: 10px;
-      margin-top: 25px;
+      background: #eee9e4;
+      border-radius: 20px;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 24px;
+      line-height: 150%;
       cursor: pointer;
     }
-  }
-  #nickNameBox {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-top: 30px;
-    button {
-      padding: 10px 15px;
-      border: none;
-      background-color: #f2f2f7;
-      border-radius: 10px;
-      margin-top: 25px;
-      width: 100%;
-      cursor: pointer;
+    .save {
+      margin-top: 12px;
+      font-style: normal;
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 150%;
+      background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+        #eee9e4;
+      border: 1px solid #d1d1d6;
+      border-radius: 20px;
     }
   }
 `;
 
 const MyImg = styled.img`
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
-  margin-top: 30px;
 `;
 
 const CancelImg = styled.img`

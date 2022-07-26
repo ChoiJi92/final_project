@@ -15,69 +15,118 @@ import MyInfoModal from "../components/MyInfoModal";
 import editIcon from "../assests/css/editIcon.png";
 import { useMutation, useQuery } from "react-query";
 import instance from "../shared/axios";
-import { useRecoilState } from "recoil";
-import {
-  myPostList,
-  myLikeList,
-  myHostList,
-  mySaveList,
-} from "../recoil/atoms";
 
-const TestPage = () => {
+const TestPage2 = () => {
   const [myLike, setMyLike] = useState(true);
   const [myWrite, setMyWrite] = useState(true);
+  const [mySave, setMySave] = useState(true);
+  const [myHouse, setMyHouse] = useState(true);
   const [isEdit, setIsEdit] = useState(false);
-
-  const [upMore, setUpMore] = useState(false);
-  const [bottomMore, setBottomMore] = useState(false);
-
-  // 데이터
-  const [myLikePost, setMyLikePost] = useRecoilState(myLikeList);
-  const [myPost, setMyPost] = useRecoilState(myPostList);
-  const [mySavePost, setMySavePost] = useRecoilState(mySaveList);
-  const [myHostPost, setMyHostPost] = useRecoilState(myHostList);
-
   const nicknameRef = useRef();
+  // true
+  const myLikeList = [1, 2];
+
+  // false
+  const mySaveList = [];
+
+  const myWriteList = [1, 2];
+  const myHoseList = [];
+
+  //topbox는 첫 렌더링 될 때 myLikeList를 보여줌
+  const [topBox, setTopBox] = useState(true);
+
+  //bottomBox는 첫 렌더링 될 때 myWriteList를 보여줌
+  const [bottomBox, setBottomBox] = useState(true);
+
+  console.log(topBox, "위에 박스");
+  console.log(bottomBox, "아래 박스");
+
+  const bottomWrite = useRef(null);
+  const bottomHouse = useRef(null);
+  const topLike = useRef(null);
+  const topSave = useRef(null);
+
   const navigate = useNavigate();
   const nickName = localStorage.getItem("nickName");
   const userId = localStorage.getItem("userId");
   const email = localStorage.getItem("email");
   const host = localStorage.getItem("host");
 
-  const { data } = useQuery(
-    ["loadMyPage"],
-    () =>
-      instance
-        .get(`oauth/mypage/${userId}`)
-        .then((res) => {
-          console.log(res.data);
-          return (
-            //   setMyLikePost(res.data.mylikespost), setMyPost(res.data.mypostinfo)
-            res.data
-          );
-        })
-        .catch((err) => {
-          console.log(err);
-        }),
-    {
-      onSuccess: (data) => {
-        setMyLikePost(data.mylikespost);
-        setMyPost(data.mypostinfo);
-      },
-    }
+  const {data} = useQuery(['loadMyPage'], ()=> instance.get(`oauth/mypage/${userId}`).then((res)=>{
+    console.log(res.data)
+  }).catch((err)=>{
+    console.log(err)
+  }) )
+
+
+  useEffect(() => {
+    autoBottomClick();
+    autoTopClick();
+  }, []);
+
+  const likeClick = () => {
+    setMyLike((prev) => !prev);
+  };
+  const saveClick = () => {
+    setMySave((prev) => !prev);
+  };
+
+  const writeClick = () => {
+    setMyWrite((prev) => !prev);
+  };
+
+  const houseClick = () => {
+    setMyHouse((prev) => !prev);
+  };
+
+  // console.log(list.length);
+  const autoTopClick = (e) => {
+    topSave.current.style.opacity = 0.4;
+  };
+
+  const myLikeInfoClick = () => {
+    topSave.current.style.opacity = 0.4;
+    topLike.current.style.opacity = "";
+    setTopBox(true);
+  };
+
+  const mySaveInfoClick = () => {
+    topSave.current.style.opacity = "";
+    topLike.current.style.opacity = 0.4;
+    setTopBox(false);
+  };
+
+  const autoBottomClick = (e) => {
+    // bottomRef.current.style.left = bottomWrite.current.offsetLeft + "px";
+    // bottomRef.current.style.width = bottomWrite.current.offsetWidth + "px";
+    bottomHouse.current.style.opacity = 0.4;
+  };
+
+  const myWriteInfoClick = (e) => {
+    // bottomRef.current.style.left = e.currentTarget.offsetLeft + "px";
+    // bottomRef.current.style.width = e.currentTarget.offsetWidth + "px";
+    bottomWrite.current.style.opacity = "";
+    bottomHouse.current.style.opacity = 0.4;
+    setBottomBox(true);
+  };
+
+  const myHouseInfoClick = (e) => {
+    // bottomRef.current.style.left = e.currentTarget.offsetLeft + "px";
+    // bottomRef.current.style.width = e.currentTarget.offsetWidth + "px";
+    bottomWrite.current.style.opacity = 0.4;
+    bottomHouse.current.style.opacity = "";
+    setBottomBox(false);
+  };
+  const nickNameUpdate = useMutation((nickname) =>{
+    instance.put(`/oauth/mypage/${userId}/nick`,{nickname}).then((res)=>{
+      localStorage.setItem('nickName',res.data.nickname)
+      setIsEdit(false)
+      window.location.reload()
+    }).catch((err)=>{
+      window.alert(err.response.data.errorMessage)
+    })
+  }
   );
-  const nickNameUpdate = useMutation((nickname) => {
-    instance
-      .put(`/oauth/mypage/${userId}/nick`, { nickname })
-      .then((res) => {
-        localStorage.setItem("nickName", res.data.nickname);
-        setIsEdit(false);
-        window.location.reload();
-      })
-      .catch((err) => {
-        window.alert(err.response.data.errorMessage);
-      });
-  });
   return (
     <MainBox>
       <ProfileBox>
@@ -87,15 +136,12 @@ const TestPage = () => {
             {isEdit ? (
               <div className="nickname">
                 <input ref={nicknameRef} defaultValue={nickName}></input>
+                {/* <img src={editIcon} alt="닉네임 변경"></img> */}
                 <div className="btn">
-                  <button
-                    onClick={() => {
-                      console.log(nicknameRef.current.value);
-                      nickNameUpdate.mutate(nicknameRef.current.value);
-                    }}
-                  >
-                    저장
-                  </button>
+                  <button onClick={() => {
+                    console.log(nicknameRef.current.value)
+                    nickNameUpdate.mutate(nicknameRef.current.value)
+                  }}>저장</button>
                   <button
                     onClick={() => {
                       setIsEdit(false);
@@ -136,123 +182,75 @@ const TestPage = () => {
         </div>
       </ProfileBox>
 
-      <MyDefaultBoxTop myLike={myLike}>
+      <MyDefaultBoxTop>
         <div id="mylike">
           <div id="myInfo">
-            <h1
-              onClick={() => {
-                setMyLike(true);
-              }}
-              style={{ opacity: myLike ? "1" : "0.4" }}
-            >
+            <h1 ref={topLike} onClick={myLikeInfoClick}>
               내 좋아요
             </h1>
-            <h1
-              onClick={() => {
-                setMyLike(false);
-              }}
-              style={{ opacity: myLike ? "0.4" : "1" }}
-            >
+            <h1 ref={topSave} onClick={mySaveInfoClick}>
               저장함
             </h1>
           </div>
-          {myLike ? (
+          {topBox ? (
             <span>
-              {myLikePost.length === 0 ? (
+              {myLikeList.length === 0 ? (
                 ""
               ) : (
                 <>
-                  {!upMore ? (
-                    <DownIcon
-                      onClick={() => {
-                        setUpMore(true);
-                      }}
-                    />
+                  {myLike ? (
+                    <DownIcon onClick={likeClick} />
                   ) : (
-                    <UpIcon
-                      onClick={() => {
-                        setUpMore(false);
-                      }}
-                    />
+                    <UpIcon onClick={likeClick} />
                   )}
                 </>
               )}
             </span>
           ) : (
             <span>
-              {mySavePost.length === 0 ? (
+              {mySaveList.length === 0 ? (
                 ""
               ) : (
                 <>
-                  {!upMore ? (
-                    <DownIcon
-                      onClick={() => {
-                        setUpMore(true);
-                      }}
-                    />
+                  {mySave ? (
+                    <DownIcon onClick={saveClick} />
                   ) : (
-                    <UpIcon
-                      onClick={() => {
-                        setUpMore(false);
-                      }}
-                    />
+                    <UpIcon onClick={saveClick} />
                   )}
                 </>
               )}
             </span>
           )}
         </div>
-        {!upMore ? (
+        {topBox ? (
           <>
             {myLike ? (
               <>
-                {myLikePost.length === 0 ? (
+                {myLikeList.length === 0 ? (
                   <EmptyImgBox>
                     <img src={mypageImg} alt="없어요 이미지" />
                     <span>아직 좋아요 한 글이 없어요.</span>
                   </EmptyImgBox>
                 ) : (
                   <DefaultImgBox>
-                    {myLikePost.slice(0, 3).map((v, i) => (
-                      <img
-                        src={v.images[0].thumbnailURL}
-                        key={i}
-                        alt="이미지"
-                      />
+                    {myLikeList.slice(0, 3).map((item, idx) => (
+                      <img style={{}} src={jeju1} key={idx} alt="이미지" />
                     ))}
                   </DefaultImgBox>
                 )}
               </>
             ) : (
-              <>
-                {myLikePost.length === 0 ? (
-                  <EmptyImgBox>
-                    <img src={mypageImg} alt="없어요 이미지" />
-                    <span>아직 저장한 글이 없어요.</span>
-                  </EmptyImgBox>
-                ) : (
-                  <DefaultImgBox>
-                    {mySavePost.slice(0, 3).map((v, i) => (
-                      <img
-                        src={v.images[0].thumbnailURL}
-                        key={i}
-                        alt="이미지"
-                      />
-                    ))}
-                  </DefaultImgBox>
-                )}
-              </>
+              ""
             )}
-          </>
-        ) : (
-          <>
             {myLike ? (
+              ""
+            ) : (
               <HiddenMyLikeBox>
-                {myLikePost.map((v, i) => {
+                {myLikeList.map((item, idx) => {
                   return (
-                    <div key={i} id="listBox">
-                      <img src={v.images[0].thumbnailURL} alt="이미지" />
-                      <span style={{ marginTop: "5px" }}>{v.title}</span>
+                    <div key={idx} id="listBox">
+                      <img src={jeju1} alt="이미지" />
+                      <span style={{ marginTop: "5px" }}>해변가 근처 숙소</span>
                       <div id="icons">
                         <div style={{ display: "flex", alignItems: "center" }}>
                           <StarIcon />
@@ -264,9 +262,34 @@ const TestPage = () => {
                   );
                 })}
               </HiddenMyLikeBox>
+            )}
+          </>
+        ) : (
+          // 마이 세이브 박스 렌더링
+          <>
+            {mySave ? (
+              <>
+                {mySaveList.length === 0 ? (
+                  <EmptyImgBox>
+                    <img src={mypageImg} alt="없어요 이미지" />
+                    <span>아직 저장한 숙소가 없어요.</span>
+                  </EmptyImgBox>
+                ) : (
+                  <DefaultImgBox>
+                    {mySaveList.slice(0, 3).map((item, idx) => (
+                      <img style={{}} src={jeju1} alt="이미지" key={idx} />
+                    ))}
+                  </DefaultImgBox>
+                )}
+              </>
+            ) : (
+              ""
+            )}
+            {mySave ? (
+              ""
             ) : (
               <HiddenMyLikeBox>
-                {mySavePost.map((item, idx) => {
+                {mySaveList.map((item, idx) => {
                   return (
                     <div key={idx} id="listBox">
                       <img src={jeju1} alt="이미지" />
@@ -290,122 +313,77 @@ const TestPage = () => {
       <MyDefaultBoxBottom>
         <div id="myWrite">
           <div id="myInfo">
-            <h1
-              onClick={() => {
-                setMyWrite(true);
-              }}
-              style={{ opacity: myWrite ? "1" : "0.4" }}
-            >
+            <h1 ref={bottomWrite} onClick={myWriteInfoClick}>
               내가 쓴 글
             </h1>
-            <h1
-              onClick={() => {
-                setMyWrite(false);
-              }}
-              style={{ opacity: myWrite ? "0.4" : "1" }}
-            >
+            <h1 ref={bottomHouse} onClick={myHouseInfoClick}>
               내 숙소
             </h1>
+            {/* <BottomUnderbar ref={bottomRef} /> */}
           </div>
-          {myWrite ? (
+          {bottomBox ? (
             <span>
-              {myPost.length === 0 ? (
+              {myWriteList.length === 0 ? (
                 ""
               ) : (
                 <>
-                  {!bottomMore ? (
-                    <DownIcon
-                      onClick={() => {
-                        setBottomMore(true);
-                      }}
-                    />
+                  {myWrite ? (
+                    <DownIcon onClick={writeClick} />
                   ) : (
-                    <UpIcon
-                      onClick={() => {
-                        setBottomMore(false);
-                      }}
-                    />
+                    <UpIcon onClick={writeClick} />
                   )}
                 </>
               )}
             </span>
           ) : (
             <span>
-              {myHostPost.length === 0 ? (
+              {myHoseList.length === 0 ? (
                 ""
               ) : (
                 <>
-                  {bottomMore ? (
-                    <DownIcon
-                      onClick={() => {
-                        setBottomMore(true);
-                      }}
-                    />
+                  {myHouse ? (
+                    <DownIcon onClick={houseClick} />
                   ) : (
-                    <UpIcon
-                      onClick={() => {
-                        setBottomMore(false);
-                      }}
-                    />
+                    <UpIcon onClick={houseClick} />
                   )}
                 </>
               )}
             </span>
           )}
         </div>
-        {!bottomMore ? (
+        {bottomBox ? (
           <>
             {myWrite ? (
               <>
-                {myPost.length === 0 ? (
+                {myWriteList.length === 0 ? (
                   <EmptyImgBox>
                     <img src={mypageImg} alt="없어요 이미지" />
                     <span>아직 내가 쓴 글이 없어요.</span>
                   </EmptyImgBox>
                 ) : (
                   <DefaultImgBox>
-                    {myPost.slice(0, 3).map((v, i) => (
-                      <img
-                        src={v.images[0].thumbnailURL}
-                        alt="이미지"
-                        key={i}
-                      />
+                    {myWriteList.slice(0, 3).map((item, idx) => (
+                      <img style={{}} src={jeju1} alt="이미지" key={idx} />
                     ))}
                   </DefaultImgBox>
                 )}
               </>
             ) : (
-              <>
-                {myHostPost.length === 0 ? (
-                  <EmptyImgBox>
-                    <img src={mypageImg} alt="없어요 이미지" />
-                    <span>아직 내 숙소가 없어요.</span>
-                  </EmptyImgBox>
-                ) : (
-                  <DefaultImgBox>
-                    {myHostPost.slice(0, 3).map((item, idx) => (
-                      <img style={{}} src={jeju1} alt="이미지" />
-                    ))}
-                  </DefaultImgBox>
-                )}
-              </>
+              ""
             )}
-          </>
-        ) : (
-          <>
             {myWrite ? (
+              ""
+            ) : (
               <HiddenMyLikeBox>
-                {myPost.map((v, i) => {
+                {myWriteList.map((item, idx) => {
                   return (
-                    <div key={i} id="listBox">
-                      <img src={v.images[0].thumbnailURL} alt="이미지" />
-                      <span style={{ marginTop: "5px" }}>{v.title}</span>
+                    <div key={idx} id="listBox">
+                      <img src={jeju1} />
+                      <span style={{ marginTop: "5px" }}>내가 쓴 글 제목</span>
                       <div id="icons">
                         <div style={{ display: "flex", alignItems: "center" }}>
                           <CommentIcon />
-                          <span style={{ marginLeft: "10px" }}>
-                            {v.commentNum}개
-                          </span>
+                          <span style={{ marginLeft: "10px" }}>00개</span>
                         </div>
                         <HeartIcon />
                       </div>
@@ -413,9 +391,34 @@ const TestPage = () => {
                   );
                 })}
               </HiddenMyLikeBox>
+            )}
+          </>
+        ) : (
+          // 마이 하우스 박스 렌더링
+          <>
+            {myHouse ? (
+              <>
+                {myHoseList.length === 0 ? (
+                  <EmptyImgBox>
+                    <img src={mypageImg} alt="없어요 이미지" />
+                    <span>아직 내 숙소가 없어요.</span>
+                  </EmptyImgBox>
+                ) : (
+                  <DefaultImgBox>
+                    {myHoseList.slice(0, 3).map((item, idx) => (
+                      <img style={{}} src={jeju1} />
+                    ))}
+                  </DefaultImgBox>
+                )}
+              </>
+            ) : (
+              ""
+            )}
+            {myHouse ? (
+              ""
             ) : (
               <HiddenMyLikeBox>
-                {myHostPost.map((item, idx) => {
+                {myHoseList.map((item, idx) => {
                   return (
                     <div key={idx} id="listBox">
                       <img src={jeju1} />
@@ -466,7 +469,6 @@ const ProfileBox = styled.div`
   }
   #profile {
     margin-bottom: 21px;
-    width: 100%;
     .nickname {
       display: flex;
       flex-direction: row;
@@ -490,14 +492,10 @@ const ProfileBox = styled.div`
         border: 1px solid #c7c7cc;
         border-radius: 10px;
         margin-right: 20px;
-        font-style: normal;
-        font-weight: 500;
-        font-size: 18px;
-        line-height: 150%;
       }
       .btn {
         height: 100%;
-        width: 30%;
+        width: 40%;
         button {
           border: none;
           height: 100%;
@@ -505,10 +503,6 @@ const ProfileBox = styled.div`
           background: #e5e5ea;
           border-radius: 10px;
           margin-right: 10px;
-          font-style: normal;
-          font-weight: 500;
-          font-size: 18px;
-          line-height: 150%;
           cursor: pointer;
         }
       }
@@ -563,7 +557,6 @@ const MyDefaultBoxTop = styled.div`
     cursor: pointer;
   }
   h1 {
-    opacity: ${(props) => (props.myLike ? "1" : "0.4")};
     margin-left: 35px;
     margin-bottom: 10px;
     cursor: pointer;
@@ -698,4 +691,4 @@ const MyDefaultBoxBottom = styled.div`
   }
 `;
 
-export default TestPage;
+export default TestPage2;

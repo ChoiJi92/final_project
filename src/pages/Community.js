@@ -31,11 +31,13 @@ const Community = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [category, setCategory] = useState("all");
+  const [bestContent,setBestContent] = useState([])
   const { data } = useQuery(
     ["content"],
     () =>
       instance.get("/post").then((res) => {
         console.log(res.data.allPost);
+        
         return res.data.allPost;
       }),
     {
@@ -48,7 +50,7 @@ const Community = () => {
     {
       onSuccess: () => {
         // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
-        // queryClient.invalidateQueries("detailContent");
+        queryClient.invalidateQueries("content");
       },
     }
   );
@@ -62,7 +64,7 @@ const Community = () => {
     {
       onSuccess: () => {
         // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
-        // queryClient.invalidateQueries("detailContent");
+        queryClient.invalidateQueries("content");
       },
     }
   );
@@ -218,7 +220,6 @@ const Community = () => {
                   </div>
                   <div className="comment">
                     <img
-                      style={{ paddingTop: "20px" }}
                       src={commentIcon}
                       alt="댓글"
                     />
@@ -482,11 +483,10 @@ const Card = styled.div`
   cursor: pointer;
   :hover {
     .title {
-      color: #64b5f6;
+      text-decoration: underline;
     }
     .thumnail {
-      box-shadow: rgb(0 0 0 / 50%) 0px 5px 10px 0px;
-      transform: translateY(-10px);
+      transform:scale(1.1); 
     }
   }
   .leftContent {
@@ -513,11 +513,14 @@ const Card = styled.div`
     bottom: 0;
     display: flex;
     flex-direction: row;
-    border: 1px solid;
     .like {
       display: flex;
       flex-direction: row;
       margin-right: 40px;
+      img{
+        width: 32px;
+        height: 32px;
+      }
       p {
         margin-left: 12px;
         font-style: normal;
@@ -530,6 +533,10 @@ const Card = styled.div`
     .comment {
       display: flex;
       flex-direction: row;
+      img{
+        width: 32px;
+        height: 32px;
+      }
       p {
         margin-left: 12px;
         font-style: normal;

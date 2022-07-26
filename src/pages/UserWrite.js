@@ -38,8 +38,9 @@ const UserWrite = () => {
   const [title, setTitle] = useState(data?.title);
   const [preview, setPreview] = useState(data?.images[0].thumbnailURL);
   const [thumbnail, setThumbnail] = useState();
-  const [thumbnailKey, setThumbnailKey] = useState(data?.thumbnailKey);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [editorImage, setEditorImage] = useState([]);
+  const [preImages, setPreImages] = useState([]);
+  // const [modalOpen, setModalOpen] = useState(false);
   const [address, setAddress] = useState(data?.mainAddress);
   const [tagList, setTagList] = useState([]);
   // const address = useRecoilValue(addressState);
@@ -53,7 +54,6 @@ const UserWrite = () => {
     formState: { errors },
   } = useForm();
   // 이미지 업로드 부분
-  console.log(content);
   const onDrop = useCallback((acceptedFiles) => {
     console.log(acceptedFiles[0]);
     // let imagelist = []; // 미리보기 이미지 담을 리스트
@@ -94,7 +94,8 @@ const UserWrite = () => {
         })
         .then((res) => {
           setOpen(true);
-          console.log(res.data)}),
+          console.log(res.data);
+        }),
     {
       onSuccess: () => {
         // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
@@ -112,7 +113,10 @@ const UserWrite = () => {
             "Content-Type": "multipart/form-data",
           },
         })
-        .then((res) => console.log(res.data)),
+        .then((res) => {
+          setOpen(true);
+          console.log(res.data);
+        }),
     {
       onSuccess: () => {
         // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
@@ -121,15 +125,25 @@ const UserWrite = () => {
     }
   );
   const onSubmit = (data) => {
-    console.log(data);
-    console.log(title);
-    console.log(content);
-    console.log(thumbnail);
-    console.log(thumbnailKey);
-    console.log(address);
-    console.log(tagList);
+    // console.log(data);
+    // console.log(title);
+    // console.log(content);
+    // console.log(thumbnail);
+    // console.log(address);
+    // console.log(tagList);
+    console.log(editorImage); // foreach 돌려야함
+    console.log(preImages);
     console.log("저장");
-    console.log(imageKey.filter((v) => !content.includes(v)));
+    let filterImage = preImages.filter((v) => !content.includes(v)) // 삭제된 imageurl
+    console.log(filterImage,'나는 없어진 이미지!')
+    let index = filterImage.map((v) => preImages.indexOf(v))
+    console.log(index,'나는 없어진 친구 인덱스')
+    console.log(editorImage.filter((_,i)=> !index.includes(i)),'나는 필터된 file!!')
+    console.log(preImages.filter((v) => content.includes(v)),'필터된 친구');
+    let preFilterImages =preImages.filter((v) => content.includes(v))
+    console.log(preFilterImages)
+    
+
     if (!thumbnail && !preview) {
       window.alert("썸네일 사진을 추가해 주세요 :)");
     } else if (!title) {
@@ -144,7 +158,7 @@ const UserWrite = () => {
       }
       // else{
       //   console.log('여기는?')
-      //   formData.append("images", null)
+      //   formData.append("images", preview)
       // }
       formData.append("title", title);
       formData.append("content", content);
@@ -159,10 +173,10 @@ const UserWrite = () => {
       //   "thumbnailKEY",
       //   thumbnailKey ? thumbnailKey : ""
       // );
-      formData.append(
-        "ImageKEY",
-        imageKey.filter((v) => !content.includes(v))
-      );
+      // formData.append(
+      //   "ImageKEY",
+      //   imageKey.filter((v) => !content.includes(v))
+      // );
       if (!params.id) {
         console.log("저장");
         createPost.mutate(formData);
@@ -210,16 +224,17 @@ const UserWrite = () => {
       </Title>
       <PostEditer
         setContent={setContent}
-        imageKey={imageKey}
-        setImageKey={setImageKey}
+        preImages={preImages}
+        setPreImages={setPreImages}
         content={data?.content}
+        setEditorImage={setEditorImage}
       ></PostEditer>
       <Tag>
         <h2>태그</h2>
         <TagList
           maxLength={10}
-          width={'80%'}
-          margin={'0px'}
+          width={"80%"}
+          margin={"0px"}
           tagList={tagList}
           setTagList={setTagList}
         />
@@ -256,13 +271,13 @@ const UserWrite = () => {
                   width: "100%",
                   height: "56px",
                   border: "none",
-                  paddingLeft:'5px', 
+                  paddingLeft: "5px",
                   fontStyle: "normal",
                   fontWeight: "500",
                   fontSize: "18px",
                   lineHeight: "150%",
                   borderRadius: "10px",
-                  background: '#F7F3EF',
+                  background: "#F7F3EF",
                 }}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
@@ -294,13 +309,13 @@ const UserWrite = () => {
                   width: "100%",
                   height: "56px",
                   border: "none",
-                  paddingLeft:'5px', 
+                  paddingLeft: "5px",
                   fontStyle: "normal",
                   fontWeight: "500",
                   fontSize: "18px",
                   lineHeight: "150%",
                   borderRadius: "10px",
-                  background: '#F7F3EF',
+                  background: "#F7F3EF",
                 }}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
@@ -308,12 +323,10 @@ const UserWrite = () => {
                 <MenuItem value="" disabled={true}>
                   숙소의 형태를 선택해주세요.
                 </MenuItem>
-                <MenuItem value="게스트하우스">
-                  게스트하우스
-                </MenuItem>
-                <MenuItem value="독채 펜션">독채 펜션</MenuItem>
+                <MenuItem value="게스트하우스">게스트하우스</MenuItem>
+                <MenuItem value="한옥">한옥</MenuItem>
                 <MenuItem value="펜션">펜션</MenuItem>
-                <MenuItem value="민박">민박</MenuItem>
+                <MenuItem value="오피스텔/아파트">오피스텔/아파트</MenuItem>
               </Select>
               <p className="errorMessage">
                 {errors.type?.type === "required" &&
@@ -341,8 +354,7 @@ const UserWrite = () => {
                 defaultValue={data?.subAddress ? data.subAddress : ""}
               ></input>
               <p className="errorMessage">
-                {!address &&
-                  "지역은 필수 입력사항 입니다 :)"}
+                {!address && "지역은 필수 입력사항 입니다 :)"}
               </p>
             </div>
           </div>
@@ -396,7 +408,7 @@ const Container = styled.div`
     height: 270px;
     border: none;
     border-radius: 20px;
-    background: #F7F3EF;
+    background: #f7f3ef;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -422,7 +434,7 @@ const Container = styled.div`
     width: 58.068%;
     height: 52px;
     border: none;
-    background: #EEE9E4;
+    background: #eee9e4;
     border-radius: 10px;
     font-style: normal;
     font-weight: 500;
@@ -524,7 +536,7 @@ const InputWrap = styled.div`
     input {
       width: 100%;
       height: 56px;
-      background: #F7F3EF;
+      background: #f7f3ef;
       border-radius: 10px;
       font-style: normal;
       font-weight: 500;
@@ -538,8 +550,8 @@ const InputWrap = styled.div`
       }
       // 크롬 자동완성 선택했을 때 인풋창 백그라운드 파란색되는거 막는 css
       :-webkit-autofill {
-        -webkit-box-shadow: 0 0 0 1000px #F7F3EF inset;
-        box-shadow: 0 0 0 1000px #F7F3EF inset;
+        -webkit-box-shadow: 0 0 0 1000px #f7f3ef inset;
+        box-shadow: 0 0 0 1000px #f7f3ef inset;
       }
     }
   }
@@ -565,7 +577,6 @@ const InputWrap = styled.div`
       border-radius: 5px;
       padding: 10px;
       margin-bottom: 10px;
-      
     }
   }
   .type {
@@ -621,7 +632,7 @@ const InputWrap = styled.div`
       font-weight: 500;
       font-size: 18px;
       line-height: 150%;
-      background: #F7F3EF;
+      background: #f7f3ef;
       // 크롬 자동완성 선택했을 때 인풋창 백그라운드 파란색되는거 막는 css
       :-webkit-autofill {
         -webkit-box-shadow: 0 0 0 1000px white inset;
@@ -638,7 +649,7 @@ const InputWrap = styled.div`
       border-radius: 10px;
       padding: 0 20px;
       margin-bottom: 10px;
-      background: #F7F3EF;
+      background: #f7f3ef;
       input {
         width: 90%;
         border: none;
@@ -647,7 +658,7 @@ const InputWrap = styled.div`
         font-weight: 500;
         font-size: 18px;
         line-height: 150%;
-        background: #F7F3EF;
+        background: #f7f3ef;
         // 크롬 자동완성 선택했을 때 인풋창 백그라운드 파란색되는거 막는 css
         :-webkit-autofill {
           -webkit-box-shadow: 0 0 0 1000px white inset;
@@ -675,7 +686,7 @@ const InputWrap = styled.div`
       font-weight: 500;
       font-size: 18px;
       line-height: 150%;
-      background: #F7F3EF;
+      background: #f7f3ef;
       // 크롬 자동완성 선택했을 때 인풋창 백그라운드 파란색되는거 막는 css
       :-webkit-autofill {
         -webkit-box-shadow: 0 0 0 1000px white inset;
