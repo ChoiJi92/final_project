@@ -15,31 +15,39 @@ import { useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import axios from "axios";
 import instance from "../shared/axios";
+import { useRecoilState } from "recoil";
+import { TestImgList } from "../recoil/atoms";
 
 const HostWrite = () => {
   const params = useParams();
-  const paramsId = params.id;
+  const hostId = params.id;
   const [open, setOpen] = useState(false);
   //   const getWriteData = async (id) => {
   //     const { data } = await axios.get(`http://localhost:5001/testList/${id}`)
   //     return data
   // }
-
+  const [testImg,setTestImg ] = useRecoilState(TestImgList);
+  // const [testImg, setTestImg] = useState([]);
   const { data } = useQuery(
-    ["hostWrite", paramsId],
+    ["hostWrite", hostId],
 
     // ()=>getWriteData(paramsId),
     () => {
-      return axios
-        .get(`http://localhost:5001/testList/${paramsId}`)
-        .then((res) => res.data);
+      return instance
+        .get(`/host/${hostId}`)
+        .then((res) => res.data.findAllAcc);
     },
     {
       refetchOnWindowFocus: false,
-      enabled: !!paramsId,
+      enabled: !!hostId,
     }
   );
-
+ 
+  // useEffect(()=>{
+  //   setTestImg(data.images)
+  // },[testImg])
+  setTestImg(data.images)
+  console.log(testImg, "testImg")
   const {
     register,
     handleSubmit,
@@ -59,6 +67,9 @@ const HostWrite = () => {
     },
   });
   const [multiImgs, setMultiImgs] = useState([]);
+
+  
+
   const [imgFileList, setImgFileList] = useState([]);
 
   const [tagList, setTagList] = useState([]);
@@ -88,12 +99,20 @@ const HostWrite = () => {
     setMultiImgs(imgUrlLists);
     setImgFileList(testList);
   };
+
+
   const imgClick = () => {
     currentImg.current.click();
   };
+
+
   const deleteImage = (id) => {
     setMultiImgs(multiImgs.filter((_, index) => index !== id));
   };
+
+  const deleteTest = (id) => {
+    setTestImg(testImg.filter((_, idx)=>idx !== id))
+  }
 
   const queryClient = useQueryClient();
 
@@ -115,22 +134,12 @@ const HostWrite = () => {
   //     queryClient.invalidateQueries("hostWrite");
   //   },
   // });
-
-  const postMutation = useMutation(
-    (hostData, address) => {
-      return axios.post("http://localhost:5001/testList", hostData, address);
-    },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("hostWrite");
-      },
-    }
-  );
+console.log(data.images);
 
   const updateMutation = useMutation(
     (updateData) => {
-      return axios.put(
-        `http://localhost:5001/testList/${paramsId}`,
+      return instance.put(
+        `/host/${hostId}`,
         updateData
       );
     },
@@ -140,15 +149,13 @@ const HostWrite = () => {
       },
     }
   );
-
+  console.log(address, "its address")
   const onSubmit = (data) => {
-    if (address === "") {
-      setAddressError(true);
-    }
-    if (paramsId) {
+    // if (address === "") {
+    //   setAddressError(true);
+    // }
+    if (hostId) {
       console.log("hi");
-      updateMutation.mutate(data);
-    } else {
       const formData = new FormData();
       formData.append("category",data.category)
       formData.append("houseInfo",data.houseInfo)
@@ -159,33 +166,31 @@ const HostWrite = () => {
       formData.append("stepInfo",data.stepInfo)
       formData.append("stepSelect",data.stepSelect)
       formData.append("title",data.title)
+      imgFileList.forEach((item)=> formData.append("images", item));
+      updateMutation.mutate(formData);
+
+    } else {
+      const formData = new FormData();
+      formData.append("category",data.category)
+      formData.append("houseInfo",data.houseInfo)
+      formData.append("link",data.link)
+      formData.append("mainAddress",address)
+      formData.append("subAddress",data.subAddress)
+      formData.append("hostContent",data.hostContent)
+      formData.append("stepInfo",data.stepInfo)
+      formData.append("stepSelect",data.stepSelect)
+      formData.append("title",data.title)
+      console.log(data);
+      imgFileList.forEach((item)=> formData.append("images", item));
       testWrite.mutate(formData);
-      // imgFileList.forEach((item)=> formData.append("images", item))
-      // formData.append("images",multiImgs)
-    //   {
-    //   "title": "간장남들",
-    //   "category": "내륙",
-    //   "houseInfo": "아파트",
-    //   "mainAddress":"",
-    //   "subAddress":"",
-    //   "stepSelect": "아니오",
-    //   "stepInfo":"",
-    //   "link": "",
-    //   "postContent": "ㅋㅋㅋㅋㅋ",
-    //   "tagList": [],
-    // }
+     
+     
       // console.log("hello", data);
       // postMutation.mutate(data, address);
       setOpen(true);
       
     }
-    // else{
-    //   console.log(tag)
-    //   console.log(data, address);
-    //   const fulladdress =  address + data.subAddress
-    //   console.log(multiImgs);
-    //   console.log(fulladdress);
-    // }
+  
   };
 
   const hiddenSetp = watch("stepSelect");
@@ -241,7 +246,23 @@ const HostWrite = () => {
               className="list"
               draggedItemClassName="dragged"
             >
-              {multiImgs.map((v, index) => (
+              {hostId ? (
+                <>
+                {testImg.map((v, index) => (
+                <SortableItem key={`item-${index}`}>
+                  <List>
+                    <Img src={v.postImageURL} alt="이미지" />
+                    <DeleteIcon
+                      id="deleteIcon"
+                      onClick={() => deleteTest(index)}
+                    />
+                  </List>
+                </SortableItem>
+              ))}
+                </>
+              ) : (
+                <>
+                {multiImgs.map((v, index) => (
                 <SortableItem key={`item-${v}`}>
                   <List>
                     <Img src={v} alt="이미지" />
@@ -252,6 +273,9 @@ const HostWrite = () => {
                   </List>
                 </SortableItem>
               ))}
+                </>
+              )}
+              
             </SortableList>
           </ImgBox>
         </ImgMainBox>
@@ -261,7 +285,7 @@ const HostWrite = () => {
           <div id="infoTitle">
             <input
               placeholder="숙소 이름을 입력해주세요."
-              defaultValue={data?.title ? data?.title : ""}
+              defaultValue={data?.title ? data.title : ""}
               {...register("title", { required: true })}
             />
             <ErrorP1>
@@ -273,8 +297,9 @@ const HostWrite = () => {
         <InfoBox>
           <h2>카테고리 *</h2>
           <div id="infoCategory">
+         
             <Select
-              style={{ width: "100%", height: "50px", borderRadius: "10px" }}
+              style={{ width: "100%", height: "50px", borderRadius: "10px" ,border:"none", backgroundColor:"#f7F3EF"}}
               {...register("category", {
                 required: "카테고리는 필수 선택사항입니다 :)",
               })}
@@ -303,7 +328,7 @@ const HostWrite = () => {
               {...register("houseInfo", {
                 required: "숙소형태는 필수 선택사항입니다 :)",
               })}
-              style={{ width: "100%", height: "50px", borderRadius: "10px", fontStyle:"nomal"  }}
+              style={{ width: "100%", height: "50px", borderRadius: "10px", fontStyle:"nomal",border:"none", backgroundColor:"#f7F3EF"  }}
               displayEmpty
               inputProps={{ "aria-label": "Without label" }}
               defaultValue={data?.houseInfo ? data?.houseInfo : ""}
@@ -311,12 +336,12 @@ const HostWrite = () => {
               <MenuItem style={{fontWeight:500, lineHeight:"150%", color:"#8E8E93", fontStyle:"nomal"}} value="" disabled={true}>
                 숙소의 형태를 선택해주세요.
               </MenuItem>
-              <MenuItem value="단독 또는 다세대 주택">
-                단독 또는 다세대 주택
+              <MenuItem value="게스트하우스">
+                게스트하우스
               </MenuItem>
-              <MenuItem value="아파트">아파트</MenuItem>
-              <MenuItem value="게스트용 별채">게스트용 별채</MenuItem>
-              <MenuItem value="호텔">호텔</MenuItem>
+              <MenuItem value="독채펜션">독채펜션</MenuItem>
+              <MenuItem value="펜션">펜션</MenuItem>
+              <MenuItem value="민박">민박</MenuItem>
             </Select>
 
             <ErrorP>{errors.houseInfo?.message}</ErrorP>
@@ -326,14 +351,14 @@ const HostWrite = () => {
         <InfoBox>
           <h2>주소 *</h2>
           <div className="regionInput">
-            <div style={{ borderRadius: "10px" }} className="mainAddress">
+            <div style={{ borderRadius: "10px",border:"none", backgroundColor:"#f7F3EF" }} className="mainAddress">
               <input
                 placeholder="주소를 검색해 주세요."
                 // {...register("mainAddress", { required: true })}
                 // value={address}
                 readOnly
                 value={address || data?.mainAddress}
-                style={{ borderRadius: "10px" }}
+                style={{ borderRadius: "10px",border:"none", backgroundColor:"#f7F3EF" }}
                 {...register("mainAddress")}
                 // defaultValue={address ? address : data?.mainAddress }
               />
@@ -346,7 +371,7 @@ const HostWrite = () => {
                 required: "상세주소는 필수 선택사항입니다 :)",
               })}
               defaultValue={data?.subAddress ? data?.subAddress : ""}
-              style={{ borderRadius: "10px" }}
+              style={{ borderRadius: "10px,",border:"none", backgroundColor:"#f7F3EF" }}
             ></input>
             {addressError ? (
               <ErrorP1>주소는 필수 선택사항입니다 :)</ErrorP1>
@@ -361,7 +386,7 @@ const HostWrite = () => {
           <div id="stepMainBox">
             <div id="stepBox">
               <MuiSelect
-                style={{ width: "30.2%", borderRadius: "10px", "fontWeight":"500" }}
+                style={{ width: "30.2%", borderRadius: "10px", "fontWeight":"500",border:"none", backgroundColor:"#f7F3EF" }}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
                 {...register("stepSelect", {
@@ -406,11 +431,11 @@ const HostWrite = () => {
           <div id="infoDes">
             <textarea
               placeholder="숙소에 대한 정보를 최대한 상세하게 입력해주시면 더 많은 고객을 만나실 수 있어요."
-              {...register("postContent", { required: "설명은 필수입니다 :)" })}
-              defaultValue={data?.postContent ? data?.postContent : ""}
+              {...register("hostContent", { required: "설명은 필수입니다 :)" })}
+              defaultValue={data?.hostContent ? data?.hostContent : ""}
               id="text"
             ></textarea>
-            <ErrorP1>{errors.postContent?.message}</ErrorP1>
+            <ErrorP1>{errors.hostContent?.message}</ErrorP1>
           </div>
         </InfoBox>
         <WriteFooter
@@ -487,13 +512,11 @@ const ImgDesBox = styled.div`
     /* margin: 15px 0px 10px 0px; */
     margin-top: 10px;
     border-radius: 10px;
-    background-color: #dfe6e9;
+    background-color: #F7F3EF;
     cursor: pointer;
   }
 `;
-const ImgIcon = styled(FaImage)`
-  font-size: 20px;
-`;
+
 
 const ImgBox = styled.div`
   width: 81.5%;
@@ -532,7 +555,7 @@ const Img = styled.img`
 `;
 const DeleteIcon = styled(FaTimesCircle)`
   font-size: 20px;
-  background-color: #fff;
+  background-color: #F7F3EF;
   border: none;
   border-radius: 50%;
   color: #bdc3c7;
@@ -559,6 +582,7 @@ const InfoBox = styled.div`
     flex-direction: column;
     width: 59.3%;
     margin-right: 272px;
+    
   }
   .subAddress {
     height: 56px;
@@ -599,6 +623,7 @@ const InfoBox = styled.div`
       font-weight: 500;
       font-size: 18px;
       line-height: 150%;
+      
 
       // 크롬 자동완성 선택했을 때 인풋창 백그라운드 파란색되는거 막는 css
       :-webkit-autofill {
@@ -621,11 +646,12 @@ const InfoBox = styled.div`
       height: 56px;
       padding: 10px;
       border-radius: 10px;
-      border: 1px solid #c7c7cc;
       font-style: normal;
       font-weight: 500;
       font-size: 18px;
       line-height: 150%;
+      border: none;
+      background-color: #F7F3EF;
     }
   }
   #infoHouse,
@@ -652,7 +678,8 @@ const InfoBox = styled.div`
       font-weight: 500;
       font-size: 18px;
       line-height: 150%;
-      border: 1px solid #c7c7cc;
+      border: none;
+      background-color: #F7F3EF;
     }
   }
   h5 {
@@ -670,6 +697,7 @@ const InfoBox = styled.div`
     width: 48%;
     height: 70px;
     margin-right: 230px;
+    
   }
   #stepMainBox {
     width: 80%;
@@ -713,6 +741,7 @@ const InfoBox = styled.div`
       border-radius: 5px;
       border: 1px solid;
       margin-bottom: 10px;
+      
     }
   }
   h2 {
@@ -743,11 +772,13 @@ const StepInput = styled.input`
   padding: 10px;
   border-radius: 10px;
   margin-right: -200px;
-  border: 1px solid #c7c7cc;
+  
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
   line-height: 150%;
+  border: none;
+  background-color: #F7F3EF;
 `;
 const Tag = styled.div`
   display: flex;
