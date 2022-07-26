@@ -3,8 +3,6 @@ import Main from "./pages/Main";
 import GlobalStyles from "./assests/css/GlobalStyles";
 import Header from "./components/Header";
 import { Route, Routes } from "react-router-dom";
-import Mypage from "./pages/TestPage2";
-import Posts from "./pages/Posts";
 import KakaoRedirect from './components/KakaoRedirect';
 import GoogleRedirect from './components/GoogleRedirect';
 import Footer from './components/Footer';
@@ -26,7 +24,7 @@ import TestMap2 from './components/TestMap2';
 import Error from './pages/Error';
 import LoginError from './pages/LoginError';
 import UserPage from './pages/UserPage';
-import MyPage from './pages/MyPage';
+import Mypage from './pages/Mypage'
 
 
 function App() {
@@ -47,7 +45,7 @@ function App() {
         <Route path="/house/:id" element={<HouseDetail/>} />
         <Route path="/chat" element={<ChatList/>} />
         <Route path="/chatroom/:id" element={userId ? <ChatRoom/> : <LoginError/>} />
-        <Route path="/mypage" element={userId ? <MyPage /> : <LoginError/>} />
+        <Route path="/mypage" element={userId ? <Mypage /> : <LoginError/>} />
         <Route path="/userpage/:id" element={<UserPage />}/>
         <Route path="/test" element={<TestMap />} />
         <Route path="/testmap" element={<TestMap2 />} />
