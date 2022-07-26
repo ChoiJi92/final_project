@@ -4,25 +4,26 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import editIcon from "../assests/css/editIcon.png";
 import deleteIcon from "../assests/css/deleteIcon.png";
+import checkIcon from '../assests/css/checkIcon.webp'
+import cancelIcon from '../assests/css/cancelIcon.webp'
 import instance from "../shared/axios";
 const Comment = ({ value, index }) => {
   const queryClient = useQueryClient();
   const params = useParams();
   const commentRef = useRef();
   const [edit, setEdit] = useState(false);
-  const userId = localStorage.getItem('userId')
+  const userId = localStorage.getItem("userId");
   // 댓글 수정
   const updateComment = useMutation(
-    ['updateComment'],
-    (comment) => 
+    ["updateComment"],
+    (comment) =>
       instance
-        .put(`/post/${params.id}/${value.commentId}`, {comment})
-        .then((res) => console.log(res.data))
-    ,
+        .put(`/post/${params.id}/${value.commentId}`, { comment })
+        .then((res) => console.log(res.data)),
     {
       onSuccess: () => {
         // update 성공하면 'loadComment'라는 key를 가진 친구가 실행
-        console.log('성공')
+        console.log("성공");
         queryClient.invalidateQueries("loadComment");
       },
     }
@@ -51,64 +52,75 @@ const Comment = ({ value, index }) => {
   return (
     <Wrap key={value.commentId}>
       <div className="userWrap">
-      <img src={value.userImage} alt="프로필"></img>
-      <div className="content">
-        <h3 className="nickName">{value.nickname}</h3>
-        {!edit ? (
-          <>
-            <div className="comment">{value.comment}</div>
-            <div className="date">2시간 전</div>
-          </>
-        ) : (
-          <input onKeyPress={onKeyPress} autoFocus ref={commentRef}></input>
-        )}
+        <img src={value.images[0].userImageURL} alt="프로필"></img>
+        <div className="content">
+          <h3 className="nickName">{value.nickname}</h3>
+          {!edit ? (
+            <>
+              <div className="comment">{value.comment}</div>
+              <div className="date">2시간 전</div>
+            </>
+          ) : (
+            <input
+              onKeyPress={onKeyPress}
+              autoFocus
+              ref={commentRef}
+              placeholder="칭찬과 격려의 댓글 수정"
+            ></input>
+          )}
+        </div>
       </div>
-      </div>
-      {userId === value.userId ?
-      <>
-      {!edit ? (
-        <Button>
-          <button
-            onClick={() => {
-              setEdit(true);
-            }}
-          >수정
-            <img className="editIcon" src={editIcon} alt="수정" />
-          </button>
-          <button
-            onClick={() => {
-              deleteComment.mutate(value.commentId);
-            }}
-          >
-            삭제
-            <img className="deleteIcon" src={deleteIcon} alt="삭제" />
-          </button>
-        </Button>
+      {userId === value.userId ? (
+        <>
+          {!edit ? (
+            <Button>
+              <button
+                onClick={() => {
+                  setEdit(true);
+                }}
+              >
+                수정
+                <img className="editIcon" src={editIcon} alt="수정" />
+              </button>
+              <button
+                onClick={() => {
+                  deleteComment.mutate(value.commentId);
+                }}
+              >
+                삭제
+                <img className="deleteIcon" src={deleteIcon} alt="삭제" />
+              </button>
+            </Button>
+          ) : (
+            <Button>
+              <button
+                onClick={() => {
+                  if (commentRef.current.value === "") {
+                    window.alert("댓글을 입력해 주세요:)");
+                  } else {
+                    updateComment.mutate(commentRef.current.value);
+                    // commentRef.current.value = "";
+                    setEdit(false);
+                  }
+                }}
+              >
+                등록
+                <img className="checkIcon" src={checkIcon} alt="삭제" />
+              </button>
+              <button
+                onClick={() => {
+                  setEdit(false);
+                }}
+              >
+                취소
+                <img className="cancelIcon" src={cancelIcon} alt="삭제" />
+              </button>
+            </Button>
+          )}
+        </>
       ) : (
-        <Button>
-          <button
-            onClick={() => {
-              if(commentRef.current.value===""){
-                window.alert('댓글을 입력해 주세요:)')
-              }else{
-              updateComment.mutate(commentRef.current.value);
-              // commentRef.current.value = "";
-              setEdit(false);
-              }
-            }}
-          >
-            등록
-          </button>
-          <button
-            onClick={() => {
-              setEdit(false);
-            }}
-          >
-            취소
-          </button>
-        </Button>
+        <></>
       )}
-      </> : <></>}
     </Wrap>
   );
 };
@@ -118,7 +130,7 @@ const Wrap = styled.div`
   justify-content: space-between;
   margin-bottom: 53px;
   width: 67.5%;
-  .userWrap{
+  .userWrap {
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -136,9 +148,17 @@ const Wrap = styled.div`
     justify-content: center;
     input {
       width: 100%;
-      height: 30px;
-      border-radius: 5px;
+      height: 72px;
       padding-left: 10px;
+      background: #f7f3ef;
+      border-radius: 10px;
+      border: none;
+      padding: 20px;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 24px;
+      line-height: 160%;
+      outline: none;
     }
   }
   .nickName {
@@ -165,8 +185,8 @@ const Wrap = styled.div`
 const Button = styled.div`
   display: flex;
   justify-content: flex-end;
-  align-items: center;
-  width: 50%;
+  align-items: flex-end;
+  width: 30%;
   .editIcon {
     width: 32px;
     height: 32px;
@@ -177,13 +197,24 @@ const Button = styled.div`
     height: 32px;
     margin: 0 0 0 6px;
   }
+  .checkIcon {
+    width: 32px;
+    height: 32px;
+    margin: 0 0 0 6px;
+  }
+  .cancelIcon {
+    width: 32px;
+    height: 32px;
+    margin: 0 0 0 6px;
+  }
   button {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 41.22%;
-    height: 58px;
+    /* width: 100%; */
+    width: 106px;
+    height: 72px;
     border-radius: 10px;
     border: none;
     margin-left: 20px;
@@ -191,8 +222,8 @@ const Button = styled.div`
     font-weight: 500;
     font-size: 24px;
     line-height: 160%;
-    background-color: #e5e5ea;
-    color: #8E8E93;
+    background-color: #f7f3ef;
+    color: #8e8e93;
     cursor: pointer;
   }
 `;

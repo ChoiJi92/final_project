@@ -18,8 +18,9 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 880,
   bgcolor: "background.paper",
-  borderRadius: "20px",
+  borderRadius: "30px",
   boxShadow: 24,
+  background: 'linear-gradient(0deg, rgba(246, 243, 239, 0.5), rgba(246, 243, 239, 0.5)), #FFFFFF',
   p: 2,
   outline: "none",
 };
@@ -171,7 +172,7 @@ const Btn = styled.div`
     font-size: 24px;
     line-height: 150%;
     margin-top: 20px;
-    background: #E5E5EA;
+    background: #EEE9E4;
     color: black;
     cursor: pointer;
   }
@@ -183,7 +184,7 @@ const Btn = styled.div`
     font-weight: 700;
     font-size: 24px;
     line-height: 150%;
-    background: #78aa43;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), #EEE9E4;
     color: white;
     cursor: pointer;
   }
@@ -196,7 +197,7 @@ const Btn = styled.div`
     font-weight: 500;
     font-size: 24px;
     line-height: 150%;
-    background: #f2f2f7;
+    background: #F7F3EF;
     padding: 0 20px;
     ::placeholder {
       color: #c7c7cc;

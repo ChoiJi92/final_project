@@ -132,7 +132,7 @@ const Center = styled.div`
     width: 85%;
     height: 60px;
     border-radius: 10px;
-    background-color: #f2f2f7;
+    background-color: #F7F3EF;;
     margin-left: 20px;
     display: flex;
     flex-direction: row;
@@ -141,7 +141,7 @@ const Center = styled.div`
     input {
       width: 80%;
       height: 60px;
-      background-color: #f2f2f7;
+      background-color: #F7F3EF;;
       font-size: 24px;
       font-weight: 300;
       line-height: 28.8px;

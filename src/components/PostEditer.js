@@ -13,7 +13,7 @@ import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
 import '@toast-ui/editor/dist/i18n/ko-kr'
 import instance from "../shared/axios";
 
-const PostEditer = ({setContent,setImageKey,content}) => {
+const PostEditer = ({setContent,setPreImages,content,setEditorImage}) => {
   // const [,setContent] = useRecoilState(contentState)
     const editorRef = useRef();
     const onChange = ()=>{
@@ -54,22 +54,25 @@ const PostEditer = ({setContent,setImageKey,content}) => {
         hooks={{
             addImageBlobHook : async (blob, callback) => {
                 console.log(blob)
-                // const fileUrl = URL.createObjectURL(blob)
-                let alt;
-                const formData = new FormData()
-                formData.append('images',blob)
-                const imageUrl = await instance.post('image',formData,{
-                  headers:{
-                    "Content-Type": "multipart/form-data",
-                  }
-                }).then((res)=>{
-                  console.log(res.data)
-                  alt = res.data.postImageKEY[0]
-                  return res.data.postImageURL[0]
-                }
-                )
-                setImageKey((prevState)=>[...prevState,alt])
-                callback(imageUrl,alt)
+                const imageUrl = URL.createObjectURL(blob)
+                setPreImages((prevState)=>[...prevState,imageUrl])
+                setEditorImage((prevState)=>[...prevState,blob])
+                // let alt;
+                // const formData = new FormData()
+                // formData.append('images',blob)
+                // const imageUrl = await instance.post('image',formData,{
+                //   headers:{
+                //     "Content-Type": "multipart/form-data",
+                //   }
+                // }).then((res)=>{
+                //   console.log(res.data)
+                //   alt = res.data.postImageKEY[0]
+                //   return res.data.postImageURL[0]
+                // }
+                // )
+                // setImageKey((prevState)=>[...prevState,alt])
+                // callback(imageUrl,alt)
+                callback(imageUrl)
             }
         }}
       ></Editor>

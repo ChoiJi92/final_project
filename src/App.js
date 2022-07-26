@@ -3,7 +3,7 @@ import Main from "./pages/Main";
 import GlobalStyles from "./assests/css/GlobalStyles";
 import Header from "./components/Header";
 import { Route, Routes } from "react-router-dom";
-import Mypage from "./pages/Mypage";
+import Mypage from "./pages/TestPage2";
 import Posts from "./pages/Posts";
 import KakaoRedirect from './components/KakaoRedirect';
 import GoogleRedirect from './components/GoogleRedirect';
@@ -24,8 +24,9 @@ import UserPolicy from './pages/UserPolicy';
 import TestMap from './pages/TestMap';
 import TestMap2 from './components/TestMap2';
 import Error from './pages/Error';
-import TestPage from './pages/TestPage';
 import LoginError from './pages/LoginError';
+import UserPage from './pages/UserPage';
+import MyPage from './pages/MyPage';
 
 
 function App() {
@@ -36,7 +37,6 @@ function App() {
       <Header/>
       <Routes>
         <Route path="/" element={<Main />} />
-        <Route path="/posts" element={<Posts />} />
         <Route path="/community" element={<Community />} />
         <Route path="/community/:id" element={<CommunityDetail />} />
         <Route path="/userwrite" element={userId ? <UserWrite /> : <LoginError/>} />
@@ -47,10 +47,10 @@ function App() {
         <Route path="/house/:id" element={<HouseDetail/>} />
         <Route path="/chat" element={<ChatList/>} />
         <Route path="/chatroom/:id" element={userId ? <ChatRoom/> : <LoginError/>} />
-        <Route path="/mypage" element={userId ? <Mypage /> : <LoginError/>} />
+        <Route path="/mypage" element={userId ? <MyPage /> : <LoginError/>} />
+        <Route path="/userpage/:id" element={<UserPage />}/>
         <Route path="/test" element={<TestMap />} />
         <Route path="/testmap" element={<TestMap2 />} />
-        <Route path="/testpage" element={<TestPage />} />
 
         <Route path="/userpolicy" element={<UserPolicy />} />
         <Route path='/oauth/kakao/callback' element={<KakaoRedirect/>}/>

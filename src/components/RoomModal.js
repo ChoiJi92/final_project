@@ -27,7 +27,7 @@ const style = {
   background: 'linear-gradient(0deg, rgba(246, 243, 239, 0.5), rgba(246, 243, 239, 0.5)), #FFFFFF' 
 };
 
-const RoomModal = ({ width }) => {
+const RoomModal = ({ width,borderRadius }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -72,7 +72,7 @@ const RoomModal = ({ width }) => {
   };
   return (
     <Wrap width={width}>
-      <RoomButton onClick={handleOpen}>챗 방 만들기</RoomButton>
+      <RoomButton borderRadius={borderRadius} onClick={handleOpen}>챗방 만들기</RoomButton>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -171,7 +171,7 @@ const RoomButton = styled.button`
   font-weight: 700;
   font-size: 20px;
   line-height: 24px;
-  border-radius: 10px;
+  border-radius: ${(props)=>props.borderRadius};
   background:linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), #EEE9E4;;
   color: white;
   border: none;

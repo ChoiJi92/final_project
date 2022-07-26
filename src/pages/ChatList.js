@@ -15,12 +15,14 @@ import RoomModal from "../components/RoomModal";
 import LoginError from "./LoginError";
 import LoginModal from "../components/LoginModal";
 import Footer from "../components/Footer";
+import SearchResult from "../components/SearchResult";
 
 const ChatList = () => {
   const searchRef = useRef();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const userId = localStorage.getItem("userId");
+  const [search, setSearch] = useState();
   const { data } = useQuery(
     ["loadChatRoom"],
     () =>
@@ -51,14 +53,10 @@ const ChatList = () => {
     //   },
     // }
   );
-  // const searchRoom = useQuery(['searchRoom'],()=>
-  // instance.get(`/room/search`,{params:{search:searchRef.current.value}}).then((res)=>{
-  //   console.log(res)
-  // }))
-
-  // const searchRoom = () => {};
   const onKeyPress = (e) => {
     if (e.key === "Enter") {
+      setSearch(searchRef.current.value);
+      searchRef.current.value = "";
     }
   };
 
@@ -69,13 +67,21 @@ const ChatList = () => {
           <div className="title">
             <h2>제주살이 오픈 챗 방</h2>
             <p>제주 살이에 관한 이모저모를 오픈 챗방에서 나눠보세요.</p>
-            {/* <Link to="/chatroom" style={{ color: "black" }}>
-            모두보기
-          </Link> */}
           </div>
           <div className="search">
-            <input placeholder="채팅방 검색하기" ref={searchRef}></input>
-            <img src={searchIconBlack} alt="검색"></img>
+            <input
+              placeholder="채팅방 검색하기"
+              ref={searchRef}
+              onKeyPress={onKeyPress}
+            ></input>
+            <img
+              src={searchIconBlack}
+              alt="검색"
+              onClick={() => {
+                setSearch(searchRef.current.value);
+                searchRef.current.value = "";
+              }}
+            ></img>
           </div>
           <div className="keyword">
             <div className="keywordTitle">인기 키워드</div>
@@ -108,64 +114,75 @@ const ChatList = () => {
               <MenuItem value="최신순">최신순</MenuItem>
               <MenuItem value="인기순">인기순</MenuItem>
             </Select>
-            <RoomModal width={"31.74%"}></RoomModal>
+            <RoomModal width={"31.74%"} borderRadius={"10px"}></RoomModal>
           </div>
-          {data.map((v, i) => (
-            <Card
-              key={v.roomId}
-              onClick={() => {
-                joinRoom.mutate(v.roomId);
-              }}
-            >
-              <div className="roomInfo">
-                <h3>{v.title}</h3>
-                <div className="avatar">
-                  <div className="host">
-                    <Badge
-                      overlap="circular"
-                      anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                      badgeContent={
-                        <img
-                          style={{ width: "17px", height: "17px" }}
-                          src={saveIcon}
-                          alt="호스트"
-                        ></img>
-                      }
-                    >
-                      <Avatar
-                        alt="호스트 이미지"
-                        src={v.hostImg}
-                        sx={{ width: 36, height: 36 }}
-                      />
-                    </Badge>
-                    <p>{v.hostNickname}</p>
+          {!search ? (
+            <>
+              {data.map((v, i) => (
+                <Card
+                  key={v.roomId}
+                  onClick={() => {
+                    joinRoom.mutate(v.roomId);
+                  }}
+                >
+                  <div className="roomInfo">
+                    <h3>{v.title}</h3>
+                    <div className="avatar">
+                      <div className="host">
+                        <Badge
+                          overlap="circular"
+                          anchorOrigin={{
+                            vertical: "bottom",
+                            horizontal: "right",
+                          }}
+                          badgeContent={
+                            <img
+                              style={{ width: "17px", height: "17px" }}
+                              src={saveIcon}
+                              alt="호스트"
+                            ></img>
+                          }
+                        >
+                          <Avatar
+                            alt="호스트 이미지"
+                            src={v.hostImg}
+                            sx={{ width: 36, height: 36 }}
+                          />
+                        </Badge>
+                        <p>{v.hostNickname}</p>
+                      </div>
+                      <AvatarGroup max={4}>
+                        {v.roomUserImg.map((v, i) => (
+                          <Avatar
+                            key={i}
+                            alt={`${v}-${i}`}
+                            src={v}
+                            sx={{ width: 36, height: 36 }}
+                          />
+                        ))}
+                      </AvatarGroup>
+                    </div>
                   </div>
-                  <AvatarGroup max={4}>
-                    {v.roomUserImg.map((v, i) => (
-                      <Avatar
-                        key={i}
-                        alt={`${v}-${i}`}
-                        src={v}
-                        sx={{ width: 36, height: 36 }}
-                      />
-                    ))}
-                  </AvatarGroup>
-                </div>
-              </div>
-              <div className="roomUserNumber">
-                <p>참여자</p>
-                <p className="number">{v.roomUserNum}명</p>
-              </div>
-            </Card>
-          ))}
+                  <div className="roomUserNumber">
+                    <p>참여자</p>
+                    <p className="number">{v.roomUserNum}명</p>
+                  </div>
+                </Card>
+              ))}
+            </>
+          ) : (
+            <SearchResult search={search}></SearchResult>
+          )}
         </Bottom>
       </Container>
       <Footer />
     </>
   );
 };
+
 const Container = styled.div`
-  height: 100vh;
+  height: auto;
+
 `;
 const Top = styled.div`
   background-color: #f7f3ef;
@@ -219,6 +236,7 @@ const Top = styled.div`
       border: none;
       outline: none;
       background: #eee9e4;
+      padding: 0 10px;
       ::placeholder {
         color: #c7c7cc;
         text-align: center;

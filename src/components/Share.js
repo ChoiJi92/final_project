@@ -101,7 +101,7 @@ const Btn = styled.div`
   font-weight: 500;
   font-size: 24px;
   line-height: 160%;
-  background-color: #e5e5ea;
+  background-color: #F7F3EF;
   color: #48484a;
   cursor: pointer;
   .shareIcon {

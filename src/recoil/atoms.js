@@ -20,6 +20,10 @@ export const myHostList = atom({
   key: 'myHostList',
   default:[]
 })
+export const userCount = atom({
+  key: 'userCount',
+  default:0
+})
 export const contentState = atom({
   key: 'contentState',
   default:''
