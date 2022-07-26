@@ -23,7 +23,7 @@ import {
   mySaveList,
 } from "../recoil/atoms";
 
-const MyPage = () => {
+const Mypage = () => {
   const [myLike, setMyLike] = useState(true);
   const [myWrite, setMyWrite] = useState(true);
   const [isEdit, setIsEdit] = useState(false);
@@ -677,4 +677,4 @@ const MyDefaultBoxBottom = styled.div`
   }
 `;
 
-export default MyPage;
+export default Mypage;

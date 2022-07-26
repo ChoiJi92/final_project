@@ -16,7 +16,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import axios from "axios";
 import instance from "../shared/axios";
 import { useRecoilState } from "recoil";
-import { TestImgList } from "../recoil/atoms";
+// import { TestImgList } from "../recoil/atoms";
 
 const HostWrite = () => {
   const params = useParams();
@@ -26,7 +26,7 @@ const HostWrite = () => {
   //     const { data } = await axios.get(`http://localhost:5001/testList/${id}`)
   //     return data
   // }
-  const [testImg,setTestImg ] = useRecoilState(TestImgList);
+  // const [testImg,setTestImg ] = useRecoilState(TestImgList);
   // const [testImg, setTestImg] = useState([]);
   const { data } = useQuery(
     ["hostWrite", hostId],
@@ -46,8 +46,6 @@ const HostWrite = () => {
   // useEffect(()=>{
   //   setTestImg(data.images)
   // },[testImg])
-  setTestImg(data.images)
-  console.log(testImg, "testImg")
   const {
     register,
     handleSubmit,
@@ -110,9 +108,9 @@ const HostWrite = () => {
     setMultiImgs(multiImgs.filter((_, index) => index !== id));
   };
 
-  const deleteTest = (id) => {
-    setTestImg(testImg.filter((_, idx)=>idx !== id))
-  }
+  // const deleteTest = (id) => {
+  //   setTestImg(testImg.filter((_, idx)=>idx !== id))
+  // }
 
   const queryClient = useQueryClient();
 
@@ -248,17 +246,17 @@ console.log(data.images);
             >
               {hostId ? (
                 <>
-                {testImg.map((v, index) => (
+                {/* {testImg.map((v, index) => (
                 <SortableItem key={`item-${index}`}>
                   <List>
                     <Img src={v.postImageURL} alt="이미지" />
                     <DeleteIcon
                       id="deleteIcon"
-                      onClick={() => deleteTest(index)}
+                      // onClick={() => deleteTest(index)}
                     />
                   </List>
                 </SortableItem>
-              ))}
+              ))} */}
                 </>
               ) : (
                 <>
