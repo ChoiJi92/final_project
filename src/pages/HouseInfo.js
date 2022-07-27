@@ -1,14 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FaHeart, FaStar } from "react-icons/fa";
 import styled from "styled-components";
-import room2 from "../assests/css/room2.jpeg";
-import room1 from "../assests/css/room1.jpeg";
-import jeju1 from "../assests/css/jeju1.jpeg";
-import jeju2 from "../assests/css/jeju2.jpeg";
-import jeju3 from "../assests/css/jeju3.jpeg";
-import jeju4 from "../assests/css/jeju4.jpeg";
-import jeju5 from "../assests/css/jeju5.jpeg";
-import jeju6 from "../assests/css/jeju6.jpeg";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import inside from "../assests/css/내륙.webp";
@@ -19,12 +11,13 @@ import icecream from "../assests/css/icecream.webp";
 import sunrise from "../assests/css/sunrise.webp";
 import { Link, useNavigate } from "react-router-dom";
 import SlideImg from "../components/SlideImg";
-import unsaveIcon2 from "../assests/css/unsaveIcon2.jpeg";
+import saveIcon from "../assests/css/saveIcon.webp";
+import unsaveIcon2 from "../assests/css/unsaveIcon2.webp";
 import Map from "../components/Map";
-import { useQuery } from "react-query";
+import { useQuery,useMutation,useQueryClient } from "react-query";
 import axios from "axios";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { houseInfoMap } from "../recoil/atoms";
+import { hostData } from "../recoil/atoms";
 import FormControl from '@mui/material/FormControl';
 import instance from "../shared/axios";
 import TestMap2 from "../components/TestMap2";
@@ -34,7 +27,7 @@ const HouseInfo = () => {
   const [rigthPosition, setRigthPosition] = useState("");
   const [fleftPosition, setFLeftPosition] = useState("");
   const [frigthPosition, setFRigthPosition] = useState("");
-
+  
   const [secondPosition, setSecondPosition] = useState("");
   const [sRigthPosition, setSRigthPosition] = useState("");
   const [sFleftPosition, setSFLeftPosition] = useState("");
@@ -48,14 +41,14 @@ const HouseInfo = () => {
 
   const liveUnderlineRef = useRef(null);
   const spotUnderlineRef = useRef(null);
-  const firstBox = useRef(null);
+  // const firstBox = useRef(null);
   const liveFirstBox = useRef(null);
 
-  const list = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-  const listImg = [room2, room1, jeju1, jeju2, jeju3, jeju4, jeju5, jeju6];
+  const [isHostData, isSetHostData] = useRecoilState(hostData);
 
-  const isHouseInfoMap = useSetRecoilState(houseInfoMap);
+  const userId = localStorage.getItem("userId");
 
+  const [category, setCategory] = useState("all");
   // const { data } = useQuery(
   //   ["houseInfo"],
 
@@ -69,12 +62,12 @@ const HouseInfo = () => {
   //     refetchOnWindowFocus: false,
   //   }
   // );
-
+  const queryClient = useQueryClient();
   const { data } = useQuery(
     ["houseInfo"],
     () =>
       instance
-        .get(`/host`)
+        .get(`/host`,{ params: { userId: Number(userId) } })
         .then((res) => {
           console.log(res.data);
           return (
@@ -84,26 +77,68 @@ const HouseInfo = () => {
         .catch((err) => {
           console.log(err);
         }),
+        {
+          refetchOnWindowFocus: false,
+          onSuccess: (data) => {
+            isSetHostData(data);
+            
+          },
+        },
     
   );
-  console.log(data.findAllAcc);
-  // console.log(res.data);
-  // isHouseInfoMap(data.images[0]);
-  const onClick = (id) => {
-    console.log(id);
-    alert(id);
-  };
+  const savePost = useMutation(
+    ["save"],(id) =>
+      instance
+        .post(`/save/${id}`)
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err, "why");
+        }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("houseInfo");
+      },
+    }
+  );      
+  const saveDelete = useMutation(
+    ["save"],(id) =>
+      instance
+        .delete(`/save/${id}/unsave`)
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err, "why");
+        }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("houseInfo");
+      },
+    }
+  );
+  
+  const saveClick = (id) => {
+    savePost.mutate(id)
+    // saveDelete.mutate(id)
+    console.log(id)
+  }
+
+  const cancelSaveClick = (id) => {
+    saveDelete.mutate(id)
+  }
 
   useEffect(() => {
-    autoSpotClick();
+    // autoSpotClick();
     autoLiveClick();
   }, []);
-  const autoSpotClick = () => {
-    spotUnderlineRef.current.style.left = firstBox.current.offsetLeft + "px";
-    spotUnderlineRef.current.style.width = firstBox.current.offsetWidth + "px";
-    setFLeftPosition(firstBox.current.offsetLeft + "px");
-    setFRigthPosition(firstBox.current.offsetWidth + "px");
-  };
+  // const autoSpotClick = () => {
+  //   spotUnderlineRef.current.style.left = firstBox.current.offsetLeft + "px";
+  //   spotUnderlineRef.current.style.width = firstBox.current.offsetWidth + "px";
+  //   setFLeftPosition(firstBox.current.offsetLeft + "px");
+  //   setFRigthPosition(firstBox.current.offsetWidth + "px");
+  // };
   // 클릭시 메뉴 언더바 이동
   const menuOnClick = (e) => {
     spotUnderlineRef.current.style.left = e.currentTarget.offsetLeft + "px";
@@ -114,24 +149,8 @@ const HouseInfo = () => {
   };
 
   //마우스 올릴시 메뉴 언더바 이동
-  const menuOnOver = (e) => {
-    // spotUnderlineRef.current.style.left = e.currentTarget.offsetLeft + "px";
-    // spotUnderlineRef.current.style.width = e.currentTarget.offsetWidth + "px";
-  };
-  //마우스 나오면 기존 클릭되어있던 position으로 이동
-  const menuLeave = () => {
-    // if (firstUnderbar === true) {
-    //   spotUnderlineRef.current.style.left = leftPosition;
-    //   spotUnderlineRef.current.style.width = rigthPosition;
-    // } else {
-    //   spotUnderlineRef.current.style.left = fleftPosition;
-    //   spotUnderlineRef.current.style.width = frigthPosition;
-    // }
-  };
+  
 
-  // const isInfo = window.location.href.slice(22,27);
-  // console.log(isInfo);
-  // const isInfo = "500px";
   const autoLiveClick = () => {
     liveUnderlineRef.current.style.left =
       liveFirstBox.current.offsetLeft + "px";
@@ -174,7 +193,7 @@ const HouseInfo = () => {
     setSRigthPosition(e.currentTarget.offsetWidth + "px");
     setSecondtUnderbar(true);
   };
-  console.log("ha");
+
   return (
     <MainBox>
       <LiveMainBox>
@@ -199,49 +218,52 @@ const HouseInfo = () => {
         </div>
         <LiveUnderBar ref={liveUnderlineRef} />
       </LiveMainBox>
-      <SpotMainBox>
+      <SpotMainBox category={category}>
         <div
-          ref={firstBox}
-          onMouseLeave={menuLeave}
-          onMouseOver={menuOnOver}
-          onClick={menuOnClick}
+          // ref={firstBox}
+          className="all"
+          onClick={() => {
+            // isSetHostData(data)
+            setCategory("all")
+          }}
           id="spot"
-          // style={{"opacity":"0.7"}}
         >
-
             <img src={nearbySea} alt="모두보기" />
-
           <span>모두보기</span>
-          <SpotUnderBar ref={spotUnderlineRef} />
+          {/* <SpotUnderBar ref={spotUnderlineRef} /> */}
         </div>
         <div
-          onMouseLeave={menuLeave}
-          onMouseOver={menuOnOver}
-          onClick={menuOnClick}
+        className="land"
+          // onClick={menuOnClick}
+          onClick={() => {
+            // isSetHostData(data.filter((v) => v.category === "내륙"))
+            setCategory("land")
+          }}
           id="spot"
           // style={{"opacity":"0.3"}}
-          style={{"opacity":"0.2"}}
         >
-     
             <img src={inside} alt="내륙" />
-       
           <span>내륙</span>
         </div>
         <div
-          onMouseLeave={menuLeave}
-          onMouseOver={menuOnOver}
-          onClick={menuOnClick}
+        className="tour"
+          // onClick={menuOnClick}
+          onClick={() => {
+            // isSetHostData(data.filter((v) => v.category === "관광지 근처"))
+            setCategory("tour")
+          }}
           id="spot"
         >
-        
             <img src={nearby} alt="관광지근처" />
- 
           <span>관광지 근처</span>
         </div>
         <div
-          onMouseLeave={menuLeave}
-          onMouseOver={menuOnOver}
-          onClick={menuOnClick}
+          className="town"
+          // onClick={menuOnClick}
+          onClick={() => {
+            // isSetHostData(data.filter((v) => v.category === "조용한 마을"))
+            setCategory("town")
+          }}
           id="spot"
         >
      
@@ -250,9 +272,13 @@ const HouseInfo = () => {
           <span>조용한 마을</span>
         </div>
         <div
-          onMouseLeave={menuLeave}
-          onMouseOver={menuOnOver}
-          onClick={menuOnClick}
+        className="icecream"
+        
+          // onClick={menuOnClick}
+          onClick={() => {
+            // isSetHostData(data.filter((v) => v.category === "우도"))
+            setCategory("icecream")
+          }}
           id="spot"
         >
          
@@ -261,9 +287,12 @@ const HouseInfo = () => {
           <span>우도</span>
         </div>
         <div
-          onMouseLeave={menuLeave}
-          onMouseOver={menuOnOver}
-          onClick={menuOnClick}
+          className="sunrise"
+          // onClick={menuOnClick}
+          onClick={() => {
+            // isSetHostData(data.filter((v) => v.category === "해변근처"))
+            setCategory("sunrise")
+          }}
           id="spot"
         >
           
@@ -282,9 +311,6 @@ const HouseInfo = () => {
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
                 defaultValue={""}
-                disableUnderline
-                notchedOutline
-                
               >
                 <MenuItem value="" disabled={true}>
                   숙소형태
@@ -303,8 +329,7 @@ const HouseInfo = () => {
                 displayEmpty
                 inputProps={{ "aria-label": "Without label",disableUnderline: true }}
                 defaultValue={""}
-                disableUnderline
-                
+
               >
                 <MenuItem value="" disabled={true}>
                   위치별
@@ -318,8 +343,6 @@ const HouseInfo = () => {
               <Select
                 style={{ width: "30%", height: "50px", borderRadius: "10px",backgroundColor:"#f7f3ef" }}
                 displayEmpty
-                disableUnderline
-                
                 inputProps={{ "aria-label": "Without label" }}
                 defaultValue={""}
               >
@@ -368,12 +391,21 @@ const HouseInfo = () => {
                           4.0
                         </span>
                       </div>
+                      {item.isSave ? (
                       <SaveImg
-                      src={unsaveIcon2}
+                      src={saveIcon}
                         onClick={() => {
-                          onClick(data[idx]);
+                          cancelSaveClick(item.hostId);
+                        }}
+                      />) : (
+                        <SaveImg
+                        src={unsaveIcon2}
+                        onClick={() => {
+                          saveClick(item.hostId);
                         }}
                       />
+                      )}
+                      
                     </LikeBox>
                   </DesBox>
                 </ContentsListBox>
@@ -416,18 +448,35 @@ const SpotMainBox = styled.div`
     cursor: pointer;
     width: 13%;
     margin-left: 40px;
-    border: 1px solid red;
-    img{
-      width: 52px;
-      height: 52px;
+    /* border: 1px solid red; */
+    /* border-bottom: 4px solid red; */
+    height: 120px;
+    :hover{
+      *{
+        opacity: 1;
+      }
     }
+    
     /* margin-top: 10px; */
+    
   }
   span {
     text-align: center;
     margin-top: 5px;
     /* margin-right: 16px; */
     font-size: 100%;
+    opacity: 0.2;
+  }
+  img{
+      width: 52px;
+      height: 52px;
+      opacity: 0.2;
+    }
+  .${(props) => props.category} {
+    border-bottom: 5px solid #8e8e93;
+    * {
+      opacity: 1;
+    }
   }
 `;
 const SpotUnderBar = styled.div`
@@ -586,6 +635,7 @@ const MapBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 `;
 
 const StyledLink = styled(Link)`

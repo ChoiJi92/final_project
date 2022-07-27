@@ -16,7 +16,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const DialogImg = (props) => {
   const { listImg, open, onClose } = props;
-  console.log();
+  console.log(listImg, "dialog img");
   return (
     <Dialog
       fullWidth={true}
@@ -35,7 +35,7 @@ const DialogImg = (props) => {
         <Wrap id="alert-dialog-slide-description">
           {listImg.map((item, idx) => {
             return (
-              <img style={{}} src={goki} alt="이미지" />
+              <img style={{}} src={item.postImageURL} alt="이미지" />
             );
           })}
         </Wrap>
@@ -65,12 +65,13 @@ const Wrap = styled(DialogContentText)`
     margin-top: 10px;
     /* border: 1px solid; */
     /* object-fit: none; */
+    /* border-radius: 30px; */
     /* object-fit: scale-down; */
     object-fit: contain;
     /* object-fit: fill; */
     /* object-fit: cover; */
     overflow: hidden;
-    border-radius: 30px;
+    
     
   }
 `;

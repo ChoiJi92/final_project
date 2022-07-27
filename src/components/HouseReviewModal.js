@@ -42,7 +42,7 @@ const HouseReviewModal = (props) => {
   const starRef = useRef();
   const params = useParams();
   const hostId = params.id;
-  console.log(hostId, "its hostId");
+  // console.log(hostId, "its hostId");
 
   const textChange = (e) => {
     setIsText(e.target.value);

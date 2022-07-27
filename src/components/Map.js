@@ -5,7 +5,7 @@ import back from "../assests/css/back.jpeg";
 import { MdOutlineCancel } from "react-icons/md";
 import "../assests/css/map.css";
 import { useRecoilValue } from "recoil";
-import { hostShareAndMap, houseDetailMap, houseInfoMap } from "../recoil/atoms";
+import { hostData, hostShareAndMap, houseDetailMap, houseInfoMap } from "../recoil/atoms";
 import { Link, useParams } from "react-router-dom";
 import jeju1 from "../assests/css/jeju1.jpeg";
 import unsaveIcon2 from "../assests/css/unsaveIcon2.jpeg";
@@ -13,8 +13,8 @@ import saveIcon from "../assests/css/saveIcon.png";
 
 const { kakao } = window;
 
-const Map = ({ search, MapRadius, isinfo }) => {
-  const isHouseInfoMap = useRecoilValue(houseInfoMap);
+const Map = ({ search, MapRadius, isinfo, data }) => {
+  const isHouseInfoMap = useRecoilValue(hostData);
   const isHouseDetailMap = useRecoilValue(hostShareAndMap);
   const [save, setSave] = useState(false)
   // console.log(isHouseMap[0].mainAddress)
@@ -61,7 +61,7 @@ const Map = ({ search, MapRadius, isinfo }) => {
     //Detail page 지도 마커만 표시
     if (paramsId) {
       geocoder.addressSearch(
-        isHouseDetailMap.fullAddress,
+        data.mainAddress,
         function (result, status) {
           // 정상적으로 검색이 완료됐으면
           if (status === kakao.maps.services.Status.OK) {
@@ -102,9 +102,9 @@ const Map = ({ search, MapRadius, isinfo }) => {
       
       map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
       
-      for (let i = 0; i < isHouseInfoMap.length; i++) {
+      for (let i = 0; i < data.length; i++) {
         geocoder.addressSearch(
-          isHouseInfoMap[i].fullAddress,
+          data[i].mainAddress,
           function (result, status) {
             // 정상적으로 검색이 완료됐으면
             if (status === kakao.maps.services.Status.OK) {
@@ -154,7 +154,7 @@ const Map = ({ search, MapRadius, isinfo }) => {
                         <img class="houseImg" src=${jeju1} alt="jeju"/>
                       </div>
                       <div class="contents">
-                        <div>${isHouseInfoMap[i].title}</div>   
+                        <div></div>   
                       </div>
                       <div class="reviewBox">
                         <div>

@@ -25,9 +25,9 @@ const style = {
 
 const ReviewDetailModal = (props) => {
   const userReview = useRecoilValue(reviewStarList);
-  console.log(userReview ,"its detail");
+  // console.log(userReview ,"its detail");
   const {open, close, data} = props;
-  console.log(data, "모달창에 있는 데이터")
+  // console.log(data, "모달창에 있는 데이터")
   return (
     <>
       {/* <Button onClick={handleOpen}>
