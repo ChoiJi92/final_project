@@ -15,7 +15,7 @@ const TestMap2 = ({ data }) => {
   const [markers, setMarkers] = useState([]);
   const [info, setInfo] = useState();
   const [save, setSave] = useState(false);
-  
+
   // const { data } = useQuery(
   //   ["houseInfo"],
   //   // ()=>getWriteData(paramsId),
@@ -49,9 +49,10 @@ const TestMap2 = ({ data }) => {
             content: data[i],
           });
           // console.log(markers);
-          bounds.extend(new kakao.maps.LatLng(result[0].y, result[0].x));
+          // bounds.extend(new kakao.maps.LatLng(result[0].y, result[0].x));
           // console.log(bounds)
-          // const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+          const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+          
           // 결과값으로 받은 위치를 마커로 표시합니다
           // const marker = new kakao.maps.Marker({
           //   map: map,
@@ -59,10 +60,11 @@ const TestMap2 = ({ data }) => {
           //   // image:jeju1,
           // });
           // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-          // map.setCenter(coords);
+          map.setCenter(coords);
         }
+        
         setMarkers(markers);
-        map.setBounds(bounds);
+        // map.setBounds(bounds);
       });
     }
   }, [map]);
@@ -75,7 +77,7 @@ const TestMap2 = ({ data }) => {
     const map = mapRef.current;
     map.setLevel(map.getLevel() + 1);
   };
-  console.log(markers);
+  // console.log(markers);
   return (
     <>
       <Map // 지도를 표시할 Container

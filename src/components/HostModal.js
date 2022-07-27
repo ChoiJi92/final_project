@@ -85,7 +85,9 @@ const HostModal = ({ close }) => {
               <p>멘도롱제주의 호스트가 되어주시겠어요?</p>
             </Middle>
             <Btn>
-              <HostRegistModal></HostRegistModal>
+              <HostRegistModal open={true} onClick={()=>{
+                handleClose()
+              }}></HostRegistModal>
               <button
                 className="home"
                 onClick={() => {

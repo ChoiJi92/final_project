@@ -258,6 +258,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: auto;
+  min-height: 100vh;
 `;
 const Top = styled.div`
   width: 70%;
@@ -499,7 +501,7 @@ const Card = styled.div`
     }
     .thumnail {
       transform: scale(1.1);
-      /* transition: all 0.3s ease-in-out; */
+      transition: all 0.3s ease-in-out;
       /* transition: transform 0.2s; */
       /* transition-property: transform;
       transition-duration: 0.2s;

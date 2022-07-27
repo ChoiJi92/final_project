@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import UserMenu from "./UserMenu";
@@ -10,13 +10,14 @@ import LoginModal from "./LoginModal";
 const Header = () => {
   let params = new URL(window.location.href).pathname.slice(1)
   const [search, setSearch] = useState(false);
-  const [menu, setMenu] = useState(params);
-  console.log(menu,'나는 메뉴')
+  const [menu, setMenu] = useState();
   const searchRef = useRef();
   const navigate = useNavigate();
   const nickName = localStorage.getItem("nickName");
   const userImage = localStorage.getItem("userImage");
-  console.log(params)
+  useEffect(()=>{
+    setMenu(params)
+  },[params])
   return (
     <Container>
       <Wrap>
