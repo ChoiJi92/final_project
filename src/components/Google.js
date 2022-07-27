@@ -7,8 +7,8 @@ import google_logo from '../assests/css/구글 로고.png'
 const Google = () => {
   //  const secretcode='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'
   const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID
-  const REDIRECT_URI = "http://localhost:3000/oauth/google/callback";
-  // const REDIRECT_URI = "https://mendorong-jeju.co.kr/oauth/google/callback";
+  // const REDIRECT_URI = "http://localhost:3000/oauth/google/callback";
+  const REDIRECT_URI = "https://mendorong-jeju.co.kr/oauth/google/callback";
   // const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.profile`;
   const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email`;
 
