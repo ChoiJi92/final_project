@@ -67,10 +67,29 @@ const HouseReviewModal = (props) => {
     }
   );
   
-  const updateReview = useMutation((data)=>(
-    instance.put(`/review/${hostId}/:reviewId`, data).then((res)=>{
+  const updateReview = useMutation(
+    (data) =>
+      instance
+        .put(`/review/${hostId}/${isReivewUpdate.reviewId}`, data)
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err, "why");
+        }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("reviewDetail");
+      },
+    }
+  );  
+     const updateReview1= useMutation((data)=>(
+    instance
+    .put(`/review/${hostId}/${isReivewUpdate.reviewId}`, data)
+    .then((res)=>{
       console.log(res.data);
-    }).catch((error)=>{
+    })
+    .catch((error)=>{
       console.log(error, "why");
     }),{
       onSuccess: () => {
@@ -78,7 +97,6 @@ const HouseReviewModal = (props) => {
       },
     }
   ))
-
   const reviewSubmit = () => {
     
     if(!isReivewUpdate.review){
@@ -94,17 +112,19 @@ const HouseReviewModal = (props) => {
     {
       const data = {
         review: textRef.current.value,
-        starpoint: score,
+        starpoint: isReivewUpdate.star ,
       };
       console.log(data ,"수정 데이터")
       updateReview.mutate(data);
+      setScore(0);
+      close();
     }
     
   };
   // const handleChange = () => {
   //   setScore(score)
   // }
-  console.log(isReivewUpdate, "수정 데이터다잉");
+  console.log(isReivewUpdate.reviewId, "수정 데이터다잉");
   return (
     <>
       {/* <Button onClick={handleOpen}>

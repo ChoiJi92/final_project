@@ -55,7 +55,7 @@ const HouseDetail = () => {
   const [testNumber, setTestNumber] = useState(0);
   const userId = localStorage.getItem("userId");
   const navigate = useNavigate();
-  const openModal = (id, review, star) => {
+  const openModal = (id, review, star, reviewId) => {
     if (!userId) {
       //로그인이 필요한 페이지 입니다.
       // navigate("/")
@@ -65,7 +65,8 @@ const HouseDetail = () => {
       setIsReviewUpdate({
         id:id,
         review:review,
-        star:star
+        star:star,
+        reviewId:reviewId
       });
       console.log(review, star, " 이거슨 리뷰와 별점")
     }
@@ -108,7 +109,7 @@ const HouseDetail = () => {
     }
   );
   const reviewDetail = useQuery(
-    ["reviewDetail"],
+    ["reviewDetail", hostId],
 
     () => 
        instance
@@ -123,7 +124,7 @@ const HouseDetail = () => {
         setIsStarReview(reviewDetail);
       },
       refetchOnWindowFocus: false,
-      // enabled: !!hostId,
+      enabled: !!hostId,
     },
   );
 
@@ -272,11 +273,11 @@ const HouseDetail = () => {
             <hr style={{ marginTop: "20px" }} />
             <SubInfoBox>
               <div>
-                <img src={require(`../assests/css/${data.findAllAcc.category}.webp`)} alt={data.category} />
+                {/* <img src={require(`../assests/css/${data.findAllAcc.category}.webp`)} alt={data.category} /> */}
                 {data.findAllAcc.category}
               </div>
               <div>
-                <img src={require(`../assests/css/${data.findAllAcc.houseInfo}.webp`)} alt={data.houseInfo} />
+                {/* <img src={require(`../assests/css/${data.findAllAcc.houseInfo}.webp`)} alt={data.houseInfo} /> */}
                 {data.findAllAcc.houseInfo}
               </div>
               <div>
@@ -359,7 +360,7 @@ const HouseDetail = () => {
                     <div id="iconBox">
                       {userId == item?.userId ? (
                       <>
-                      <img onClick={()=>{openModal(item?.userId, item.review, item.starpoint)}} src={editIcon} alt="수정" />
+                      <img onClick={()=>{openModal(item?.userId, item?.review, item?.starpoint, item?.reviewId)}} src={editIcon} alt="수정" />
                       <img onClick={()=>{deleteReview.mutate(item?.reviewId)}}  src={deleteIcon} alt="삭제" />
                       </>) 
                       : 
@@ -447,7 +448,7 @@ const HouseDetail = () => {
             </div>
           </RightBarBox>
         </div>
-        <div>
+        {/* <div>
           <button
             onClick={() => {
               onDelete(data?.findAllAcc?.hostId);
@@ -455,7 +456,7 @@ const HouseDetail = () => {
           >
             삭제
           </button>
-        </div>
+        </div> */}
       </div>
     </Wrap>
   );

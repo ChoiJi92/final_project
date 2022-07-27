@@ -69,7 +69,7 @@ const SlideImg = (props) => {
   };
 
   const { item, width, height } = props;
-
+  console.log(item, "이거슨 이미지 데이터")
   const mouseHover = () => {
     setMouseOver(true);
   };
@@ -83,7 +83,7 @@ const SlideImg = (props) => {
           {item.map((item, idx) => {
             return (
               <div onMouseLeave={mouseLeave} onMouseOver={mouseHover} key={idx}>
-                <img src={item} alt="이미지"/>
+                <img src={item.postImageURL} alt="이미지"/>
               </div>
             );
           })}
@@ -96,7 +96,7 @@ const SlideImg = (props) => {
               key = {idx}
                 onMouseLeave={mouseLeave}
                 onMouseOver={mouseHover}
-                src={item}
+                src={item.postImageURL}
                 alt="이미지"
               />
             );
