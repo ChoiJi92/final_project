@@ -13,6 +13,8 @@ import styled from "styled-components";
 import { useMutation, useQueryClient } from "react-query";
 import instance from "../shared/axios";
 import { useParams } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { reviewList } from "../recoil/atoms";
 
 const style = {
   position: "absolute",
@@ -28,45 +30,81 @@ const style = {
 
 const HouseReviewModal = (props) => {
   // const [open, setOpen] = React.useState(false);
-
-  const {open, close, userId} = props;
+  const userId = localStorage.getItem("userId");
+  const { open, close, isReivewUpdate } = props;
   const [score, setScore] = useState(0);
+
+  const [isText, setIsText] = useState("");
+  // const [ ] = useState("");
+
+  const textRef = useRef(null);
+  // const [isReview, setIsReview] = useRecoilState(reviewList);
   const starRef = useRef();
   const params = useParams();
   const hostId = params.id;
-  console.log(hostId,"its hostId")
-  // const handleOpen = () => setOpen(true);
-  // const handleClose = () => setOpen(false);
-  const { register, handleSubmit,formState: { errors }, } = useForm({ defaultValues: {} });
+  console.log(hostId, "its hostId");
+
+  const textChange = (e) => {
+    setIsText(e.target.value);
+  };
 
   const queryClient = useQueryClient();
-  const testReview = useMutation((testData)=>{
-    instance.post(`/review/${hostId}/review`, testData).then((res)=>{
-        console.log(res.data)
-  }).catch((err)=>{console.log(err,"why")})   
-  },
-  {
-    onSuccess: () => {
-      // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
-      queryClient.invalidateQueries("reviweDetail");
-    },
-  })
-  console.log(parseFloat(2.5))
-  
-  const reviewSubmit = (data) => {
-    console.log(starRef);
-    console.log(data.review, "its data");
-    console.log(typeof(score))
-    const testData = {
-      review:data.review,
-      starpoint:score
+
+  const testReview = useMutation(
+    (testData) =>
+      instance
+        .post(`/review/${hostId}/review`, testData)
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err, "why");
+        }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("reviewDetail");
+      },
     }
+  );
+  
+  const updateReview = useMutation((data)=>(
+    instance.put(`/review/${hostId}/:reviewId`, data).then((res)=>{
+      console.log(res.data);
+    }).catch((error)=>{
+      console.log(error, "why");
+    }),{
+      onSuccess: () => {
+        queryClient.invalidateQueries("reviewDetail");
+      },
+    }
+  ))
+
+  const reviewSubmit = () => {
+    
+    if(!isReivewUpdate.review){
+      const testData = {
+      review: textRef.current.value,
+      starpoint: score,
+    };
     testReview.mutate(testData);
-  }
+    console.log(testData, "등록 데이터");
+    setScore(0);
+    close();
+    }else
+    {
+      const data = {
+        review: textRef.current.value,
+        starpoint: score,
+      };
+      console.log(data ,"수정 데이터")
+      updateReview.mutate(data);
+    }
+    
+  };
   // const handleChange = () => {
   //   setScore(score)
   // }
-  console.log(userId)
+  console.log(isReivewUpdate, "수정 데이터다잉");
   return (
     <>
       {/* <Button onClick={handleOpen}>
@@ -87,8 +125,11 @@ const HouseReviewModal = (props) => {
           <Box sx={style}>
             <Main id="transition-modal-title" variant="h6" component="h2">
               <div id="mainReview">
-            
-                <h3>후기 남기기</h3>
+                <h3>
+                  {userId == isReivewUpdate.id
+                    ? "후기 수정하기"
+                    : "후기 남기기"}
+                </h3>
                 <img
                   className="cancel"
                   src={cancelIcon}
@@ -99,44 +140,44 @@ const HouseReviewModal = (props) => {
             </Main>
             <StarReview>별점을 남겨주세요</StarReview>
             <Main>
-            <Stack>
+              <Stack>
                 <Rating
-                
-                  style={{ fontSize: "60px",color:"#2A7047" }}
+                  style={{ fontSize: "60px", color: "#2A7047" }}
                   name="half-rating"
                   // defaultValue={score}
-                  precision={0.5}
+                  precision={1}
                   ref={starRef}
-                  value={score}
+                  defaultValue={isReivewUpdate.star ? isReivewUpdate.star : score}
                   onChange={(event, newValue) => {
                     setScore(newValue);
                   }}
                 />
               </Stack>
-            
             </Main>
-            <StarReview style={{"marginTop": "57px"}}>상세후기를 남겨주세요.</StarReview>
-            
+            <StarReview style={{ marginTop: "57px" }}>
+              상세후기를 남겨주세요.
+            </StarReview>
+
             <Main id="transition-modal-description" sx={{ mt: 2 }}>
-              <ReviewForm onSubmit={handleSubmit(reviewSubmit)}>
-              
+              <TextBox>
                 <textarea
-                //defailtValue 수정할 때 값 불러와야 함
-                defaultValue={""}
-                placeholder="내용을 입력해주세요."
-                {...register("review", {
-                  required: "내용을 입력해주세요 :)",
-                })}
+                  ref={textRef}
+                  // defaultValue={isReivewUpdate.review}
+                  defaultValue={isReivewUpdate.review}
+                  placeholder="내용을 입력해주세요."
+                  onChange={textChange}
                 />
                 {/* 버튼에서 등록 수정버튼 만들어야 함 */}
-                <Btn>등록</Btn>
-              </ReviewForm>
+                <Btn onClick={reviewSubmit}>{userId == isReivewUpdate.id
+                    ? "수정하기"
+                    : "확인"}</Btn>
+              </TextBox>
             </Main>
-            <ErrorMsg>{errors.review?.message}</ErrorMsg>
+            {/* <ErrorMsg>{errors.review?.message}</ErrorMsg> */}
           </Box>
         </Fade>
       </Modal>
-      </>
+    </>
   );
 };
 
@@ -144,7 +185,7 @@ const Main = styled(Typography)`
   display: flex;
   justify-content: center;
   align-items: center;
-
+  color: #636366;
   img {
     width: 40px;
     height: 40px;
@@ -172,31 +213,32 @@ const StarReview = styled.h4`
   line-height: 150%;
 `;
 
-const ReviewForm = styled.form`
+const TextBox = styled.div`
   width: 100%;
-  textarea{
+  textarea {
     width: 100%;
     height: 273px;
     border-radius: 20px;
-    background-color: #F2F2F7;
+    background-color: #f7f3ef;
     border: none;
     padding: 20px;
     font-size: 28px;
   }
-`
+`;
 
-const ErrorMsg = styled.p`
 
-`
 
 const Btn = styled.button`
   width: 100%;
-  height: 50px;
+  height: 72px;
   border-radius: 20px;
   border: none;
   font-size: 25px;
   cursor: pointer;
-  background-color: #f7f3ef;
-`
+  margin-top: 30px;
+  border-radius: 10px;
+  color: #fff;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), #EEE9E4;
+`;
 
 export default HouseReviewModal;

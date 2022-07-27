@@ -1,17 +1,35 @@
 import React from "react";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import jeju2 from "../assests/css/jeju2.jpeg"
+import { reviewStarList } from "../recoil/atoms";
 
 
 
-const Profile = () => {
+const Profile = ({item, data}) => {
+    const userProfile = useRecoilValue(reviewStarList);
+    console.log(!data)
+//    console.log(userProfile[idx])
+    console.log(item, "잇냐?");
     return(
     <Main>
-        <img src={jeju2} alt="프로필"/>
+        {data ? (
+        <>
+        <img src={data.images[0].userImageURL} alt="프로필"/>
         <div id="profileName">
-            <SpanName style={{}}>글쓴이 이름</SpanName>
+            <SpanName >{data.nickname}</SpanName>
             <SpanTime>2시간 전</SpanTime>
         </div>
+        </>) : (
+        <>
+            <img src={item?.images[0]?.userImageURL} alt="프로필"/>
+        <div id="profileName">
+            <SpanName style={{}}>{item.nickname}</SpanName>
+            <SpanTime>2시간 전</SpanTime>
+        </div>
+        </>
+        )}
+        
     </Main>)
 };
 
