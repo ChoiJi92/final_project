@@ -140,11 +140,11 @@ const CategorySlide = (props) => {
               onMouseLeave={mouseLeave}
               onMouseOver={mouseHover}
               style={{
-                backgroundImage: `linear-gradient( 0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back})`,
+                backgroundImage: `linear-gradient( 0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back7})`,
               }}
             >
               <img src={beach} alt="beach"></img>
-              <p>해안가</p>
+              <p>모두보기</p>
             </Card>
           </Wrap>
           <Wrap>
@@ -200,11 +200,11 @@ const CategorySlide = (props) => {
               onMouseLeave={mouseLeave}
               onMouseOver={mouseHover}
               style={{
-                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back7})`,
+                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back})`,
               }}
             >
               <img src={sunrise} alt="sunrise"></img>
-              <p>성산일출봉</p>
+              <p>해변근처</p>
             </Card>
           </Wrap>
         </SliderImg>
@@ -215,11 +215,11 @@ const CategorySlide = (props) => {
               onMouseLeave={mouseLeave}
               onMouseOver={mouseHover}
               style={{
-                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back})`,
+                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back7})`,
               }}
             >
               <img src={beach} alt="beach"></img>
-              <p>해안가</p>
+              <p>모두보기</p>
             </Card>
           </Wrap>
           <Wrap>
@@ -275,11 +275,11 @@ const CategorySlide = (props) => {
               onMouseLeave={mouseLeave}
               onMouseOver={mouseHover}
               style={{
-                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back7})`,
+                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back})`,
               }}
             >
               <img src={sunrise} alt="sunrise"></img>
-              <p>성산일출봉</p>
+              <p>해변근처</p>
             </Card>
           </Wrap>
         </SliderImg>

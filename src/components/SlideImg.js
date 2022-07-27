@@ -3,8 +3,9 @@ import styled from "styled-components";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useParams } from "react-router-dom";
-import { faHourglassEmpty } from "@fortawesome/free-solid-svg-icons";
+import nextIcon from '../assests/css/nextIcon2.webp'
+import prevIcon from '../assests/css/prevIcon2.webp'
+import { borderRadius } from "@mui/system";
 
 const SlideImg = (props) => {
   const [mouseOver, setMouseOver] = useState(false);
@@ -69,7 +70,7 @@ const SlideImg = (props) => {
   };
 
   const { item, width, height } = props;
-  console.log(item, "이거슨 이미지 데이터")
+  // console.log(item, "이거슨 이미지 데이터")
   const mouseHover = () => {
     setMouseOver(true);
   };
@@ -116,9 +117,16 @@ const ImgBox = styled.div`
     border-radius: 12px;
     width: 100%;
     height:${(props)=>props.height};
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 100%);
     /* width: 260px;
     height: 260px; */
   }
+  /* .slick-prev:before {
+    display: none;
+  }
+  .slick-next:before {
+    display: none;
+  } */
 `;
 
 const SliderImg = styled(Slider)`

@@ -26,6 +26,7 @@ import LoginError from './pages/LoginError';
 import UserPage from './pages/UserPage';
 import Mypage from './pages/Mypage'
 import { Helmet } from 'react-helmet-async';
+import Test from './components/Test';
 
 
 function App() {
@@ -51,7 +52,7 @@ function App() {
         <Route path="/chatroom/:id" element={userId ? <ChatRoom/> : <LoginError/>} />
         <Route path="/mypage" element={userId ? <Mypage /> : <LoginError/>} />
         <Route path="/userpage/:id" element={<UserPage />}/>
-        <Route path="/test" element={<TestMap />} />
+        <Route path="/test" element={<Test />} />
         <Route path="/testmap" element={<TestMap2 />} />
         <Route path="/userpolicy" element={<UserPolicy />} />
         <Route path='/oauth/kakao/callback' element={<KakaoRedirect/>}/>

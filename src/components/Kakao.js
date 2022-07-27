@@ -16,6 +16,7 @@ const Kakao = () => {
 
 const Img = styled.img`
   width: 100%;
+  /* margin-bottom: 20px; */
 
 `
 
