@@ -9,7 +9,7 @@ import editIcon from "../assests/css/editIcon.png";
 import deleteIcon from "../assests/css/deleteIcon.png";
 import unlikeIcon from "../assests/css/unlikeIcon.webp";
 import likeIcon from "../assests/css/likeIcon.webp";
-import starIcon from "../assests/css/starIcon.png";
+import starIcon from "../assests/css/starIcon.webp";
 import unsaveIcon from "../assests/css/unsaveIcon.png";
 import commentIcon from "../assests/css/commentIcon.webp";
 import mypageImg from "../assests/css/mypageImg.webp";
@@ -128,6 +128,7 @@ const CommunityDetail = () => {
       },
     }
   );
+  console.log(data.outherPosts?.length)
   return (
     <Container>
       <Image image={data.allPost[0].images[0].thumbnailURL}></Image>
@@ -135,7 +136,7 @@ const CommunityDetail = () => {
         <WrapLeft>
           <Content>
             <div className="hashTag">
-              {data.allPost[0].tagList[0]?.map((v, i) => (
+              {data.allPost[0].tagList?.map((v, i) => (
                 <p key={i}>{v}</p>
               ))}
             </div>
@@ -218,24 +219,24 @@ const CommunityDetail = () => {
             </div>
           </Content>
           <WrapBottom>
-            {data.allPost[0]?.hosts.length > 0 ? (
+            {data.findAllAcc.length > 0 ? (
               <>
                 <h2>포스팅에 나온 숙소보러가기</h2>
                 <div className="houseWrap">
                   <SlideImg
-                    image={data.allPost[0].hosts[0].images}
+                    item={data.findAllAcc[0].images}
                     width={"30.7%"}
                     height={"260px"}
                   ></SlideImg>
                   <div className="content">
                     <div className="title">
-                      <h2>해변근처의 게스트하우스</h2>
-                      <p>한달 살기 조건에 관한 간한 설명</p>
+                      <h2>{data.findAllAcc[0].title}</h2>
+                      <p>{data.findAllAcc[0].hostContent}</p>
                     </div>
                     <div className="iconWrap">
                       <div>
                         <img src={starIcon} alt="star"></img>
-                        <p>5.0</p>
+                        <p>{data.findAllAcc[0].average}</p>
                       </div>
                       <img src={unsaveIcon} alt="save"></img>
                     </div>
@@ -251,14 +252,14 @@ const CommunityDetail = () => {
           <div className="otherContent">
             <h2>글쓴이의 다른 글</h2>
             <div className="otherContainer">
-              {data.outherPost.length === 0 ? (
+              {data.outherPosts?.length === 0 ? (
                 <div className="noContent">
                   <img src={mypageImg} alt="아직 없어요"></img>
                   <p>아직 다른 글은 없어요.</p>
                 </div>
               ) : (
                 <>
-                  {data.outherPost.map((v) => (
+                  {data.outherPosts?.map((v) => (
                     <div className="otherWrap" key={v.postId}>
                       <Thumbnail image={v.images[0].thumbnailURL}></Thumbnail>
                       <div className="card">
@@ -297,7 +298,7 @@ const CommunityDetail = () => {
                 </>
               )}
             </div>
-            {data.outherPost.length > 0 && (
+            {data.outherPosts?.length > 0 && (
               <button
                 onClick={() => {
                   if (data.allPost[0].userId === userId) {

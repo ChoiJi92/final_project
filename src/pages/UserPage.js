@@ -56,7 +56,7 @@ const UserPage = () => {
           console.log(res.data);
           return (
             //   setMyLikePost(res.data.mylikespost), setMyPost(res.data.mypostinfo)
-            res.data.otherinfo
+            res.data
           );
         })
         .catch((err) => {
@@ -73,10 +73,10 @@ const UserPage = () => {
         <ProfileBox>
           <div className="profileWrap">
             <div id="profile">
-              <img src={userImage} alt="프로필 이미지"></img>
+              <img src={data.userImageURL} alt="프로필 이미지"></img>
               <div className="nickname">
-                <h3>{nickName}</h3>
-                <span>작성글 · {data.length}개</span>
+                <h3>{data.nickname}</h3>
+                <span>작성글 · {data.otherinfo?.length}개</span>
               </div>
             </div>
           </div>
@@ -85,7 +85,7 @@ const UserPage = () => {
           <div id="mylike">
             <h1>작성한 글</h1>
             <span>
-              {data.length === 0 ? (
+              {data.otherinfo?.length === 0 ? (
                 ""
               ) : (
                 <>
@@ -112,14 +112,14 @@ const UserPage = () => {
           </div>
           {!upMore ? (
             <>
-              {data.length === 0 ? (
+              {data.otherinfo?.length === 0 ? (
                 <EmptyImgBox>
                   <img src={mypageImg} alt="없어요 이미지" />
                   <span>아직 좋아요 한 글이 없어요.</span>
                 </EmptyImgBox>
               ) : (
                 <DefaultImgBox>
-                  {data?.slice(0, 3).map((v, i) => (
+                  {data.otherinfo?.slice(0, 3).map((v, i) => (
                     <img src={v.images[0].thumbnailURL} key={i} alt="이미지" />
                   ))}
                 </DefaultImgBox>
@@ -128,7 +128,7 @@ const UserPage = () => {
           ) : (
             <>
               <HiddenMyLikeBox>
-                {data.map((v, i) => {
+                {data.otherinfo?.map((v, i) => {
                   return (
                     <div key={i} id="listBox">
                       <img
@@ -146,7 +146,7 @@ const UserPage = () => {
                             {v.commentNum}
                           </span>
                         </div>
-                        <img src={likeIcon} alt="좋아요" />
+                        <img src={unlikeIcon} alt="좋아요" />
                       </div>
                     </div>
                   );

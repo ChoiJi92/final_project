@@ -11,7 +11,6 @@ import back5 from "../assests/css/배경5.webp";
 import back6 from "../assests/css/배경6.webp";
 
 const OpenChatSlide = ({ rtl, data }) => {
-  console.log(data)
   const [mouseOver, setMouseOver] = useState(false);
   const SampleNextArrow = (props) => {
     const { className, style, onClick } = props;

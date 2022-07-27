@@ -3,6 +3,10 @@ export const postData = atom({
   key: "postData",
   default: [],
 });
+export const bestPostData = atom({
+  key: "bestPostData",
+  default: [],
+});
 export const chatState = atom({
   key: "chatState",
   default: [],
@@ -46,8 +50,8 @@ export const hostShareAndMap = atom({
   default: [],
 });
 
-export const houseInfoMap = atom({
-  key: "houseInfo",
+export const hostData = atom({
+  key: "hostData",
   default: [],
 });
 

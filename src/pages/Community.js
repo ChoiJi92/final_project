@@ -27,14 +27,14 @@ import jeju13 from "../assests/css/제주8.jpeg";
 import jeju14 from "../assests/css/제주9.jpeg";
 import Footer from "../components/Footer";
 import { useRecoilState } from "recoil";
-import { postData } from "../recoil/atoms";
+import { bestPostData, postData } from "../recoil/atoms";
 
 const Community = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [category, setCategory] = useState("all");
-  const [bestContent, setBestContent] = useState([]);
   const [communityData, setCommunityData] = useRecoilState(postData);
+  const [bestData, setBestData] = useRecoilState(bestPostData);
   const userId = localStorage.getItem("userId");
   const { data } = useQuery(
     ["content"],
@@ -42,7 +42,8 @@ const Community = () => {
       instance
         .get("/post", { params: { userId: Number(userId) } })
         .then((res) => {
-          console.log(res.data.allPost);
+          console.log(res.data);
+          setBestData(res.data.Top5post);
           setCommunityData(res.data.allPost);
           return res.data.allPost;
         }),
@@ -74,15 +75,17 @@ const Community = () => {
       },
     }
   );
-  const title = "내 기준 제주에서 제일 예쁜 카페에요!!!";
-  const listImg = [jeju7, jeju8, jeju9, jeju10, jeju11, jeju12, jeju13, jeju14];
+
   const [count, setCount] = useState(0);
   return (
     <>
       <Container>
         <Top
-          rightImage={listImg[count < listImg.length - 1 ? count + 1 : 0]}
-          leftImage={listImg[count]}
+          rightImage={
+            bestData[count < bestData.length - 1 ? count + 1 : 0].images[0]
+              .thumbnailURL
+          }
+          leftImage={bestData[count].images[0].thumbnailURL}
         >
           <div className="leftImage">
             <Wrap>
@@ -92,28 +95,34 @@ const Community = () => {
                 alt="다음"
                 onClick={() => {
                   if (count <= 0) {
-                    setCount((prev) => prev + 7);
+                    setCount((prev) => prev + 4);
                   } else {
                     setCount(count - 1);
                   }
                 }}
               ></img>
-              <h2>이직 전 제주에서 한달동안 힐링하기</h2>
+              <h2>{bestData[count].title}</h2>
               <div className="wrap">
                 <div className="user">
-                  <img alt="프로필"></img>
-                  <p>최지훈</p>
+                  <img src={bestData[count].images[0].userImageURL} alt="프로필"></img>
+                  <p>{bestData[count].nickname}</p>
                 </div>
                 <div className="like">
                   <div>
                     <img src={unlike} alt="좋아요"></img>
-                    <p>00개</p>
+                    <p>{bestData[count].likeNum}개</p>
                   </div>
                   <div>
                     <img src={commentIcon2} alt="공유"></img>
-                    <p>00개</p>
+                    <p>{bestData[count].commentNum}개</p>
                   </div>
-                  <button>보러가기</button>
+                  <button
+                    onClick={() => {
+                      navigate(`/community/${bestData[count].postId}`);
+                    }}
+                  >
+                    보러가기
+                  </button>
                 </div>
               </div>
             </Wrap>
@@ -123,16 +132,24 @@ const Community = () => {
               src={nextIcon}
               alt="다음"
               onClick={() => {
-                if (count < listImg.length - 1) {
+                if (count < bestData.length - 1) {
                   setCount((prev) => prev + 1);
                 } else {
                   setCount(0);
                 }
               }}
             ></img>
-            <h2>{title.slice(0, 18)}...</h2>
+            <h2>
+              {bestData[count < bestData.length - 1 ? count + 1 : 0].title
+                .length > 18
+                ? bestData[
+                    count < bestData.length - 1 ? count + 1 : 0
+                  ].title.slice(0, 18)+"..."
+                : bestData[count < bestData.length - 1 ? count + 1 : 0].title}
+            </h2>
           </div>
         </Top>
+
         <Middle category={category}>
           <div
             className="all"
@@ -389,7 +406,6 @@ const Wrap = styled.div`
     img {
       width: 42px;
       height: 42px;
-      border: 1px solid;
       border-radius: 50%;
       margin-right: 10px;
     }

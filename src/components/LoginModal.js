@@ -92,8 +92,8 @@ const Middle = styled(Typography)`
   justify-content: center;
 `;
 const Img = styled.img`
-  width: 300px;
-  height: 250px;
+  width: 239px;
+  height: 293.99px;
   margin: 40px auto;
 `;
 const Btn = styled.div`

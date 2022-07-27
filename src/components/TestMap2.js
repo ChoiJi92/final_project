@@ -16,19 +16,6 @@ const TestMap2 = ({ data }) => {
   const [info, setInfo] = useState();
   const [save, setSave] = useState(false);
 
-  // const { data } = useQuery(
-  //   ["houseInfo"],
-  //   // ()=>getWriteData(paramsId),
-  //   () => {
-  //     return axios
-  //       .get(`http://localhost:5001/testList/`)
-  //       .then((res) => res.data);
-  //   },
-  //   {
-  //     refetchOnWindowFocus: false,
-  //   }
-  // );
-  // console.log(isHouseInfoMap);
   useEffect(() => {
     // if (!map) return;
     let geocoder = new kakao.maps.services.Geocoder();
@@ -49,9 +36,9 @@ const TestMap2 = ({ data }) => {
             content: data[i],
           });
           // console.log(markers);
-          // bounds.extend(new kakao.maps.LatLng(result[0].y, result[0].x));
+          bounds.extend(new kakao.maps.LatLng(result[0].y, result[0].x));
           // console.log(bounds)
-          const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+          // const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
           
           // 결과값으로 받은 위치를 마커로 표시합니다
           // const marker = new kakao.maps.Marker({
@@ -60,11 +47,11 @@ const TestMap2 = ({ data }) => {
           //   // image:jeju1,
           // });
           // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-          map.setCenter(coords);
+          // map.setCenter(coords);
         }
         
         setMarkers(markers);
-        // map.setBounds(bounds);
+        map.setBounds(bounds);
       });
     }
   }, [map]);
@@ -77,7 +64,6 @@ const TestMap2 = ({ data }) => {
     const map = mapRef.current;
     map.setLevel(map.getLevel() + 1);
   };
-  // console.log(markers);
   return (
     <>
       <Map // 지도를 표시할 Container
@@ -90,29 +76,30 @@ const TestMap2 = ({ data }) => {
         style={{
           // 지도의 크기
           width: "100%",
-          height: "450px",
+          height: "300px",
           position: "relative",
           overflow: "hidden",
           borderRadius: "20px",
+          // marginTop:'40px'
         }}
         level={8} // 지도의 확대 레벨
         onCreate={setMap}
         ref={mapRef}
       >
         {markers.map((v) => (
-          <div key={v.position.lng}>
+          <div key={v.position.lat}>
             <MapMarker
               position={v.position}
               onClick={() => {
-                if (markers.length > 1) {
+               if(markers.length>1){
                   setInfo(v);
                   setIsOpen(true);
-                }
+               }
               }}
             />
             {isOpen && info.content === v.content && (
-              <CustomOverlayMap>
-                <Wrap>
+              <CustomOverlayMap position={v.position}>
+                <Wrap image={v.content.images[0].postImageURL}>
                   <div className="info">
                     <div className="title">
                       <img
@@ -124,11 +111,11 @@ const TestMap2 = ({ data }) => {
                     </div>
                     <div className="body">
                       <div className="desc">
-                        <div className="house">해변근처의 게스트하우스</div>
+                        <div className="house">{v.content.title}</div>
                         <div className="iconWrap">
                           <div>
                             <img src={starIcon} alt="별점"></img>
-                            <p>5.0</p>
+                            <p>{v.content.average}</p>
                           </div>
                           {save ? (
                             <img
@@ -172,7 +159,8 @@ const TestMap2 = ({ data }) => {
 const Zoom = styled.div`
   position: absolute;
   /* margin-left: 350px; */
-  margin-top: 20px;
+  margin-top: 40px;
+  top:0;
   right: 20px;
   z-index: 1;
   overflow: hidden;
@@ -203,12 +191,14 @@ const Wrap = styled.div`
   bottom: 200px;
 
   .info {
+    width: 400px;
     /* border: 1px solid red; */
   }
   .title {
-    background: url(${back2}) no-repeat;
+    background: url(${(props)=>props.image}) no-repeat;
     background-size: cover;
-    width: 400px;
+    /* width: 400px; */
+    width: 100%;
     height: 220px;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
