@@ -27,6 +27,7 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { houseInfoMap } from "../recoil/atoms";
 import FormControl from '@mui/material/FormControl';
 import instance from "../shared/axios";
+import TestMap2 from "../components/TestMap2";
 
 const HouseInfo = () => {
   const [leftPosition, setLeftPosition] = useState("");
@@ -381,9 +382,9 @@ const HouseInfo = () => {
             })}
           </ListWrap>
         </ContentsBox>
-        {/* <MapBox>
-          <Map isinfo={"isinfo"} />
-        </MapBox> */}
+        <MapBox>
+          <TestMap2 isinfo={"isinfo"} data={data.findAllAcc} />
+        </MapBox>
       </div>
     </MainBox>
   );
@@ -435,8 +436,7 @@ const SpotUnderBar = styled.div`
   background-color: #bdc3c7;
   transition: 0.5s;
   top: 295px;
-  /* left: 
-    width: 152px; */
+  
 `;
 
 const LiveUnderBar = styled.div`
