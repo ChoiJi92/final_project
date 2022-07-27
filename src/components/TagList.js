@@ -22,12 +22,12 @@ const TagList = ({ tagList, setTagList, maxLength, width, margin }) => {
   return (
     <Tag
       className="tag"
-      length={tagList.length}
+      length={tagList?.length}
       maxLength={maxLength}
       width={width}
       margin={margin}
     >
-      {tagList.map((v, i) => (
+      {tagList?.map((v, i) => (
         <div
           key={`${v}-${i}`}
           onClick={() => {
@@ -43,6 +43,7 @@ const TagList = ({ tagList, setTagList, maxLength, width, margin }) => {
         onKeyDown={onKeyDown}
         placeholder="#태그"
         value={tag || ""}
+        // defaultValue={tag}
       ></input>
     </Tag>
   );

@@ -24,6 +24,7 @@ import jeju3 from "../assests/css/jeju3.jpeg";
 import jeju4 from "../assests/css/jeju4.jpeg";
 import jeju5 from "../assests/css/jeju5.jpeg";
 import jeju6 from "../assests/css/jeju6.jpeg";
+import TestMap2 from "../components/TestMap2";
 
 const CommunityDetail = () => {
   const queryClient = useQueryClient();
@@ -36,17 +37,18 @@ const CommunityDetail = () => {
   const { data } = useQuery(
     ["detailContent", params.id],
     () =>
-      instance.get(`/post/${params.id}`).then((res) => {
-        console.log(res.data.allPost[0].content.replace('https://yushin-s3.s3.ap-northeast-2.amazonaws.com/images/c997be2f-e4e5-4a09-b771-a57419b2e492.webp','aaaa'));
-        return res.data.allPost[0];
-      }),
+      instance
+        .get(`/post/${params.id}`, { params: { userId: Number(userId) } })
+        .then((res) => {
+          console.log(res.data);
+          return res.data;
+        }),
     {
       // retry: false, // 재호출 안하기
-      enabled:!!params.id,
+      enabled: !!params.id,
       refetchOnWindowFocus: false, // 다른화면 갔다와도 재호출 안되게 함
     }
   );
-  const [like, setLike] = useState(data.islike);
 
   // 코멘트 로드
   const loadComment = useQuery(
@@ -80,8 +82,8 @@ const CommunityDetail = () => {
   // 좋아요
   const Like = useMutation(
     ["Like"],
-    () =>
-      instance.post(`/like/${params.id}`).then((res) => console.log(res.data)),
+    (id) =>
+      instance.post(`/like/${id}`).then((res) => console.log(res.data)),
     {
       onSuccess: () => {
         // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
@@ -92,9 +94,9 @@ const CommunityDetail = () => {
   // 좋아요 취소
   const unLike = useMutation(
     ["unLike"],
-    () =>
+    (id) =>
       instance
-        .delete(`/like/${params.id}/unlike`)
+        .delete(`/like/${id}/unlike`)
         .then((res) => console.log(res.data)),
     {
       onSuccess: () => {
@@ -132,35 +134,36 @@ const CommunityDetail = () => {
 
   return (
     <Container>
-      <Image image={data.images[0].thumbnailURL}></Image>
+      <Image image={data.allPost[0].images[0].thumbnailURL}></Image>
       <Wrap>
         <WrapLeft>
           <Content>
             <div className="hashTag">
-              <p>#제주도 동부</p>
-              <p>#김녕해수욕장</p>
-              <p>#사람없는</p>
+             {data.allPost[0].tagList[0]?.map((v,i)=> <p key={i}>{v}</p>)}
             </div>
             <div>
-              <h1>{data.title}</h1>
+              <h1>{data.allPost[0].title}</h1>
               <User>
                 <div className="profileImage">
-                  <img src={data.images[0].userImageURL} alt="프로필"></img>
+                  <img
+                    src={data.allPost[0].images[0].userImageURL}
+                    alt="프로필"
+                  ></img>
                   <div className="profile">
-                    <div className="nickname">{data.nickname}</div>
+                    <div className="nickname">{data.allPost[0].nickname}</div>
                     <div className="time">2시간 전</div>
                   </div>
                 </div>
                 <Button>
-                  {userId !== data.userId ? (
+                  {userId !== data.allPost[0].userId ? (
                     <>
-                      <Share data={data}></Share>
-                      {data.islike ? (
+                      <Share data={data.allPost[0]}></Share>
+                      {data.allPost[0].islike ? (
                         <button
                           style={{ width: "40%" }}
                           onClick={() => {
-                            unLike.mutate();
-                            setLike(false);
+                            unLike.mutate(data.allPost[0].postId);
+                          
                           }}
                         >
                           좋아요
@@ -174,8 +177,8 @@ const CommunityDetail = () => {
                         <button
                           style={{ width: "40%" }}
                           onClick={() => {
-                            Like.mutate();
-                            setLike(true);
+                            Like.mutate(data.allPost[0].postId);
+                          
                           }}
                         >
                           좋아요
@@ -199,8 +202,7 @@ const CommunityDetail = () => {
                       </button>
                       <button
                         onClick={() => {
-                          deleteContent.mutate(data.postId);
-                          
+                          deleteContent.mutate(data.allPost[0].postId);
                         }}
                       >
                         삭제
@@ -216,11 +218,12 @@ const CommunityDetail = () => {
               </User>
             </div>
             <div className="post">
-              <Viewer initialValue={data.content}></Viewer>
+              <Viewer initialValue={data.allPost[0].content}></Viewer>
             </div>
           </Content>
           <WrapBottom>
-            <h2>포스팅에 나온 숙소보러가기</h2>
+            <TestMap2 data={data.allPost}/>
+            {/* <h2>포스팅에 나온 숙소보러가기</h2>
             <div className="houseWrap">
               <SlideImg
                 listImg={listImg}
@@ -240,58 +243,72 @@ const CommunityDetail = () => {
                   <img src={unsaveIcon} alt="save"></img>
                 </div>
               </div>
-            </div>
+            </div> */}
           </WrapBottom>
         </WrapLeft>
         <WrapRight>
           <div className="otherContent">
             <h2>글쓴이의 다른 글</h2>
-            <div className="otherWrap">
-              <img src={jeju1} alt="back"></img>
-              <div className="card">
-                <h3>글 제목</h3>
-                <div className="icon">
-                  <div className="like">
-                    {islike ? (
-                      <img
-                        onClick={() => {
-                          setIslike(false);
-                        }}
-                        src={likeIcon}
-                        alt="좋아요"
-                      />
-                    ) : (
-                      <img
-                        onClick={() => {
-                          setIslike(true);
-                        }}
-                        src={unlikeIcon}
-                        alt="좋아요"
-                      />
-                    )}
-                    <p>00개</p>
-                  </div>
-                  <div className="comment">
-                    <img src={commentIcon} alt="댓글" />
-                    <p>00개</p>
+            <div className="otherContainer">
+              {data.outherPost.map((v) => (
+                <div className="otherWrap" key={v.postId}>
+                  <Thumbnail image={v.images[0].thumbnailURL}></Thumbnail>
+                  <div className="card">
+                    <h3>{v.title}</h3>
+                    <div className="icon">
+                      <div className="like">
+                        {v.islike ? (
+                          <img
+                            onClick={() => {
+                              unLike.mutate(v.postId);
+                              // setIslike(false);
+                            }}
+                            src={likeIcon}
+                            alt="좋아요"
+                          />
+                        ) : (
+                          <img
+                            onClick={() => {
+                              Like.mutate(v.postId);
+                              // setIslike(true);
+                            }}
+                            src={unlikeIcon}
+                            alt="좋아요"
+                          />
+                        )}
+                        <p>{v.likeNum}개</p>
+                      </div>
+                      <div className="comment">
+                        <img src={commentIcon} alt="댓글" />
+                        <p>{v.commentNum}개</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
-            <button onClick={()=>{
-              navigate(`/userpage/${data.userId}`)
-            }}>글쓴이 글 더 보러가기</button>
+            <button
+              onClick={() => {
+                if (data.allPost[0].userId === userId) {
+                  navigate("/mypage");
+                } else {
+                  navigate(`/userpage/${data.allPost[0].userId}`);
+                }
+              }}
+            >
+              글쓴이 글 더 보러가기
+            </button>
           </div>
         </WrapRight>
       </Wrap>
       <Count>
         <div className="likeShare">
           <div>
-            <p>좋아요 {data.likeNum}개</p>
+            <p>좋아요 {data.allPost[0].likeNum}개</p>
             {/* <p>스크랩 00개</p> */}
             <p>댓글 {loadComment.data.length}개</p>
           </div>
-          <Share2 data={data}></Share2>
+          <Share2 data={data.allPost[0]}></Share2>
         </div>
       </Count>
       <CommentWrap>
@@ -336,7 +353,7 @@ const Image = styled.div`
   width: 70%;
   height: 550px;
   margin: 40px 0 60px 0;
-  background: url(${(props) => props.image}) no-repeat;
+  background: url(${(props) => props.image}) no-repeat center center;
   background-size: cover;
 `;
 const Wrap = styled.div`
@@ -371,7 +388,7 @@ const Content = styled.div`
       height: 45px;
       border-radius: 10px;
       border: none;
-      background: #F7F3EF;
+      background: #f7f3ef;
       font-size: 21px;
       font-weight: 600;
       line-height: 25.06px;
@@ -475,7 +492,7 @@ const Button = styled.div`
     font-weight: 500;
     font-size: 24px;
     line-height: 160%;
-    background-color: #F7F3EF;
+    background-color: #f7f3ef;
     color: #48484a;
     cursor: pointer;
   }
@@ -485,6 +502,7 @@ const WrapBottom = styled.div`
   flex-direction: column;
   width: 100%;
   margin: 50px 0;
+  position: relative;
   h2 {
     font-style: normal;
     font-weight: 600;
@@ -554,11 +572,14 @@ const WrapRight = styled.div`
     height: 657px;
     padding: 28px 20px 20px 20px;
     border-radius: 20px;
-    background: #FDFCFB;
-    box-shadow: 0px 12px 42px #EEE9E4;
+    background: #fdfcfb;
+    box-shadow: 0px 12px 42px #eee9e4;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    /* justify-content: space-between; */
+    .otherContainer {
+      height: 77%;
+    }
     h2 {
       font-style: normal;
       font-weight: 600;
@@ -570,7 +591,7 @@ const WrapRight = styled.div`
     button {
       width: 100%;
       height: 66px;
-      background: #F7F3EF;
+      background: #f7f3ef;
       border-radius: 10px;
       border: none;
       font-style: normal;
@@ -584,11 +605,7 @@ const WrapRight = styled.div`
   .otherWrap {
     height: 120px;
     width: 100%;
-    img {
-      width: 120px;
-      height: 120px;
-      margin-right: 20px;
-    }
+    margin-bottom: 30px;
     display: flex;
   }
   .card {
@@ -614,7 +631,7 @@ const WrapRight = styled.div`
       img {
         width: 32px;
         height: 32px;
-        margin-right:5px;
+        margin-right: 5px;
         cursor: pointer;
       }
       p {
@@ -631,7 +648,7 @@ const WrapRight = styled.div`
       img {
         width: 32px;
         height: 32px;
-        margin-right:5px;
+        margin-right: 5px;
       }
       p {
         font-style: normal;
@@ -643,6 +660,15 @@ const WrapRight = styled.div`
     }
   }
 `;
+const Thumbnail = styled.div`
+      width: 50%;
+      height: 120px;
+      margin-right: 20px;
+      background: url(${(props) => props.image}) no-repeat center center;
+      background-size: cover;
+
+    
+`
 const Count = styled.div`
   width: 70%;
   margin-bottom: 54px;

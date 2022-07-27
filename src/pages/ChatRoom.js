@@ -12,6 +12,7 @@ import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { chatState,userCount } from "../recoil/atoms";
+import Footer from "../components/Footer";
 // import { useBeforeunload } from "react-beforeunload";
 const ChatRoom = () => {
   const messageRef = useRef();
@@ -143,6 +144,7 @@ const ChatRoom = () => {
     }
   };
   return (
+    <>
     <Container>
       <Wrap>
         <ChatWrap>
@@ -259,20 +261,25 @@ const ChatRoom = () => {
         </ChatWrap>
       </Wrap>
     </Container>
+    <Footer/>
+    </>
   );
 };
 
 const Container = styled.div`
   /* align-items: center; */
   margin-top: 40px;
-  margin-bottom: 50px;
+  /* margin-bottom: 50px; */
+  height: auto;
+  min-height: 80vh;
 `;
 const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 50%;
+  width: 70.7%;
   margin: 0 auto;
+
 `;
 const ChatWrap = styled.div`
   /* width: 100%; */
@@ -310,7 +317,8 @@ const Header = styled.div`
   }
 `;
 const ChatList = styled.div`
-  width: 45.152%;
+  /* width: 45.152%; */
+  width: 48.7%;
   border: 1px solid #EEE9E4;
   border-radius: 20px;
   display: flex;
@@ -396,7 +404,8 @@ const ChatList = styled.div`
   }
 `;
 const Room = styled.div`
-  width: 45.152%;
+  /* width: 45.152%; */
+  width: 100%;
   margin-left: 20px;
   display: flex;
   flex-direction: column;
@@ -518,7 +527,7 @@ const Room = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 85%;
+    width: 100%;
     border: none;
     border-radius: 20px;
     height: 60px;

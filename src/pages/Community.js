@@ -26,20 +26,26 @@ import jeju12 from "../assests/css/제주6.jpeg";
 import jeju13 from "../assests/css/제주8.jpeg";
 import jeju14 from "../assests/css/제주9.jpeg";
 import Footer from "../components/Footer";
+import { useRecoilState } from "recoil";
+import { postData } from "../recoil/atoms";
 
 const Community = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [category, setCategory] = useState("all");
-  const [bestContent,setBestContent] = useState([])
+  const [bestContent, setBestContent] = useState([]);
+  const [communityData, setCommunityData] = useRecoilState(postData);
+  const userId = localStorage.getItem("userId");
   const { data } = useQuery(
     ["content"],
     () =>
-      instance.get("/post").then((res) => {
-        console.log(res.data.allPost);
-        
-        return res.data.allPost;
-      }),
+      instance
+        .get("/post", { params: { userId: Number(userId) } })
+        .then((res) => {
+          console.log(res.data.allPost);
+          setCommunityData(res.data.allPost);
+          return res.data.allPost;
+        }),
     {
       refetchOnWindowFocus: false, // 다른화면 갔다와도 재호출 안되게 함
     }
@@ -131,6 +137,7 @@ const Community = () => {
           <div
             className="all"
             onClick={() => {
+              setCommunityData(data);
               setCategory("all");
             }}
           >
@@ -140,6 +147,7 @@ const Community = () => {
           <div
             className="land"
             onClick={() => {
+              setCommunityData(data.filter((v) => v.category === "내륙"));
               setCategory("land");
             }}
           >
@@ -149,6 +157,9 @@ const Community = () => {
           <div
             className="tour"
             onClick={() => {
+              setCommunityData(
+                data.filter((v) => v.category === "관광지 근처")
+              );
               setCategory("tour");
             }}
           >
@@ -158,6 +169,9 @@ const Community = () => {
           <div
             className="town"
             onClick={() => {
+              setCommunityData(
+                data.filter((v) => v.category === "조용한 마을")
+              );
               setCategory("town");
             }}
           >
@@ -167,6 +181,7 @@ const Community = () => {
           <div
             className="icecream"
             onClick={() => {
+              setCommunityData(data.filter((v) => v.category === "우도"));
               setCategory("icecream");
             }}
           >
@@ -176,15 +191,16 @@ const Community = () => {
           <div
             className="sunrise"
             onClick={() => {
+              setCommunityData(data.filter((v) => v.category === "해변근처"));
               setCategory("sunrise");
             }}
           >
-            <img src={sunrise} alt="성산일출봉"></img>
-            <p>성산일출봉</p>
+            <img src={sunrise} alt="해변 근처"></img>
+            <p>해변 근처</p>
           </div>
         </Middle>
         <Bottom>
-          {data.map((v) => (
+          {communityData.map((v) => (
             <Card key={v.postId}>
               <div className="leftContent">
                 <div className="user">{v.nickname}</div>
@@ -219,10 +235,7 @@ const Community = () => {
                     <p>{v.likeNum}</p>
                   </div>
                   <div className="comment">
-                    <img
-                      src={commentIcon}
-                      alt="댓글"
-                    />
+                    <img src={commentIcon} alt="댓글" />
                     <p>{v.commentNum}</p>
                   </div>
                 </div>
@@ -318,9 +331,8 @@ const Top = styled.div`
       cursor: pointer;
     }
     h2 {
-      /* border: 1px solid; */
       color: white;
-      width: 55%;
+      width: 100%;
       overflow: hidden;
       /* white-space: nowrap; */
       text-overflow: ellipsis;
@@ -475,7 +487,7 @@ const Card = styled.div`
   width: 100%;
   height: 362px;
   padding-bottom: 30px;
-  border-bottom: 1px solid;
+  border-bottom: 2px solid #e5e5ea;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -486,7 +498,13 @@ const Card = styled.div`
       text-decoration: underline;
     }
     .thumnail {
-      transform:scale(1.1); 
+      transform: scale(1.1);
+      /* transition: all 0.3s ease-in-out; */
+      /* transition: transform 0.2s; */
+      /* transition-property: transform;
+      transition-duration: 0.2s;
+      transition-timing-function: ease;
+      transition-delay: 0s; */
     }
   }
   .leftContent {
@@ -505,8 +523,8 @@ const Card = styled.div`
     margin-bottom: 35px;
     font-style: normal;
     font-weight: 600;
-    font-size: 52px;
-    line-height: 62px;
+    font-size: 36px;
+    line-height: 43px;
   }
   .icon {
     position: absolute;
@@ -517,7 +535,7 @@ const Card = styled.div`
       display: flex;
       flex-direction: row;
       margin-right: 40px;
-      img{
+      img {
         width: 32px;
         height: 32px;
       }
@@ -533,7 +551,7 @@ const Card = styled.div`
     .comment {
       display: flex;
       flex-direction: row;
-      img{
+      img {
         width: 32px;
         height: 32px;
       }

@@ -33,8 +33,8 @@ const KakaoShare = ({ data }) => {
         objectType: "feed",
         content: {
           title: `${data.title}`,
-          // description: '#케익 #딸기 #삼평동 #카페 #분위기 #소개팅',
-          imageUrl: `${data.thumbnailURL}`,
+          description: `${data.tagList[0]}`,
+          imageUrl: `${data.images[0].thumbnailURL}`,
           link: {
             mobileWebUrl: url,
             webUrl: url,

@@ -54,13 +54,13 @@ const WriteFooter = ({
         value="작성 취소"
       ></input>
       <div className="post">
-        <input
+        {/* <input
           type="button"
           value="임시 저장"
           onClick={() => {
             tempPost();
           }}
-        ></input>
+        ></input> */}
         <CompleteModal open={open} setOpen={setOpen} isHost={isHost} />
       </div>
     </Wrap>

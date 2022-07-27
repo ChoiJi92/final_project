@@ -25,18 +25,22 @@ import Error from './pages/Error';
 import LoginError from './pages/LoginError';
 import UserPage from './pages/UserPage';
 import Mypage from './pages/Mypage'
+import { Helmet } from 'react-helmet-async';
 
 
 function App() {
  const userId = localStorage.getItem('userId')
   return (
     <div className="App">
+       <Helmet>
+        <title>멘도롱 제주</title>
+      </Helmet>
       <GlobalStyles />
       <Header/>
       <Routes>
         <Route path="/" element={<Main />} />
-        <Route path="/community" element={<Community />} />
-        <Route path="/community/:id" element={<CommunityDetail />} />
+        <Route path="/community" element={<Community/>} />
+        <Route path="/community/:id" element={<CommunityDetail/>} />
         <Route path="/userwrite" element={userId ? <UserWrite /> : <LoginError/>} />
         <Route path="/userwrite/:id" element={userId ? <UserWrite /> : <LoginError/>} />
         <Route path="/hostwrite" element={userId ? <HostWrite/> : <LoginError/>} />
@@ -49,7 +53,6 @@ function App() {
         <Route path="/userpage/:id" element={<UserPage />}/>
         <Route path="/test" element={<TestMap />} />
         <Route path="/testmap" element={<TestMap2 />} />
-
         <Route path="/userpolicy" element={<UserPolicy />} />
         <Route path='/oauth/kakao/callback' element={<KakaoRedirect/>}/>
         <Route path='/oauth/google/callback' element={<GoogleRedirect/>}/>

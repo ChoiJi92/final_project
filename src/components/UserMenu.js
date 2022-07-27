@@ -76,8 +76,9 @@ const UserMenu = ({ userImage, nickName }) => {
             marginBottom:'10px'
           }}
           onClick={() => {
+            handleClose()
             navigate("/mypage");
-            handleClose(null);
+            window.location.reload()
           }}
         >
           마이페이지
