@@ -92,8 +92,8 @@ const Main = () => {
       </RegionWrap>
       <OpenChat>
         <h2>Popular openchat</h2>
-        <OpenChatSlide data={data?.slice(0,5)} rtl={false}/>
-        <OpenChatSlide data={data?.slice(0,5)} rtl={true}/>
+        <OpenChatSlide data={data.length > 5  ? data?.slice(0,5) : data} rtl={false}/>
+        <OpenChatSlide data={data.length > 5  ? data?.slice(0,5) : data} rtl={true}/>
       </OpenChat>
       
     </Container>
