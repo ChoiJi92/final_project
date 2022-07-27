@@ -15,6 +15,7 @@ const TestMap2 = ({ data }) => {
   const [markers, setMarkers] = useState([]);
   const [info, setInfo] = useState();
   const [save, setSave] = useState(false);
+  
   // const { data } = useQuery(
   //   ["houseInfo"],
   //   // ()=>getWriteData(paramsId),
