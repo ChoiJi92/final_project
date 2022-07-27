@@ -8,9 +8,9 @@ import { reviewStarList } from "../recoil/atoms";
 
 const Profile = ({item, data}) => {
     const userProfile = useRecoilValue(reviewStarList);
-    console.log(!data)
+    // console.log(!data)
 //    console.log(userProfile[idx])
-    console.log(item, "잇냐?");
+    // console.log(item, "잇냐?");
     return(
     <Main>
         {data ? (

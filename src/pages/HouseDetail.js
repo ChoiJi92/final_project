@@ -20,7 +20,9 @@ import 조용한마을 from "../assests/css/조용한마을.webp";
 import icecream from "../assests/css/icecream.webp";
 import sunrise from "../assests/css/sunrise.webp";
 import shareIcon2 from "../assests/css/shareIcon2.png";
-import unsaveIcon2 from "../assests/css/unsaveIcon2.jpeg";
+import saveIcon from "../assests/css/saveIcon.webp";
+import unsaveIcon2 from "../assests/css/unsaveIcon2.webp";
+
 import step from "../assests/css/step.webp";
 import scrap from "../assests/css/scrap.png";
 
@@ -33,7 +35,7 @@ import SlideImg from "../components/SlideImg";
 import DialogImg from "../components/DialogImg";
 import Map from "../components/Map";
 import Share from "../components/Share";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { hostShareAndMap, reviewStarList } from "../recoil/atoms";
 import Share2 from "../components/Share2";
@@ -80,7 +82,7 @@ const HouseDetail = () => {
     setReviewModalOpen(true);
     setModalDta(data)
   };
-  console.log(modalData,"이거슨 모달 데이터")
+  // console.log(modalData,"이거슨 모달 데이터")
 //   <ReviewDetailModal
 //   open={reviewModalOpen}
 //   close={closeModalReview}
@@ -99,15 +101,15 @@ const HouseDetail = () => {
   const { data } = useQuery(
     ["houseDetail", hostId],
 
-    // ()=>getWriteData(paramsId),
-    () => {
-      return instance.get(`/host/${hostId}`).then((res) => res.data);
-    },
+    () => 
+      instance.get(`/host/${hostId}`).then((res) => {console.log(res.data);return res.data}),
+    
     {
       refetchOnWindowFocus: false,
       enabled: !!hostId,
     }
   );
+
   const reviewDetail = useQuery(
     ["reviewDetail", hostId],
 
@@ -145,10 +147,53 @@ const HouseDetail = () => {
   }
   )
 
+  const savePost = useMutation(
+    ["save"],(id) =>
+      instance
+        .post(`/save/${id}`)
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err, "why");
+        }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("houseDetail");
+      },
+    }
+  );      
+  const saveDelete = useMutation(
+    ["save"],(id) =>
+      instance
+        .delete(`/save/${id}/unsave`)
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err, "why");
+        }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("houseDetail");
+      },
+    }
+  );
+  
+  const saveClick = (id) => {
+    savePost.mutate(id)
+    // saveDelete.mutate(id)
+    console.log(id)
+  }
+
+  const cancelSaveClick = (id) => {
+    saveDelete.mutate(id)
+  }
+
   let testscore = 0;
   for (let i = 0; i < isStarReview?.length; i++) {
     testscore = testscore + parseInt(isStarReview[i].starpoint);
-    console.log(testscore, "이거슨 점수");
+    // console.log(testscore, "이거슨 점수");
   }
   // console.log(testscore, reviewDetail.data.length);
   // console.log(testscore, "이것도 점수");
@@ -178,7 +223,7 @@ const HouseDetail = () => {
     testDelete.mutate(id);
     navigate("/house");
   };
-  console.log(isStarReview);
+  console.log(data.findAllAcc, "이거슨 디테일 데이터");
 
   return (
     <Wrap>
@@ -186,17 +231,17 @@ const HouseDetail = () => {
         <ImgBox>
           {/* <SlideImg listImg={listImg} /> */}
           <ImgInnerBox1>
-            <img src={jeju10} alt="이미지" />
+            <img src={data.findAllAcc.images[0].postImageURL} alt="이미지" />
           </ImgInnerBox1>
           <ImgInnerBox2>
-            <img src={jeju1} alt="이미지" />
+            <img src={data.findAllAcc.images[1].postImageURL} alt="이미지" />
             {/* <img src={jeju2} alt="이미지" /> */}
-            <ImgDiv>
+            <ImgDiv style={{"backgroundImage" :`url(${data?.findAllAcc?.images[2]?.postImageURL})`}}>
               <button onClick={openDialog}>사진 모두보기</button>
               <DialogImg
                 onClose={closeDialog}
                 open={dialogOpen}
-                listImg={listImg}
+                listImg={data.findAllAcc.images}
               />
             </ImgDiv>
             {/* <div></div> */}
@@ -214,7 +259,7 @@ const HouseDetail = () => {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                // border: "1px solid green"
+        
               }}
             >
               <div style={{ width: "100%" }}>
@@ -228,15 +273,15 @@ const HouseDetail = () => {
                   {data.findAllAcc?.title}
                 </h1>
               </div>
+              {/* {data.findAllAcc.userId === userId ? () : ()} */}
               <div
                 style={{
                   display: "flex",
-                  // alignItems: "center",
-                  // marginLeft: "210px",
                   marginBottom: "20px",
                   justifyContent: "flex-end",
-                  // border: "1px solid red",
                   width: "100%",
+                  marginRight:"5px",
+                  border: "1px solid red"
                 }}
               >
                 <div
@@ -248,32 +293,67 @@ const HouseDetail = () => {
                     // marginRight:"50px",
                     justifyContent: "center",
                     width: "35%",
+                    border: "1px solid blue"
                   }}
                 >
-                  <span style={{ fontSize: "21px" }}>공유하기</span>
+                  {data.findAllAcc.userId === Number(userId) ? (
+                  <>
+                  <span style={{ fontSize: "21px" }}>수정하기</span>
+                  <Link to={`/hostwrite/${data.findAllAcc.hostId}`}>
+                  <IconImg src={editIcon} alt="수정" />
+                  </Link>
+                  </>) : (
+                  <>
+                    <span style={{ fontSize: "21px" }}>공유하기</span>
                   {/* <Share props /> */}
                   {/* <IconImg onClick={shareClick}  src={shareIcon2} alt="공유"/> */}
                   <Share />
+                  </>)}
+                 
                 </div>
                 <div
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    // marginBottom: "20px",
                     justifyContent: "center",
-                    // border: "1px solid blue",
-                    // width: "30%"
+                    marginLeft:"20px",
+                    border: "1px solid green"
                   }}
                 >
-                  <span style={{ fontSize: "21px" }}>저장하기</span>
-                  <IconImg src={unsaveIcon2} alt="저장" />
+                  {data.findAllAcc.userId === Number(userId) ? (
+                  <>
+                  <span style={{ fontSize: "21px" }}>삭제하기</span>
+                  <IconImg onClick={() => {
+                    onDelete(data?.findAllAcc?.hostId);
+                    }} src={deleteIcon} alt="삭제" />
+                  </>
+                  ) : (
+                  <>
+                    <span style={{ fontSize: "21px" }}>저장하기</span>
+                    
+                    {/* <IconImg2 src={unsaveIcon2} alt="저장" /> */}
+                  </>)}
+                  {data.findAllAcc.isSave ? (
+                      <IconImg2
+                      src={saveIcon}
+                        onClick={() => {
+                          cancelSaveClick(data.findAllAcc.hostId);
+                        }}
+                      />) : (
+                        <IconImg2
+                        src={unsaveIcon2}
+                        onClick={() => {
+                          saveClick(data.findAllAcc.hostId);
+                        }}
+                      />
+                      )}
                 </div>
               </div>
             </div>
             <hr style={{ marginTop: "20px" }} />
             <SubInfoBox>
               <div>
-                {/* <img src={require(`../assests/css/${data.findAllAcc.category}.webp`)} alt={data.category} /> */}
+                <img src={require(`../assests/css/${data.findAllAcc.category}.webp`)} alt={data.category} />
                 {data.findAllAcc.category}
               </div>
               <div>
@@ -306,7 +386,7 @@ const HouseDetail = () => {
             <hr />
             <h1 style={{ marginTop: "20px", fontSize: "48px" }}>숙소 위치</h1>
             <MapBox>
-              <Map MapRadius={MapRadius} />
+              <Map MapRadius={MapRadius} data={data.findAllAcc} />
             </MapBox>
             <div style={{ marginBottom: "30px" }}>
               <h2 style={{ marginTop: "20px", fontSize: "32px" }}>
@@ -542,10 +622,19 @@ const HashTagBox = styled.div`
 `;
 
 const IconImg = styled.img`
+  width: 33.6px;
+  height: 33.6px;
+  margin-left: 10px;
+  margin-bottom: 5px;
+  cursor: pointer;
+`;
+
+const IconImg2 = styled.img`
   width: 42px;
   height: 42px;
   margin-left: 10px;
   margin-bottom: 5px;
+  cursor: pointer;
 `;
 
 const MapBox = styled.div`
@@ -586,7 +675,7 @@ const ImgDiv = styled.div`
   margin-bottom: 5px;
   width: 100%;
   height: 265px;
-  background-image: url(${jeju2});
+  /* background-image: url(${jeju2}); */
   border-radius: 30px;
   background-size: cover;
   button {
