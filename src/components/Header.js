@@ -8,12 +8,15 @@ import jejuLogo from "../assests/css/jejuLogo.png";
 import LoginModal from "./LoginModal";
 
 const Header = () => {
+  let params = new URL(window.location.href).pathname.slice(1)
   const [search, setSearch] = useState(false);
-  const [menu, setMenu] = useState("");
+  const [menu, setMenu] = useState(params);
+  console.log(menu,'나는 메뉴')
   const searchRef = useRef();
   const navigate = useNavigate();
   const nickName = localStorage.getItem("nickName");
   const userImage = localStorage.getItem("userImage");
+  console.log(params)
   return (
     <Container>
       <Wrap>
@@ -52,7 +55,7 @@ const Header = () => {
               <div
                 className="house"
                 onClick={() => {
-                  setMenu("house");
+                  // setMenu("house");
                   navigate("/house");
                 }}
               >
@@ -61,7 +64,7 @@ const Header = () => {
               <div
                 className="community"
                 onClick={() => {
-                  setMenu("community");
+                  // setMenu("community");
                   navigate("/community");
                 }}
               >
@@ -70,7 +73,7 @@ const Header = () => {
               <div
                 className="chat"
                 onClick={() => {
-                  setMenu("chat");
+                  // setMenu("chat");
                   navigate("/chat");
                   
                 }}

@@ -7,31 +7,33 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import reportWebVitals from "./reportWebVitals";
 import ScrollToTop from "./components/ScrollToTop";
-import {RecoilRoot} from 'recoil'
+import { RecoilRoot } from "recoil";
 import Loading from "./pages/Loading";
+import { HelmetProvider } from "react-helmet-async";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const queryClient = new QueryClient({
-  defaultOptions:{
-    queries:{
-      suspense:true
-    }
-  }
-}
-);
+  defaultOptions: {
+    queries: {
+      suspense: true,
+    },
+  },
+});
 root.render(
-    <QueryClientProvider client={queryClient}>
-      {/* devtools */}
-      {/* <ReactQueryDevtools initialIsOpen={true} /> */}
-      <RecoilRoot>
+  <QueryClientProvider client={queryClient}>
+    {/* devtools */}
+    {/* <ReactQueryDevtools initialIsOpen={true} /> */}
+    <RecoilRoot>
       <Suspense fallback={<Loading></Loading>}>
-      <BrowserRouter>
-      <ScrollToTop/>
-        <App />
-      </BrowserRouter>
+        <BrowserRouter>
+          <ScrollToTop />
+          <HelmetProvider>
+            <App />
+          </HelmetProvider>
+        </BrowserRouter>
       </Suspense>
-      </RecoilRoot>
-    </QueryClientProvider>
+    </RecoilRoot>
+  </QueryClientProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -2,13 +2,16 @@ import React, { useEffect, useRef, useState } from "react";
 import jeju1 from "../assests/css/jeju1.jpeg";
 import mypageImg from "../assests/css/mypageImg.webp";
 import styled from "styled-components";
-import {
-  FaChevronDown,
-  FaChevronUp,
-  FaStar,
-  FaRegHeart,
-  FaRegComment,
-} from "react-icons/fa";
+import starIcon from "../assests/css/starIcon.webp";
+import moreIcon from "../assests/css/moreIcon.webp";
+import noMoreIcon from "../assests/css/noMoreIcon.webp";
+import unsaveIcon2 from "../assests/css/unsaveIcon2.webp";
+import saveIcon from "../assests/css/saveIcon.webp";
+import likeIcon from "../assests/css/likeIcon.webp";
+import unlikeIcon from "../assests/css/unlikeIcon.webp";
+import commentIcon from "../assests/css/commentIcon.webp";
+import checkIcon from "../assests/css/checkIcon.webp";
+import cancelIcon from "../assests/css/cancelIcon.webp";
 import HostRegistModal from "../components/HostRegistModal";
 import { useNavigate } from "react-router-dom";
 import MyInfoModal from "../components/MyInfoModal";
@@ -22,6 +25,7 @@ import {
   myHostList,
   mySaveList,
 } from "../recoil/atoms";
+import Footer from "../components/Footer";
 
 const Mypage = () => {
   const [myLike, setMyLike] = useState(true);
@@ -63,8 +67,8 @@ const Mypage = () => {
       onSuccess: (data) => {
         setMyLikePost(data.mylikespost);
         setMyPost(data.mypostinfo);
-        setMySavePost(data.mysavehost)
-        setMyHostPost(data.hostinfo)
+        setMySavePost(data.mysavehost);
+        setMyHostPost(data.hostinfo);
       },
     }
   );
@@ -81,362 +85,417 @@ const Mypage = () => {
       });
   });
   return (
-    <MainBox>
-      <ProfileBox>
-        <div className="profileWrap">
-          <MyInfoModal></MyInfoModal>
-          <div id="profile">
-            {isEdit ? (
-              <div className="nickname">
-                <input ref={nicknameRef} defaultValue={nickName}></input>
-                <div className="btn">
-                  <button
-                    onClick={() => {
-                      console.log(nicknameRef.current.value);
-                      nickNameUpdate.mutate(nicknameRef.current.value);
-                    }}
-                  >
-                    저장
-                  </button>
-                  <button
-                    onClick={() => {
-                      setIsEdit(false);
-                    }}
-                  >
-                    취소
-                  </button>
+    <>
+      <MainBox>
+        <ProfileBox isEdit={isEdit}>
+          <div className="profileWrap">
+            <MyInfoModal></MyInfoModal>
+            <div id="profile">
+              {isEdit ? (
+                <div className="nickname">
+                  <input ref={nicknameRef} defaultValue={nickName}></input>
+                  <div className="btn">
+                    <button
+                      onClick={() => {
+                        console.log(nicknameRef.current.value);
+                        nickNameUpdate.mutate(nicknameRef.current.value);
+                      }}
+                    >
+                      저장
+                      <img className="checkIcon" src={checkIcon} alt="저장"/>
+                    </button>
+                    <button
+                      onClick={() => {
+                        setIsEdit(false);
+                      }}
+                    >
+                      취소
+                      <img className="cancelIcon" src={cancelIcon} alt="취소"/>
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <div className="nickname">
-                <h3>{nickName}</h3>
-                <img
-                  src={editIcon}
-                  alt="닉네임 변경"
-                  onClick={() => {
-                    setIsEdit(true);
-                  }}
-                ></img>
-              </div>
-            )}
-            <span>{email}</span>
+              ) : (
+                <div className="nickname">
+                  <h3>{nickName}</h3>
+                  <img
+                    src={editIcon}
+                    alt="닉네임 변경"
+                    onClick={() => {
+                      setIsEdit(true);
+                    }}
+                  ></img>
+                </div>
+              )}
+              <span>{email}</span>
+            </div>
           </div>
-        </div>
-        <div id="btn">
-          {host === "true" ? (
-            <button
-              onClick={() => {
-                navigate("/hostwrite");
-              }}
-            >
-              숙소 등록
-            </button>
-          ) : (
-            <HostRegistModal></HostRegistModal>
-          )}
-        </div>
-      </ProfileBox>
+          <div id="btn">
+            {host === "true" ? (
+              <button
+                onClick={() => {
+                  navigate("/hostwrite");
+                }}
+              >
+                숙소 등록
+              </button>
+            ) : (
+              <HostRegistModal></HostRegistModal>
+            )}
+          </div>
+        </ProfileBox>
 
-      <MyDefaultBoxTop myLike={myLike}>
-        <div id="mylike">
-          <div id="myInfo">
-            <h1
-              onClick={() => {
-                setMyLike(true);
-              }}
-              style={{ opacity: myLike ? "1" : "0.4" }}
-            >
-              내 좋아요
-            </h1>
-            <h1
-              onClick={() => {
-                setMyLike(false);
-              }}
-              style={{ opacity: myLike ? "0.4" : "1" }}
-            >
-              저장함
-            </h1>
+        <MyDefaultBoxTop myLike={myLike}>
+          <div id="mylike">
+            <div id="myInfo">
+              <h1
+                onClick={() => {
+                  setMyLike(true);
+                  setUpMore(false);
+                }}
+                style={{ opacity: myLike ? "1" : "0.4" }}
+              >
+                내 좋아요
+              </h1>
+              <h1
+                onClick={() => {
+                  setMyLike(false);
+                  setUpMore(false);
+                }}
+                style={{ opacity: myLike ? "0.4" : "1" }}
+              >
+                저장함
+              </h1>
+            </div>
+            {myLike ? (
+              <span>
+                {myLikePost.length === 0 ? (
+                  ""
+                ) : (
+                  <>
+                    {!upMore ? (
+                      <img
+                        src={moreIcon}
+                        alt="더보기"
+                        onClick={() => {
+                          setUpMore(true);
+                        }}
+                      />
+                    ) : (
+                      <img
+                        src={noMoreIcon}
+                        alt="접기"
+                        onClick={() => {
+                          setUpMore(false);
+                        }}
+                      />
+                    )}
+                  </>
+                )}
+              </span>
+            ) : (
+              <span>
+                {mySavePost.length === 0 ? (
+                  ""
+                ) : (
+                  <>
+                    {!upMore ? (
+                      <img
+                        src={moreIcon}
+                        alt="더보기"
+                        onClick={() => {
+                          setUpMore(true);
+                        }}
+                      />
+                    ) : (
+                      <img
+                        src={noMoreIcon}
+                        alt="접기"
+                        onClick={() => {
+                          setUpMore(false);
+                        }}
+                      />
+                    )}
+                  </>
+                )}
+              </span>
+            )}
           </div>
-          {myLike ? (
-            <span>
-              {myLikePost.length === 0 ? (
-                ""
+          {!upMore ? (
+            <>
+              {myLike ? (
+                <>
+                  {myLikePost.length === 0 ? (
+                    <EmptyImgBox>
+                      <img src={mypageImg} alt="없어요 이미지" />
+                      <span>아직 좋아요 한 글이 없어요.</span>
+                    </EmptyImgBox>
+                  ) : (
+                    <DefaultImgBox>
+                      {myLikePost.slice(0, 3).map((v, i) => (
+                        <img
+                          src={v.images[0]?.thumbnailURL}
+                          key={i}
+                          alt="이미지"
+                        />
+                      ))}
+                    </DefaultImgBox>
+                  )}
+                </>
               ) : (
                 <>
-                  {!upMore ? (
-                    <DownIcon
-                      onClick={() => {
-                        setUpMore(true);
-                      }}
-                    />
+                  {mySavePost.length === 0 ? (
+                    <EmptyImgBox>
+                      <img src={mypageImg} alt="없어요 이미지" />
+                      <span>아직 저장한 글이 없어요.</span>
+                    </EmptyImgBox>
                   ) : (
-                    <UpIcon
-                      onClick={() => {
-                        setUpMore(false);
-                      }}
-                    />
+                    <DefaultImgBox>
+                      {mySavePost.slice(0, 3).map((v, i) => (
+                        <img
+                          src={v.images[0]?.thumbnailURL}
+                          key={i}
+                          alt="이미지"
+                        />
+                      ))}
+                    </DefaultImgBox>
                   )}
                 </>
               )}
-            </span>
+            </>
           ) : (
-            <span>
-              {mySavePost.length === 0 ? (
-                ""
+            <>
+              {myLike ? (
+                <HiddenMyLikeBox>
+                  {myLikePost.map((v, i) => {
+                    return (
+                      <div key={i} id="listBox">
+                        <img
+                          className="thumbnailImg"
+                          src={v.images[0]?.thumbnailURL}
+                          alt="이미지"
+                        />
+                        <span className="title" style={{ marginTop: "5px" }}>
+                          {v.title}
+                        </span>
+                        <div id="icons">
+                          <div
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <img src={commentIcon} alt="댓글" />
+                            <span style={{ marginLeft: "10px" }}>
+                              {v.commentNum}
+                            </span>
+                          </div>
+                          <img src={likeIcon} alt="별점" />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </HiddenMyLikeBox>
               ) : (
-                <>
-                  {!upMore ? (
-                    <DownIcon
-                      onClick={() => {
-                        setUpMore(true);
-                      }}
-                    />
-                  ) : (
-                    <UpIcon
-                      onClick={() => {
-                        setUpMore(false);
-                      }}
-                    />
-                  )}
-                </>
+                <HiddenMyLikeBox>
+                  {mySavePost.map((v, i) => {
+                    return (
+                      <div key={i} id="listBox">
+                        <img
+                          className="thumbnailImg"
+                          src={jeju1}
+                          alt="이미지"
+                        />
+                        <span className="title" style={{ marginTop: "5px" }}>
+                          해변가 근처 숙소
+                        </span>
+                        <div id="icons">
+                          <div
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <img src={starIcon} alt="별점" />
+                            <span style={{ marginLeft: "10px" }}>4.5</span>
+                          </div>
+                          <img src={saveIcon} alt="저장" />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </HiddenMyLikeBox>
               )}
-            </span>
+            </>
           )}
-        </div>
-        {!upMore ? (
-          <>
-            {myLike ? (
-              <>
-                {myLikePost.length === 0 ? (
-                  <EmptyImgBox>
-                    <img src={mypageImg} alt="없어요 이미지" />
-                    <span>아직 좋아요 한 글이 없어요.</span>
-                  </EmptyImgBox>
-                ) : (
-                  <DefaultImgBox>
-                    {myLikePost.slice(0, 3).map((v, i) => (
-                      <img
-                        src={v.images[0].thumbnailURL}
-                        key={i}
-                        alt="이미지"
-                      />
-                    ))}
-                  </DefaultImgBox>
-                )}
-              </>
-            ) : (
-              <>
-                {myLikePost.length === 0 ? (
-                  <EmptyImgBox>
-                    <img src={mypageImg} alt="없어요 이미지" />
-                    <span>아직 저장한 글이 없어요.</span>
-                  </EmptyImgBox>
-                ) : (
-                  <DefaultImgBox>
-                    {mySavePost.slice(0, 3).map((v, i) => (
-                      <img
-                        src={v.images[0].thumbnailURL}
-                        key={i}
-                        alt="이미지"
-                      />
-                    ))}
-                  </DefaultImgBox>
-                )}
-              </>
-            )}
-          </>
-        ) : (
-          <>
-            {myLike ? (
-              <HiddenMyLikeBox>
-                {myLikePost.map((v, i) => {
-                  return (
-                    <div key={i} id="listBox">
-                      <img src={v.images[0].thumbnailURL} alt="이미지" />
-                      <span style={{ marginTop: "5px" }}>{v.title}</span>
-                      <div id="icons">
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                          <StarIcon />
-                          <span style={{ marginLeft: "10px" }}>4.5</span>
-                        </div>
-                        <HeartIcon />
-                      </div>
-                    </div>
-                  );
-                })}
-              </HiddenMyLikeBox>
-            ) : (
-              <HiddenMyLikeBox>
-                {mySavePost.map((item, idx) => {
-                  return (
-                    <div key={idx} id="listBox">
-                      <img src={jeju1} alt="이미지" />
-                      <span style={{ marginTop: "5px" }}>해변가 근처 숙소</span>
-                      <div id="icons">
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                          <StarIcon />
-                          <span style={{ marginLeft: "10px" }}>4.5</span>
-                        </div>
-                        <HeartIcon />
-                      </div>
-                    </div>
-                  );
-                })}
-              </HiddenMyLikeBox>
-            )}
-          </>
-        )}
-      </MyDefaultBoxTop>
+        </MyDefaultBoxTop>
 
-      <MyDefaultBoxBottom>
-        <div id="myWrite">
-          <div id="myInfo">
-            <h1
-              onClick={() => {
-                setMyWrite(true);
-              }}
-              style={{ opacity: myWrite ? "1" : "0.4" }}
-            >
-              내가 쓴 글
-            </h1>
-            <h1
-              onClick={() => {
-                setMyWrite(false);
-              }}
-              style={{ opacity: myWrite ? "0.4" : "1" }}
-            >
-              내 숙소
-            </h1>
-          </div>
-          {myWrite ? (
-            <span>
-              {myPost.length === 0 ? (
-                ""
-              ) : (
-                <>
-                  {!bottomMore ? (
-                    <DownIcon
-                      onClick={() => {
-                        setBottomMore(true);
-                      }}
-                    />
-                  ) : (
-                    <UpIcon
-                      onClick={() => {
-                        setBottomMore(false);
-                      }}
-                    />
-                  )}
-                </>
-              )}
-            </span>
-          ) : (
-            <span>
-              {myHostPost.length === 0 ? (
-                ""
-              ) : (
-                <>
-                  {bottomMore ? (
-                    <DownIcon
-                      onClick={() => {
-                        setBottomMore(true);
-                      }}
-                    />
-                  ) : (
-                    <UpIcon
-                      onClick={() => {
-                        setBottomMore(false);
-                      }}
-                    />
-                  )}
-                </>
-              )}
-            </span>
-          )}
-        </div>
-        {!bottomMore ? (
-          <>
+        <MyDefaultBoxBottom>
+          <div id="myWrite">
+            <div id="myInfo">
+              <h1
+                onClick={() => {
+                  setMyWrite(true);
+                  setBottomMore(false);
+                }}
+                style={{ opacity: myWrite ? "1" : "0.4" }}
+              >
+                내가 쓴 글
+              </h1>
+              <h1
+                onClick={() => {
+                  setMyWrite(false);
+                  setBottomMore(false);
+                }}
+                style={{ opacity: myWrite ? "0.4" : "1" }}
+              >
+                내 숙소
+              </h1>
+            </div>
             {myWrite ? (
-              <>
+              <span>
                 {myPost.length === 0 ? (
-                  <EmptyImgBox>
-                    <img src={mypageImg} alt="없어요 이미지" />
-                    <span>아직 내가 쓴 글이 없어요.</span>
-                  </EmptyImgBox>
+                  ""
                 ) : (
-                  <DefaultImgBox>
-                    {myPost.slice(0, 3).map((v, i) => (
+                  <>
+                    {!bottomMore ? (
                       <img
-                        src={v.images[0].thumbnailURL}
-                        alt="이미지"
-                        key={i}
+                        src={moreIcon}
+                        alt="더보기"
+                        onClick={() => {
+                          setBottomMore(true);
+                        }}
                       />
-                    ))}
-                  </DefaultImgBox>
+                    ) : (
+                      <img
+                        src={noMoreIcon}
+                        alt="접기"
+                        onClick={() => {
+                          setBottomMore(false);
+                        }}
+                      />
+                    )}
+                  </>
                 )}
-              </>
+              </span>
             ) : (
-              <>
+              <span>
                 {myHostPost.length === 0 ? (
-                  <EmptyImgBox>
-                    <img src={mypageImg} alt="없어요 이미지" />
-                    <span>아직 내 숙소가 없어요.</span>
-                  </EmptyImgBox>
+                  ""
                 ) : (
-                  <DefaultImgBox>
-                    {myHostPost.slice(0, 3).map((item, idx) => (
-                      <img style={{}} src={jeju1} alt="이미지" />
-                    ))}
-                  </DefaultImgBox>
+                  <>
+                    {bottomMore ? (
+                      <img
+                        src={moreIcon}
+                        alt="더보기"
+                        onClick={() => {
+                          setBottomMore(true);
+                        }}
+                      />
+                    ) : (
+                      <img
+                        src={noMoreIcon}
+                        alt="접기"
+                        onClick={() => {
+                          setBottomMore(false);
+                        }}
+                      />
+                    )}
+                  </>
                 )}
-              </>
+              </span>
             )}
-          </>
-        ) : (
-          <>
-            {myWrite ? (
-              <HiddenMyLikeBox>
-                {myPost.map((v, i) => {
-                  return (
-                    <div key={i} id="listBox">
-                      <img src={v.images[0].thumbnailURL} alt="이미지" />
-                      <span style={{ marginTop: "5px" }}>{v.title}</span>
-                      <div id="icons">
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                          <CommentIcon />
-                          <span style={{ marginLeft: "10px" }}>
-                            {v.commentNum}개
-                          </span>
+          </div>
+          {!bottomMore ? (
+            <>
+              {myWrite ? (
+                <>
+                  {myPost.length === 0 ? (
+                    <EmptyImgBox>
+                      <img src={mypageImg} alt="없어요 이미지" />
+                      <span>아직 내가 쓴 글이 없어요.</span>
+                    </EmptyImgBox>
+                  ) : (
+                    <DefaultImgBox>
+                      {myPost.slice(0, 3).map((v, i) => (
+                        <img
+                          src={v.images[0].thumbnailURL}
+                          alt="이미지"
+                          key={i}
+                        />
+                      ))}
+                    </DefaultImgBox>
+                  )}
+                </>
+              ) : (
+                <>
+                  {myHostPost.length === 0 ? (
+                    <EmptyImgBox>
+                      <img src={mypageImg} alt="없어요 이미지" />
+                      <span>아직 내 숙소가 없어요.</span>
+                    </EmptyImgBox>
+                  ) : (
+                    <DefaultImgBox>
+                      {myHostPost.slice(0, 3).map((v, i) => (
+                        <img style={{}} src={jeju1} alt="이미지" />
+                      ))}
+                    </DefaultImgBox>
+                  )}
+                </>
+              )}
+            </>
+          ) : (
+            <>
+              {myWrite ? (
+                <HiddenMyLikeBox>
+                  {myPost.map((v, i) => {
+                    return (
+                      <div key={i} id="listBox">
+                        <img
+                          className="thumbnailImg"
+                          src={v.images[0]?.thumbnailURL}
+                          alt="이미지"
+                        />
+                        <span className="title" style={{ marginTop: "5px" }}>
+                          {v.title}
+                        </span>
+                        <div id="icons">
+                          <div
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <img src={commentIcon} alt="댓글" />
+                            <span style={{ marginLeft: "10px" }}>
+                              {v.commentNum}개
+                            </span>
+                          </div>
+                          <img src={unlikeIcon} alt="좋아요" />
                         </div>
-                        <HeartIcon />
                       </div>
-                    </div>
-                  );
-                })}
-              </HiddenMyLikeBox>
-            ) : (
-              <HiddenMyLikeBox>
-                {myHostPost.map((item, idx) => {
-                  return (
-                    <div key={idx} id="listBox">
-                      <img src={jeju1} />
-                      <span style={{ marginTop: "5px" }}>해변가 근처 숙소</span>
-                      <div id="icons">
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                          <StarIcon />
-                          <span style={{ marginLeft: "10px" }}>4.5</span>
+                    );
+                  })}
+                </HiddenMyLikeBox>
+              ) : (
+                <HiddenMyLikeBox>
+                  {myHostPost.map((v, i) => {
+                    return (
+                      <div key={i} id="listBox">
+                        <img className="thumbnailImg" src={jeju1} />
+                        <span className="title" style={{ marginTop: "5px" }}>
+                          해변가 근처 숙소
+                        </span>
+                        <div id="icons">
+                          <div
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <img src={starIcon} alt="별점" />
+                            <span style={{ marginLeft: "10px" }}>4.5</span>
+                          </div>
+                          <img src={unsaveIcon2} alt="저장" />
                         </div>
-                        <HeartIcon />
                       </div>
-                    </div>
-                  );
-                })}
-              </HiddenMyLikeBox>
-            )}
-          </>
-        )}
-      </MyDefaultBoxBottom>
-    </MainBox>
+                    );
+                  })}
+                </HiddenMyLikeBox>
+              )}
+            </>
+          )}
+        </MyDefaultBoxBottom>
+      </MainBox>
+      <Footer />
+    </>
   );
 };
 
@@ -467,6 +526,7 @@ const ProfileBox = styled.div`
       display: flex;
       flex-direction: row;
       margin-bottom: 6px;
+      height: ${(props)=>props.isEdit && '56px'};
       h3 {
         font-style: normal;
         font-weight: 600;
@@ -480,25 +540,42 @@ const ProfileBox = styled.div`
         height: 32px;
         opacity: 0.5;
       }
+      .checkIcon{
+        width: 30px;
+        height: 30px;
+        margin-left: 5px;
+      }
+      .cancelIcon{
+        width: 30px;
+        height: 30px;
+        margin-left: 5px;
+      }
       input {
         height: 100%;
-        padding: 0 10px;
-        border: 1px solid #c7c7cc;
+        padding: 0 20px;
+        border: none;
+        background: #f7f3ef;
         border-radius: 10px;
         margin-right: 20px;
         font-style: normal;
         font-weight: 500;
         font-size: 18px;
         line-height: 150%;
+        outline: none;
       }
       .btn {
         height: 100%;
         width: 30%;
+        display: flex;
         button {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
           border: none;
           height: 100%;
           width: 40%;
-          background: #e5e5ea;
+          background: #f7f3ef;
           border-radius: 10px;
           margin-right: 10px;
           font-style: normal;
@@ -538,12 +615,7 @@ const ProfileBox = styled.div`
 `;
 
 const MyDefaultBoxTop = styled.div`
-  /* width: 45%; */
-  /* margin-top: 100px; */
   margin-top: 74px;
-  /* border: 1px solid red; */
-  /* display: flex; */
-  /* flex-direction: column; */
   #mylike {
     display: flex;
     justify-content: space-between;
@@ -581,9 +653,8 @@ const DefaultImgBox = styled.div`
   img {
     width: 252px;
     height: 230px;
-    /* margin: 0px 10px 0px 15px; */
-    /* margin: 0px 10px 0px 5px; */
     margin-right: 20px;
+    border-radius: 20px;
   }
   #testBox {
     display: flex;
@@ -596,39 +667,52 @@ const HiddenMyLikeBox = styled.div`
   display: flex;
   flex-wrap: wrap;
   height: auto;
-  margin-left: 10px;
-  margin-top: 5px;
+  margin: 10px 0;
   #listBox {
     width: 30.3%;
+    /* width: 252px; */
     display: flex;
     flex-direction: column;
-    margin: 25px 10px 0px 10px;
+    margin: 0 12px;
+    margin-bottom: 40px;
+    .title {
+      font-style: normal;
+      font-weight: 700;
+      font-size: 27px;
+      line-height: 39px;
+      color: #636366;
+      margin-bottom: 5px;
+      // 넘치는 제목 자르기
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
-  img {
+  .thumbnailImg {
+    border-radius: 20px;
     width: 100%;
     height: 230px;
+    margin-bottom: 12px;
   }
   #icons {
     display: flex;
     justify-content: space-between;
     margin-top: 5px;
+    display: flex;
+    align-items: center;
+    span {
+      font-style: normal;
+      font-weight: 400;
+      font-size: 24px;
+      line-height: 35px;
+      color: #636366;
+    }
+    img {
+      width: 28px;
+      height: 28px;
+    }
   }
 `;
-
-const HeartIcon = styled(FaRegHeart)`
-  font-size: 15px;
-`;
-const StarIcon = styled(FaStar)`
-  font-size: 15px;
-`;
-
-const UpIcon = styled(FaChevronUp)`
-  margin-top: 5px;
-`;
-
-const DownIcon = styled(FaChevronDown)``;
-
-const CommentIcon = styled(FaRegComment)``;
 
 const EmptyImgBox = styled.div`
   width: 100%;
@@ -648,7 +732,7 @@ const EmptyImgBox = styled.div`
 `;
 
 const MyDefaultBoxBottom = styled.div`
-  margin-top: 20px;
+  margin: 40px 0;
   #mylike {
     display: flex;
     justify-content: space-between;

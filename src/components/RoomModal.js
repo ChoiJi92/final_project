@@ -145,7 +145,7 @@ const RoomModal = ({ width,borderRadius }) => {
               <div className="hashTag">
                 <h3>태그</h3>
                 <TagList
-                  maxLength={5}
+                  maxLength={4}
                   width= {'100%'}
                   margin={'0'}
                   tagList={tagList}

@@ -42,7 +42,7 @@ const HostRegistModal = () => {
   })
   return (
     <div>
-      <button
+      <button 
         onClick={() => {
           handleOpen();
         }}

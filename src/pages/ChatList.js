@@ -20,7 +20,6 @@ import SearchResult from "../components/SearchResult";
 const ChatList = () => {
   const searchRef = useRef();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const userId = localStorage.getItem("userId");
   const [search, setSearch] = useState();
   const { data } = useQuery(
@@ -28,7 +27,7 @@ const ChatList = () => {
     () =>
       instance.get("/room").then((res) => {
         console.log(res.data);
-        return res.data.allRoom;
+        return res.data;
       }),
     {
       refetchOnWindowFocus: false,
@@ -86,9 +85,7 @@ const ChatList = () => {
           <div className="keyword">
             <div className="keywordTitle">인기 키워드</div>
             <div className="keywordList">
-              <p># 키워드</p>
-              <p># 키워드</p>
-              <p># 키워드</p>
+              {data.tags?.slice(0,3).map((v,i)=> <p key={i}>{v}</p>)}
             </div>
           </div>
         </Top>
@@ -118,7 +115,7 @@ const ChatList = () => {
           </div>
           {!search ? (
             <>
-              {data.map((v, i) => (
+              {data.allRoom?.map((v, i) => (
                 <Card
                   key={v.roomId}
                   onClick={() => {
@@ -162,6 +159,9 @@ const ChatList = () => {
                         ))}
                       </AvatarGroup>
                     </div>
+                    <div className="tagList">
+                      {v.hashTag.map((v,i)=> <p key={i}>{v}</p>)}
+                    </div>
                   </div>
                   <div className="roomUserNumber">
                     <p>참여자</p>
@@ -182,7 +182,7 @@ const ChatList = () => {
 
 const Container = styled.div`
   height: auto;
-
+  min-height: 100vh;
 `;
 const Top = styled.div`
   background-color: #f7f3ef;
@@ -292,21 +292,25 @@ const Card = styled.div`
   justify-content: space-between;
   width: 41.459%;
   height: 170px;
-  border-radius: 10px;
   border: none;
   padding: 20px;
-  background: #f7f3ef;
+  background: #fdfcfb;
+  box-shadow: 0px 12px 42px #eee9e4;
+  border-radius: 20px;
   position: relative;
   margin-bottom: 20px;
+  cursor: pointer;
   :hover {
-    background-color: #eee9e4;
+    background: #F7F3EF;
     .roomUserNumber {
-      background: linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
-        #eee9e4;
+      /* background: linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
+        #eee9e4; */
+        background: #EEE9E4;
       border-radius: 10px;
     }
   }
   .roomInfo {
+    
     h3 {
       margin-bottom: 12px;
       font-style: normal;
@@ -337,6 +341,28 @@ const Card = styled.div`
         color: #636366;
       }
     }
+    .tagList{
+      margin-top: 22px;
+      display: flex;
+      flex-direction: row;
+      p {
+        /* margin-top: 10px; */
+        /* width: 25.865%; */
+        width: 122px;
+        height: 35px;
+        border-radius: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 10px;
+        background-color: #eee9e4;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 19px;
+        color: #3a3a3c;
+      }
+    }
     .MuiAvatar-root {
       width: 36px;
       height: 36px;
@@ -345,12 +371,12 @@ const Card = styled.div`
 
   .roomUserNumber {
     width: 130px;
-    border: 1px solid;
+    /* border: 1px solid; */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: #eee9e4;
+    background: #F7F3EF;
     border-radius: 10px;
     border: none;
     p {

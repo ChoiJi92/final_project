@@ -18,6 +18,8 @@ const style = {
   bgcolor: "background.paper",
   borderRadius: "30px",
   boxShadow: 24,
+  background:
+    "linear-gradient(0deg, rgba(246, 243, 239, 0.5), rgba(246, 243, 239, 0.5)), #FFFFFF",
   p: 2,
   outline: "none",
 };
@@ -41,14 +43,17 @@ const HostModal = ({ close }) => {
 
   return (
     <div>
-      <div 
-       style={{
-        fontStyle: "normal",
-        fontWeight: "500",
-        fontSize: "20px",
-        lineHeight: "120%",
-      }}
-      onClick={handleOpen}>숙소 등록하기</div>
+      <div
+        style={{
+          fontStyle: "normal",
+          fontWeight: "500",
+          fontSize: "20px",
+          lineHeight: "120%",
+        }}
+        onClick={handleOpen}
+      >
+        숙소 등록하기
+      </div>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -153,13 +158,15 @@ const Btn = styled.div`
     font-size: 24px;
     line-height: 150%;
     cursor: pointer;
-    background: #78AA43;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+      #eee9e4;
     color: white;
   }
   .home {
-    background-color: white;
+    background: #ffffff;
     color: black;
     border: 1px solid #d1d1d6;
+    border-radius: 20px;
   }
 `;
 export default HostModal;

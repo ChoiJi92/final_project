@@ -1,12 +1,10 @@
-import React, { useState, useCallback, useEffect, useContext } from "react";
+import React, { useState, useCallback} from "react";
 import styled from "styled-components";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Dropzone from "react-dropzone";
 import PostEditer from "../components/PostEditer";
 import {
-  Navigate,
-  useNavigate,
   useParams,
   UNSAFE_NavigationContext as NavigationContext,
 } from "react-router-dom";
@@ -19,11 +17,12 @@ import TagList from "../components/TagList";
 
 const UserWrite = () => {
   const params = useParams();
+  const userId = localStorage.getItem('userId')
   // params.id에 의 queryfunction이 실행될지 말지를 결정하므로 queryKey에 넣어줘야함
   const { data } = useQuery(
     ["editContent", params.id],
     () =>
-      instance.get(`/post/${params.id}`).then((res) => {
+      instance.get(`/post/${params.id}`, { params: { userId: Number(userId) } }).then((res) => {
         console.log(res.data);
         return res.data.allPost[0];
       }),
@@ -42,10 +41,10 @@ const UserWrite = () => {
   const [preImages, setPreImages] = useState([]);
   // const [modalOpen, setModalOpen] = useState(false);
   const [address, setAddress] = useState(data?.mainAddress);
-  const [tagList, setTagList] = useState([]);
+  const [tagList, setTagList] = useState(data?.tagList[0] ? data?.tagList[0] : [])  ;
   // const address = useRecoilValue(addressState);
   const [content, setContent] = useState();
-  const [imageKey, setImageKey] = useState([]);
+  // const [imageKey, setImageKey] = useState([]);
   const {
     register,
     handleSubmit,
@@ -127,7 +126,7 @@ const UserWrite = () => {
   const onSubmit = (data) => {
     // console.log(data);
     // console.log(title);
-    // console.log(content);
+    console.log(content);
     // console.log(thumbnail);
     // console.log(address);
     // console.log(tagList);
@@ -138,7 +137,9 @@ const UserWrite = () => {
     console.log(filterImage,'나는 없어진 이미지!')
     let index = filterImage.map((v) => preImages.indexOf(v))
     console.log(index,'나는 없어진 친구 인덱스')
+    let newEditorImage =editorImage.filter((_,i)=> !index.includes(i))
     console.log(editorImage.filter((_,i)=> !index.includes(i)),'나는 필터된 file!!')
+    let newPreImages=preImages.filter((v) => content.includes(v))
     console.log(preImages.filter((v) => content.includes(v)),'필터된 친구');
     let preFilterImages =preImages.filter((v) => content.includes(v))
     console.log(preFilterImages)
@@ -160,6 +161,10 @@ const UserWrite = () => {
       //   console.log('여기는?')
       //   formData.append("images", preview)
       // }
+      console.log(newEditorImage,'필터된 파일객체들')
+      console.log(newPreImages,'필터된 url들')
+      // newEditorImage.forEach((file)=> formData.append('images',file))
+
       formData.append("title", title);
       formData.append("content", content);
       formData.append("tagList",tagList)
@@ -169,6 +174,7 @@ const UserWrite = () => {
       formData.append("type", data.type);
       formData.append("houseTitle", data.houseTitle);
       formData.append("link", data.link);
+      formData.append("preImages", newPreImages);
       // formData.append(
       //   "thumbnailKEY",
       //   thumbnailKey ? thumbnailKey : ""
@@ -196,7 +202,7 @@ const UserWrite = () => {
           {({ getRootProps, getInputProps, isDragActive }) => (
             <div
               {...getRootProps()}
-              style={{ backgroundImage: `url(${preview})` }}
+              style={{ backgroundImage: `url(${preview})`,backgroundRepeat:'no-repeat',backgroundSize:'cover',backgroundPosition:'center center' }}
             >
               <input {...getInputProps()} />
               {isDragActive ? (
@@ -290,7 +296,7 @@ const UserWrite = () => {
                 <MenuItem value="관광지 근처">관광지 근처</MenuItem>
                 <MenuItem value="조용한 마을">조용한 마을</MenuItem>
                 <MenuItem value="우도">우도</MenuItem>
-                <MenuItem value="성산일출봉">성산일출봉</MenuItem>
+                {/* <MenuItem value="성산일출봉">성산일출봉</MenuItem> */}
               </Select>
               <p className="errorMessage">
                 {errors.category?.type === "required" &&

@@ -17,18 +17,18 @@ import { useQuery } from "react-query";
 import instance from "../shared/axios";
 import Footer from "../components/Footer";
 const Main = () => {
-  // const { data } = useQuery(
-  //   ["loadChatRoom"],
-  //   () =>
-  //     instance.get("/room").then((res) => {
-  //       console.log(res.data);
-  //       return res.data.allRoom;
-  //     }),
-  //   {
-  //     // retry:0,
-  //     refetchOnWindowFocus: false,
-  //   }
-  // );
+  const { data } = useQuery(
+    ["loadChatRoom"],
+    () =>
+      instance.get("/room").then((res) => {
+        console.log(res.data);
+        return res.data.allRoom;
+      }),
+    {
+      // retry:0,
+      refetchOnWindowFocus: false,
+    }
+  );
   return (
     <>
     <Container>
@@ -92,8 +92,8 @@ const Main = () => {
       </RegionWrap>
       <OpenChat>
         <h2>Popular openchat</h2>
-        {/* <OpenChatSlide data={data.slice(0,5)} rtl={false}/> */}
-        {/* <OpenChatSlide data={data.slice(0,5)} rtl={true}/> */}
+        <OpenChatSlide data={data?.slice(0,5)} rtl={false}/>
+        <OpenChatSlide data={data?.slice(0,5)} rtl={true}/>
       </OpenChat>
       
     </Container>
