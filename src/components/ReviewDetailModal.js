@@ -9,6 +9,8 @@ import Typography from "@mui/material/Typography";
 import styled from "styled-components";
 import Profile from "./Profile";
 import { FaStar } from "react-icons/fa";
+import { useRecoilValue } from "recoil";
+import { reviewStarList } from "../recoil/atoms";
 const style = {
   position: "absolute",
   top: "50%",
@@ -22,10 +24,10 @@ const style = {
 };
 
 const ReviewDetailModal = (props) => {
- 
-
-  const {open, close, review} = props;
-  console.log(review);
+  const userReview = useRecoilValue(reviewStarList);
+  console.log(userReview ,"its detail");
+  const {open, close, data} = props;
+  console.log(data, "모달창에 있는 데이터")
   return (
     <>
       {/* <Button onClick={handleOpen}>
@@ -57,16 +59,16 @@ const ReviewDetailModal = (props) => {
             </Main>
             <MainProfile id="transition-modal-title" variant="h6" component="h2">
               <div id="profle">
-              <Profile/>
+              <Profile data={data}/>
               </div>
               <div id="score">
                 <StarIcon/>
-                <span>4.5</span>
+                <span>{data?.starpoint}</span>
               </div>
             </MainProfile>
             <Main>
               <div id="reviewDetail">
-                {review}
+               {data?.review}
               </div>
             </Main>
           </Box>
@@ -122,6 +124,7 @@ const MainProfile = styled(Typography)`
     flex-direction: column;
     margin-top: 20px;
     margin-right: 20px;
+    align-items: center;
     span{
       opacity: 0.5;
       margin-top: 5px;

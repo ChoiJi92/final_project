@@ -16,7 +16,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import axios from "axios";
 import instance from "../shared/axios";
 import { useRecoilState } from "recoil";
-// import { TestImgList } from "../recoil/atoms";
+import { updateImgList } from "../recoil/atoms";
 
 const HostWrite = () => {
   const params = useParams();
@@ -26,7 +26,7 @@ const HostWrite = () => {
   //     const { data } = await axios.get(`http://localhost:5001/testList/${id}`)
   //     return data
   // }
-  // const [testImg,setTestImg ] = useRecoilState(TestImgList);
+  const [testImg,setTestImg] = useRecoilState(updateImgList);
   // const [testImg, setTestImg] = useState([]);
   const { data } = useQuery(
     ["hostWrite", hostId],
@@ -38,14 +38,15 @@ const HostWrite = () => {
         .then((res) => res.data.findAllAcc);
     },
     {
+      onSuccess: (data) => {
+        setTestImg(data.images);
+      },
       refetchOnWindowFocus: false,
       enabled: !!hostId,
-    }
+    },
   );
- 
-  // useEffect(()=>{
-  //   setTestImg(data.images)
-  // },[testImg])
+  console.log(testImg)
+  
   const {
     register,
     handleSubmit,
@@ -70,6 +71,8 @@ const HostWrite = () => {
 
   const [imgFileList, setImgFileList] = useState([]);
 
+  const [testFileList, setTestFileList] = useState([]);
+
   const [tagList, setTagList] = useState([]);
   const [addressError, setAddressError] = useState(false);
   const [address, setAddress] = useState("");
@@ -80,6 +83,7 @@ const HostWrite = () => {
   };
 
   const onImgChange = (e) => {
+    if(!hostId){
     const imgLists = e.target.files;
     console.log(imgLists, "이거 타겟");
     let imgUrlLists = [...multiImgs];
@@ -96,6 +100,20 @@ const HostWrite = () => {
     }
     setMultiImgs(imgUrlLists);
     setImgFileList(testList);
+    }else
+    {
+      const imgLists = e.target.files;
+      let testImgUrlLists = [...testImg];
+      let testList2 = [];
+      for (let i = 0; i < imgLists.length; i++) {
+        const currentImageUrl = URL.createObjectURL(imgLists[i]);
+        testList2.push(imgLists[i]);
+        testImgUrlLists.push(currentImageUrl);
+      }
+      setTestImg(testImgUrlLists)
+      setTestFileList(testImgUrlLists)
+    }
+    
   };
 
 
@@ -108,9 +126,9 @@ const HostWrite = () => {
     setMultiImgs(multiImgs.filter((_, index) => index !== id));
   };
 
-  // const deleteTest = (id) => {
-  //   setTestImg(testImg.filter((_, idx)=>idx !== id))
-  // }
+  const deleteTest = (id) => {
+    setTestImg(testImg.filter((_, idx)=>idx !== id))
+  }
 
   const queryClient = useQueryClient();
 
@@ -132,7 +150,7 @@ const HostWrite = () => {
   //     queryClient.invalidateQueries("hostWrite");
   //   },
   // });
-console.log(data.images);
+// console.log(data.images);
 
   const updateMutation = useMutation(
     (updateData) => {
@@ -141,11 +159,11 @@ console.log(data.images);
         updateData
       );
     },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("hostWrite");
-      },
-    }
+    // {
+    //   onSuccess: () => {
+    //     queryClient.invalidateQueries("hostWrite");
+    //   },
+    // }
   );
   console.log(address, "its address")
   const onSubmit = (data) => {
@@ -164,10 +182,9 @@ console.log(data.images);
       formData.append("stepInfo",data.stepInfo)
       formData.append("stepSelect",data.stepSelect)
       formData.append("title",data.title)
-      imgFileList.forEach((item)=> formData.append("images", item));
+      testFileList.forEach((item)=> formData.append("images", item));
       updateMutation.mutate(formData);
-
-    } else {
+    }else{
       const formData = new FormData();
       formData.append("category",data.category)
       formData.append("houseInfo",data.houseInfo)
@@ -192,7 +209,10 @@ console.log(data.images);
   };
 
   const hiddenSetp = watch("stepSelect");
+
   console.log(imgFileList);
+  console.log(testImg);
+  console.log(testFileList,"haha");
   return (
     <Wrap>
       <HostForm onSubmit={handleSubmit(onSubmit)}>
@@ -246,17 +266,17 @@ console.log(data.images);
             >
               {hostId ? (
                 <>
-                {/* {testImg.map((v, index) => (
+                {testImg.map((v, index) => (
                 <SortableItem key={`item-${index}`}>
                   <List>
-                    <Img src={v.postImageURL} alt="이미지" />
+                    <Img src={v.postImageURL ? v.postImageURL : v} alt="이미지" />
                     <DeleteIcon
                       id="deleteIcon"
-                      // onClick={() => deleteTest(index)}
+                      onClick={() => deleteTest(index)}
                     />
                   </List>
                 </SortableItem>
-              ))} */}
+              ))}
                 </>
               ) : (
                 <>
@@ -313,7 +333,6 @@ console.log(data.images);
               <MenuItem value="관광지 근처">관광지 근처</MenuItem>
               <MenuItem value="조용한 마을">조용한 마을</MenuItem>
               <MenuItem value="우도">우도</MenuItem>
-              <MenuItem value="성산일출봉">성산일출봉</MenuItem>
             </Select>
             <ErrorP>{errors.category?.message}</ErrorP>
           </div>
@@ -783,8 +802,9 @@ const Tag = styled.div`
   flex-direction: row;
   justify-content: space-between;
   width: 70%;
-  margin: 0 auto;
+  margin: 0 auto 55px auto;
   padding: 20px 0;
+  
   h2 {
     font-family: "Pretendard";
     font-style: normal;

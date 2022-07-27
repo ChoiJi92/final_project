@@ -207,10 +207,10 @@ const HouseInfo = () => {
           id="spot"
           // style={{"opacity":"0.7"}}
         >
-          <SpotMiniBox>
-            <img src={nearbySea} alt="해변" />
-          </SpotMiniBox>
-          <span>해변</span>
+
+            <img src={nearbySea} alt="모두보기" />
+
+          <span>모두보기</span>
           <SpotUnderBar ref={spotUnderlineRef} />
         </div>
         <div
@@ -221,9 +221,9 @@ const HouseInfo = () => {
           // style={{"opacity":"0.3"}}
           style={{"opacity":"0.2"}}
         >
-          <SpotMiniBox>
+     
             <img src={inside} alt="내륙" />
-          </SpotMiniBox>
+       
           <span>내륙</span>
         </div>
         <div
@@ -232,9 +232,9 @@ const HouseInfo = () => {
           onClick={menuOnClick}
           id="spot"
         >
-          <SpotMiniBox>
+        
             <img src={nearby} alt="관광지근처" />
-          </SpotMiniBox>
+ 
           <span>관광지 근처</span>
         </div>
         <div
@@ -243,9 +243,9 @@ const HouseInfo = () => {
           onClick={menuOnClick}
           id="spot"
         >
-          <SpotMiniBox>
+     
             <img src={quietVil} alt="조용한 마을" />
-          </SpotMiniBox>
+       
           <span>조용한 마을</span>
         </div>
         <div
@@ -254,9 +254,9 @@ const HouseInfo = () => {
           onClick={menuOnClick}
           id="spot"
         >
-          <SpotMiniBox>
+         
             <img src={icecream} alt="우도" />
-          </SpotMiniBox>
+      
           <span>우도</span>
         </div>
         <div
@@ -265,10 +265,10 @@ const HouseInfo = () => {
           onClick={menuOnClick}
           id="spot"
         >
-          <SpotMiniBox>
-            <img src={sunrise} alt="성산일출봉" />
-          </SpotMiniBox>
-          <span>성산일출봉</span>
+          
+            <img src={sunrise} alt="해변근처" />
+          
+          <span>해변근처</span>
         </div>
       </SpotMainBox>
 
@@ -341,7 +341,7 @@ const HouseInfo = () => {
                 // <div id="testBox">
                 <ContentsListBox key={idx}>
                   <SlideImg
-                    listImg={listImg}
+                    item={item.images}
                     width={"36.4%"}
                     height={"220px"}
                   />
@@ -415,11 +415,17 @@ const SpotMainBox = styled.div`
     cursor: pointer;
     width: 13%;
     margin-left: 40px;
+    border: 1px solid red;
+    img{
+      width: 52px;
+      height: 52px;
+    }
     /* margin-top: 10px; */
   }
   span {
-    margin-top: 15px;
-    margin-right: 16px;
+    text-align: center;
+    margin-top: 5px;
+    /* margin-right: 16px; */
     font-size: 100%;
   }
 `;
@@ -444,9 +450,10 @@ const LiveUnderBar = styled.div`
 const SpotMiniBox = styled.div`
   width: 40%;
   height: 40px;
+  border: 1px solid blue;
   img {
-    width: 80%;
-    height: 55px;
+    width: 52px;
+    height: 52px;
   }
 `;
 

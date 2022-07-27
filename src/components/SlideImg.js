@@ -68,7 +68,7 @@ const SlideImg = (props) => {
     prevArrow: <SamplePrevArrow />,
   };
 
-  const { listImg, width, height } = props;
+  const { item, width, height } = props;
 
   const mouseHover = () => {
     setMouseOver(true);
@@ -80,7 +80,7 @@ const SlideImg = (props) => {
     <ImgBox width={width} height={height}>
       {mouseOver ? (
         <SliderImg {...settings} {...arrows}>
-          {listImg.map((item, idx) => {
+          {item.map((item, idx) => {
             return (
               <div onMouseLeave={mouseLeave} onMouseOver={mouseHover} key={idx}>
                 <img src={item} alt="이미지"/>
@@ -90,7 +90,7 @@ const SlideImg = (props) => {
         </SliderImg>
       ) : (
         <SliderImg {...settings}>
-          {listImg.map((item, idx) => {
+          {item.map((item, idx) => {
             return (
               <img
               key = {idx}
