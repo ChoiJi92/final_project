@@ -20,6 +20,7 @@ import Share2 from "../components/Share2";
 import SlideImg from "../components/SlideImg";
 import TestMap2 from "../components/TestMap2";
 import MetaTag from "./MetaTag";
+import Footer from "../components/Footer";
 
 const CommunityDetail = () => {
   const queryClient = useQueryClient();
@@ -166,7 +167,7 @@ const CommunityDetail = () => {
         <WrapLeft>
           <Content>
             <div className="hashTag">
-              {data.allPost[0].tagList?.map((v, i) => (
+              {data.allPost[0]?.tagList?.map((v, i) => (
                 <p key={i}>{v}</p>
               ))}
             </div>
@@ -392,6 +393,7 @@ const CommunityDetail = () => {
       </CommentWrap>
       <CommentList data={loadComment.data}></CommentList>
     </Container>
+    <Footer/>
     </>
   );
 };
@@ -400,6 +402,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: auto;
+  min-height: 100vh;
 `;
 const Image = styled.div`
   border-radius: 20px;
