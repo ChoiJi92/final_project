@@ -58,6 +58,7 @@ const MyInfoModal = () => {
     const myImgChangeURl = URL.createObjectURL(userImgChange[0]);
     setIsImgUrl(myImgChangeURl);
     setIsImgChange(false);
+    
   };
   const updateMutation = useMutation((formData) => {
     instance
@@ -137,6 +138,13 @@ const MyInfoModal = () => {
               <div id="imgBox">
                 <MyImg src={isImgUrl ? isImgUrl : userImage}></MyImg>
                 <div className="btn">
+                <input 
+                   style={{ display: "none", outline: "none" }}
+                   ref={currentImg}
+                   type={"file"}
+                    accept={"image/*"}
+                    onChange={onImgChange}
+                />
                 <button onClick={imgChangeClick}>프로필 이미지 선택</button>
                 <button
                   className="save"
