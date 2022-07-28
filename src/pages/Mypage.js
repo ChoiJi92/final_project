@@ -377,7 +377,7 @@ const Mypage = () => {
                   ""
                 ) : (
                   <>
-                    {bottomMore ? (
+                    {!bottomMore ? (
                       <img
                         src={moreIcon}
                         alt="더보기"
@@ -430,7 +430,7 @@ const Mypage = () => {
                   ) : (
                     <DefaultImgBox>
                       {myHostPost.slice(0, 3).map((v, i) => (
-                        <img style={{}} src={jeju1} alt="이미지" />
+                        <img  src={v.images[0].thumbnailURL} alt="이미지" />
                       ))}
                     </DefaultImgBox>
                   )}
@@ -472,9 +472,9 @@ const Mypage = () => {
                   {myHostPost.map((v, i) => {
                     return (
                       <div key={i} id="listBox">
-                        <img className="thumbnailImg" src={jeju1} />
+                        <img className="thumbnailImg" src={v.images[0].thumbnailURL} alt='이미지'/>
                         <span className="title" style={{ marginTop: "5px" }}>
-                          해변가 근처 숙소
+                          {v.title}
                         </span>
                         <div id="icons">
                           <div

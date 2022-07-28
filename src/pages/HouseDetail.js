@@ -17,7 +17,7 @@ import inside from "../assests/css/내륙.webp";
 import 관광지근처 from "../assests/css/관광지근처.webp";
 import 해변근처 from "../assests/css/해변근처.webp";
 import 조용한마을 from "../assests/css/조용한마을.webp";
-import icecream from "../assests/css/icecream.webp";
+import icecream from "../assests/css/우도.webp";
 import sunrise from "../assests/css/sunrise.webp";
 import shareIcon2 from "../assests/css/shareIcon2.png";
 import saveIcon from "../assests/css/saveIcon.webp";
