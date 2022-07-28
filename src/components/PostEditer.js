@@ -54,25 +54,25 @@ const PostEditer = ({setContent,setPreImages,content,setEditorImage}) => {
         hooks={{
             addImageBlobHook : async (blob, callback) => {
                 console.log(blob)
-                const imageUrl = URL.createObjectURL(blob)
-                setPreImages((prevState)=>[...prevState,imageUrl])
-                setEditorImage((prevState)=>[...prevState,blob])
-                // let alt;
-                // const formData = new FormData()
-                // formData.append('images',blob)
-                // const imageUrl = await instance.post('image',formData,{
-                //   headers:{
-                //     "Content-Type": "multipart/form-data",
-                //   }
-                // }).then((res)=>{
-                //   console.log(res.data)
-                //   alt = res.data.postImageKEY[0]
-                //   return res.data.postImageURL[0]
-                // }
-                // )
+                // const imageUrl = URL.createObjectURL(blob)
+                // setPreImages((prevState)=>[...prevState,imageUrl])
+                // setEditorImage((prevState)=>[...prevState,blob])
+                let alt;
+                const formData = new FormData()
+                formData.append('images',blob)
+                const imageUrl = await instance.post('image',formData,{
+                  headers:{
+                    "Content-Type": "multipart/form-data",
+                  }
+                }).then((res)=>{
+                  console.log(res.data)
+                  alt = res.data.postImageKEY[0]
+                  return res.data.postImageURL[0]
+                }
+                )
                 // setImageKey((prevState)=>[...prevState,alt])
-                // callback(imageUrl,alt)
-                callback(imageUrl)
+                callback(imageUrl,alt)
+                // callback(imageUrl)
             }
         }}
       ></Editor>

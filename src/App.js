@@ -27,15 +27,14 @@ import UserPage from './pages/UserPage';
 import Mypage from './pages/Mypage'
 import { Helmet } from 'react-helmet-async';
 import Test from './components/Test';
+import MetaTag from './pages/MetaTag';
 
 
 function App() {
  const userId = localStorage.getItem('userId')
   return (
     <div className="App">
-       <Helmet>
-        <title>멘도롱 제주</title>
-      </Helmet>
+       <MetaTag title={'멘도롱 제주'}></MetaTag>
       <GlobalStyles />
       <Header/>
       <Routes>

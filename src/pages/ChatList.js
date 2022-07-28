@@ -16,6 +16,7 @@ import LoginError from "./LoginError";
 import LoginModal from "../components/LoginModal";
 import Footer from "../components/Footer";
 import SearchResult from "../components/SearchResult";
+import MetaTag from "./MetaTag";
 
 const ChatList = () => {
   const searchRef = useRef();
@@ -61,6 +62,7 @@ const ChatList = () => {
 
   return (
     <>
+    <MetaTag title={'오픈채팅 | 멘도롱 제주'}></MetaTag>
       <Container>
         <Top>
           <div className="title">

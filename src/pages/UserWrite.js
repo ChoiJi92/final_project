@@ -447,6 +447,7 @@ const Container = styled.div`
     font-size: 21px;
     line-height: 150%;
     color: #636366;
+    cursor: pointer;
   }
 `;
 const Tag = styled.div`

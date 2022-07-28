@@ -28,6 +28,7 @@ import jeju14 from "../assests/css/제주9.jpeg";
 import Footer from "../components/Footer";
 import { useRecoilState } from "recoil";
 import { bestPostData, postData } from "../recoil/atoms";
+import MetaTag from "./MetaTag";
 
 const Community = () => {
   const navigate = useNavigate();
@@ -79,20 +80,21 @@ const Community = () => {
   const [count, setCount] = useState(0);
   return (
     <>
+    <MetaTag title={'커뮤니티 | 멘도롱 제주'}></MetaTag>
       <Container>
         <Top
           rightImage={
-            bestData[count < bestData.length - 1 ? count + 1 : 0].images[0]
+            bestData[count < bestData.length - 1 ? count + 1 : 0]?.images[0]
               .thumbnailURL
           }
-          leftImage={bestData[count].images[0].thumbnailURL}
+          leftImage={bestData[count]?.images[0].thumbnailURL}
         >
           <div className="leftImage">
             <Wrap>
               <img
                 className="prevIcon"
                 src={prevIcon}
-                alt="다음"
+                alt="이전"
                 onClick={() => {
                   if (count <= 0) {
                     setCount((prev) => prev + 4);
@@ -101,24 +103,24 @@ const Community = () => {
                   }
                 }}
               ></img>
-              <h2>{bestData[count].title}</h2>
+              <h2>{bestData[count]?.title}</h2>
               <div className="wrap">
                 <div className="user">
-                  <img src={bestData[count].images[0].userImageURL} alt="프로필"></img>
-                  <p>{bestData[count].nickname}</p>
+                  <img src={bestData[count]?.images[0].userImageURL} alt="프로필"></img>
+                  <p>{bestData[count]?.nickname}</p>
                 </div>
                 <div className="like">
                   <div>
                     <img src={unlike} alt="좋아요"></img>
-                    <p>{bestData[count].likeNum}개</p>
+                    <p>{bestData[count]?.likeNum}개</p>
                   </div>
                   <div>
                     <img src={commentIcon2} alt="공유"></img>
-                    <p>{bestData[count].commentNum}개</p>
+                    <p>{bestData[count]?.commentNum}개</p>
                   </div>
                   <button
                     onClick={() => {
-                      navigate(`/community/${bestData[count].postId}`);
+                      navigate(`/community/${bestData[count]?.postId}`);
                     }}
                   >
                     보러가기
@@ -132,7 +134,7 @@ const Community = () => {
               src={nextIcon}
               alt="다음"
               onClick={() => {
-                if (count < bestData.length - 1) {
+                if (count < bestData?.length - 1) {
                   setCount((prev) => prev + 1);
                 } else {
                   setCount(0);
@@ -140,12 +142,12 @@ const Community = () => {
               }}
             ></img>
             <h2>
-              {bestData[count < bestData.length - 1 ? count + 1 : 0].title
+              {bestData[count < bestData.length - 1 ? count + 1 : 0]?.title
                 .length > 18
                 ? bestData[
                     count < bestData.length - 1 ? count + 1 : 0
                   ].title.slice(0, 18)+"..."
-                : bestData[count < bestData.length - 1 ? count + 1 : 0].title}
+                : bestData[count < bestData.length - 1 ? count + 1 : 0]?.title}
             </h2>
           </div>
         </Top>
