@@ -3,12 +3,12 @@ import { FaHeart, FaStar } from "react-icons/fa";
 import styled from "styled-components";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import inside from "../assests/css/내륙.webp";
+import allCategory from "../assests/css/모두보기.webp";
+import land from "../assests/css/내륙.webp";
 import nearby from "../assests/css/관광지근처.webp";
-import nearbySea from "../assests/css/해변근처.webp";
 import quietVil from "../assests/css/조용한마을.webp";
-import icecream from "../assests/css/우도.webp";
-import sunrise from "../assests/css/sunrise.webp";
+import udo from "../assests/css/우도.webp";
+import nearBySea from "../assests/css/해변근처.webp";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import SlideImg from "../components/SlideImg";
 import saveIcon from "../assests/css/saveIcon.webp";
@@ -49,7 +49,7 @@ const location = useLocation()
   const [address, setAddress] = useState(location.state?.address ? location.state?.address : "");
   const userId = localStorage.getItem("userId");
 
-  const [category, setCategory] = useState("all");
+  const [category, setCategory] = useState(location.state?.category ? location.state?.category  : "all");
   const queryClient = useQueryClient();
   const { data } = useQuery(
     ["houseInfo"],
@@ -58,7 +58,11 @@ const location = useLocation()
         .get(`/host`, { params: { userId: Number(userId) } })
         .then((res) => {
           console.log(res.data);
-          isSetHostData(res.data.findAllAcc)
+          if(category ==='all'){
+          isSetHostData(res.data.findAllAcc)}
+          else{
+            isSetHostData(res.data.findAllAcc.filter((v) => v.category === category));
+          }
           return res.data;
         })
         .catch((err) => {
@@ -235,41 +239,41 @@ const location = useLocation()
           }}
           id="spot"
         >
-          <img src={nearbySea} alt="모두보기" />
+          <img src={allCategory} alt="모두보기" />
           <span>모두보기</span>
           {/* <SpotUnderBar ref={spotUnderlineRef} /> */}
         </div>
         <div
-          className="land"
+          className="내륙"
           // onClick={menuOnClick}
           onClick={() => {
             isSetHostData(data.findAllAcc.filter((v) => v.category === "내륙"));
-            setCategory("land");
+            setCategory("내륙");
           }}
           id="spot"
           // style={{"opacity":"0.3"}}
         >
-          <img src={inside} alt="내륙" />
+          <img src={land} alt="내륙" />
           <span>내륙</span>
         </div>
         <div
-          className="tour"
+          className="관광지근처"
           // onClick={menuOnClick}
           onClick={() => {
-            isSetHostData(data.findAllAcc.filter((v) => v.category === "관광지 근처"));
-            setCategory("tour");
+            isSetHostData(data.findAllAcc.filter((v) => v.category === "관광지근처"));
+            setCategory("관광지근처");
           }}
           id="spot"
         >
-          <img src={nearby} alt="관광지근처" />
+          <img src={nearby} alt="관광지 근처" />
           <span>관광지 근처</span>
         </div>
         <div
-          className="town"
+          className="조용한마을"
           // onClick={menuOnClick}
           onClick={() => {
-            isSetHostData(data.findAllAcc.filter((v) => v.category === "조용한 마을"));
-            setCategory("town");
+            isSetHostData(data.findAllAcc.filter((v) => v.category === "조용한마을"));
+            setCategory("조용한마을");
           }}
           id="spot"
         >
@@ -278,28 +282,28 @@ const location = useLocation()
           <span>조용한 마을</span>
         </div>
         <div
-          className="icecream"
+          className="우도"
           // onClick={menuOnClick}
           onClick={() => {
             isSetHostData(data.findAllAcc.filter((v) => v.category === "우도"));
-            setCategory("icecream");
+            setCategory("우도");
           }}
           id="spot"
         >
-          <img src={icecream} alt="우도" />
+          <img src={udo} alt="우도" />
 
           <span>우도</span>
         </div>
         <div
-          className="sunrise"
+          className="해변근처"
           // onClick={menuOnClick}
           onClick={() => {
             isSetHostData(data.findAllAcc.filter((v) => v.category === "해변근처"));
-            setCategory("sunrise");
+            setCategory("해변근처");
           }}
           id="spot"
         >
-          <img src={sunrise} alt="해변근처" />
+          <img src={nearBySea} alt="해변근처" />
 
           <span>해변근처</span>
         </div>
@@ -391,8 +395,7 @@ const location = useLocation()
                     </StyledLink>
                     <div id="infoHouse">
                       <span>
-                        한달살기의 조건에 관한 설명 ...한달살기의 조건에 관한
-                        설명 ...한달살기의 조건에 관한 설명 ...
+                        {item.hostContent}
                       </span>
                     </div>
                     <LikeBox>
@@ -404,7 +407,7 @@ const location = useLocation()
                             fontSize: "27px",
                           }}
                         >
-                          4.0
+                          {item.average}
                         </span>
                       </div>
                       {item.isSave ? (

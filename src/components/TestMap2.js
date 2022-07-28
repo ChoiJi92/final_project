@@ -8,7 +8,7 @@ import starIcon from "../assests/css/starIcon.png";
 import unsaveIcon from "../assests/css/unsaveIcon.png";
 import saveIcon from "../assests/css/saveIcon.png";
 import cancelIcon from "../assests/css/cancelIcon.png";
-const TestMap2 = ({ data,height }) => {
+const TestMap2 = ({ data, height }) => {
   const { kakao } = window;
   const [isOpen, setIsOpen] = useState(false);
   const [map, setMap] = useState();
@@ -39,7 +39,7 @@ const TestMap2 = ({ data,height }) => {
           bounds.extend(new kakao.maps.LatLng(result[0].y, result[0].x));
           // console.log(bounds)
           // const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-          
+
           // 결과값으로 받은 위치를 마커로 표시합니다
           // const marker = new kakao.maps.Marker({
           //   map: map,
@@ -49,7 +49,7 @@ const TestMap2 = ({ data,height }) => {
           // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
           // map.setCenter(coords);
         }
-        
+
         setMarkers(markers);
         map.setBounds(bounds);
       });
@@ -87,15 +87,15 @@ const TestMap2 = ({ data,height }) => {
         onCreate={setMap}
         ref={mapRef}
       >
-        {markers.map((v,i) => (
+        {markers.map((v, i) => (
           <div key={`${v.position.lat}-${v.position.lng}-${i}`}>
             <MapMarker
               position={v.position}
               onClick={() => {
-               if(markers.length>1){
+                if (markers.length > 1) {
                   setInfo(v);
                   setIsOpen(true);
-               }
+                }
               }}
             />
             {isOpen && info.content === v.content && (
@@ -161,7 +161,7 @@ const Zoom = styled.div`
   position: absolute;
   /* margin-left: 350px; */
   margin-top: 40px;
-  top:0;
+  top: 0;
   right: 20px;
   z-index: 1;
   overflow: hidden;
@@ -196,7 +196,7 @@ const Wrap = styled.div`
     /* border: 1px solid red; */
   }
   .title {
-    background: url(${(props)=>props.image}) no-repeat;
+    background: url(${(props) => props.image}) no-repeat;
     background-size: cover;
     /* width: 400px; */
     width: 100%;

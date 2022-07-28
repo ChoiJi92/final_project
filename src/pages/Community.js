@@ -3,12 +3,12 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import instance from "../shared/axios";
-import all from "../assests/css/해변근처.webp";
+import allCategory from "../assests/css/모두보기.webp";
 import land from "../assests/css/내륙.webp";
-import tour from "../assests/css/관광지근처.webp";
-import town from "../assests/css/조용한마을.webp";
-import icecream from "../assests/css/우도.webp";
-import sunrise from "../assests/css/sunrise.webp";
+import nearby from "../assests/css/관광지근처.webp";
+import quietVil from "../assests/css/조용한마을.webp";
+import udo from "../assests/css/우도.webp";
+import nearBySea from "../assests/css/해변근처.webp";
 import scrap from "../assests/css/scrap.png";
 import unlike from "../assests/css/whiteLike.webp";
 import like from "../assests/css/likeIcon.webp";
@@ -158,7 +158,7 @@ const Community = () => {
               setCategory("all");
             }}
           >
-            <img src={all} alt="모두보기"></img>
+            <img src={allCategory} alt="모두보기"></img>
             <p>모두보기</p>
           </div>
           <div
@@ -172,47 +172,47 @@ const Community = () => {
             <p>내륙</p>
           </div>
           <div
-            className="tour"
+            className="nearby"
             onClick={() => {
               setCommunityData(
-                data.filter((v) => v.category === "관광지 근처")
+                data.filter((v) => v.category === "관광지근처")
               );
-              setCategory("tour");
+              setCategory("nearby");
             }}
           >
-            <img src={tour} alt="관광지 근처"></img>
+            <img src={nearby} alt="관광지 근처"></img>
             <p>관광지 근처</p>
           </div>
           <div
-            className="town"
+            className="quietVil"
             onClick={() => {
               setCommunityData(
-                data.filter((v) => v.category === "조용한 마을")
+                data.filter((v) => v.category === "조용한마을")
               );
-              setCategory("town");
+              setCategory("quietVil");
             }}
           >
-            <img src={town} alt="조용한 마을"></img>
+            <img src={quietVil} alt="조용한 마을"></img>
             <p>조용한 마을</p>
           </div>
           <div
-            className="icecream"
+            className="udo"
             onClick={() => {
               setCommunityData(data.filter((v) => v.category === "우도"));
-              setCategory("icecream");
+              setCategory("udo");
             }}
           >
-            <img src={icecream} alt="우도"></img>
+            <img src={udo} alt="우도"></img>
             <p>우도</p>
           </div>
           <div
-            className="sunrise"
+            className="nearBySea"
             onClick={() => {
               setCommunityData(data.filter((v) => v.category === "해변근처"));
-              setCategory("sunrise");
+              setCategory("nearBySea");
             }}
           >
-            <img src={sunrise} alt="해변 근처"></img>
+            <img src={nearBySea} alt="해변 근처"></img>
             <p>해변 근처</p>
           </div>
         </Middle>
