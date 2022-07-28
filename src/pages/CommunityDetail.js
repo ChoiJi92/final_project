@@ -167,7 +167,7 @@ const CommunityDetail = () => {
         <WrapLeft>
           <Content>
             <div className="hashTag">
-              {data.allPost[0]?.tagList?.map((v, i) => (
+              {data.allPost[0]?.tagList.length > 0 && data.allPost[0]?.tagList.map((v, i) => (
                 <p key={i}>{v}</p>
               ))}
             </div>
