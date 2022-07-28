@@ -345,8 +345,8 @@ const HostWrite = () => {
               </MenuItem>
               <MenuItem value="해변근처">해변근처</MenuItem>
               <MenuItem value="내륙">내륙</MenuItem>
-              <MenuItem value="관광지 근처">관광지 근처</MenuItem>
-              <MenuItem value="조용한 마을">조용한 마을</MenuItem>
+              <MenuItem value="관광지근처">관광지 근처</MenuItem>
+              <MenuItem value="조용한마을">조용한 마을</MenuItem>
               <MenuItem value="우도">우도</MenuItem>
             </Select>
             <ErrorP>{errors.category?.message}</ErrorP>
