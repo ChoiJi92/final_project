@@ -191,10 +191,10 @@ const HostWrite = () => {
     //   },
     // }
   );
-  console.log(testImg ,"삭제되고 보여지는 스테이트");
-  console.log(deleteState ,"삭제된 스테이트") ;
-  console.log(newImgList, "추가된 이미지 스테이트")
-  console.log(deletedImg, "삭제되고 남아 있는 스테이트")
+  // console.log(testImg ,"삭제되고 보여지는 스테이트");
+  // console.log(deleteState ,"삭제된 스테이트") ;
+  // console.log(newImgList, "추가된 이미지 스테이트")
+  // console.log(deletedImg, "삭제되고 남아 있는 스테이트")
   // console.log(testFileList ,"testfilelist")
   // console.log(multiImgs, "멀티이미지 스테이트")
   // console.log(testFileList)

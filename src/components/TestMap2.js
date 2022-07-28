@@ -22,7 +22,7 @@ const TestMap2 = ({ data, height }) => {
     let markers = [];
     const bounds = new kakao.maps.LatLngBounds();
     for (let i = 0; i < data.length; i++) {
-      geocoder.addressSearch(data[i].mainAddress, function (result, status) {
+      geocoder.addressSearch(data[i].mainAddress + data[i].subAddress, function (result, status) {
         // 정상적으로 검색이 완료됐으면
         if (status === kakao.maps.services.Status.OK) {
           // let content = `<div id= "label" class ="label">카카오!</div>`;

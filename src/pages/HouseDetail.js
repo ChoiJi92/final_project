@@ -230,17 +230,17 @@ const HouseDetail = () => {
         <ImgBox>
           {/* <SlideImg listImg={listImg} /> */}
           <ImgInnerBox1>
-            <img src={data.findAllAcc.images[0].postImageURL} alt="이미지" />
+            <img src={data?.findAllAcc?.images[0]?.postImageURL} alt="이미지" />
           </ImgInnerBox1>
           <ImgInnerBox2>
-            <img src={data.findAllAcc.images[1].postImageURL} alt="이미지" />
+            <img src={data?.findAllAcc?.images[1]?.postImageURL} alt="이미지" />
             {/* <img src={jeju2} alt="이미지" /> */}
             <ImgDiv style={{"backgroundImage" :`url(${data?.findAllAcc?.images[2]?.postImageURL})`}}>
               <button onClick={openDialog}>사진 모두보기</button>
               <DialogImg
                 onClose={closeDialog}
                 open={dialogOpen}
-                listImg={data.findAllAcc.images}
+                listImg={data?.findAllAcc?.images}
               />
             </ImgDiv>
             {/* <div></div> */}
@@ -249,7 +249,7 @@ const HouseDetail = () => {
         <div style={{ display: "flex", flexDirection: "row" }}>
           <InfoBox>
             <HashMainBox>
-              {data?.findAllAcc.tagList.map((item, idx) => (
+              {data?.findAllAcc?.tagList?.map((item, idx) => (
                 <HashTagBox key={idx}>{item}</HashTagBox>
               ))}
             </HashMainBox>
@@ -269,7 +269,7 @@ const HouseDetail = () => {
                     fontSize: "48px",
                   }}
                 >
-                  {data.findAllAcc?.title}
+                  {data?.findAllAcc?.title}
                 </h1>
               </div>
               {/* {data.findAllAcc.userId === userId ? () : ()} */}
@@ -295,7 +295,7 @@ const HouseDetail = () => {
                     // border: "1px solid blue"
                   }}
                 >
-                  {data.findAllAcc.userId === Number(userId) ? (
+                  {data?.findAllAcc?.userId === Number(userId) ? (
                   <>
                   <span style={{ fontSize: "21px" }}>수정하기</span>
                   {/* <Link to={`/hostwrite/${data.findAllAcc.hostId}`}> */}
@@ -320,7 +320,7 @@ const HouseDetail = () => {
                     // border: "1px solid green"
                   }}
                 >
-                  {data.findAllAcc.userId === Number(userId) ? (
+                  {data?.findAllAcc?.userId === Number(userId) ? (
                   <>
                   <span style={{ fontSize: "21px" }}>삭제하기</span>
                   <IconImg onClick={() => {
@@ -331,17 +331,17 @@ const HouseDetail = () => {
                   <>
                     <span style={{ fontSize: "21px" }}>저장하기</span>
                     
-                    {data.findAllAcc.isSave ? (
+                    {data?.findAllAcc?.isSave ? (
                       <IconImg2
                       src={saveIcon}
                         onClick={() => {
-                          cancelSaveClick(data.findAllAcc.hostId);
+                          cancelSaveClick(data?.findAllAcc?.hostId);
                         }}
                       />) : (
                         <IconImg2
                         src={unsaveIcon2}
                         onClick={() => {
-                          saveClick(data.findAllAcc.hostId);
+                          saveClick(data?.findAllAcc?.hostId);
                         }}
                       />
                       )}
@@ -353,22 +353,22 @@ const HouseDetail = () => {
             <hr style={{ marginTop: "20px" }} />
             <SubInfoBox>
               <div>
-                <img src={require(`../assests/css/${data.findAllAcc.category}.webp`)} alt={data.category} />
-                {data.findAllAcc.category}
+                <img src={require(`../assests/css/${data?.findAllAcc?.category}.webp`)} alt={data.category} />
+                {data?.findAllAcc?.category}
               </div>
               <div>
-                <img src={require(`../assests/css/${data.findAllAcc.houseInfo}.webp`)} alt={data.houseInfo} />
-                {data.findAllAcc.houseInfo}
+                <img src={require(`../assests/css/${data?.findAllAcc?.houseInfo}.webp`)} alt={data.houseInfo} />
+                {data?.findAllAcc?.houseInfo}
               </div>
               <div>
                 <img src={step} />
-                {data.findAllAcc.stepSelect === "예"
+                {data?.findAllAcc?.stepSelect === "예"
                   ? "스텝 모집중"
                   : "스텝 모집 없음"}
               </div>
             </SubInfoBox>
             <div style={{ margin: "30px 0px 30px 0px", fontSize: "18px" }}>
-              {data.findAllAcc.hostContent}
+              {data?.findAllAcc?.hostContent}
             </div>
             <hr />
             <h1 style={{ marginTop: "20px", fontSize: "48px" }}>숙소 위치</h1>
@@ -491,11 +491,11 @@ const HouseDetail = () => {
           <RightBarBox>
             <div id="srollBar">
               <div id="barTitle">
-                <h3>{data?.findAllAcc.title}</h3>
-                <span>{data?.findAllAcc.mainAddress}</span>
+                <h3>{data?.findAllAcc?.title}</h3>
+                <span>{data?.findAllAcc?.mainAddress}</span>
               </div>
               <div id="barTag">
-                {data.findAllAcc.tagList.slice(0, 4).map((item, idx) => (
+                {data?.findAllAcc?.tagList?.slice(0, 4).map((item, idx) => (
                   <HashTagBox key={idx}>{item}</HashTagBox>
                 ))}
               </div>
@@ -693,6 +693,7 @@ const ReviewListBox = styled.div`
   width: 100%;
   padding: 0;
   justify-content: space-between;
+  margin-bottom: 20px;
   /* border: 1px solid red; */
 `;
 
