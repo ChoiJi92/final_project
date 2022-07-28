@@ -31,17 +31,15 @@ const HostWrite = () => {
   const [isMiniImg, setIsMiniImg] = useState(false);
 
   const currentImg = useRef(null);
-  
-  const [testImg,setTestImg] = useRecoilState(updateImgList);
+
+  const [testImg, setTestImg] = useRecoilState(updateImgList);
   // const [testImg, setTestImg] = useState([]);
   const { data } = useQuery(
     ["hostWrite", hostId],
 
     // ()=>getWriteData(paramsId),
     () => {
-      return instance
-        .get(`/host/${hostId}`)
-        .then((res) => res.data.findAllAcc);
+      return instance.get(`/host/${hostId}`).then((res) => res.data.findAllAcc);
     },
     {
       onSuccess: (data) => {
@@ -49,10 +47,10 @@ const HostWrite = () => {
       },
       refetchOnWindowFocus: false,
       enabled: !!hostId,
-    },
+    }
   );
   // console.log(testImg)
-  
+
   const {
     register,
     handleSubmit,
@@ -71,32 +69,30 @@ const HostWrite = () => {
       // mainAddress: data?.mainAddress,
     },
   });
-  
 
   const onSortEnd = (oldIndex, newIndex) => {
     setMultiImgs((array) => arrayMove(array, oldIndex, newIndex));
   };
 
   const onImgChange = (e) => {
-    if(!hostId){
-    const imgLists = e.target.files;
-    console.log(imgLists, "이거 타겟");
-    let imgUrlLists = [...multiImgs];
-    let testList = [];
-    for (let i = 0; i < imgLists.length; i++) {
-      const currentImageUrl = URL.createObjectURL(imgLists[i]);
-      
-      testList.push(imgLists[i]);
-  
-      imgUrlLists.push(currentImageUrl);
-    }
-    if (imgUrlLists.length > 8) {
-      imgUrlLists = imgUrlLists.slice(0, 8);
-    }
-    setMultiImgs(imgUrlLists);
-    setImgFileList(testList);
-    }else
-    {
+    if (!hostId) {
+      const imgLists = e.target.files;
+      console.log(imgLists, "이거 타겟");
+      let imgUrlLists = [...multiImgs];
+      let testList = [];
+      for (let i = 0; i < imgLists.length; i++) {
+        const currentImageUrl = URL.createObjectURL(imgLists[i]);
+
+        testList.push(imgLists[i]);
+
+        imgUrlLists.push(currentImageUrl);
+      }
+      if (imgUrlLists.length > 8) {
+        imgUrlLists = imgUrlLists.slice(0, 8);
+      }
+      setMultiImgs(imgUrlLists);
+      setImgFileList(testList);
+    } else {
       const imgLists = e.target.files;
       let testImgUrlLists = [...testImg];
       let testList2 = [];
@@ -105,25 +101,22 @@ const HostWrite = () => {
         testList2.push(imgLists[i]);
         testImgUrlLists.push(currentImageUrl);
       }
-      setTestImg(testImgUrlLists)
-      setTestFileList(testImgUrlLists)
+      setTestImg(testImgUrlLists);
+      setTestFileList(testImgUrlLists);
     }
-    
   };
-
 
   const imgClick = () => {
     currentImg.current.click();
   };
-
 
   const deleteImage = (id) => {
     setMultiImgs(multiImgs.filter((_, index) => index !== id));
   };
 
   const deleteTest = (id) => {
-    setTestImg(testImg.filter((_, idx)=>idx !== id))
-  }
+    setTestImg(testImg.filter((_, idx) => idx !== id));
+  };
 
   const queryClient = useQueryClient();
 
@@ -135,10 +128,10 @@ const HostWrite = () => {
   // const testWrite = useMutation((data)=>{
   //   instance.post(`/host`, data).then((res)=>{
   //       console.log(res.data)
- 
-  // }).catch((err)=>{console.log(err,"why")})   
+
+  // }).catch((err)=>{console.log(err,"why")})
   // })
-  
+
   const testWrite = useMutation(
     (data) =>
       instance
@@ -160,28 +153,25 @@ const HostWrite = () => {
   //     queryClient.invalidateQueries("hostWrite");
   //   },
   // });
-// console.log(data.images);
+  // console.log(data.images);
 
   const updateMutation = useMutation(
     (updateData) => {
-      return instance.put(
-        `/host/${hostId}`,
-        updateData
-      );
-    },
+      return instance.put(`/host/${hostId}`, updateData);
+    }
     // {
     //   onSuccess: () => {
     //     queryClient.invalidateQueries("hostWrite");
     //   },
     // }
   );
-  console.log(address, "its address")
+  console.log(address, "its address");
   const onSubmit = (data) => {
     // if (address === "") {
     //   setAddressError(true);
     // }
     // if (hostId) {
-      if(multiImgs.length > 3){
+    if (multiImgs.length > 3) {
       console.log("hi");
       const formData = new FormData();
       formData.append("category", data.category);
@@ -197,13 +187,13 @@ const HostWrite = () => {
 
       if (hostId) {
         updateMutation.mutate(formData);
-      }else{
-        console.log(imgFileList)
+      } else {
+        console.log(imgFileList);
         testWrite.mutate(formData);
       }
       setOpen(true);
-    }else{
-      window.alert('사진을 4장 이상 첨부해 주세요!!')
+    } else {
+      window.alert("사진을 4장 이상 첨부해 주세요!!");
     }
     // } else {
     //   const formData = new FormData();
@@ -228,8 +218,7 @@ const HostWrite = () => {
 
   const hiddenSetp = watch("stepSelect");
 
-
-  console.log(multiImgs.length, isMiniImg)
+  console.log(multiImgs.length, isMiniImg);
   return (
     <Wrap>
       <HostForm onSubmit={handleSubmit(onSubmit)}>
@@ -284,37 +273,38 @@ const HostWrite = () => {
             >
               {hostId ? (
                 <>
-                {testImg.map((v, index) => (
-                <SortableItem key={`item-${index}`}>
-                  <List>
-                    <Img src={v.postImageURL ? v.postImageURL : v} alt="이미지" />
-                    <DeleteIcon
-                      id="deleteIcon"
-                      onClick={() => deleteTest(index)}
-                    />
-                  </List>
-                </SortableItem>
-              ))}
+                  {testImg.map((v, index) => (
+                    <SortableItem key={`item-${index}`}>
+                      <List>
+                        <Img
+                          src={v.postImageURL ? v.postImageURL : v}
+                          alt="이미지"
+                        />
+                        <DeleteIcon
+                          id="deleteIcon"
+                          onClick={() => deleteTest(index)}
+                        />
+                      </List>
+                    </SortableItem>
+                  ))}
                 </>
               ) : (
                 <>
-                {multiImgs.map((v, index) => (
-                <SortableItem key={`item-${v}`}>
-                  <List>
-                    <Img src={v} alt="이미지" />
-                    <DeleteIcon
-                      id="deleteIcon"
-                      onClick={() => deleteImage(index)}
-                    />
-                  </List>
-                </SortableItem>
-              ))}
+                  {multiImgs.map((v, index) => (
+                    <SortableItem key={`item-${v}`}>
+                      <List>
+                        <Img src={v} alt="이미지" />
+                        <DeleteIcon
+                          id="deleteIcon"
+                          onClick={() => deleteImage(index)}
+                        />
+                      </List>
+                    </SortableItem>
+                  ))}
                 </>
               )}
-              
             </SortableList>
           </ImgBox>
-          
         </ImgMainBox>
         <hr />
         <InfoBox>
@@ -334,9 +324,15 @@ const HostWrite = () => {
         <InfoBox>
           <h2>카테고리 *</h2>
           <div id="infoCategory">
-         
             <Select
-              style={{ width: "100%", height: "50px", borderRadius: "10px" ,border:"none", backgroundColor:"#f7F3EF",padding:"10px"}}
+              style={{
+                width: "100%",
+                height: "50px",
+                borderRadius: "10px",
+                border: "none",
+                backgroundColor: "#f7F3EF",
+                padding: "10px",
+              }}
               {...register("category", {
                 required: "카테고리는 필수 선택사항입니다 :)",
               })}
@@ -364,20 +360,35 @@ const HostWrite = () => {
               {...register("houseInfo", {
                 required: "숙소형태는 필수 선택사항입니다 :)",
               })}
-              style={{ width: "100%", height: "50px", borderRadius: "10px", fontStyle:"nomal",border:"none", backgroundColor:"#f7F3EF",padding:"10px"  }}
+              style={{
+                width: "100%",
+                height: "50px",
+                borderRadius: "10px",
+                fontStyle: "nomal",
+                border: "none",
+                backgroundColor: "#f7F3EF",
+                padding: "10px",
+              }}
               displayEmpty
               inputProps={{ "aria-label": "Without label" }}
               defaultValue={data?.houseInfo ? data?.houseInfo : ""}
             >
-              <MenuItem style={{fontWeight:500, lineHeight:"150%", color:"#8E8E93", fontStyle:"nomal"}} value="" disabled={true}>
+              <MenuItem
+                style={{
+                  fontWeight: 500,
+                  lineHeight: "150%",
+                  color: "#8E8E93",
+                  fontStyle: "nomal",
+                }}
+                value=""
+                disabled={true}
+              >
                 숙소의 형태를 선택해주세요.
               </MenuItem>
-              <MenuItem value="게스트하우스">
-                게스트하우스
-              </MenuItem>
-              <MenuItem value="독채펜션">독채펜션</MenuItem>
+              <MenuItem value="게스트하우스">게스트하우스</MenuItem>
               <MenuItem value="펜션">펜션</MenuItem>
-              <MenuItem value="민박">민박</MenuItem>
+              <MenuItem value="한옥">한옥</MenuItem>
+              <MenuItem value="오피스텔/아파트">오피스텔/아파트</MenuItem>
             </Select>
 
             <ErrorP>{errors.houseInfo?.message}</ErrorP>
@@ -387,14 +398,26 @@ const HostWrite = () => {
         <InfoBox>
           <h2>주소 *</h2>
           <div className="regionInput">
-            <div style={{ borderRadius: "10px",border:"none", backgroundColor:"#f7F3EF", }} className="mainAddress">
+            <div
+              style={{
+                borderRadius: "10px",
+                border: "none",
+                backgroundColor: "#f7F3EF",
+              }}
+              className="mainAddress"
+            >
               <input
                 placeholder="주소를 검색해 주세요."
                 // {...register("mainAddress", { required: true })}
                 // value={address}
                 readOnly
                 value={address || data?.mainAddress}
-                style={{ borderRadius: "10px",border:"none", backgroundColor:"#f7F3EF" ,padding:"10px"}}
+                style={{
+                  borderRadius: "10px",
+                  border: "none",
+                  backgroundColor: "#f7F3EF",
+                  padding: "10px",
+                }}
                 {...register("mainAddress")}
                 // defaultValue={address ? address : data?.mainAddress }
               />
@@ -407,7 +430,12 @@ const HostWrite = () => {
                 required: "상세주소는 필수 선택사항입니다 :)",
               })}
               defaultValue={data?.subAddress ? data?.subAddress : ""}
-              style={{ borderRadius: "10px,",border:"none", backgroundColor:"#f7F3EF",padding:"20px" }}
+              style={{
+                borderRadius: "10px,",
+                border: "none",
+                backgroundColor: "#f7F3EF",
+                padding: "20px",
+              }}
             ></input>
             {addressError ? (
               <ErrorP1>주소는 필수 선택사항입니다 :)</ErrorP1>
@@ -422,7 +450,14 @@ const HostWrite = () => {
           <div id="stepMainBox">
             <div id="stepBox">
               <MuiSelect
-                style={{ width: "30.2%", borderRadius: "10px", "fontWeight":"500",border:"none", backgroundColor:"#f7F3EF",padding:"10px" }}
+                style={{
+                  width: "30.2%",
+                  borderRadius: "10px",
+                  fontWeight: "500",
+                  border: "none",
+                  backgroundColor: "#f7F3EF",
+                  padding: "10px",
+                }}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
                 {...register("stepSelect", {
@@ -486,8 +521,8 @@ const HostWrite = () => {
         <h2>태그</h2>
         <TagList
           maxLength={10}
-          width= {'75%'}
-          margin={'64px'}
+          width={"75%"}
+          margin={"64px"}
           tagList={tagList}
           setTagList={setTagList}
         />
@@ -548,11 +583,10 @@ const ImgDesBox = styled.div`
     /* margin: 15px 0px 10px 0px; */
     margin-top: 10px;
     border-radius: 10px;
-    background-color: #F7F3EF;
+    background-color: #f7f3ef;
     cursor: pointer;
   }
 `;
-
 
 const ImgBox = styled.div`
   width: 81.5%;
@@ -591,7 +625,7 @@ const Img = styled.img`
 `;
 const DeleteIcon = styled(FaTimesCircle)`
   font-size: 20px;
-  background-color: #F7F3EF;
+  background-color: #f7f3ef;
   border: none;
   border-radius: 50%;
   color: #bdc3c7;
@@ -618,7 +652,6 @@ const InfoBox = styled.div`
     flex-direction: column;
     width: 59.3%;
     margin-right: 272px;
-    
   }
   .subAddress {
     height: 56px;
@@ -659,7 +692,6 @@ const InfoBox = styled.div`
       font-weight: 500;
       font-size: 18px;
       line-height: 150%;
-      
 
       // 크롬 자동완성 선택했을 때 인풋창 백그라운드 파란색되는거 막는 css
       :-webkit-autofill {
@@ -687,7 +719,7 @@ const InfoBox = styled.div`
       font-size: 18px;
       line-height: 150%;
       border: none;
-      background-color: #F7F3EF;
+      background-color: #f7f3ef;
     }
   }
   #infoHouse,
@@ -715,7 +747,7 @@ const InfoBox = styled.div`
       font-size: 18px;
       line-height: 150%;
       border: none;
-      background-color: #F7F3EF;
+      background-color: #f7f3ef;
     }
   }
   h5 {
@@ -733,7 +765,6 @@ const InfoBox = styled.div`
     width: 48%;
     height: 70px;
     margin-right: 230px;
-    
   }
   #stepMainBox {
     width: 80%;
@@ -777,7 +808,6 @@ const InfoBox = styled.div`
       border-radius: 5px;
       border: 1px solid;
       margin-bottom: 10px;
-      
     }
   }
   h2 {
@@ -808,17 +838,17 @@ const StepInput = styled.input`
   padding: 20px;
   border-radius: 10px;
   margin-right: -200px;
-  
+
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
   line-height: 150%;
   border: none;
-  background-color: #F7F3EF;
-   :-webkit-autofill {
-        -webkit-box-shadow: 0 0 0 1000px #f7f3ef inset;
-        box-shadow: 0 0 0 1000px #f7f3ef inset;
-      }
+  background-color: #f7f3ef;
+  :-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #f7f3ef inset;
+    box-shadow: 0 0 0 1000px #f7f3ef inset;
+  }
 `;
 const Tag = styled.div`
   display: flex;
@@ -827,7 +857,7 @@ const Tag = styled.div`
   width: 70%;
   margin: 0 auto 55px auto;
   padding: 20px 0;
-  
+
   h2 {
     font-family: "Pretendard";
     font-style: normal;
@@ -837,7 +867,5 @@ const Tag = styled.div`
   }
 `;
 
-const MuiSelect = styled(Select)`
-
-`
+const MuiSelect = styled(Select)``;
 export default HostWrite;

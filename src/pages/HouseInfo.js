@@ -7,18 +7,18 @@ import inside from "../assests/css/내륙.webp";
 import nearby from "../assests/css/관광지근처.webp";
 import nearbySea from "../assests/css/해변근처.webp";
 import quietVil from "../assests/css/조용한마을.webp";
-import icecream from "../assests/css/icecream.webp";
+import icecream from "../assests/css/우도.webp";
 import sunrise from "../assests/css/sunrise.webp";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import SlideImg from "../components/SlideImg";
 import saveIcon from "../assests/css/saveIcon.webp";
 import unsaveIcon2 from "../assests/css/unsaveIcon2.webp";
 import Map from "../components/Map";
-import { useQuery,useMutation,useQueryClient } from "react-query";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 import axios from "axios";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { hostData } from "../recoil/atoms";
-import FormControl from '@mui/material/FormControl';
+import FormControl from "@mui/material/FormControl";
 import instance from "../shared/axios";
 import TestMap2 from "../components/TestMap2";
 
@@ -27,7 +27,7 @@ const HouseInfo = () => {
   const [rigthPosition, setRigthPosition] = useState("");
   const [fleftPosition, setFLeftPosition] = useState("");
   const [frigthPosition, setFRigthPosition] = useState("");
-  
+
   const [secondPosition, setSecondPosition] = useState("");
   const [sRigthPosition, setSRigthPosition] = useState("");
   const [sFleftPosition, setSFLeftPosition] = useState("");
@@ -43,51 +43,59 @@ const HouseInfo = () => {
   const spotUnderlineRef = useRef(null);
   // const firstBox = useRef(null);
   const liveFirstBox = useRef(null);
-
+const location = useLocation()
+// console.log(location.state.address)
   const [isHostData, isSetHostData] = useRecoilState(hostData);
-
+  const [address, setAddress] = useState(location.state?.address ? location.state?.address : "");
   const userId = localStorage.getItem("userId");
 
   const [category, setCategory] = useState("all");
-  // const { data } = useQuery(
-  //   ["houseInfo"],
-
-  //   // ()=>getWriteData(paramsId),
-  //   () => {
-  //     return instance
-  //       .get(`/host`)
-  //       .then((res) => res.data);
-  //   },
-  //   {
-  //     refetchOnWindowFocus: false,
-  //   }
-  // );
   const queryClient = useQueryClient();
   const { data } = useQuery(
     ["houseInfo"],
     () =>
       instance
-        .get(`/host`,{ params: { userId: Number(userId) } })
+        .get(`/host`, { params: { userId: Number(userId) } })
         .then((res) => {
           console.log(res.data);
-          return (
-            res.data
-          );
+          isSetHostData(res.data.findAllAcc)
+          return res.data;
         })
         .catch((err) => {
           console.log(err);
         }),
-        {
-          refetchOnWindowFocus: false,
-          onSuccess: (data) => {
-            isSetHostData(data);
-            
-          },
-        },
-    
+    {
+      
+      refetchOnWindowFocus: false,
+      // onSuccess: (data) => {
+      //   isSetHostData(data);
+      // },
+    }
+  );
+
+  const addressChange = (e) => {
+    console.log(e.target.value);
+    setAddress(e.target.value);
+  };
+
+  const addressData = useQuery(
+    ["addressData", address],
+    () =>
+      instance
+        .get(`/host/search`, { params: { search: address } })
+        .then((res) => {
+          console.log(res.data,'지역검색');
+          isSetHostData(res.data.hostPost)
+        })
+        .catch((err) => console.log(err)),
+    {
+      enabled: !!address,
+      refetchOnWindowFocus: false,
+    }
   );
   const savePost = useMutation(
-    ["save"],(id) =>
+    ["save"],
+    (id) =>
       instance
         .post(`/save/${id}`)
         .then((res) => {
@@ -101,9 +109,10 @@ const HouseInfo = () => {
         queryClient.invalidateQueries("houseInfo");
       },
     }
-  );      
+  );
   const saveDelete = useMutation(
-    ["save"],(id) =>
+    ["save"],
+    (id) =>
       instance
         .delete(`/save/${id}/unsave`)
         .then((res) => {
@@ -118,16 +127,16 @@ const HouseInfo = () => {
       },
     }
   );
-  
+
   const saveClick = (id) => {
-    savePost.mutate(id)
+    savePost.mutate(id);
     // saveDelete.mutate(id)
-    console.log(id)
-  }
+    console.log(id);
+  };
 
   const cancelSaveClick = (id) => {
-    saveDelete.mutate(id)
-  }
+    saveDelete.mutate(id);
+  };
 
   useEffect(() => {
     // autoSpotClick();
@@ -149,7 +158,6 @@ const HouseInfo = () => {
   };
 
   //마우스 올릴시 메뉴 언더바 이동
-  
 
   const autoLiveClick = () => {
     liveUnderlineRef.current.style.left =
@@ -193,7 +201,6 @@ const HouseInfo = () => {
     setSRigthPosition(e.currentTarget.offsetWidth + "px");
     setSecondtUnderbar(true);
   };
-
   return (
     <MainBox>
       <LiveMainBox>
@@ -223,81 +230,77 @@ const HouseInfo = () => {
           // ref={firstBox}
           className="all"
           onClick={() => {
-            // isSetHostData(data)
-            setCategory("all")
+            isSetHostData(data.findAllAcc);
+            setCategory("all");
           }}
           id="spot"
         >
-            <img src={nearbySea} alt="모두보기" />
+          <img src={nearbySea} alt="모두보기" />
           <span>모두보기</span>
           {/* <SpotUnderBar ref={spotUnderlineRef} /> */}
         </div>
         <div
-        className="land"
+          className="land"
           // onClick={menuOnClick}
           onClick={() => {
-            // isSetHostData(data.filter((v) => v.category === "내륙"))
-            setCategory("land")
+            isSetHostData(data.findAllAcc.filter((v) => v.category === "내륙"));
+            setCategory("land");
           }}
           id="spot"
           // style={{"opacity":"0.3"}}
         >
-            <img src={inside} alt="내륙" />
+          <img src={inside} alt="내륙" />
           <span>내륙</span>
         </div>
         <div
-        className="tour"
+          className="tour"
           // onClick={menuOnClick}
           onClick={() => {
-            // isSetHostData(data.filter((v) => v.category === "관광지 근처"))
-            setCategory("tour")
+            isSetHostData(data.findAllAcc.filter((v) => v.category === "관광지 근처"));
+            setCategory("tour");
           }}
           id="spot"
         >
-            <img src={nearby} alt="관광지근처" />
+          <img src={nearby} alt="관광지근처" />
           <span>관광지 근처</span>
         </div>
         <div
           className="town"
           // onClick={menuOnClick}
           onClick={() => {
-            // isSetHostData(data.filter((v) => v.category === "조용한 마을"))
-            setCategory("town")
+            isSetHostData(data.findAllAcc.filter((v) => v.category === "조용한 마을"));
+            setCategory("town");
           }}
           id="spot"
         >
-     
-            <img src={quietVil} alt="조용한 마을" />
-       
+          <img src={quietVil} alt="조용한 마을" />
+
           <span>조용한 마을</span>
         </div>
         <div
-        className="icecream"
-        
+          className="icecream"
           // onClick={menuOnClick}
           onClick={() => {
-            // isSetHostData(data.filter((v) => v.category === "우도"))
-            setCategory("icecream")
+            isSetHostData(data.findAllAcc.filter((v) => v.category === "우도"));
+            setCategory("icecream");
           }}
           id="spot"
         >
-         
-            <img src={icecream} alt="우도" />
-      
+          <img src={icecream} alt="우도" />
+
           <span>우도</span>
         </div>
         <div
           className="sunrise"
           // onClick={menuOnClick}
           onClick={() => {
-            // isSetHostData(data.filter((v) => v.category === "해변근처"))
-            setCategory("sunrise")
+            isSetHostData(data.findAllAcc.filter((v) => v.category === "해변근처"));
+            setCategory("sunrise");
           }}
           id="spot"
         >
-          
-            <img src={sunrise} alt="해변근처" />
-          
+          <img src={sunrise} alt="해변근처" />
+
           <span>해변근처</span>
         </div>
       </SpotMainBox>
@@ -305,62 +308,75 @@ const HouseInfo = () => {
       <div id="contentsMapBox">
         <ContentsBox>
           <OrderingBox>
-            
-              <StyleSelect
-                style={{ width: "30%", height: "50px", borderRadius: "10px",underline:"none"  }}
-                displayEmpty
-                inputProps={{ "aria-label": "Without label" }}
-                defaultValue={""}
-              >
-                <MenuItem value="" disabled={true}>
-                  숙소형태
-                </MenuItem>
-                <MenuItem value="단독 또는 다세대">단독</MenuItem>
-                <MenuItem value="호텔">호텔</MenuItem>
-                <MenuItem value="관광지 근처">관광지 근처</MenuItem>
-                <MenuItem value="조용한 마을">조용한 마을</MenuItem>
-                <MenuItem value="우도">우도</MenuItem>
-                <MenuItem value="성산일출봉">성산일출봉</MenuItem>
-              </StyleSelect>
-      
-            
-              <Select
-                style={{ width: "30%", height: "50px", borderRadius: "10px",backgroundColor:"#f7f3ef", border:"none" }}
-                displayEmpty
-                inputProps={{ "aria-label": "Without label",disableUnderline: true }}
-                defaultValue={""}
+            <StyleSelect
+              style={{
+                width: "30%",
+                height: "50px",
+                borderRadius: "10px",
+                underline: "none",
+              }}
+              displayEmpty
+              inputProps={{ "aria-label": "Without label" }}
+              defaultValue={""}
+            >
+              <MenuItem value="" disabled={true}>
+                숙소형태
+              </MenuItem>
+              <MenuItem value="게스트하우스">게스트하우스</MenuItem>
+              <MenuItem value="펜션">펜션</MenuItem>
+              <MenuItem value="한옥">한옥</MenuItem>
+              <MenuItem value="오피스텔/아파트">오피스텔/아파트</MenuItem>
+            </StyleSelect>
 
-              >
-                <MenuItem value="" disabled={true}>
-                  위치별
-                </MenuItem>
-                <MenuItem value="east">동쪽</MenuItem>
-                <MenuItem value="west">서쪽</MenuItem>
-                <MenuItem value="south">남쪽</MenuItem>
-                <MenuItem value="north">북쪽</MenuItem>
-              </Select>
-            
-              <Select
-                style={{ width: "30%", height: "50px", borderRadius: "10px",backgroundColor:"#f7f3ef" }}
-                displayEmpty
-                inputProps={{ "aria-label": "Without label" }}
-                defaultValue={""}
-              >
-                <MenuItem value="" disabled={true}>
-                  추천순
-                </MenuItem>
-                <MenuItem value="별점순">별점순</MenuItem>
-  
-              </Select>
+            <Select
+              style={{
+                width: "30%",
+                height: "50px",
+                borderRadius: "10px",
+                backgroundColor: "#f7f3ef",
+                border: "none",
+              }}
+              displayEmpty
+              inputProps={{
+                "aria-label": "Without label",
+              }}
+              defaultValue={address}
+              onChange={addressChange}
+            >
+              <MenuItem value="" disabled={true}>
+                위치별
+              </MenuItem>
+              <MenuItem value="Eastarea">동쪽</MenuItem>
+              <MenuItem value="Westarea">서쪽</MenuItem>
+              <MenuItem value="Southarea">남쪽</MenuItem>
+              <MenuItem value="Northarea">북쪽</MenuItem>
+            </Select>
+
+            <Select
+              style={{
+                width: "30%",
+                height: "50px",
+                borderRadius: "10px",
+                backgroundColor: "#f7f3ef",
+              }}
+              displayEmpty
+              inputProps={{ "aria-label": "Without label" }}
+              defaultValue={""}
+            >
+              <MenuItem value="" disabled={true}>
+                추천순
+              </MenuItem>
+              <MenuItem value="별점순">별점순</MenuItem>
+            </Select>
           </OrderingBox>
           <div
             style={{ fontSize: "22px", marginBottom: "18px" }}
             id="houseCount"
           >
-            {data.findAllAcc.length} 개의 숙소
+            {isHostData.length} 개의 숙소
           </div>
           <ListWrap>
-            {data.findAllAcc.map((item, idx) => {
+            {isHostData.map((item, idx) => {
               return (
                 // <div id="testBox">
                 <ContentsListBox key={idx}>
@@ -392,20 +408,20 @@ const HouseInfo = () => {
                         </span>
                       </div>
                       {item.isSave ? (
-                      <SaveImg
-                      src={saveIcon}
-                        onClick={() => {
-                          cancelSaveClick(item.hostId);
-                        }}
-                      />) : (
                         <SaveImg
-                        src={unsaveIcon2}
-                        onClick={() => {
-                          saveClick(item.hostId);
-                        }}
-                      />
+                          src={saveIcon}
+                          onClick={() => {
+                            cancelSaveClick(item.hostId);
+                          }}
+                        />
+                      ) : (
+                        <SaveImg
+                          src={unsaveIcon2}
+                          onClick={() => {
+                            saveClick(item.hostId);
+                          }}
+                        />
                       )}
-                      
                     </LikeBox>
                   </DesBox>
                 </ContentsListBox>
@@ -415,7 +431,7 @@ const HouseInfo = () => {
           </ListWrap>
         </ContentsBox>
         <MapBox>
-          <TestMap2 isinfo={"isinfo"} data={data.findAllAcc} />
+          <TestMap2 isinfo={"isinfo"} data={isHostData} height={'85%'}/>
         </MapBox>
       </div>
     </MainBox>
@@ -440,7 +456,8 @@ const SpotMainBox = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0px 243px;
-  #spot {
+
+  div {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -451,27 +468,25 @@ const SpotMainBox = styled.div`
     /* border: 1px solid red; */
     /* border-bottom: 4px solid red; */
     height: 120px;
-    :hover{
-      *{
+    :hover {
+      * {
         opacity: 1;
       }
     }
-    
-    /* margin-top: 10px; */
-    
-  }
-  span {
-    text-align: center;
-    margin-top: 5px;
-    /* margin-right: 16px; */
-    font-size: 100%;
-    opacity: 0.2;
-  }
-  img{
+    span {
+      text-align: center;
+      margin-top: 5px;
+      /* margin-right: 16px; */
+      font-size: 100%;
+      opacity: 0.2;
+    }
+    img {
       width: 52px;
       height: 52px;
       opacity: 0.2;
     }
+  }
+
   .${(props) => props.category} {
     border-bottom: 5px solid #8e8e93;
     * {
@@ -485,7 +500,6 @@ const SpotUnderBar = styled.div`
   background-color: #bdc3c7;
   transition: 0.5s;
   top: 295px;
-  
 `;
 
 const LiveUnderBar = styled.div`
@@ -567,17 +581,17 @@ const OrderingBox = styled.div`
 
 const StyleSelect = styled(Select)`
   height: 50px;
-    /* border: 1px solid blue; */
-    border: none;
-    outline: none;
-    margin: 0px 15px 0px 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 10px;
-    font-size: 21px;
-    background-color: #f7f3ef;
-`
+  /* border: 1px solid blue; */
+  border: none;
+  outline: none;
+  margin: 0px 15px 0px 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  font-size: 21px;
+  background-color: #f7f3ef;
+`;
 
 const ContentsListBox = styled.div`
   height: 260px;
@@ -618,24 +632,23 @@ const LikeBox = styled.div`
   }
 `;
 
-
-
 const SaveImg = styled.img`
   cursor: pointer;
-`
+`;
 
 const StarIcon = styled(FaStar)`
   font-size: 25px;
-  color: #2A7047;
+  color: #2a7047;
 `;
 
 const MapBox = styled.div`
-  width: 50%;
+  width: 100%;
   height: 90vh;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  /* justify-content: center; */
+  /* align-items: center; */
   position: relative;
+  margin-top: 20px;
 `;
 
 const StyledLink = styled(Link)`

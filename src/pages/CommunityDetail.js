@@ -10,7 +10,8 @@ import deleteIcon from "../assests/css/deleteIcon.png";
 import unlikeIcon from "../assests/css/unlikeIcon.webp";
 import likeIcon from "../assests/css/likeIcon.webp";
 import starIcon from "../assests/css/starIcon.webp";
-import unsaveIcon from "../assests/css/unsaveIcon.png";
+import unsaveIcon from "../assests/css/unsaveIcon2.webp";
+import saveIcon from "../assests/css/saveIcon.webp";
 import commentIcon from "../assests/css/commentIcon.webp";
 import mypageImg from "../assests/css/mypageImg.webp";
 import CommentList from "../components/CommentList";
@@ -104,6 +105,40 @@ const CommunityDetail = () => {
       },
     }
   );
+  const savePost = useMutation(
+    ["save"],
+    (id) =>
+      instance
+        .post(`/save/${id}`)
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err, "why");
+        }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("detailContent");
+      },
+    }
+  );
+  const saveDelete = useMutation(
+    ["save"],
+    (id) =>
+      instance
+        .delete(`/save/${id}/unsave`)
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err, "why");
+        }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("detailContent");
+      },
+    }
+  );
   const onKeyPress = (e) => {
     if (e.key === "Enter") {
       if (commentRef.current.value === "") {
@@ -128,7 +163,6 @@ const CommunityDetail = () => {
       },
     }
   );
-  console.log(data.outherPosts?.length)
   return (
     <Container>
       <Image image={data.allPost[0].images[0].thumbnailURL}></Image>
@@ -238,13 +272,21 @@ const CommunityDetail = () => {
                         <img src={starIcon} alt="star"></img>
                         <p>{data.findAllAcc[0].average}</p>
                       </div>
-                      <img src={unsaveIcon} alt="save"></img>
+                      {data.findAllAcc[0].isSave ? (
+                        <img src={saveIcon} alt="save" onClick={()=>{
+                          savePost.mutate(data.findAllAcc[0].hostId)
+                        }}></img>
+                      ) : (
+                        <img src={unsaveIcon} alt="unsave" onClick={()=>{
+                          saveDelete.mutate(data.findAllAcc[0].hostId)
+                        }}></img>
+                      )}
                     </div>
                   </div>
                 </div>
               </>
             ) : (
-              <TestMap2 data={data.allPost} />
+              <TestMap2 data={data.allPost} height={"300px"} />
             )}
           </WrapBottom>
         </WrapLeft>
@@ -554,6 +596,9 @@ const WrapBottom = styled.div`
       font-size: 24px;
       line-height: 140%;
       color: #828282;
+    }
+    img{
+      cursor: pointer;
     }
   }
   .iconWrap {
