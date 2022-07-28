@@ -39,7 +39,7 @@ const ChatList = () => {
       instance
         .post(`/room/${roomId}`)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           navigate(`/chatroom/${roomId}`);
         })
         .catch((err) => {

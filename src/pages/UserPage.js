@@ -33,6 +33,7 @@ import {
   mySaveList,
 } from "../recoil/atoms";
 import Footer from "../components/Footer";
+import MetaTag from "./MetaTag";
 
 const UserPage = () => {
   const [myLike, setMyLike] = useState(true);
@@ -53,14 +54,14 @@ const UserPage = () => {
       instance
         .get(`oauth/other/${params.id}`)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           return (
             //   setMyLikePost(res.data.mylikespost), setMyPost(res.data.mypostinfo)
             res.data
           );
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
         }),
     {
       refetchOnWindowFocus: false,
@@ -69,6 +70,7 @@ const UserPage = () => {
 
   return (
     <>
+    <MetaTag title={`${data.nickname}님의 페이지`}/>
       <MainBox>
         <ProfileBox>
           <div className="profileWrap">

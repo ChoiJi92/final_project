@@ -3,12 +3,15 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import readyPage from "../assests/css/준비중.webp";
 import refreshIcon from '../assests/css/refreshIcon.webp'
+import MetaTag from "./MetaTag";
 
 
 const OnReady = () => {
     const navigate = useNavigate();
     
     return(
+      <>
+      <MetaTag title={'준비중...'}/>
         <Container>
         <img className="error" src={readyPage} alt="준비중" />
         <p>페이지를 준비중입니다.</p>
@@ -17,6 +20,7 @@ const OnReady = () => {
           navigate(-1)
         }}>이전페이지로 돌아가기 <img src={refreshIcon} alt="숙소로 돌아가기"></img></button>
       </Container>
+      </>
     )
 }
 

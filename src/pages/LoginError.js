@@ -3,14 +3,18 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import errorPage from "../assests/css/errorPage.webp";
 import LoginModal from "../components/LoginModal";
+import MetaTag from "./MetaTag";
 const LoginError = () => {
     const navigate = useNavigate()
   return (
+    <>
+    <MetaTag title={'로그인 후 사용해주세요'}/>
     <Container>
       <img src={errorPage} alt="에러" />
       <p>로그인 후 사용해주세요.</p>
       <button ><LoginModal/></button>
     </Container>
+    </>
   );
 };
 

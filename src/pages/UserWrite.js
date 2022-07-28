@@ -14,6 +14,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import instance from "../shared/axios";
 import WriteFooter from "../components/WriteFooter";
 import TagList from "../components/TagList";
+import MetaTag from "./MetaTag";
 
 const UserWrite = () => {
   const params = useParams();
@@ -23,7 +24,7 @@ const UserWrite = () => {
     ["editContent", params.id],
     () =>
       instance.get(`/post/${params.id}`, { params: { userId: Number(userId) } }).then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         return res.data.allPost[0];
       }),
     {
@@ -54,7 +55,7 @@ const UserWrite = () => {
   } = useForm();
   // 이미지 업로드 부분
   const onDrop = useCallback((acceptedFiles) => {
-    console.log(acceptedFiles[0]);
+    // console.log(acceptedFiles[0]);
     // let imagelist = []; // 미리보기 이미지 담을 리스트
     // let filelist = []; // 업로드할 파일을 담을 리스트
     // 이미지 미리보기 createObjectURL 버전
@@ -93,7 +94,7 @@ const UserWrite = () => {
         })
         .then((res) => {
           setOpen(true);
-          console.log(res.data);
+          // console.log(res.data);
         }),
     {
       onSuccess: () => {
@@ -114,7 +115,7 @@ const UserWrite = () => {
         })
         .then((res) => {
           setOpen(true);
-          console.log(res.data);
+          // console.log(res.data);
         }),
     {
       onSuccess: () => {
@@ -126,23 +127,23 @@ const UserWrite = () => {
   const onSubmit = (data) => {
     // console.log(data);
     // console.log(title);
-    console.log(content);
-    // console.log(thumbnail);
-    // console.log(address);
-    // console.log(tagList);
-    console.log(editorImage); // foreach 돌려야함
-    console.log(preImages);
-    console.log("저장");
-    let filterImage = preImages.filter((v) => !content.includes(v)) // 삭제된 imageurl
-    console.log(filterImage,'나는 없어진 이미지!')
-    let index = filterImage.map((v) => preImages.indexOf(v))
-    console.log(index,'나는 없어진 친구 인덱스')
-    let newEditorImage =editorImage.filter((_,i)=> !index.includes(i))
-    console.log(editorImage.filter((_,i)=> !index.includes(i)),'나는 필터된 file!!')
-    let newPreImages=preImages.filter((v) => content.includes(v))
-    console.log(preImages.filter((v) => content.includes(v)),'필터된 친구');
-    let preFilterImages =preImages.filter((v) => content.includes(v))
-    console.log(preFilterImages)
+    // console.log(content);
+    // // console.log(thumbnail);
+    // // console.log(address);
+    // // console.log(tagList);
+    // console.log(editorImage); // foreach 돌려야함
+    // console.log(preImages);
+    // console.log("저장");
+    // let filterImage = preImages.filter((v) => !content.includes(v)) // 삭제된 imageurl
+    // console.log(filterImage,'나는 없어진 이미지!')
+    // let index = filterImage.map((v) => preImages.indexOf(v))
+    // console.log(index,'나는 없어진 친구 인덱스')
+    // let newEditorImage =editorImage.filter((_,i)=> !index.includes(i))
+    // console.log(editorImage.filter((_,i)=> !index.includes(i)),'나는 필터된 file!!')
+    // let newPreImages=preImages.filter((v) => content.includes(v))
+    // console.log(preImages.filter((v) => content.includes(v)),'필터된 친구');
+    // let preFilterImages =preImages.filter((v) => content.includes(v))
+    // console.log(preFilterImages)
     
 
     if (!thumbnail && !preview) {
@@ -154,15 +155,15 @@ const UserWrite = () => {
     } else {
       const formData = new FormData();
       if (thumbnail) {
-        console.log("여기 지나가나요?");
+        // console.log("여기 지나가나요?");
         formData.append("images", thumbnail);
       }
       // else{
       //   console.log('여기는?')
       //   formData.append("images", preview)
       // }
-      console.log(newEditorImage,'필터된 파일객체들')
-      console.log(newPreImages,'필터된 url들')
+      // console.log(newEditorImage,'필터된 파일객체들')
+      // console.log(newPreImages,'필터된 url들')
       // newEditorImage.forEach((file)=> formData.append('images',file))
 
       formData.append("title", title);
@@ -174,7 +175,7 @@ const UserWrite = () => {
       formData.append("type", data.type);
       formData.append("houseTitle", data.houseTitle);
       formData.append("link", data.link);
-      formData.append("preImages", newPreImages);
+      // formData.append("preImages", newPreImages);
       // formData.append(
       //   "thumbnailKEY",
       //   thumbnailKey ? thumbnailKey : ""
@@ -184,18 +185,20 @@ const UserWrite = () => {
       //   imageKey.filter((v) => !content.includes(v))
       // );
       if (!params.id) {
-        console.log("저장");
+        // console.log("저장");
         createPost.mutate(formData);
         // setOpen(true);
       } else {
-        console.log(params.id);
-        console.log("여기와야대!");
+        // console.log(params.id);
+        // console.log("여기와야대!");
         updatePost.mutate(formData);
         // setOpen(true);
       }
     }
   };
   return (
+    <>
+    <MetaTag title={'숙소정보를 공유해 주세요 :) | 멘도롱 제주'}/>
     <Wrap>
       <Container background={preview}>
         <Dropzone multiple={false} onDrop={onDrop}>
@@ -386,6 +389,7 @@ const UserWrite = () => {
         ></WriteFooter>
       </Form>
     </Wrap>
+    </>
   );
 };
 const Wrap = styled.div`
