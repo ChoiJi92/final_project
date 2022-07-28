@@ -332,8 +332,9 @@ const Card = styled.div`
     .host {
       display: flex;
       align-items: center;
-      margin-right: 40px;
-      width: 200px;
+      /* margin-right: 40px; */
+      width: 280px;
+      /* border: 1px solid; */
       p {
         margin-left: 10px;
         font-style: normal;
