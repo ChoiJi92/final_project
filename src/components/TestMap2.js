@@ -8,7 +8,7 @@ import starIcon from "../assests/css/starIcon.png";
 import unsaveIcon from "../assests/css/unsaveIcon.png";
 import saveIcon from "../assests/css/saveIcon.png";
 import cancelIcon from "../assests/css/cancelIcon.png";
-const TestMap2 = ({ data }) => {
+const TestMap2 = ({ data,height }) => {
   const { kakao } = window;
   const [isOpen, setIsOpen] = useState(false);
   const [map, setMap] = useState();
@@ -76,7 +76,8 @@ const TestMap2 = ({ data }) => {
         style={{
           // 지도의 크기
           width: "100%",
-          height: "300px",
+          // height: "300px",
+          height: `${height}`,
           position: "relative",
           overflow: "hidden",
           borderRadius: "20px",
@@ -86,8 +87,8 @@ const TestMap2 = ({ data }) => {
         onCreate={setMap}
         ref={mapRef}
       >
-        {markers.map((v) => (
-          <div key={v.position.lat}>
+        {markers.map((v,i) => (
+          <div key={`${v.position.lat}-${v.position.lng}-${i}`}>
             <MapMarker
               position={v.position}
               onClick={() => {

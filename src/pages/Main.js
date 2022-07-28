@@ -16,6 +16,7 @@ import jeju from "../assests/css/jeju.webp";
 import { useQuery } from "react-query";
 import instance from "../shared/axios";
 import Footer from "../components/Footer";
+import { useNavigate } from "react-router-dom";
 const Main = () => {
   const { data } = useQuery(
     ["loadChatRoom"],
@@ -29,6 +30,7 @@ const Main = () => {
       refetchOnWindowFocus: false,
     }
   );
+  const navigate = useNavigate()
   return (
     <>
     <Container>
@@ -56,8 +58,10 @@ const Main = () => {
       <RegionWrap>
         <h2>Find accommodation by region</h2>
         <div className="region">
-          <div className=" eastArea">
-            <div>
+          <div className=" eastArea" >
+            <div onClick={()=>{
+            navigate('/house',{state:{address:'Eastarea'}})
+          }}>
               <p className="title">East area</p>
               <p>Jeju-si, Jocheon-eup, Aewol-eup</p>
             </div>
@@ -66,7 +70,9 @@ const Main = () => {
           </div>
           <div className="westArea">
             <img src={dolhaleubang} alt="돌하르방"></img>
-            <div>
+            <div onClick={()=>{
+            navigate('/house',{state:{address:'Westarea'}})
+          }}>
               <p className="title">West area</p>
               <p>Hallim-eup, Hangyeong-myeon, Daejeong-eup, Andeok-myeon</p>
             </div>
@@ -75,13 +81,17 @@ const Main = () => {
           <div className="southArea">
             <img src={flower} alt="꽃"></img>
             <img src={flower2} alt="꽃"></img>
-            <div>
+            <div onClick={()=>{
+            navigate('/house',{state:{address:'Southarea'}})
+          }}>
               <p className="title">South area</p>
               <p>Jungmun, Seogwipo-si, Namwon-eup</p>
             </div>
           </div>
           <div className="northArea">
-            <div>
+            <div onClick={()=>{
+            navigate('/house',{state:{address:'Northarea'}})
+          }}>
               <p className="title">North area</p>
               <p>Gujwa-eup, Seongsan-eup, Pyoseon-myeon Udo-myeon</p>
             </div>

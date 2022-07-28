@@ -7,7 +7,7 @@ import all from "../assests/css/해변근처.webp";
 import land from "../assests/css/내륙.webp";
 import tour from "../assests/css/관광지근처.webp";
 import town from "../assests/css/조용한마을.webp";
-import icecream from "../assests/css/icecream.webp";
+import icecream from "../assests/css/우도.webp";
 import sunrise from "../assests/css/sunrise.webp";
 import scrap from "../assests/css/scrap.png";
 import unlike from "../assests/css/whiteLike.webp";
