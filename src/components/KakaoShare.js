@@ -8,7 +8,7 @@ const KakaoShare = ({ data }) => {
   // const isUserShare = useRecoilValue(userShare);
   const isHostShare = useRecoilValue(hostShareAndMap);
   // console.log(!isUserShare);
-  // console.log(isHostShare.findAllAcc);
+  console.log(isHostShare.findAllAcc," 이거슨 카카오 쉐어");
   // console.log(data);
   const url = window.location.href; //현재 url가져오기
   useEffect(() => {
@@ -34,15 +34,15 @@ const KakaoShare = ({ data }) => {
         content: {
           title: `${data? data.title : isHostShare.findAllAcc.title}`,
           description: `${data ? data.tagList : isHostShare.findAllAcc.tagList}`,
-          imageUrl: `${data.images[0].thumbnailURL}`,
+          imageUrl: `${data ? data.images[0].thumbnailURL : isHostShare.findAllAcc.images[0].postImageURL }`,
           link: {
             mobileWebUrl: url,
             webUrl: url,
           },
         },
         social: {
-          likeCount: data.likeNum,
-          commentCount: data.commentNum,
+          likeCount: data ? data.likeNum : 0 ,
+          commentCount: data  ? data.commentNum :0 ,
         },
         buttons: [
           {

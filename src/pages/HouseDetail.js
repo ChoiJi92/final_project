@@ -45,6 +45,7 @@ import ReviewDetailModal from "../components/ReviewDetailModal";
 import LoginModal from "../components/LoginModal";
 import LoginError from "./LoginError";
 import instance from "../shared/axios";
+import TestMap2 from "../components/TestMap2";
 
 const HouseDetail = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -54,7 +55,6 @@ const HouseDetail = () => {
   const [isReivewUpdate, setIsReviewUpdate] = useState({});
 
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
-  const [testNumber, setTestNumber] = useState(0);
   const userId = localStorage.getItem("userId");
   const navigate = useNavigate();
   const openModal = (id, review, star, reviewId) => {
@@ -206,8 +206,8 @@ const HouseDetail = () => {
     setDialogOpen(false);
   };
 
-  const listImg = [jeju7, jeju8, jeju9, jeju10, jeju11, jeju12, jeju13, jeju14];
-  const hashList = [0, 1, 3, 4];
+
+
   const MapRadius = "20px";
 
   const shareClick = () => {
@@ -223,7 +223,7 @@ const HouseDetail = () => {
     navigate("/house");
   };
   // console.log(data.findAllAcc.tagList.length, "이거슨 디테일 데이터");
-
+  // console.log(reviewDetail.data)
   return (
     <Wrap>
       <div id="detailMainBox">
@@ -249,8 +249,8 @@ const HouseDetail = () => {
         <div style={{ display: "flex", flexDirection: "row" }}>
           <InfoBox>
             <HashMainBox>
-              {data.findAllAcc.tagList.map((item, idx) => (
-                <HashTagBox>{item}</HashTagBox>
+              {data?.findAllAcc.tagList.map((item, idx) => (
+                <HashTagBox key={idx}>{item}</HashTagBox>
               ))}
             </HashMainBox>
             <div
@@ -353,11 +353,11 @@ const HouseDetail = () => {
             <hr style={{ marginTop: "20px" }} />
             <SubInfoBox>
               <div>
-                {/* <img src={require(`../assests/css/${data.findAllAcc.category}.webp`)} alt={data.category} /> */}
+                <img src={require(`../assests/css/${data.findAllAcc.category}.webp`)} alt={data.category} />
                 {data.findAllAcc.category}
               </div>
               <div>
-                {/* <img src={require(`../assests/css/${data.findAllAcc.houseInfo}.webp`)} alt={data.houseInfo} /> */}
+                <img src={require(`../assests/css/${data.findAllAcc.houseInfo}.webp`)} alt={data.houseInfo} />
                 {data.findAllAcc.houseInfo}
               </div>
               <div>
@@ -368,24 +368,11 @@ const HouseDetail = () => {
               </div>
             </SubInfoBox>
             <div style={{ margin: "30px 0px 30px 0px", fontSize: "18px" }}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Pellentesque quam consequat massa sit aliquam. Dignissim nibh at
-              cras magna orci massa. Vehicula molestie facilisi eu, porta tempor
-              magna quis eu aliquam. Eu sed risus dignissim sed eget. Accumsan,
-              aliquam, urna id faucibus porttitor sagittis tristique tincidunt.
-              Ac libero tristique risus et, dignissim. Congue risus sociis
-              elementum, porta. Et justo mauris vehicula nulla ornare amet,
-              gravida morbi. Massa, nulla duis imperdiet lorem viverra mattis
-              facilisis fusce. Ac porta magna erat ut facilisis vel in donec ut.
-              Sit phasellus malesuada viverra magna nec eget netus ultrices
-              egestas. Nec dictum at dignissim fringilla vel. Senectus id lorem
-              suscipit vehicula. Et aliquet arcu, tincidunt in justo posuere. Eu
-              purus nibh ut ultrices pretium fermentum mi odio. Lorem massa elit
-              morbi dolor. Orci tellus arcu, facilisis felis interdum.
+              {data.findAllAcc.hostContent}
             </div>
             <hr />
             <h1 style={{ marginTop: "20px", fontSize: "48px" }}>숙소 위치</h1>
-            <MapBox>
+            <MapBox >
               <Map MapRadius={MapRadius} data={data.findAllAcc} />
             </MapBox>
             <div style={{ marginBottom: "30px" }}>
@@ -433,7 +420,7 @@ const HouseDetail = () => {
               {/* 후기 작성 부분 */}
               {reviewDetail?.data?.slice(0, 4).map((item, idx) => (
                 // 후기 디테일 페이지 클릭해서 모달창 데이타 보여줄 예정
-                <ReviewBox>
+                <ReviewBox key={`${item.reviewId}-${idx}`}>
                   {/* 프로필 부분에서 재사용 하기 위해 일단 컴포넌트로 나눔 */}
                   <div id="profileBox">
                     <Profile item={item} />
@@ -464,7 +451,7 @@ const HouseDetail = () => {
                 <>
                   {reviewDetail?.data?.slice(4).map((item, idx) => (
                     // 후기 디테일 페이지 클릭해서 모달창 데이타 보여줄 예정
-                    <ReviewBox>
+                    <ReviewBox key={item.reviewId}>
                       {/* 프로필 부분에서 재사용 하기 위해 일단 컴포넌트로 나눔 */}
                       <div id="profileBox">
                         <Profile item={item}/>
@@ -509,7 +496,7 @@ const HouseDetail = () => {
               </div>
               <div id="barTag">
                 {data.findAllAcc.tagList.slice(0, 4).map((item, idx) => (
-                  <HashTagBox>{item}</HashTagBox>
+                  <HashTagBox key={idx}>{item}</HashTagBox>
                 ))}
               </div>
               <div id="barDes">
@@ -641,6 +628,7 @@ const MapBox = styled.div`
   width: 100%;
   height: 400px;
   border-radius: 20px;
+  position: relative;
   /* display: flex;
   justify-content: center;
   align-items: center; */
