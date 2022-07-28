@@ -26,6 +26,7 @@ import {
   mySaveList,
 } from "../recoil/atoms";
 import Footer from "../components/Footer";
+import MetaTag from "./MetaTag";
 
 const Mypage = () => {
   const [myLike, setMyLike] = useState(true);
@@ -54,14 +55,14 @@ const Mypage = () => {
       instance
         .get(`oauth/mypage/${userId}`)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           return (
             //   setMyLikePost(res.data.mylikespost), setMyPost(res.data.mypostinfo)
             res.data
           );
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
         }),
     {
       onSuccess: (data) => {
@@ -86,6 +87,7 @@ const Mypage = () => {
   });
   return (
     <>
+    <MetaTag title={`${nickName}님의 페이지`}/>
       <MainBox>
         <ProfileBox isEdit={isEdit}>
           <div className="profileWrap">
@@ -97,7 +99,7 @@ const Mypage = () => {
                   <div className="btn">
                     <button
                       onClick={() => {
-                        console.log(nicknameRef.current.value);
+                        
                         nickNameUpdate.mutate(nicknameRef.current.value);
                       }}
                     >

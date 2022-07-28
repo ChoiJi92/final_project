@@ -17,12 +17,13 @@ import { useQuery } from "react-query";
 import instance from "../shared/axios";
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
+import MetaTag from "./MetaTag";
 const Main = () => {
   const { data } = useQuery(
     ["loadChatRoom"],
     () =>
       instance.get("/room").then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         return res.data.allRoom;
       }),
     {
@@ -33,6 +34,7 @@ const Main = () => {
   const navigate = useNavigate()
   return (
     <>
+    <MetaTag title={'멘도롱 제주'}/>
     <Container>
       <div
         style={{

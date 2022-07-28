@@ -28,6 +28,7 @@ import Mypage from './pages/Mypage'
 import { Helmet } from 'react-helmet-async';
 import Test from './components/Test';
 import MetaTag from './pages/MetaTag';
+import OnReady from './pages/OnReady';
 
 
 function App() {
@@ -54,6 +55,7 @@ function App() {
         <Route path="/test" element={<Test />} />
         <Route path="/testmap" element={<TestMap2 />} />
         <Route path="/userpolicy" element={<UserPolicy />} />
+        <Route path="/onready" element={<OnReady />} />
         <Route path='/oauth/kakao/callback' element={<KakaoRedirect/>}/>
         <Route path='/oauth/google/callback' element={<GoogleRedirect/>}/>
         <Route path='/oauth/naver/callback' element={<NaverRedirect/>}/>

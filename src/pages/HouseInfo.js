@@ -65,7 +65,7 @@ const HouseInfo = () => {
       instance
         .get(`/host`, { params: { userId: Number(userId) } })
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           if (category === "all") {
             isSetHostData(res.data.findAllAcc);
           } else {
@@ -76,7 +76,7 @@ const HouseInfo = () => {
           return res.data;
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
         }),
     {
       refetchOnWindowFocus: false,
