@@ -195,8 +195,7 @@ const HouseDetail = () => {
     testscore = testscore + parseInt(isStarReview[i].starpoint);
     // console.log(testscore, "이거슨 점수");
   }
-  // console.log(testscore, reviewDetail.data.length);
-  // console.log(testscore, "이것도 점수");
+ 
   isHostShareAndMap(data);
 
   const openDialog = () => {
@@ -223,7 +222,7 @@ const HouseDetail = () => {
     testDelete.mutate(id);
     navigate("/house");
   };
-  console.log(data.findAllAcc, "이거슨 디테일 데이터");
+  // console.log(data.findAllAcc.tagList.length, "이거슨 디테일 데이터");
 
   return (
     <Wrap>
@@ -250,8 +249,8 @@ const HouseDetail = () => {
         <div style={{ display: "flex", flexDirection: "row" }}>
           <InfoBox>
             <HashMainBox>
-              {hashList.map((item, idx) => (
-                <HashTagBox>#Hello</HashTagBox>
+              {data.findAllAcc.tagList.map((item, idx) => (
+                <HashTagBox>{item}</HashTagBox>
               ))}
             </HashMainBox>
             <div
@@ -299,7 +298,8 @@ const HouseDetail = () => {
                   {data.findAllAcc.userId === Number(userId) ? (
                   <>
                   <span style={{ fontSize: "21px" }}>수정하기</span>
-                  <Link to={`/hostwrite/${data.findAllAcc.hostId}`}>
+                  {/* <Link to={`/hostwrite/${data.findAllAcc.hostId}`}> */}
+                  <Link to={`/onready`}>
                   <IconImg src={editIcon} alt="수정" />
                   </Link>
                   </>) : (
@@ -504,12 +504,12 @@ const HouseDetail = () => {
           <RightBarBox>
             <div id="srollBar">
               <div id="barTitle">
-                <h3>{data?.title}</h3>
-                <span>{data?.fullAddress}</span>
+                <h3>{data?.findAllAcc.title}</h3>
+                <span>{data?.findAllAcc.mainAddress}</span>
               </div>
               <div id="barTag">
-                {hashList.slice(0, 4).map((item, idx) => (
-                  <HashTagBox></HashTagBox>
+                {data.findAllAcc.tagList.slice(0, 4).map((item, idx) => (
+                  <HashTagBox>{item}</HashTagBox>
                 ))}
               </div>
               <div id="barDes">
@@ -523,7 +523,7 @@ const HouseDetail = () => {
                 )}
               </div>
               <div id="btnBox">
-                <HostBtn>호스트와 대화해보기</HostBtn>
+                <Link to="/onready"> <HostBtn>호스트와 대화해보기</HostBtn></Link>
               </div>
             </div>
           </RightBarBox>
@@ -798,7 +798,7 @@ const RightBarBox = styled.div`
   }
   #barDes {
     width: 100%;
-    height: 250px;
+    /* height: 250px; */
     border: 1px solid #e5e5ea;
     border-radius: 20px;
     margin-top: 30px;
@@ -810,7 +810,7 @@ const RightBarBox = styled.div`
   }
   #btnBox {
     width: 100%;
-    height: 150px;
+    /* height: 150px; */
     margin-top: 20px;
   }
   #barTag {

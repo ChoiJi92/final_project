@@ -69,3 +69,9 @@ export const reviewStarList = atom({
   key: "review", 
   default: [] 
 });
+
+
+export const deletedImgList = atom ({
+  key:"deleteImg",
+  default:[]
+});

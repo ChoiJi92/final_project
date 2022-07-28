@@ -8,8 +8,8 @@ const KakaoShare = ({ data }) => {
   // const isUserShare = useRecoilValue(userShare);
   const isHostShare = useRecoilValue(hostShareAndMap);
   // console.log(!isUserShare);
-  console.log(isHostShare);
-  console.log(data);
+  // console.log(isHostShare.findAllAcc);
+  // console.log(data);
   const url = window.location.href; //현재 url가져오기
   useEffect(() => {
     initKakao(); //
@@ -27,13 +27,13 @@ const KakaoShare = ({ data }) => {
 
   //버튼을 누르면 실행되는 함수
   const shareKakao = () => {
-    if (data) {
+    
       //이부분이 매우 헷갈림 여러 사이트를 참고했는데 이 sendDefault부분을 잘 봐야한다.
       window.Kakao.Link.sendDefault({
         objectType: "feed",
         content: {
-          title: `${data.title}`,
-          description: `${data.tagList[0]}`,
+          title: `${data? data.title : isHostShare.findAllAcc.title}`,
+          description: `${data ? data.tagList : isHostShare.findAllAcc.tagList}`,
           imageUrl: `${data.images[0].thumbnailURL}`,
           link: {
             mobileWebUrl: url,
@@ -61,40 +61,7 @@ const KakaoShare = ({ data }) => {
           },
         ],
       });
-    }else if(isHostShare){
-      window.Kakao.Link.sendDefault({
-        objectType: "feed",
-        content: {
-          title: `${isHostShare.title}`,
-          // description: '#케익 #딸기 #삼평동 #카페 #분위기 #소개팅',
-          imageUrl: jeju14,
-          link: {
-            mobileWebUrl: url,
-            webUrl: url,
-          },
-        },
-        // social: {
-        //   likeCount: data.likeNum,
-        //   commentCount: data.commentNum,
-        // },
-        buttons: [
-          {
-            title: "웹으로 보기",
-            link: {
-              mobileWebUrl: url,
-              webUrl: url,
-            },
-          },
-          {
-            title: "앱으로 보기",
-            link: {
-              mobileWebUrl: url,
-              webUrl: url,
-            },
-          },
-        ],
-      });
-    }
+    
   };
 
   return (

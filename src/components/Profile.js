@@ -18,14 +18,14 @@ const Profile = ({item, data}) => {
         <img src={data.images[0].userImageURL} alt="프로필"/>
         <div id="profileName">
             <SpanName >{data.nickname}</SpanName>
-            <SpanTime>2시간 전</SpanTime>
+            <SpanTime></SpanTime>
         </div>
         </>) : (
         <>
             <img src={item?.images[0]?.userImageURL} alt="프로필"/>
         <div id="profileName">
             <SpanName style={{}}>{item.nickname}</SpanName>
-            <SpanTime>2시간 전</SpanTime>
+            <SpanTime></SpanTime>
         </div>
         </>
         )}

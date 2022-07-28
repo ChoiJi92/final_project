@@ -16,7 +16,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import axios from "axios";
 import instance from "../shared/axios";
 import { useRecoilState } from "recoil";
-import { updateImgList } from "../recoil/atoms";
+import { deletedImgList, updateImgList } from "../recoil/atoms";
 
 const HostWrite = () => {
   const params = useParams();
@@ -33,7 +33,15 @@ const HostWrite = () => {
   const currentImg = useRef(null);
 
   const [testImg, setTestImg] = useRecoilState(updateImgList);
-  // const [testImg, setTestImg] = useState([]);
+  const [deletedImg, setDeletedImg] = useRecoilState(deletedImgList);
+  
+  const [deleteState, setDeleteState] = useState([]);
+
+
+
+  const [newImgList, setNewImgList] = useState([]);
+
+ 
   const { data } = useQuery(
     ["hostWrite", hostId],
 
@@ -43,14 +51,18 @@ const HostWrite = () => {
     },
     {
       onSuccess: (data) => {
-        setTestImg(data.images);
+        setTestImg(data.images);//삭제되고 추가되고 보여지는 스테이트
+        setDeletedImg(data.images);// 삭제되고 남아있는 스테이트
       },
       refetchOnWindowFocus: false,
       enabled: !!hostId,
     }
   );
-  // console.log(testImg)
 
+    // 첫 번째 이미지 파일을 스테이트에 저장하고
+    // 두 번째 기존에 있던거랑 
+    // [{key:"",url:""},]
+    
   const {
     register,
     handleSubmit,
@@ -84,25 +96,29 @@ const HostWrite = () => {
         const currentImageUrl = URL.createObjectURL(imgLists[i]);
 
         testList.push(imgLists[i]);
-
+        // setUploadTest(imgLists[i])
         imgUrlLists.push(currentImageUrl);
       }
       if (imgUrlLists.length > 8) {
         imgUrlLists = imgUrlLists.slice(0, 8);
       }
-      setMultiImgs(imgUrlLists);
-      setImgFileList(testList);
+      setMultiImgs(imgUrlLists); //보여지는 이미지들
+      setImgFileList([...imgFileList, ...testList]); // 포스트 요청보내는 이미지들
     } else {
       const imgLists = e.target.files;
-      let testImgUrlLists = [...testImg];
-      let testList2 = [];
+      let testImgUrlLists = [...testImg]; //기존 이미지 스테이트
+      let testList2 = []; // 새로 추가 된 이미지 
       for (let i = 0; i < imgLists.length; i++) {
         const currentImageUrl = URL.createObjectURL(imgLists[i]);
         testList2.push(imgLists[i]);
         testImgUrlLists.push(currentImageUrl);
       }
+      if (testImgUrlLists.length > 8) {
+        testImgUrlLists = testImgUrlLists.slice(0, 8);
+      }
       setTestImg(testImgUrlLists);
-      setTestFileList(testImgUrlLists);
+      // setTestFileList(testImgUrlLists);
+      setNewImgList([...newImgList, ...testList2]);
     }
   };
 
@@ -112,10 +128,19 @@ const HostWrite = () => {
 
   const deleteImage = (id) => {
     setMultiImgs(multiImgs.filter((_, index) => index !== id));
+    setImgFileList(imgFileList.filter((_, idx) => idx !== id));
   };
 
-  const deleteTest = (id) => {
+  const uploadDeleteImg = (id) => {
+    //이거슨 삭제되고 보여지는 스테이트
     setTestImg(testImg.filter((_, idx) => idx !== id));
+    setDeletedImg(deletedImg.filter((_, idx) => idx !== id));
+    
+
+    setNewImgList(newImgList.filter((_, idx) => idx !== id));
+    // 삭제 된 이미지 스테이트
+    setDeleteState(prev => [...prev, ...testImg.filter((_, idx) => idx == id)])
+    //스테이트에 삭제 된 이미지들 저장해야함!!
   };
 
   const queryClient = useQueryClient();
@@ -165,7 +190,21 @@ const HostWrite = () => {
     //   },
     // }
   );
-  console.log(address, "its address");
+  console.log(testImg ,"삭제되고 보여지는 스테이트");
+  console.log(deleteState ,"삭제된 스테이트") ;
+  console.log(newImgList, "추가된 이미지 스테이트")
+  console.log(deletedImg, "삭제되고 남아 있는 스테이트")
+  // console.log(testFileList ,"testfilelist")
+  // console.log(multiImgs, "멀티이미지 스테이트")
+  // console.log(testFileList)
+  // s3에서 온 이미지들은 하나의 스테이트 testImg
+  // 삭제되면 스테이트에도 없어져야 함 testImg
+  // 삭제 된 거를 다른 스테이트에 저장해야함 deleteState
+  // 새로 추가 된 파일객체를 또 하나의 스테이트에 저장해야함 newImgList
+  // 보내야할 때 데이터는 기존에 있던거와 삭제 된거와 추가된거와 총 3가지 3가지의 스테이트를 보내야함
+  // 기존에 있던 스테이트 삭제 된 이미지 스테이트 추가된 스테이트 총 3가지
+  //이미지를 보여줄 스테이트 하나 총 4가지 스테이트 
+  // console.log(testFileList);
   const onSubmit = (data) => {
     // if (address === "") {
     //   setAddressError(true);
@@ -183,13 +222,15 @@ const HostWrite = () => {
       formData.append("stepInfo", data.stepInfo);
       formData.append("stepSelect", data.stepSelect);
       formData.append("title", data.title);
+      formData.append("tagList", tagList);
       imgFileList.forEach((item) => formData.append("images", item));
 
       if (hostId) {
         updateMutation.mutate(formData);
       } else {
         console.log(imgFileList);
-        testWrite.mutate(formData);
+        // testWrite.mutate(formData);
+        console.log(tagList)
       }
       setOpen(true);
     } else {
@@ -218,7 +259,7 @@ const HostWrite = () => {
 
   const hiddenSetp = watch("stepSelect");
 
-  console.log(multiImgs.length, isMiniImg);
+  // console.log(multiImgs.length, isMiniImg);
   return (
     <Wrap>
       <HostForm onSubmit={handleSubmit(onSubmit)}>
@@ -255,7 +296,7 @@ const HostWrite = () => {
                 ></img>
                 <span>이미지 등록</span>
                 <span style={{ marginTop: "10px" }}>
-                  {multiImgs.length} / 8
+                  {multiImgs.length ? (multiImgs.length) : (testImg.length)} / 8
                 </span>
               </div>
             </div>
@@ -282,7 +323,7 @@ const HostWrite = () => {
                         />
                         <DeleteIcon
                           id="deleteIcon"
-                          onClick={() => deleteTest(index)}
+                          onClick={() => uploadDeleteImg(index)}
                         />
                       </List>
                     </SortableItem>
@@ -427,7 +468,7 @@ const HostWrite = () => {
               className="subAddress"
               placeholder="주소를 정확히 작성해야 지도에 표시됩니다."
               {...register("subAddress", {
-                required: "상세주소는 필수 선택사항입니다 :)",
+                // required: "상세주소는 필수 선택사항입니다 :)",
               })}
               defaultValue={data?.subAddress ? data?.subAddress : ""}
               style={{
