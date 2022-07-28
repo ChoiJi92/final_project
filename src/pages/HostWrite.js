@@ -17,6 +17,7 @@ import axios from "axios";
 import instance from "../shared/axios";
 import { useRecoilState } from "recoil";
 import { deletedImgList, updateImgList } from "../recoil/atoms";
+import MetaTag from "./MetaTag";
 
 const HostWrite = () => {
   const params = useParams();
@@ -218,7 +219,7 @@ const HostWrite = () => {
       formData.append("link", data.link);
       formData.append("mainAddress", address);
       formData.append("subAddress", data.subAddress);
-      formData.append("postContent", data.postContent);
+      formData.append("hostContent", data.postContent);
       formData.append("stepInfo", data.stepInfo);
       formData.append("stepSelect", data.stepSelect);
       formData.append("title", data.title);
@@ -229,7 +230,7 @@ const HostWrite = () => {
         updateMutation.mutate(formData);
       } else {
         console.log(imgFileList);
-        // testWrite.mutate(formData);
+        testWrite.mutate(formData);
         console.log(tagList)
       }
       setOpen(true);
@@ -261,6 +262,9 @@ const HostWrite = () => {
 
   // console.log(multiImgs.length, isMiniImg);
   return (
+    <>
+       <MetaTag title={'숙소등록 | 멘도롱 제주'}/>
+    
     <Wrap>
       <HostForm onSubmit={handleSubmit(onSubmit)}>
         <HouseBox>
@@ -543,11 +547,11 @@ const HostWrite = () => {
           <div id="infoDes">
             <textarea
               placeholder="숙소에 대한 정보를 최대한 상세하게 입력해주시면 더 많은 고객을 만나실 수 있어요."
-              {...register("hostContent", { required: "설명은 필수입니다 :)" })}
-              defaultValue={data?.hostContent ? data?.hostContent : ""}
+              {...register("postContent", { required: "설명은 필수입니다 :)" })}
+              defaultValue={data?.postContent ? data?.postContent : ""}
               id="text"
             ></textarea>
-            <ErrorP1>{errors.hostContent?.message}</ErrorP1>
+            <ErrorP1>{errors.postContent?.message}</ErrorP1>
           </div>
         </InfoBox>
         <WriteFooter
@@ -569,6 +573,7 @@ const HostWrite = () => {
         />
       </Tag>
     </Wrap>
+    </>
   );
 };
 

@@ -16,7 +16,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const DialogImg = (props) => {
   const { listImg, open, onClose } = props;
-  console.log(listImg, "dialog img");
+  // console.log(listImg, "dialog img");
   return (
     <Dialog
       fullWidth={true}
@@ -35,7 +35,7 @@ const DialogImg = (props) => {
         <Wrap id="alert-dialog-slide-description">
           {listImg.map((item, idx) => {
             return (
-              <img style={{}} src={item.postImageURL} alt="이미지" />
+              <img key={item.postImageKEY} style={{}} src={item.postImageURL} alt="이미지" />
             );
           })}
         </Wrap>
