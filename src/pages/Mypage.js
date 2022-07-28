@@ -481,7 +481,7 @@ const Mypage = () => {
                             style={{ display: "flex", alignItems: "center" }}
                           >
                             <img src={starIcon} alt="별점" />
-                            <span style={{ marginLeft: "10px" }}>4.5</span>
+                            <span style={{ marginLeft: "10px" }}>{v.average}</span>
                           </div>
                           <img src={unsaveIcon2} alt="저장" />
                         </div>

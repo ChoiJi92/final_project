@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FaHeart, FaStar } from "react-icons/fa";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import allCategory from "../assests/css/모두보기.webp";
@@ -21,35 +21,43 @@ import { hostData } from "../recoil/atoms";
 import FormControl from "@mui/material/FormControl";
 import instance from "../shared/axios";
 import TestMap2 from "../components/TestMap2";
+import Footer from "../components/Footer";
+import MetaTag from "./MetaTag";
 
 const HouseInfo = () => {
-  const [leftPosition, setLeftPosition] = useState("");
-  const [rigthPosition, setRigthPosition] = useState("");
-  const [fleftPosition, setFLeftPosition] = useState("");
-  const [frigthPosition, setFRigthPosition] = useState("");
+  // const [leftPosition, setLeftPosition] = useState("");
+  // const [rigthPosition, setRigthPosition] = useState("");
+  // const [fleftPosition, setFLeftPosition] = useState("");
+  // const [frigthPosition, setFRigthPosition] = useState("");
 
-  const [secondPosition, setSecondPosition] = useState("");
-  const [sRigthPosition, setSRigthPosition] = useState("");
-  const [sFleftPosition, setSFLeftPosition] = useState("");
-  const [sFrigthPosition, setSFRigthPosition] = useState("");
+  // const [secondPosition, setSecondPosition] = useState("");
+  // const [sRigthPosition, setSRigthPosition] = useState("");
+  // const [sFleftPosition, setSFLeftPosition] = useState("");
+  // const [sFrigthPosition, setSFRigthPosition] = useState("");
 
-  const [firstUnderbar, setFirstUnderbar] = useState(false);
-  const [secondUnderbar, setSecondtUnderbar] = useState(false);
+  // const [firstUnderbar, setFirstUnderbar] = useState(false);
+  // const [secondUnderbar, setSecondtUnderbar] = useState(false);
 
-  const liveCozy = useRef(null);
-  const liveBudget = useRef(null);
+  // const liveCozy = useRef(null);
+  // const liveBudget = useRef(null);
 
-  const liveUnderlineRef = useRef(null);
-  const spotUnderlineRef = useRef(null);
-  // const firstBox = useRef(null);
-  const liveFirstBox = useRef(null);
-const location = useLocation()
-// console.log(location.state.address)
+  // const liveUnderlineRef = useRef(null);
+  // const spotUnderlineRef = useRef(null);
+  // // const firstBox = useRef(null);
+  // const liveFirstBox = useRef(null);
+  const location = useLocation();
+  // console.log(location.state.address)
+  const [isCozy, setIsCozy] = useState("cozy");
   const [isHostData, isSetHostData] = useRecoilState(hostData);
-  const [address, setAddress] = useState(location.state?.address ? location.state?.address : "");
+  const [address, setAddress] = useState(
+    location.state?.address ? location.state?.address : ""
+  );
+  const [type, setType] = useState("")
   const userId = localStorage.getItem("userId");
 
-  const [category, setCategory] = useState(location.state?.category ? location.state?.category  : "all");
+  const [category, setCategory] = useState(
+    location.state?.category ? location.state?.category : "all"
+  );
   const queryClient = useQueryClient();
   const { data } = useQuery(
     ["houseInfo"],
@@ -58,10 +66,12 @@ const location = useLocation()
         .get(`/host`, { params: { userId: Number(userId) } })
         .then((res) => {
           console.log(res.data);
-          if(category ==='all'){
-          isSetHostData(res.data.findAllAcc)}
-          else{
-            isSetHostData(res.data.findAllAcc.filter((v) => v.category === category));
+          if (category === "all") {
+            isSetHostData(res.data.findAllAcc);
+          } else {
+            isSetHostData(
+              res.data.findAllAcc.filter((v) => v.category === category)
+            );
           }
           return res.data;
         })
@@ -69,7 +79,6 @@ const location = useLocation()
           console.log(err);
         }),
     {
-      
       refetchOnWindowFocus: false,
       // onSuccess: (data) => {
       //   isSetHostData(data);
@@ -81,19 +90,39 @@ const location = useLocation()
     console.log(e.target.value);
     setAddress(e.target.value);
   };
+ 
 
   const addressData = useQuery(
     ["addressData", address],
     () =>
       instance
-        .get(`/host/search`, { params: { search: address } })
+        .get(`/host/address/search`, { params: { search: address } })
         .then((res) => {
-          console.log(res.data,'지역검색');
-          isSetHostData(res.data.hostPost)
+          console.log(res.data, "지역검색");
+          isSetHostData(res.data.hostPost);
         })
         .catch((err) => console.log(err)),
     {
       enabled: !!address,
+      refetchOnWindowFocus: false,
+    }
+  );
+  const typeChange = (e) => {
+    console.log(e.target.value);
+    setType(e.target.value);
+  };
+  const typeData = useQuery(
+    ["typeData", type],
+    () =>
+      instance
+        .get(`/host/type/search`, { params: { search: type } })
+        .then((res) => {
+          console.log(res.data, "숙소형태검색");
+          isSetHostData(res.data.housebyType);
+        })
+        .catch((err) => console.log(err)),
+    {
+      enabled: !!type,
       refetchOnWindowFocus: false,
     }
   );
@@ -142,10 +171,10 @@ const location = useLocation()
     saveDelete.mutate(id);
   };
 
-  useEffect(() => {
-    // autoSpotClick();
-    autoLiveClick();
-  }, []);
+  // useEffect(() => {
+  //   // autoSpotClick();
+  //   autoLiveClick();
+  // }, []);
   // const autoSpotClick = () => {
   //   spotUnderlineRef.current.style.left = firstBox.current.offsetLeft + "px";
   //   spotUnderlineRef.current.style.width = firstBox.current.offsetWidth + "px";
@@ -153,81 +182,84 @@ const location = useLocation()
   //   setFRigthPosition(firstBox.current.offsetWidth + "px");
   // };
   // 클릭시 메뉴 언더바 이동
-  const menuOnClick = (e) => {
-    spotUnderlineRef.current.style.left = e.currentTarget.offsetLeft + "px";
-    spotUnderlineRef.current.style.width = e.currentTarget.offsetWidth + "px";
-    setLeftPosition(e.currentTarget.offsetLeft + "px");
-    setRigthPosition(e.currentTarget.offsetWidth + "px");
-    setFirstUnderbar(true);
-  };
+  // const menuOnClick = (e) => {
+  //   spotUnderlineRef.current.style.left = e.currentTarget.offsetLeft + "px";
+  //   spotUnderlineRef.current.style.width = e.currentTarget.offsetWidth + "px";
+  //   setLeftPosition(e.currentTarget.offsetLeft + "px");
+  //   setRigthPosition(e.currentTarget.offsetWidth + "px");
+  //   setFirstUnderbar(true);
+  // };
 
   //마우스 올릴시 메뉴 언더바 이동
 
-  const autoLiveClick = () => {
-    liveUnderlineRef.current.style.left =
-      liveFirstBox.current.offsetLeft + "px";
-    liveUnderlineRef.current.style.width =
-      liveFirstBox.current.offsetWidth + "px";
-    setSFLeftPosition(liveFirstBox.current.offsetLeft + "px");
-    setSFRigthPosition(liveFirstBox.current.offsetWidth + "px");
-    liveCozy.current.style.fontWeight = "bolder";
-  };
+  // const autoLiveClick = () => {
+  //   liveUnderlineRef.current.style.left =
+  //     liveFirstBox.current.offsetLeft + "px";
+  //   liveUnderlineRef.current.style.width =
+  //     liveFirstBox.current.offsetWidth + "px";
+  //   setSFLeftPosition(liveFirstBox.current.offsetLeft + "px");
+  //   setSFRigthPosition(liveFirstBox.current.offsetWidth + "px");
+  //   liveCozy.current.style.fontWeight = "bolder";
+  // };
 
-  const liveOnLeave = () => {
-    if (secondUnderbar === true) {
-      liveUnderlineRef.current.style.left = secondPosition;
-      liveUnderlineRef.current.style.width = sRigthPosition;
-    } else {
-      liveUnderlineRef.current.style.left = sFleftPosition;
-      liveUnderlineRef.current.style.width = sFrigthPosition;
-    }
-  };
-  const liveOnOver = (e) => {
-    liveUnderlineRef.current.style.left = e.currentTarget.offsetLeft + "px";
-    liveUnderlineRef.current.style.width = e.currentTarget.offsetWidth + "px";
-  };
-  const liveOnClick = (e) => {
-    liveUnderlineRef.current.style.left = e.currentTarget.offsetLeft + "px";
-    liveUnderlineRef.current.style.width = e.currentTarget.offsetWidth + "px";
-    console.log(e.target.innerText);
-    // console.log(liveCozy.current.style.fontWeight)
+  // const liveOnLeave = () => {
+  //   if (secondUnderbar === true) {
+  //     liveUnderlineRef.current.style.left = secondPosition;
+  //     liveUnderlineRef.current.style.width = sRigthPosition;
+  //   } else {
+  //     liveUnderlineRef.current.style.left = sFleftPosition;
+  //     liveUnderlineRef.current.style.width = sFrigthPosition;
+  //   }
+  // };
+  // const liveOnOver = (e) => {
+  //   liveUnderlineRef.current.style.left = e.currentTarget.offsetLeft + "px";
+  //   liveUnderlineRef.current.style.width = e.currentTarget.offsetWidth + "px";
+  // };
+  // const liveOnClick = (e) => {
+  //   liveUnderlineRef.current.style.left = e.currentTarget.offsetLeft + "px";
+  //   liveUnderlineRef.current.style.width = e.currentTarget.offsetWidth + "px";
+  //   console.log(e.target.innerText);
+  //   // console.log(liveCozy.current.style.fontWeight)
 
-    if (e.target.innerText === "편하게 한달 살기") {
-      liveBudget.current.style.fontWeight = "";
-      liveCozy.current.style.fontWeight = "bolder";
-    } else {
-      liveCozy.current.style.fontWeight = "";
-      liveBudget.current.style.fontWeight = "bolder";
-    }
-    // liveCozy.current.style.fontWeight = "bolder"
-    // liveBudget.current.style.fontWeight = "bolder"
-    setSecondPosition(e.currentTarget.offsetLeft + "px");
-    setSRigthPosition(e.currentTarget.offsetWidth + "px");
-    setSecondtUnderbar(true);
-  };
+  //   if (e.target.innerText === "편하게 한달 살기") {
+  //     liveBudget.current.style.fontWeight = "";
+  //     liveCozy.current.style.fontWeight = "bolder";
+  //   } else {
+  //     liveCozy.current.style.fontWeight = "";
+  //     liveBudget.current.style.fontWeight = "bolder";
+  //   }
+  //   // liveCozy.current.style.fontWeight = "bolder"
+  //   // liveBudget.current.style.fontWeight = "bolder"
+  //   setSecondPosition(e.currentTarget.offsetLeft + "px");
+  //   setSRigthPosition(e.currentTarget.offsetWidth + "px");
+  //   setSecondtUnderbar(true);
+  // };
   return (
+    <>
+    <MetaTag title={'숙소찾기 | 멘도롱 제주'}
+    ></MetaTag>
     <MainBox>
-      <LiveMainBox>
+      <LiveMainBox isCozy={isCozy}>
         <div
-          ref={liveFirstBox}
-          onMouseLeave={liveOnLeave}
-          onMouseOver={liveOnOver}
-          onClick={liveOnClick}
-          id="live"
+          className="cozy"
+          onClick={() => {
+            setIsCozy("cozy");
+            isSetHostData(data.findAllAcc);
+          }}
         >
-          <p ref={liveCozy} onClick={liveOnClick}>
-            편하게 한달 살기
-          </p>
+          편하게 한달 살기
         </div>
         <div
-          onMouseLeave={liveOnLeave}
-          onMouseOver={liveOnOver}
-          onClick={liveOnClick}
-          id="live1"
+          className="uncozy"
+          onClick={() => {
+            isSetHostData(data.findAllAcc.filter((v) => v.houseInfo === "게스트하우스"));
+            setIsCozy("uncozy");
+
+          }}
         >
-          <p ref={liveBudget}>최소비용으로 한달 살기</p>
+          최소비용으로 한달 살기
         </div>
-        <LiveUnderBar ref={liveUnderlineRef} />
+        {/* <LiveUnderBar ref={liveUnderlineRef} /> */}
       </LiveMainBox>
       <SpotMainBox category={category}>
         <div
@@ -260,7 +292,9 @@ const location = useLocation()
           className="관광지근처"
           // onClick={menuOnClick}
           onClick={() => {
-            isSetHostData(data.findAllAcc.filter((v) => v.category === "관광지근처"));
+            isSetHostData(
+              data.findAllAcc.filter((v) => v.category === "관광지근처")
+            );
             setCategory("관광지근처");
           }}
           id="spot"
@@ -272,7 +306,9 @@ const location = useLocation()
           className="조용한마을"
           // onClick={menuOnClick}
           onClick={() => {
-            isSetHostData(data.findAllAcc.filter((v) => v.category === "조용한마을"));
+            isSetHostData(
+              data.findAllAcc.filter((v) => v.category === "조용한마을")
+            );
             setCategory("조용한마을");
           }}
           id="spot"
@@ -298,7 +334,9 @@ const location = useLocation()
           className="해변근처"
           // onClick={menuOnClick}
           onClick={() => {
-            isSetHostData(data.findAllAcc.filter((v) => v.category === "해변근처"));
+            isSetHostData(
+              data.findAllAcc.filter((v) => v.category === "해변근처")
+            );
             setCategory("해변근처");
           }}
           id="spot"
@@ -322,6 +360,7 @@ const location = useLocation()
               displayEmpty
               inputProps={{ "aria-label": "Without label" }}
               defaultValue={""}
+              onChange={typeChange}
             >
               <MenuItem value="" disabled={true}>
                 숙소형태
@@ -368,9 +407,9 @@ const location = useLocation()
               defaultValue={""}
             >
               <MenuItem value="" disabled={true}>
-                추천순
+                최신순
               </MenuItem>
-              <MenuItem value="별점순">별점순</MenuItem>
+              {/* <MenuItem value="별점순">별점순</MenuItem> */}
             </Select>
           </OrderingBox>
           <div
@@ -394,9 +433,7 @@ const location = useLocation()
                       <h2>{item.title}</h2>
                     </StyledLink>
                     <div id="infoHouse">
-                      <span>
-                        {item.hostContent}
-                      </span>
+                      <span>{item.hostContent}</span>
                     </div>
                     <LikeBox>
                       <div style={{}}>
@@ -434,10 +471,12 @@ const location = useLocation()
           </ListWrap>
         </ContentsBox>
         <MapBox>
-          <TestMap2 isinfo={"isinfo"} data={isHostData} height={'85%'}/>
+          <TestMap2 isinfo={"isinfo"} data={isHostData} height={"85%"} />
         </MapBox>
       </div>
     </MainBox>
+    <Footer/>
+    </>
   );
 };
 
@@ -497,49 +536,65 @@ const SpotMainBox = styled.div`
     }
   }
 `;
-const SpotUnderBar = styled.div`
-  position: absolute;
-  height: 4px;
-  background-color: #bdc3c7;
-  transition: 0.5s;
-  top: 295px;
-`;
+// const SpotUnderBar = styled.div`
+//   position: absolute;
+//   height: 4px;
+//   background-color: #bdc3c7;
+//   transition: 0.5s;
+//   top: 295px;
+// `;
 
-const LiveUnderBar = styled.div`
-  position: absolute;
-  height: 4px;
-  transition: 0.5s;
-  top: 176px;
-  background-color: #bdc3c7;
-`;
+// const LiveUnderBar = styled.div`
+//   position: absolute;
+//   height: 4px;
+//   transition: 0.5s;
+//   top: 176px;
+//   background-color: #bdc3c7;
+// `;
 
-const SpotMiniBox = styled.div`
-  width: 40%;
-  height: 40px;
-  border: 1px solid blue;
-  img {
-    width: 52px;
-    height: 52px;
-  }
-`;
+// const SpotMiniBox = styled.div`
+//   width: 40%;
+//   height: 40px;
+//   border: 1px solid blue;
+//   img {
+//     width: 52px;
+//     height: 52px;
+//   }
+// `;
 
 const LiveMainBox = styled.div`
-  width: 100%;
-  height: 60px;
+  width: 70%;
+  height: 80px;
   display: flex;
-  padding: 0px 255px;
+  /* padding: 0px 255px; */
   align-items: center;
+  margin: 0 auto;
   div {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    margin-right: 63px;
     cursor: pointer;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 24px;
+    line-height: 35px;
+    color: #828282;
+    :hover{
+      font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 35px;
+    color: #636366;
+    }
   }
-  p {
-    font-size: 30px;
-  }
-  #live {
-    margin-left: 35px;
-  }
-  #live1 {
-    margin-left: 40px;
+  .${(props) => props.isCozy} {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 35px;
+    color: #636366;
+    border-bottom: 5px solid #8e8e93;
   }
 `;
 
@@ -645,7 +700,7 @@ const StarIcon = styled(FaStar)`
 `;
 
 const MapBox = styled.div`
-  width: 100%;
+  width: 50%;
   height: 90vh;
   display: flex;
   /* justify-content: center; */

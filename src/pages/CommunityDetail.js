@@ -27,6 +27,9 @@ import jeju4 from "../assests/css/jeju4.jpeg";
 import jeju5 from "../assests/css/jeju5.jpeg";
 import jeju6 from "../assests/css/jeju6.jpeg";
 import TestMap2 from "../components/TestMap2";
+import { useRecoilState } from "recoil";
+import { newContent } from "../recoil/atoms";
+import MetaTag from "./MetaTag";
 
 const CommunityDetail = () => {
   const queryClient = useQueryClient();
@@ -36,6 +39,7 @@ const CommunityDetail = () => {
   const userId = localStorage.getItem("userId");
   const userImage = localStorage.getItem("userImage");
   const [islike, setIslike] = useState(false);
+  const [content,setContent] = useRecoilState(newContent)
   const { data } = useQuery(
     ["detailContent", params.id],
     () =>
@@ -43,6 +47,15 @@ const CommunityDetail = () => {
         .get(`/post/${params.id}`, { params: { userId: Number(userId) } })
         .then((res) => {
           console.log(res.data);
+          // let preImages = res.data.allPost[0].preImages.split(',')
+          let preImages = ["blob:http://localhost:3000/f2da32da-71c4-4dbc-8ad2-0db2ddaea21b","blob:http://localhost:3000/402bb1b7-fe58-4cd7-86dd-1a4315f92742"]
+          // let newContent = res.data.allPost[0].content
+          setContent(res.data.allPost[0].content)
+          console.log(content)
+          for(let i =0; i < preImages.length; i++ ){
+            // setContent(content.replace(preImages[i], res.data.allPost[0].images[i].thumbnailURL))
+          }
+          // console.log(newContent,'바껴라')
           return res.data;
         }),
     {
@@ -51,6 +64,7 @@ const CommunityDetail = () => {
       refetchOnWindowFocus: false, // 다른화면 갔다와도 재호출 안되게 함
     }
   );
+  console.log(content)
   // 코멘트 로드
   const loadComment = useQuery(
     ["loadComment"],
@@ -164,6 +178,8 @@ const CommunityDetail = () => {
     }
   );
   return (
+    <>
+    <MetaTag title={'커뮤니티 | 멘도롱 제주'}></MetaTag>
     <Container>
       <Image image={data.allPost[0].images[0].thumbnailURL}></Image>
       <Wrap>
@@ -395,6 +411,7 @@ const CommunityDetail = () => {
       </CommentWrap>
       <CommentList data={loadComment.data}></CommentList>
     </Container>
+    </>
   );
 };
 

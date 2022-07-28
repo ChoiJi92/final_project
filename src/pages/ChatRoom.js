@@ -13,6 +13,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { chatState,userCount } from "../recoil/atoms";
 import Footer from "../components/Footer";
+import MetaTag from "./MetaTag";
 // import { useBeforeunload } from "react-beforeunload";
 const ChatRoom = () => {
   const messageRef = useRef();
@@ -145,6 +146,7 @@ const ChatRoom = () => {
   };
   return (
     <>
+    <MetaTag title={'오픈채팅 | 멘도롱 제주'}></MetaTag>
     <Container>
       <Wrap>
         <ChatWrap>

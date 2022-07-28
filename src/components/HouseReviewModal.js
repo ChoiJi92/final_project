@@ -55,7 +55,7 @@ const HouseReviewModal = (props) => {
       instance
         .post(`/review/${hostId}/review`, testData)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
         })
         .catch((err) => {
           console.log(err, "why");
@@ -72,7 +72,7 @@ const HouseReviewModal = (props) => {
       instance
         .put(`/review/${hostId}/${isReivewUpdate.reviewId}`, data)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
         })
         .catch((err) => {
           console.log(err, "why");
@@ -87,7 +87,7 @@ const HouseReviewModal = (props) => {
     instance
     .put(`/review/${hostId}/${isReivewUpdate.reviewId}`, data)
     .then((res)=>{
-      console.log(res.data);
+      // console.log(res.data);
     })
     .catch((error)=>{
       console.log(error, "why");
@@ -105,7 +105,7 @@ const HouseReviewModal = (props) => {
       starpoint: score,
     };
     testReview.mutate(testData);
-    console.log(testData, "등록 데이터");
+    // console.log(testData, "등록 데이터");
     setScore(0);
     close();
     }else
@@ -114,7 +114,7 @@ const HouseReviewModal = (props) => {
         review: textRef.current.value,
         starpoint: isReivewUpdate.star ,
       };
-      console.log(data ,"수정 데이터")
+      // console.log(data ,"수정 데이터")
       updateReview.mutate(data);
       setScore(0);
       close();
@@ -124,7 +124,7 @@ const HouseReviewModal = (props) => {
   // const handleChange = () => {
   //   setScore(score)
   // }
-  console.log(isReivewUpdate.reviewId, "수정 데이터다잉");
+  // console.log(isReivewUpdate.reviewId, "수정 데이터다잉");
   return (
     <>
       {/* <Button onClick={handleOpen}>
