@@ -10,7 +10,7 @@ const MetaTag = ({title}) => {
 
       <meta property="og:type" content="website" />
       <meta property="og:title" content="멘도롱 제주" />
-      <meta property="og:description" content=""/>
+      <meta property="og:description" content="멘도롱제주에서 한달 살기를 계획해 보세요 :)"/>
       <meta property="og:image" content={ogImage}/>
       <meta property="og:url" content="https://mendorong-jeju.co.kr" />
 
