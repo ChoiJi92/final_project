@@ -281,7 +281,7 @@ const HouseDetail = () => {
                   justifyContent: "flex-end",
                   width: "100%",
                   marginRight:"5px",
-                  border: "1px solid red"
+                  // border: "1px solid red"
                 }}
               >
                 <div
@@ -293,7 +293,7 @@ const HouseDetail = () => {
                     // marginRight:"50px",
                     justifyContent: "center",
                     width: "35%",
-                    border: "1px solid blue"
+                    // border: "1px solid blue"
                   }}
                 >
                   {data.findAllAcc.userId === Number(userId) ? (
@@ -317,7 +317,7 @@ const HouseDetail = () => {
                     alignItems: "center",
                     justifyContent: "center",
                     marginLeft:"20px",
-                    border: "1px solid green"
+                    // border: "1px solid green"
                   }}
                 >
                   {data.findAllAcc.userId === Number(userId) ? (
@@ -331,9 +331,7 @@ const HouseDetail = () => {
                   <>
                     <span style={{ fontSize: "21px" }}>저장하기</span>
                     
-                    {/* <IconImg2 src={unsaveIcon2} alt="저장" /> */}
-                  </>)}
-                  {data.findAllAcc.isSave ? (
+                    {data.findAllAcc.isSave ? (
                       <IconImg2
                       src={saveIcon}
                         onClick={() => {
@@ -347,6 +345,8 @@ const HouseDetail = () => {
                         }}
                       />
                       )}
+                  </>)}
+                  
                 </div>
               </div>
             </div>
