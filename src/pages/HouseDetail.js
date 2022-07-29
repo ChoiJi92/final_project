@@ -30,7 +30,7 @@ import Profile from "../components/Profile";
 import HouseReviewDetail from "../components/HouseReviewDetail";
 import Footer from "../components/Footer";
 import instance from "../shared/axios";
-import Map from "../components/Map";
+import Map from "../components/KakaoMap";
 
 const HouseDetail = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
