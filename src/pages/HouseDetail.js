@@ -480,12 +480,12 @@ const HouseDetail = () => {
                 <span>{data?.findAllAcc?.mainAddress}</span>
                 
               </div>
-              <div id="barLink">
+              {/* <div id="barLink">
                 <a href={data?.findAllAcc?.link}>
                   <span>{data?.findAllAcc?.link}</span>
                 </a>
-                {/* </Link> */}
-              </div>
+                
+              </div> */}
               <div id="barTag">
                 {data?.findAllAcc?.tagList.length > 0 && data?.findAllAcc?.tagList.slice(0, 4).map((item, idx) => (
                   <HashTagBox key={idx}>{item}</HashTagBox>
@@ -503,6 +503,11 @@ const HouseDetail = () => {
               </div>
               <div id="btnBox">
                 <Link to="/onready"> <HostBtn>호스트와 대화해보기</HostBtn></Link>
+                {data?.findAllAcc?.link ? (
+                <a href={data?.findAllAcc?.link}>
+                <LinkBtn>예약하러 가기</LinkBtn>
+                </a>) : 
+                ("")}
               </div>
             </div>
           </RightBarBox>
@@ -766,7 +771,7 @@ const RightBarBox = styled.div`
     width: 100%;
     border-radius: 20px;
     box-shadow: 0px 12px 42px rgba(0, 0, 0, 0.2);
-    padding: 20px;
+    padding: 30px 20px;
   }
   #barTitle {
     width: 100%;
@@ -810,7 +815,13 @@ const RightBarBox = styled.div`
     flex-wrap: wrap;
   }
   #barLink{
+    /* border: 1px solid red; */
+
+    display: flex;
+    
+    margin-top: 10px;
     a{
+      font-size: 18px;
       text-decoration: none;
       outline: none;
       color: black;
@@ -835,7 +846,24 @@ const HostBtn = styled.button`
   line-height: 24px;
   cursor: pointer;
   color:#636366;
+  
 `;
+
+const LinkBtn = styled.button`
+  width: 100%;
+  height: 66px;
+  border-radius: 10px;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), #EEE9E4;
+  border: none;
+  font-family: "Pretendard";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
+  cursor: pointer;
+  margin-top: 20px;
+  color: #FDFCFB;
+`
 
 const SubInfoBox = styled.div`
   width: 100%;
