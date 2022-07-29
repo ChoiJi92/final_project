@@ -64,7 +64,7 @@ const Main = () => {
             navigate('/house',{state:{address:'Eastarea'}})
           }}>
               <p className="title">East area</p>
-              <p>Jeju-si, Jocheon-eup, Aewol-eup</p>
+              <p>Gujwa-eup, Seongsan-eup, Pyoseon-myeon Udo-myeon</p>
             </div>
             <img src={lighthouse} alt="등대"></img>
             <img src={parasol} alt="파라솔"></img>
@@ -94,7 +94,7 @@ const Main = () => {
             navigate('/house',{state:{address:'Northarea'}})
           }}>
               <p className="title">North area</p>
-              <p>Gujwa-eup, Seongsan-eup, Pyoseon-myeon Udo-myeon</p>
+              <p>Jeju-si, Jocheon-eup, Aewol-eup</p>
             </div>
             <img src={jeju} alt="해녀"></img>
             <img src={hanrabong} alt="한라봉"></img>
