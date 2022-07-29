@@ -58,19 +58,16 @@ const KakaoMap = ({ data, height }) => {
     }
   );
   
-  const saveClick = (id) => {
+  const saveClick = (id, save) => {
     if(userId){
-      setSave(true);
       savePost.mutate(id);
     }else{
       navigate("/loginerror")
     }
   }
 
-  const cancelSaveClick = (id) => {
+  const cancelSaveClick = (id, save) => {
     if(userId){
-      setSave(false);
-      
       saveDelete.mutate(id);
     }else{
       navigate("/loginerror")
@@ -178,10 +175,10 @@ const KakaoMap = ({ data, height }) => {
                             <img src={starIcon} alt="별점"></img>
                             <p>{v.content.average.toFixed(1)}</p>
                           </div>
-                          {save ? (
+                          {v.content.isSave ? (
                             <img
                               onClick={() => {
-                                saveClick(v.content.hostId)
+                                cancelSaveClick(v.content.hostId)
                               }}
                               src={saveIcon}
                               alt="저장"
@@ -189,7 +186,8 @@ const KakaoMap = ({ data, height }) => {
                           ) : (
                             <img
                               onClick={() => {
-                                cancelSaveClick(v.content.hostId)
+                                saveClick(v.content.hostId)
+                                
                               }}
                               src={unsaveIcon}
                               alt="저장"
