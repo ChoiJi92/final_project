@@ -353,9 +353,10 @@ const HouseInfo = () => {
               <StyleSelect
                 style={{
                   width: "30%",
-                  height: "50px",
-                  borderRadius: "10px",
+                  height: "60px",
+                  borderRadius: "20px",
                   underline: "none",
+                  color:'#828282'
                 }}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
@@ -374,10 +375,11 @@ const HouseInfo = () => {
               <Select
                 style={{
                   width: "30%",
-                  height: "50px",
-                  borderRadius: "10px",
+                  height: "60px",
+                  borderRadius: "20px",
                   backgroundColor: "#f7f3ef",
                   border: "none",
+                  color:'#828282'
                 }}
                 displayEmpty
                 inputProps={{
@@ -398,9 +400,10 @@ const HouseInfo = () => {
               <Select
                 style={{
                   width: "30%",
-                  height: "50px",
-                  borderRadius: "10px",
+                  height: "60px",
+                  borderRadius: "20px",
                   backgroundColor: "#f7f3ef",
+                  color:'#828282'
                 }}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
@@ -434,8 +437,8 @@ const HouseInfo = () => {
                       </StyledLink>
                       <div id="infoHouse">
                         <span>
-                          {item.hostContent.length > 100
-                            ? `${item.hostContent.slice(0, 100)}...`
+                          {item.hostContent.length > 50
+                            ? `${item.hostContent.slice(0, 50)}...`
                             : item.hostContent}
                         </span>
                       </div>
@@ -525,6 +528,7 @@ const SpotMainBox = styled.div`
       /* margin-right: 16px; */
       font-size: 100%;
       opacity: 0.2;
+      color: #828282;
     }
     img {
       width: 52px;
@@ -583,7 +587,7 @@ const LiveMainBox = styled.div`
     font-weight: 300;
     font-size: 24px;
     line-height: 35px;
-    color: #828282;
+    color: #636366;
     :hover {
       font-style: normal;
       font-weight: 700;
@@ -642,7 +646,7 @@ const OrderingBox = styled.div`
 `;
 
 const StyleSelect = styled(Select)`
-  height: 50px;
+  height: 60px;
   /* border: 1px solid blue; */
   border: none;
   outline: none;
@@ -653,6 +657,7 @@ const StyleSelect = styled(Select)`
   border-radius: 10px;
   font-size: 21px;
   background-color: #f7f3ef;
+  color: #828282;
 `;
 
 const ContentsListBox = styled.div`
@@ -679,6 +684,9 @@ const DesBox = styled.div`
     font-size: 24px;
     line-height: 35px;
     color: #828282;
+    :hover{
+      color: #3498db;
+    }
   }
   span {
     margin-bottom: 10px;
@@ -742,54 +750,4 @@ const StyledLink = styled(Link)`
 
 export default HouseInfo;
 
-// {isList.slice(0,4).map((item, idx)=>(
-//     <ContentsListBox ref={contentsBox} key={idx}>
-//         <SlideImg listImg={listImg}/>
-//         <DesBox>
-//             <StyledLink to={`/house/${idx}`}>
-//             <h3>해변근처의 게스트하우스ㅁㅁㅁ</h3>
-//             </StyledLink>
-//             <div id="infoHouse">
-//             <span>한달살기의 조건에 관한 설명 ...한달살기의 조건에 관한 설명 ...
-//             한달살기의 조건에 관한 설명 ...
-//             </span>
-//             </div>
-//             <span>000,000원 1박</span>
-//             <LikeBox>
-//                 <StarIcon/>
-//                 <HeartIcon onClick={()=>{onClick(isList[idx])}}/>
-//             </LikeBox>
-//         </DesBox>
-//     </ContentsListBox>
-// )
-// )}
-// {/* <AdContentsBox>
-//     <div><span>이런 숙소는 어때요?</span></div>
-//     <div id="adImg">
-//         <img src={jeju1}/>
-//         <img src={jeju2}/>
-//         <img src={jeju3}/>
 
-//     </div>
-// </AdContentsBox> */}
-// {isList.slice(5).map((item, idx)=>(
-//     <ContentsListBox ref={contentsBox} key={idx}>
-//     <SlideImg listImg={listImg}/>
-//     <DesBox>
-//         <StyledLink to={`/house/${idx}`}>
-//         <h3>해변근처의 게스트하우스ㅁㅁㅁ</h3>
-//         </StyledLink>
-//         <div id="infoHouse">
-//         <span>한달살기의 조건에 관한 설명 ...한달살기의 조건에 관한 설명 ...
-//         한달살기의 조건에 관한 설명 ...
-//         </span>
-//         </div>
-//         <span>000,000원 1박</span>
-//         <LikeBox>
-//             <StarIcon/>
-//             <HeartIcon onClick={()=>{onClick(isList[idx])}}/>
-//         </LikeBox>
-//     </DesBox>
-// </ContentsListBox>
-// ))}
-// </ContentsBox>
