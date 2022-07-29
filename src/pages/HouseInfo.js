@@ -61,7 +61,7 @@ const HouseInfo = () => {
     ["houseInfo"],
     () =>
       instance
-        .get(`/host`, { params: { userId: Number(userId) } })
+        .get(`/host`)
         .then((res) => {
           // console.log(res.data);
           if (category === "all") {
