@@ -16,6 +16,7 @@ import commentIcon from "../assests/css/commentIcon.webp";
 import commentIcon2 from "../assests/css/commentIcon2.webp";
 import nextIcon from "../assests/css/nextIcon2.webp";
 import prevIcon from "../assests/css/prevIcon2.webp";
+import editIcon from '../assests/css/editIcon.webp'
 import Footer from "../components/Footer";
 import { useRecoilState } from "recoil";
 import { bestPostData, postData } from "../recoil/atoms";
@@ -267,6 +268,11 @@ const Community = () => {
           ))}
         </Bottom>
       </Container>
+      {userId && 
+      <Edit onClick={()=>{navigate('/userwrite')}}>
+        <img src={editIcon} alt="글쓰기"/>
+      </Edit>
+}
       <Footer />
     </>
   );
@@ -591,5 +597,24 @@ const Card = styled.div`
     object-fit: cover;
   }
 `;
+const Edit = styled.div`
+  width: 80px;
+  height: 80px ;
+  /* border: 1px solid; */
+  border-radius: 50%;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #2A7047;
+  cursor: pointer;
+  z-index: 1;
+  img{
+    width: 50px;
+    height: 50px;
+  }
 
+`
 export default Community;

@@ -27,20 +27,21 @@ const AddressModal = ({setAddress}) => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const handleComplete = (data) => {
-        let fullAddress = data.address;
-        let extraAddress = '';
-        if (data.addressType === 'R') {
-            if (data.bname !== '') {
-                extraAddress += data.bname;
-            }
-            if (data.buildingName !== '') {
-                extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName);
-            }
+      console.log(data)
+        let fullAddress = data.roadAddress;
+        // let extraAddress = '';
+        // if (data.addressType === 'R') {
+            // if (data.bname !== '') {
+            //     extraAddress += data.bname;
+            // }
+            // if (data.buildingName !== '') {
+            //     extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName);
+            // }
             // fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
             handleClose()
             setAddress(fullAddress)
             
-        }
+        // }
         //fullAddress -> 전체 주소반환
     }
     return (
