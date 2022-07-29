@@ -352,8 +352,8 @@ const HouseDetail = () => {
                   : "스텝 모집 없음"}
               </div>
             </SubInfoBox>
-            <div style={{ margin: "30px 0px 30px 0px", fontSize: "18px" }}>
-              {data?.findAllAcc?.hostContent}
+            <div style={{ margin: "30px 0px 30px 0px",whiteSpace: "pre-wrap", fontSize: "18px" }}>
+                {data?.findAllAcc?.hostContent}
             </div>
             <hr />
             <h1 style={{ marginTop: "20px", fontSize: "48px" }}>숙소 위치</h1>
@@ -422,7 +422,7 @@ const HouseDetail = () => {
                   </div>
                   <div onClick={()=>{openModalReview(item)}} id="reviewDetail">
                     {item?.review?.length >= 45
-                      ? `${item?.review?.slice(0, 45)} ...`
+                      ? `${item?.review?.slice(0, 40)} ...`
                       : item?.review}
                   </div>
                 </ReviewBox>
@@ -452,7 +452,7 @@ const HouseDetail = () => {
                       </div>
                       <div onClick={()=>{openModalReview(item)}} id="reviewDetail">
                         {item.review.length >= 45
-                          ? `${item.review.slice(0, 45)} ...`
+                          ? `${item.review.slice(0, 40)} ...`
                           : item.review}
                       </div>
 
@@ -485,7 +485,7 @@ const HouseDetail = () => {
                 ))}
               </div>
               <div id="barDes">
-                {data?.findAllAcc?.stepInfo !== '' ? (
+                {data?.findAllAcc?.stepSelect === '예' ? (
                   data?.findAllAcc?.stepInfo
                 ) : (
                   <>

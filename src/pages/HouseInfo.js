@@ -49,7 +49,7 @@ const HouseInfo = () => {
   const [address, setAddress] = useState(
     location.state?.address ? location.state?.address : ""
   );
-  const [type, setType] = useState("")
+  const [type, setType] = useState("");
   const userId = localStorage.getItem("userId");
 
   const [category, setCategory] = useState(
@@ -87,7 +87,6 @@ const HouseInfo = () => {
     console.log(e.target.value);
     setAddress(e.target.value);
   };
- 
 
   const addressData = useQuery(
     ["addressData", address],
@@ -233,246 +232,254 @@ const HouseInfo = () => {
   // };
   return (
     <>
-    <MetaTag title={'숙소찾기 | 멘도롱 제주'}
-    ></MetaTag>
-    <MainBox>
-      <LiveMainBox isCozy={isCozy}>
-        <div
-          className="cozy"
-          onClick={() => {
-            setIsCozy("cozy");
-            isSetHostData(data.findAllAcc);
-          }}
-        >
-          편하게 한달 살기
-        </div>
-        <div
-          className="uncozy"
-          onClick={() => {
-            isSetHostData(data.findAllAcc.filter((v) => v.houseInfo === "게스트하우스"));
-            setIsCozy("uncozy");
-
-          }}
-        >
-          최소비용으로 한달 살기
-        </div>
-        {/* <LiveUnderBar ref={liveUnderlineRef} /> */}
-      </LiveMainBox>
-      <SpotMainBox category={category}>
-        <div
-          // ref={firstBox}
-          className="all"
-          onClick={() => {
-            isSetHostData(data.findAllAcc);
-            setCategory("all");
-          }}
-          id="spot"
-        >
-          <img src={allCategory} alt="모두보기" />
-          <span>모두보기</span>
-          {/* <SpotUnderBar ref={spotUnderlineRef} /> */}
-        </div>
-        <div
-          className="내륙"
-          // onClick={menuOnClick}
-          onClick={() => {
-            isSetHostData(data.findAllAcc.filter((v) => v.category === "내륙"));
-            setCategory("내륙");
-          }}
-          id="spot"
-          // style={{"opacity":"0.3"}}
-        >
-          <img src={land} alt="내륙" />
-          <span>내륙</span>
-        </div>
-        <div
-          className="관광지근처"
-          // onClick={menuOnClick}
-          onClick={() => {
-            isSetHostData(
-              data.findAllAcc.filter((v) => v.category === "관광지근처")
-            );
-            setCategory("관광지근처");
-          }}
-          id="spot"
-        >
-          <img src={nearby} alt="관광지 근처" />
-          <span>관광지 근처</span>
-        </div>
-        <div
-          className="조용한마을"
-          // onClick={menuOnClick}
-          onClick={() => {
-            isSetHostData(
-              data.findAllAcc.filter((v) => v.category === "조용한마을")
-            );
-            setCategory("조용한마을");
-          }}
-          id="spot"
-        >
-          <img src={quietVil} alt="조용한 마을" />
-
-          <span>조용한 마을</span>
-        </div>
-        <div
-          className="우도"
-          // onClick={menuOnClick}
-          onClick={() => {
-            isSetHostData(data.findAllAcc.filter((v) => v.category === "우도"));
-            setCategory("우도");
-          }}
-          id="spot"
-        >
-          <img src={udo} alt="우도" />
-
-          <span>우도</span>
-        </div>
-        <div
-          className="해변근처"
-          // onClick={menuOnClick}
-          onClick={() => {
-            isSetHostData(
-              data.findAllAcc.filter((v) => v.category === "해변근처")
-            );
-            setCategory("해변근처");
-          }}
-          id="spot"
-        >
-          <img src={nearBySea} alt="해변근처" />
-
-          <span>해변근처</span>
-        </div>
-      </SpotMainBox>
-
-      <div id="contentsMapBox">
-        <ContentsBox>
-          <OrderingBox>
-            <StyleSelect
-              style={{
-                width: "30%",
-                height: "50px",
-                borderRadius: "10px",
-                underline: "none",
-              }}
-              displayEmpty
-              inputProps={{ "aria-label": "Without label" }}
-              defaultValue={""}
-              onChange={typeChange}
-            >
-              <MenuItem value="" disabled={true}>
-                숙소형태
-              </MenuItem>
-              <MenuItem value="게스트하우스">게스트하우스</MenuItem>
-              <MenuItem value="펜션">펜션</MenuItem>
-              <MenuItem value="한옥">한옥</MenuItem>
-              <MenuItem value="오피스텔/아파트">오피스텔/아파트</MenuItem>
-            </StyleSelect>
-
-            <Select
-              style={{
-                width: "30%",
-                height: "50px",
-                borderRadius: "10px",
-                backgroundColor: "#f7f3ef",
-                border: "none",
-              }}
-              displayEmpty
-              inputProps={{
-                "aria-label": "Without label",
-              }}
-              defaultValue={address}
-              onChange={addressChange}
-            >
-              <MenuItem value="" disabled={true}>
-                위치별
-              </MenuItem>
-              <MenuItem value="Eastarea">동쪽</MenuItem>
-              <MenuItem value="Westarea">서쪽</MenuItem>
-              <MenuItem value="Southarea">남쪽</MenuItem>
-              <MenuItem value="Northarea">북쪽</MenuItem>
-            </Select>
-
-            <Select
-              style={{
-                width: "30%",
-                height: "50px",
-                borderRadius: "10px",
-                backgroundColor: "#f7f3ef",
-              }}
-              displayEmpty
-              inputProps={{ "aria-label": "Without label" }}
-              defaultValue={""}
-            >
-              <MenuItem value="" disabled={true}>
-                최신순
-              </MenuItem>
-              {/* <MenuItem value="별점순">별점순</MenuItem> */}
-            </Select>
-          </OrderingBox>
+      <MetaTag title={"숙소찾기 | 멘도롱 제주"}></MetaTag>
+      <MainBox>
+        <LiveMainBox isCozy={isCozy}>
           <div
-            style={{ fontSize: "22px", marginBottom: "18px" }}
-            id="houseCount"
+            className="cozy"
+            onClick={() => {
+              setIsCozy("cozy");
+              isSetHostData(data.findAllAcc);
+            }}
           >
-            {isHostData.length} 개의 숙소
+            편하게 한달 살기
           </div>
-          <ListWrap>
-            {isHostData.map((item, idx) => {
-              return (
-                // <div id="testBox">
-                <ContentsListBox key={idx}>
-                  <SlideImg
-                    item={item.images}
-                    width={"36.4%"}
-                    height={"220px"}
-                  />
-                  <DesBox>
-                    <StyledLink to={`/house/${item.hostId}`}>
-                      <h2>{item.title}</h2>
-                    </StyledLink>
-                    <div id="infoHouse">
-                      <span>{item.hostContent}</span>
-                    </div>
-                    <LikeBox>
-                      <div style={{}}>
-                        <StarIcon />
-                        <span
-                          style={{
-                            margin: "5px 0px 3px 20px",
-                            fontSize: "27px",
-                          }}
-                        >
-                          {item.average.toFixed(1)}
+          <div
+            className="uncozy"
+            onClick={() => {
+              isSetHostData(
+                data.findAllAcc.filter((v) => v.houseInfo === "게스트하우스")
+              );
+              setIsCozy("uncozy");
+            }}
+          >
+            최소비용으로 한달 살기
+          </div>
+          {/* <LiveUnderBar ref={liveUnderlineRef} /> */}
+        </LiveMainBox>
+        <SpotMainBox category={category}>
+          <div
+            // ref={firstBox}
+            className="all"
+            onClick={() => {
+              isSetHostData(data.findAllAcc);
+              setCategory("all");
+            }}
+            id="spot"
+          >
+            <img src={allCategory} alt="모두보기" />
+            <span>모두보기</span>
+            {/* <SpotUnderBar ref={spotUnderlineRef} /> */}
+          </div>
+          <div
+            className="내륙"
+            // onClick={menuOnClick}
+            onClick={() => {
+              isSetHostData(
+                data.findAllAcc.filter((v) => v.category === "내륙")
+              );
+              setCategory("내륙");
+            }}
+            id="spot"
+            // style={{"opacity":"0.3"}}
+          >
+            <img src={land} alt="내륙" />
+            <span>내륙</span>
+          </div>
+          <div
+            className="관광지근처"
+            // onClick={menuOnClick}
+            onClick={() => {
+              isSetHostData(
+                data.findAllAcc.filter((v) => v.category === "관광지근처")
+              );
+              setCategory("관광지근처");
+            }}
+            id="spot"
+          >
+            <img src={nearby} alt="관광지 근처" />
+            <span>관광지 근처</span>
+          </div>
+          <div
+            className="조용한마을"
+            // onClick={menuOnClick}
+            onClick={() => {
+              isSetHostData(
+                data.findAllAcc.filter((v) => v.category === "조용한마을")
+              );
+              setCategory("조용한마을");
+            }}
+            id="spot"
+          >
+            <img src={quietVil} alt="조용한 마을" />
+
+            <span>조용한 마을</span>
+          </div>
+          <div
+            className="우도"
+            // onClick={menuOnClick}
+            onClick={() => {
+              isSetHostData(
+                data.findAllAcc.filter((v) => v.category === "우도")
+              );
+              setCategory("우도");
+            }}
+            id="spot"
+          >
+            <img src={udo} alt="우도" />
+
+            <span>우도</span>
+          </div>
+          <div
+            className="해변근처"
+            // onClick={menuOnClick}
+            onClick={() => {
+              isSetHostData(
+                data.findAllAcc.filter((v) => v.category === "해변근처")
+              );
+              setCategory("해변근처");
+            }}
+            id="spot"
+          >
+            <img src={nearBySea} alt="해변근처" />
+
+            <span>해변근처</span>
+          </div>
+        </SpotMainBox>
+
+        <div id="contentsMapBox">
+          <ContentsBox>
+            <OrderingBox>
+              <StyleSelect
+                style={{
+                  width: "30%",
+                  height: "50px",
+                  borderRadius: "10px",
+                  underline: "none",
+                }}
+                displayEmpty
+                inputProps={{ "aria-label": "Without label" }}
+                defaultValue={""}
+                onChange={typeChange}
+              >
+                <MenuItem value="" disabled={true}>
+                  숙소형태
+                </MenuItem>
+                <MenuItem value="게스트하우스">게스트하우스</MenuItem>
+                <MenuItem value="펜션">펜션</MenuItem>
+                <MenuItem value="한옥">한옥</MenuItem>
+                <MenuItem value="오피스텔/아파트">오피스텔/아파트</MenuItem>
+              </StyleSelect>
+
+              <Select
+                style={{
+                  width: "30%",
+                  height: "50px",
+                  borderRadius: "10px",
+                  backgroundColor: "#f7f3ef",
+                  border: "none",
+                }}
+                displayEmpty
+                inputProps={{
+                  "aria-label": "Without label",
+                }}
+                defaultValue={address}
+                onChange={addressChange}
+              >
+                <MenuItem value="" disabled={true}>
+                  위치별
+                </MenuItem>
+                <MenuItem value="Eastarea">동쪽</MenuItem>
+                <MenuItem value="Westarea">서쪽</MenuItem>
+                <MenuItem value="Southarea">남쪽</MenuItem>
+                <MenuItem value="Northarea">북쪽</MenuItem>
+              </Select>
+
+              <Select
+                style={{
+                  width: "30%",
+                  height: "50px",
+                  borderRadius: "10px",
+                  backgroundColor: "#f7f3ef",
+                }}
+                displayEmpty
+                inputProps={{ "aria-label": "Without label" }}
+                defaultValue={""}
+              >
+                <MenuItem value="" disabled={true}>
+                  최신순
+                </MenuItem>
+                {/* <MenuItem value="별점순">별점순</MenuItem> */}
+              </Select>
+            </OrderingBox>
+            <div
+              style={{ fontSize: "22px", marginBottom: "18px" }}
+              id="houseCount"
+            >
+              {isHostData.length} 개의 숙소
+            </div>
+            <ListWrap>
+              {isHostData.map((item, idx) => {
+                return (
+                  // <div id="testBox">
+                  <ContentsListBox key={idx}>
+                    <SlideImg
+                      item={item.images}
+                      width={"36.4%"}
+                      height={"220px"}
+                    />
+                    <DesBox>
+                      <StyledLink to={`/house/${item.hostId}`}>
+                        <h2>{item.title}</h2>
+                      </StyledLink>
+                      <div id="infoHouse">
+                        <span>
+                          {item.hostContent.length > 100
+                            ? `${item.hostContent.slice(0, 100)}...`
+                            : item.hostContent}
                         </span>
                       </div>
-                      {item.isSave ? (
-                        <SaveImg
-                          src={saveIcon}
-                          onClick={() => {
-                            cancelSaveClick(item.hostId);
-                          }}
-                        />
-                      ) : (
-                        <SaveImg
-                          src={unsaveIcon2}
-                          onClick={() => {
-                            saveClick(item.hostId);
-                          }}
-                        />
-                      )}
-                    </LikeBox>
-                  </DesBox>
-                </ContentsListBox>
-                // </div>
-              );
-            })}
-          </ListWrap>
-        </ContentsBox>
-        <MapBox>
-          <Map isinfo={"isinfo"} data={isHostData} height={"85%"} />
-        </MapBox>
-      </div>
-    </MainBox>
-    <Footer/>
+                      <LikeBox>
+                        <div style={{}}>
+                          <StarIcon />
+                          <span
+                            style={{
+                              margin: "5px 0px 3px 20px",
+                              fontSize: "27px",
+                            }}
+                          >
+                            {item.average.toFixed(1)}
+                          </span>
+                        </div>
+                        {item.isSave ? (
+                          <SaveImg
+                            src={saveIcon}
+                            onClick={() => {
+                              cancelSaveClick(item.hostId);
+                            }}
+                          />
+                        ) : (
+                          <SaveImg
+                            src={unsaveIcon2}
+                            onClick={() => {
+                              saveClick(item.hostId);
+                            }}
+                          />
+                        )}
+                      </LikeBox>
+                    </DesBox>
+                  </ContentsListBox>
+                  // </div>
+                );
+              })}
+            </ListWrap>
+          </ContentsBox>
+          <MapBox>
+            <Map isinfo={"isinfo"} data={isHostData} height={"85%"} />
+          </MapBox>
+        </div>
+      </MainBox>
+      <Footer />
     </>
   );
 };
@@ -577,12 +584,12 @@ const LiveMainBox = styled.div`
     font-size: 24px;
     line-height: 35px;
     color: #828282;
-    :hover{
+    :hover {
       font-style: normal;
-    font-weight: 700;
-    font-size: 24px;
-    line-height: 35px;
-    color: #636366;
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 35px;
+      color: #636366;
     }
   }
   .${(props) => props.isCozy} {
