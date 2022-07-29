@@ -227,7 +227,11 @@ const Community = () => {
                     {v.islike ? (
                       <img
                         onClick={() => {
+                          if(userId){
                           unLike.mutate(v.postId);
+                          }else{
+                            navigate('/loginerror')
+                          }
                         }}
                         src={like}
                         alt="좋아요"
@@ -235,7 +239,11 @@ const Community = () => {
                     ) : (
                       <img
                         onClick={() => {
-                          Like.mutate(v.postId);
+                          if(userId){
+                            Like.mutate(v.postId);
+                            }else{
+                              navigate('/loginerror')
+                            }
                         }}
                         src={unlike2}
                         alt="좋아요"
