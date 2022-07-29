@@ -30,7 +30,7 @@ import Profile from "../components/Profile";
 import HouseReviewDetail from "../components/HouseReviewDetail";
 import Footer from "../components/Footer";
 import instance from "../shared/axios";
-import Map from "../components/KakaoMap";
+import KaKaoMap from "../components/KakaoMap";
 
 const HouseDetail = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -358,7 +358,7 @@ const HouseDetail = () => {
             <hr />
             <h1 style={{ marginTop: "20px", fontSize: "48px" }}>숙소 위치</h1>
             <MapBox >
-              <Map data={[data.findAllAcc]} height={'100%'}></Map>
+              <KaKaoMap data={[data.findAllAcc]} height={'100%'}></KaKaoMap>
             </MapBox>
             <div style={{ marginBottom: "30px" }}>
               <h2 style={{ marginTop: "20px", fontSize: "32px" }}>
