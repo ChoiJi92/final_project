@@ -1,8 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import ReactDOM from "react-dom";
 import styled from "styled-components";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import RoomModal from "../components/RoomModal";
 import io from "socket.io-client";
 import instance from "../shared/axios";
@@ -10,7 +7,7 @@ import enterIcon from "../assests/css/enterIcon.png";
 import exitIcon from "../assests/css/exitIcon.webp";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState} from "recoil";
 import { chatState} from "../recoil/atoms";
 import Footer from "../components/Footer";
 import MetaTag from "./MetaTag";

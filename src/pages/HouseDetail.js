@@ -1,15 +1,5 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import jeju1 from "../assests/css/jeju1.jpeg";
-import jeju2 from "../assests/css/jeju2.jpeg";
-import jeju7 from "../assests/css/제주1.jpeg";
-import jeju8 from "../assests/css/제주2.jpeg";
-import jeju9 from "../assests/css/제주3.jpg";
-import jeju10 from "../assests/css/제주4.jpeg";
-import jeju11 from "../assests/css/제주5.jpg";
-import jeju12 from "../assests/css/제주6.jpeg";
-import jeju13 from "../assests/css/제주8.jpeg";
-import jeju14 from "../assests/css/제주9.jpeg";
 import editIcon from "../assests/css/editIcon.png";
 import deleteIcon from "../assests/css/deleteIcon.png";
 import stepImg from "../assests/css/mypageImg.webp";
@@ -26,27 +16,21 @@ import unsaveIcon2 from "../assests/css/unsaveIcon2.webp";
 import step from "../assests/css/step.webp";
 import scrap from "../assests/css/scrap.png";
 
-import { FaHeart, FaStar } from "react-icons/fa";
+import { FaStar } from "react-icons/fa";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { QueryClient, useMutation, useQuery, useQueryClient } from "react-query";
-import axios from "axios";
-import SlideImg from "../components/SlideImg";
+import {useMutation, useQuery, useQueryClient } from "react-query";
 import DialogImg from "../components/DialogImg";
-import Map from "../components/Map";
 import Share from "../components/Share";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { hostShareAndMap, reviewStarList } from "../recoil/atoms";
-import Share2 from "../components/Share2";
 import HouseReviewModal from "../components/HouseReviewModal";
 import Profile from "../components/Profile";
 import HouseReviewDetail from "../components/HouseReviewDetail";
 import Footer from "../components/Footer";
-import LoginModal from "../components/LoginModal";
-import LoginError from "./LoginError";
 import instance from "../shared/axios";
-import TestMap2 from "../components/TestMap2";
+import Map from "../components/Map";
 
 const HouseDetail = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -374,7 +358,7 @@ const HouseDetail = () => {
             <hr />
             <h1 style={{ marginTop: "20px", fontSize: "48px" }}>숙소 위치</h1>
             <MapBox >
-              <TestMap2 data={[data.findAllAcc]} height={'100%'}></TestMap2>
+              <Map data={[data.findAllAcc]} height={'100%'}></Map>
             </MapBox>
             <div style={{ marginBottom: "30px" }}>
               <h2 style={{ marginTop: "20px", fontSize: "32px" }}>
@@ -669,7 +653,6 @@ const ImgDiv = styled.div`
   margin-bottom: 5px;
   width: 100%;
   height: 265px;
-  /* background-image: url(${jeju2}); */
   border-radius: 30px;
   background-size: cover;
 

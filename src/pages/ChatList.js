@@ -12,8 +12,6 @@ import instance from "../shared/axios";
 import searchIconBlack from "../assests/css/searchIconBlack.png";
 import { Link } from "react-router-dom";
 import RoomModal from "../components/RoomModal";
-import LoginError from "./LoginError";
-import LoginModal from "../components/LoginModal";
 import Footer from "../components/Footer";
 import SearchResult from "../components/SearchResult";
 import MetaTag from "./MetaTag";

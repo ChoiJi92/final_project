@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import jeju1 from "../assests/css/jeju1.jpeg";
 import mypageImg from "../assests/css/mypageImg.webp";
 import styled from "styled-components";
 import starIcon from "../assests/css/starIcon.webp";

@@ -4,7 +4,6 @@ import styled from "styled-components";
 import main from "../assests/css/메인.webp";
 import OpenChatSlide from "../components/OpenChatSlide";
 import CategorySlide from "../components/CategorySlide";
-import map from "../assests/css/map.webp";
 import flower from "../assests/css/flower.webp";
 import flower2 from "../assests/css/flower2.webp";
 import hanrabong from "../assests/css/hanrabong.webp";

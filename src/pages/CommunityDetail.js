@@ -18,7 +18,7 @@ import CommentList from "../components/CommentList";
 import Share from "../components/Share";
 import Share2 from "../components/Share2";
 import SlideImg from "../components/SlideImg";
-import TestMap2 from "../components/TestMap2";
+import Map from "../components/Map";
 import MetaTag from "./MetaTag";
 import Footer from "../components/Footer";
 
@@ -284,7 +284,7 @@ const CommunityDetail = () => {
                 </div>
               </>
             ) : (
-              <TestMap2 data={data.allPost} height={"300px"} />
+              <Map data={data.allPost} height={"300px"} />
             )}
           </WrapBottom>
         </WrapLeft>

@@ -13,14 +13,11 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import SlideImg from "../components/SlideImg";
 import saveIcon from "../assests/css/saveIcon.webp";
 import unsaveIcon2 from "../assests/css/unsaveIcon2.webp";
-import Map from "../components/Map";
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import axios from "axios";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { hostData } from "../recoil/atoms";
-import FormControl from "@mui/material/FormControl";
 import instance from "../shared/axios";
-import TestMap2 from "../components/TestMap2";
+import Map from "../components/Map";
 import Footer from "../components/Footer";
 import MetaTag from "./MetaTag";
 
@@ -471,7 +468,7 @@ const HouseInfo = () => {
           </ListWrap>
         </ContentsBox>
         <MapBox>
-          <TestMap2 isinfo={"isinfo"} data={isHostData} height={"85%"} />
+          <Map isinfo={"isinfo"} data={isHostData} height={"85%"} />
         </MapBox>
       </div>
     </MainBox>

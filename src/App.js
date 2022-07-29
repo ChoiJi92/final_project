@@ -19,14 +19,12 @@ import ChatRoom from './pages/ChatRoom';
 import HostWrite from './pages/HostWrite';
 import UserPolicy from './pages/UserPolicy';
 
-import TestMap from './pages/TestMap';
-import TestMap2 from './components/TestMap2';
+
 import Error from './pages/Error';
 import LoginError from './pages/LoginError';
 import UserPage from './pages/UserPage';
 import Mypage from './pages/Mypage'
-import { Helmet } from 'react-helmet-async';
-import Test from './components/Test';
+
 import MetaTag from './pages/MetaTag';
 import OnReady from './pages/OnReady';
 import Event from './pages/Event';
@@ -54,8 +52,6 @@ function App() {
         <Route path="/chatroom/:id" element={userId ? <ChatRoom/> : <LoginError/>} />
         <Route path="/mypage" element={userId ? <Mypage /> : <LoginError/>} />
         <Route path="/userpage/:id" element={<UserPage />}/>
-        <Route path="/test" element={<Test />} />
-        <Route path="/testmap" element={<TestMap2 />} />
         <Route path="/userpolicy" element={<UserPolicy />} />
         <Route path="/onready" element={<OnReady />} />
         <Route path='/oauth/kakao/callback' element={<KakaoRedirect/>}/>

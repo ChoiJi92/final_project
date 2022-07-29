@@ -1,14 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import jeju1 from "../assests/css/jeju1.jpeg";
 import mypageImg from "../assests/css/mypageImg.webp";
 import styled from "styled-components";
-import {
-  FaChevronDown,
-  FaChevronUp,
-  FaStar,
-  FaRegHeart,
-  FaRegComment,
-} from "react-icons/fa";
 import starIcon from "../assests/css/starIcon.webp";
 import moreIcon from "../assests/css/moreIcon.webp";
 import noMoreIcon from "../assests/css/noMoreIcon.webp";
@@ -21,17 +13,8 @@ import checkIcon from "../assests/css/checkIcon.webp";
 import cancelIcon from "../assests/css/cancelIcon.webp";
 import HostRegistModal from "../components/HostRegistModal";
 import { useNavigate, useParams } from "react-router-dom";
-import MyInfoModal from "../components/MyInfoModal";
-import editIcon from "../assests/css/editIcon.png";
-import { useMutation, useQuery } from "react-query";
+import { useQuery } from "react-query";
 import instance from "../shared/axios";
-import { useRecoilState } from "recoil";
-import {
-  myPostList,
-  myLikeList,
-  myHostList,
-  mySaveList,
-} from "../recoil/atoms";
 import Footer from "../components/Footer";
 import MetaTag from "./MetaTag";
 
