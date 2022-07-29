@@ -11,7 +11,7 @@ import cancelIcon from "../assests/css/cancelIcon.png";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { hostData } from "../recoil/atoms";
-const KakaoMap = ({ height }) => {
+const KakaoMap = ({ data, height }) => {
   const { kakao } = window;
   const [isOpen, setIsOpen] = useState(false);
   const [map, setMap] = useState();
@@ -19,7 +19,7 @@ const KakaoMap = ({ height }) => {
   const [info, setInfo] = useState();
   const [save, setSave] = useState(false);
   const navigate=useNavigate()
-  const data = useRecoilValue(hostData)
+  // const data = useRecoilValue(hostData)
   console.log(data)
   useEffect(() => {
     if (!map) return;
