@@ -310,7 +310,7 @@ const CommunityDetail = () => {
           <div className="otherContent">
             <h2>글쓴이의 다른 글</h2>
             <div className="otherContainer">
-              {data.outherPosts?.length === 0 ? (
+              {data.outherPostInfo?.length === 0 ? (
                 <div className="noContent">
                   <img src={mypageImg} alt="아직 없어요"></img>
                   <p>아직 다른 글은 없어요.</p>
