@@ -11,6 +11,7 @@ import cancelIcon from "../assests/css/cancelIcon.png";
 import instance from "../shared/axios";
 import { useMutation, useQueryClient } from "react-query";
 import TagList from "./TagList";
+import { useNavigate } from "react-router-dom";
 
 const style = {
   position: "absolute",
@@ -36,7 +37,8 @@ const RoomModal = ({ width,borderRadius }) => {
   const queryClient = useQueryClient();
   const roomNameRef = useRef();
   const userCountRef = useRef();
-
+  const userId =localStorage.getItem('userId')
+  const navigate = useNavigate()
   const createChatRoom = useMutation(
     ["createChatRoom"],
     (data) => instance.post("/room", data).then((res) => console.log(res.data)),
@@ -72,7 +74,12 @@ const RoomModal = ({ width,borderRadius }) => {
   };
   return (
     <Wrap width={width}>
-      <RoomButton borderRadius={borderRadius} onClick={handleOpen}>챗방 만들기</RoomButton>
+      <RoomButton borderRadius={borderRadius} onClick={()=>{
+        if(userId){
+        handleOpen()}else{
+          navigate('/loginerror')
+        }
+      }}>챗방 만들기</RoomButton>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

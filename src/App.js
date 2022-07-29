@@ -54,6 +54,7 @@ function App() {
         <Route path="/userpage/:id" element={<UserPage />}/>
         <Route path="/userpolicy" element={<UserPolicy />} />
         <Route path="/onready" element={<OnReady />} />
+        <Route path="/loginerror" element={<LoginError />} />
         <Route path='/oauth/kakao/callback' element={<KakaoRedirect/>}/>
         <Route path='/oauth/google/callback' element={<GoogleRedirect/>}/>
         <Route path='/oauth/naver/callback' element={<NaverRedirect/>}/>
