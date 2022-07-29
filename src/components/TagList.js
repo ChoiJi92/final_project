@@ -70,6 +70,7 @@ const Tag = styled.div`
     margin-right: 12px;
     cursor: pointer;
     background: #F7F3EF;
+    margin-bottom: 10px;
   }
   input {
     display: ${(props) =>
