@@ -23,8 +23,8 @@ const UserWrite = () => {
   const { data } = useQuery(
     ["editContent", params.id],
     () =>
-      instance.get(`/post/${params.id}`, { params: { userId: Number(userId) } }).then((res) => {
-        // console.log(res.data);
+      instance.get(`/post/${params.id}`).then((res) => {
+        console.log(res.data);
         return res.data.allPost[0];
       }),
     {
@@ -36,13 +36,13 @@ const UserWrite = () => {
 
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState(data?.title);
-  const [preview, setPreview] = useState(data?.images[0].thumbnailURL);
+  const [preview, setPreview] = useState(data?.images[0].postImageURL);
   const [thumbnail, setThumbnail] = useState();
   const [editorImage, setEditorImage] = useState([]);
   const [preImages, setPreImages] = useState([]);
   // const [modalOpen, setModalOpen] = useState(false);
   const [address, setAddress] = useState(data?.mainAddress);
-  const [tagList, setTagList] = useState(data?.tagList[0] ? data?.tagList[0] : [])  ;
+  const [tagList, setTagList] = useState(data?.tagList ? data?.tagList : [])  ;
   // const address = useRecoilValue(addressState);
   const [content, setContent] = useState();
   // const [imageKey, setImageKey] = useState([]);
