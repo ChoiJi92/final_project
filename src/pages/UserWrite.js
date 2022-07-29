@@ -134,16 +134,16 @@ const UserWrite = () => {
     // console.log(editorImage); // foreach 돌려야함
     // console.log(preImages);
     // console.log("저장");
-    // let filterImage = preImages.filter((v) => !content.includes(v)) // 삭제된 imageurl
-    // console.log(filterImage,'나는 없어진 이미지!')
-    // let index = filterImage.map((v) => preImages.indexOf(v))
-    // console.log(index,'나는 없어진 친구 인덱스')
-    // let newEditorImage =editorImage.filter((_,i)=> !index.includes(i))
-    // console.log(editorImage.filter((_,i)=> !index.includes(i)),'나는 필터된 file!!')
-    // let newPreImages=preImages.filter((v) => content.includes(v))
-    // console.log(preImages.filter((v) => content.includes(v)),'필터된 친구');
-    // let preFilterImages =preImages.filter((v) => content.includes(v))
-    // console.log(preFilterImages)
+    let filterImage = preImages.filter((v) => !content.includes(v)) // 삭제된 imageurl
+    console.log(filterImage,'나는 없어진 이미지!')
+    let index = filterImage.map((v) => preImages.indexOf(v))
+    console.log(index,'나는 없어진 친구 인덱스')
+    let newEditorImage =editorImage.filter((_,i)=> !index.includes(i))
+    console.log(editorImage.filter((_,i)=> !index.includes(i)),'나는 필터된 file!!')
+    let newPreImages=preImages.filter((v) => content.includes(v))
+    console.log(preImages.filter((v) => content.includes(v)),'필터된 친구');
+    let preFilterImages =preImages.filter((v) => content.includes(v))
+    console.log(preFilterImages)
     
 
     if (!thumbnail && !preview) {
@@ -162,9 +162,9 @@ const UserWrite = () => {
       //   console.log('여기는?')
       //   formData.append("images", preview)
       // }
-      // console.log(newEditorImage,'필터된 파일객체들')
-      // console.log(newPreImages,'필터된 url들')
-      // newEditorImage.forEach((file)=> formData.append('images',file))
+      console.log(newEditorImage,'필터된 파일객체들')
+      console.log(newPreImages,'필터된 url들')
+      newEditorImage.forEach((file)=> formData.append('images',file))
 
       formData.append("title", title);
       formData.append("content", content);
@@ -175,7 +175,7 @@ const UserWrite = () => {
       formData.append("type", data.type);
       formData.append("houseTitle", data.houseTitle);
       formData.append("link", data.link);
-      // formData.append("preImages", newPreImages);
+      formData.append("preImages", newPreImages);
       // formData.append(
       //   "thumbnailKEY",
       //   thumbnailKey ? thumbnailKey : ""
