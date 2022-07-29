@@ -777,7 +777,7 @@ const RightBarBox = styled.div`
   }
   #barDes {
     width: 100%;
-    /* height: 250px; */
+    height: 250px;
     border: 1px solid #e5e5ea;
     border-radius: 20px;
     margin-top: 30px;
