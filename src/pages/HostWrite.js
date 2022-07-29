@@ -29,6 +29,7 @@ const HostWrite = () => {
   const [address, setAddress] = useState("");
   const [isMiniImg, setIsMiniImg] = useState(false);
 
+  const userId = localStorage.getItem("userId");
   const currentImg = useRef(null);
 
   const [testImg, setTestImg] = useRecoilState(updateImgList);
@@ -256,12 +257,12 @@ const HostWrite = () => {
   };
 
   const hiddenSetp = watch("stepSelect");
-
+  console.log(data.userId)
   // console.log(multiImgs.length, isMiniImg);
   return (
     <>
       <MetaTag title={"숙소등록 | 멘도롱 제주"} />
-
+    
       <Wrap>
         <HostForm onSubmit={handleSubmit(onSubmit)}>
           <HouseBox>
