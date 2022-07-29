@@ -279,7 +279,9 @@ const Mypage = () => {
                           src={v.images[0]?.thumbnailURL}
                           alt="이미지"
                         />
-                        <span className="title" style={{ marginTop: "5px" }}>
+                        <span className="title" style={{ marginTop: "5px" }} onClick={()=>{
+                          navigate(`/community/${v.postId}`)
+                        }}>
                           {v.title}
                         </span>
                         <div id="icons">
@@ -307,7 +309,9 @@ const Mypage = () => {
                           src={v.images[0].thumbnailURL}
                           alt="이미지"
                         />
-                        <span className="title" style={{ marginTop: "5px" }}>
+                        <span className="title" style={{ marginTop: "5px" }} onClick={()=>{
+                          navigate(`/house/${v.hostId}`)
+                        }}>
                           {v.title}
                         </span>
                         <div id="icons">
@@ -421,7 +425,7 @@ const Mypage = () => {
                     <DefaultImgBox>
                       {myPost.slice(0, 3).map((v, i) => (
                         <img
-                          src={v.images[0].thumbnailURL}
+                          src={v.images[0]?.thumbnailURL}
                           alt="이미지"
                           key={i}
                         />
@@ -458,7 +462,9 @@ const Mypage = () => {
                           src={v.images[0]?.thumbnailURL}
                           alt="이미지"
                         />
-                        <span className="title" style={{ marginTop: "5px" }}>
+                        <span className="title" style={{ marginTop: "5px" }} onClick={()=>{
+                          navigate(`/community/${v.postId}`)
+                        }}>
                           {v.title}
                         </span>
                         <div id="icons">
@@ -482,7 +488,9 @@ const Mypage = () => {
                     return (
                       <div key={i} id="listBox">
                         <img className="thumbnailImg" src={v.images[0].thumbnailURL} alt='이미지'/>
-                        <span className="title" style={{ marginTop: "5px" }}>
+                        <span className="title" style={{ marginTop: "5px" }} onClick={()=>{
+                          navigate(`/house/${v.hostId}`)
+                        }}>
                           {v.title}
                         </span>
                         <div id="icons">
@@ -695,6 +703,7 @@ const HiddenMyLikeBox = styled.div`
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      cursor: pointer;
     }
   }
   .thumbnailImg {
