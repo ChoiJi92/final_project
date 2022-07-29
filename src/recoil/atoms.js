@@ -27,18 +27,6 @@ export const myHostList = atom({
   key: "myHostList",
   default: [],
 });
-export const userCount = atom({
-  key: "userCount",
-  default: 0,
-});
-export const contentState = atom({
-  key: "contentState",
-  default: "",
-});
-export const tagState = atom({
-  key: "tagState",
-  default: [],
-});
 
 export const userShare = atom({
   key: "userShare",
@@ -55,11 +43,6 @@ export const hostData = atom({
   default: [],
 });
 
-export const houseDetailMap = atom({
-  key: "houseDetail",
-  default: [1, 2, 3],
-});
-
 export const updateImgList = atom({ 
   key: "images", 
   default: [] 
@@ -69,7 +52,6 @@ export const reviewStarList = atom({
   key: "review", 
   default: [] 
 });
-
 
 export const deletedImgList = atom ({
   key:"deleteImg",

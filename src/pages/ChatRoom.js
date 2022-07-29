@@ -11,7 +11,7 @@ import exitIcon from "../assests/css/exitIcon.webp";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { chatState,userCount } from "../recoil/atoms";
+import { chatState} from "../recoil/atoms";
 import Footer from "../components/Footer";
 import MetaTag from "./MetaTag";
 // import { useBeforeunload } from "react-beforeunload";
@@ -21,7 +21,6 @@ const ChatRoom = () => {
   const params = useParams();
   const navigate = useNavigate();
   const [chat, setChat] = useRecoilState(chatState);
-  const [user, setUser] = useRecoilState(userCount);
   const [host, setHost] = useState(false);
   const nickName = localStorage.getItem("nickName");
   const userId = localStorage.getItem("userId");
@@ -47,7 +46,6 @@ const ChatRoom = () => {
               user: v.userNickname,
             })),
           ]);
-          setUser(res.data.Room.roomUserNum)
           return res.data;
         })
         .catch((err) => {
@@ -91,17 +89,15 @@ const ChatRoom = () => {
         ...chat,
         { messageChat: `${nickname}님이 입장하셨습니다.`, user: "system" },
       ]);
-      setUser(user+1)
+
     });
-    console.log(user)
-    console.log('몇번지나가니')
     socket.current.on("bye", (nickname) => {
       console.log(nickname, "님이 퇴장하셨습니다.","웰컴과 같은 자리");
       setChat([
         ...chat,
         { messageChat: `${nickname}님이 퇴장하셨습니다.`, user: "system" },
       ]);
-      setUser(user-1)
+
     });
     console.log(chat,'나는 채팅리스트')
   }, [chat]);
@@ -163,7 +159,8 @@ const ChatRoom = () => {
               <div
                 className="hostChat"
                 onClick={() => {
-                  setHost(true);
+                  // setHost(true);
+                  navigate('/onready')
                 }}
               >
                 호스트와 대화
@@ -172,6 +169,9 @@ const ChatRoom = () => {
             <div className="chat">
               {data.chatingRooms.map((v, i) => (
                 <div
+                onClick={() => {
+                  navigate(`/chatroom/${v.roomId}`);
+                }}
                   className={
                     v.roomId === Number(params.id)
                       ? "currentChatRoom"
@@ -180,13 +180,11 @@ const ChatRoom = () => {
                   key={v.roomId}
                 >
                   <h3
-                    onClick={() => {
-                      navigate(`/chatroom/${v.roomId}`);
-                    }}
+                    
                   >
                     {v.title}
                   </h3>
-                  <p>참여자 {user}명</p>
+                  <p>참여자 {v.roomUserNum}명</p>
                 </div>
               ))}
             </div>

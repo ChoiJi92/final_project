@@ -55,7 +55,7 @@ const Mypage = () => {
       instance
         .get(`oauth/mypage/${userId}`)
         .then((res) => {
-          // console.log(res.data);
+          console.log(res.data);
           return (
             //   setMyLikePost(res.data.mylikespost), setMyPost(res.data.mypostinfo)
             res.data
@@ -176,6 +176,7 @@ const Mypage = () => {
                   <>
                     {!upMore ? (
                       <img
+                      style={{cursor:'pointer'}}
                         src={moreIcon}
                         alt="더보기"
                         onClick={() => {
@@ -184,6 +185,7 @@ const Mypage = () => {
                       />
                     ) : (
                       <img
+                      style={{cursor:'pointer'}}
                         src={noMoreIcon}
                         alt="접기"
                         onClick={() => {
@@ -202,6 +204,7 @@ const Mypage = () => {
                   <>
                     {!upMore ? (
                       <img
+                      style={{cursor:'pointer'}}
                         src={moreIcon}
                         alt="더보기"
                         onClick={() => {
@@ -210,6 +213,7 @@ const Mypage = () => {
                       />
                     ) : (
                       <img
+                      style={{cursor:'pointer'}}
                         src={noMoreIcon}
                         alt="접기"
                         onClick={() => {
@@ -301,18 +305,18 @@ const Mypage = () => {
                       <div key={i} id="listBox">
                         <img
                           className="thumbnailImg"
-                          src={jeju1}
+                          src={v.images[0].thumbnailURL}
                           alt="이미지"
                         />
                         <span className="title" style={{ marginTop: "5px" }}>
-                          해변가 근처 숙소
+                          {v.title}
                         </span>
                         <div id="icons">
                           <div
                             style={{ display: "flex", alignItems: "center" }}
                           >
                             <img src={starIcon} alt="별점" />
-                            <span style={{ marginLeft: "10px" }}>4.5</span>
+                            <span style={{ marginLeft: "10px" }}>{v.average.toFixed(1)}</span>
                           </div>
                           <img src={saveIcon} alt="저장" />
                         </div>
@@ -355,6 +359,7 @@ const Mypage = () => {
                   <>
                     {!bottomMore ? (
                       <img
+                      style={{cursor:'pointer'}}
                         src={moreIcon}
                         alt="더보기"
                         onClick={() => {
@@ -363,6 +368,7 @@ const Mypage = () => {
                       />
                     ) : (
                       <img
+                      style={{cursor:'pointer'}}
                         src={noMoreIcon}
                         alt="접기"
                         onClick={() => {
@@ -381,6 +387,7 @@ const Mypage = () => {
                   <>
                     {!bottomMore ? (
                       <img
+                      style={{cursor:'pointer'}}
                         src={moreIcon}
                         alt="더보기"
                         onClick={() => {
@@ -389,6 +396,7 @@ const Mypage = () => {
                       />
                     ) : (
                       <img
+                      style={{cursor:'pointer'}}
                         src={noMoreIcon}
                         alt="접기"
                         onClick={() => {
@@ -483,7 +491,7 @@ const Mypage = () => {
                             style={{ display: "flex", alignItems: "center" }}
                           >
                             <img src={starIcon} alt="별점" />
-                            <span style={{ marginLeft: "10px" }}>{v.average}</span>
+                            <span style={{ marginLeft: "10px" }}>{v.average.toFixed(1)}</span>
                           </div>
                           <img src={unsaveIcon2} alt="저장" />
                         </div>
@@ -629,7 +637,7 @@ const MyDefaultBoxTop = styled.div`
     align-items: center;
   }
   span {
-    cursor: pointer;
+    /* cursor: pointer; */
   }
   h1 {
     opacity: ${(props) => (props.myLike ? "1" : "0.4")};
@@ -745,9 +753,9 @@ const MyDefaultBoxBottom = styled.div`
     justify-content: space-between;
     align-items: center;
   }
-  span {
+  /* span {
     cursor: pointer;
-  }
+  } */
   h1 {
     margin-left: 35px;
     margin-bottom: 10px;

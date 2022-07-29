@@ -9,6 +9,7 @@ import back3 from "../assests/css/배경3.webp";
 import back4 from "../assests/css/배경4.webp";
 import back5 from "../assests/css/배경5.webp";
 import back6 from "../assests/css/배경6.webp";
+import { useNavigate } from "react-router-dom";
 
 const OpenChatSlide = ({ rtl, data }) => {
   const [mouseOver, setMouseOver] = useState(false);
@@ -150,13 +151,17 @@ const OpenChatSlide = ({ rtl, data }) => {
     setMouseOver(false);
   };
   const backList = [back, back2, back3, back4, back5, back6];
+  const navigate = useNavigate()
   return (
     <ImgBox>
       <SliderImg {...settings} {...arrows}>
         
-        {data.length > 1 && data?.map((v, i) => (
+        {data.length >= 1 && data?.map((v, i) => (
           <Wrap key={v.roomId}>
             <Card
+            onClick={()=>{
+              navigate(`/chatroom/${v.roomId}`)
+            }}
               onMouseLeave={mouseLeave}
               onMouseOver={mouseHover}
               style={{
