@@ -1,4 +1,4 @@
-import React, { useState, useCallback} from "react";
+import React, { useState, useCallback } from "react";
 import styled from "styled-components";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -15,16 +15,25 @@ import instance from "../shared/axios";
 import WriteFooter from "../components/WriteFooter";
 import TagList from "../components/TagList";
 import MetaTag from "./MetaTag";
+import Error from "./Error";
+import { useRecoilState } from "recoil";
+import { textImageURL, thumbnailURL } from "../recoil/atoms";
 
 const UserWrite = () => {
   const params = useParams();
-  const userId = localStorage.getItem('userId')
+  const userId = localStorage.getItem("userId");
+  const [existThumbnail, setExistThumbnail] = useRecoilState(thumbnailURL);
+  const [existTextImage, setExistTextImage] = useRecoilState(textImageURL);
   // params.id에 의 queryfunction이 실행될지 말지를 결정하므로 queryKey에 넣어줘야함
   const { data } = useQuery(
     ["editContent", params.id],
     () =>
       instance.get(`/post/${params.id}`).then((res) => {
         console.log(res.data);
+        setExistThumbnail([res.data.allPost[0].images[0]]);
+        setExistTextImage([
+          ...res.data.allPost[0].images.filter((_, i) => i !== 0),
+        ]);
         return res.data.allPost[0];
       }),
     {
@@ -42,7 +51,7 @@ const UserWrite = () => {
   const [preImages, setPreImages] = useState([]);
   // const [modalOpen, setModalOpen] = useState(false);
   const [address, setAddress] = useState(data?.mainAddress);
-  const [tagList, setTagList] = useState(data?.tagList ? data?.tagList : [])  ;
+  const [tagList, setTagList] = useState(data?.tagList ? data?.tagList : []);
   // const address = useRecoilValue(addressState);
   const [content, setContent] = useState();
   // const [imageKey, setImageKey] = useState([]);
@@ -134,17 +143,27 @@ const UserWrite = () => {
     // console.log(editorImage); // foreach 돌려야함
     // console.log(preImages);
     // console.log("저장");
-    let filterImage = preImages.filter((v) => !content.includes(v)) // 삭제된 imageurl
-    console.log(filterImage,'나는 없어진 이미지!')
-    let index = filterImage.map((v) => preImages.indexOf(v))
-    console.log(index,'나는 없어진 친구 인덱스')
-    let newEditorImage =editorImage.filter((_,i)=> !index.includes(i))
-    console.log(editorImage.filter((_,i)=> !index.includes(i)),'나는 필터된 file!!')
-    let newPreImages=preImages.filter((v) => content.includes(v))
-    console.log(preImages.filter((v) => content.includes(v)),'필터된 친구');
-    let preFilterImages =preImages.filter((v) => content.includes(v))
-    console.log(preFilterImages)
-    
+    console.log(existThumbnail); //처음에 저장된 썸네일
+    console.log(existTextImage); //처음에 저장된 텍스트 이미지
+
+    let filterImage = preImages.filter((v) => !content.includes(v)); // 삭제된 imageurl
+    let filterTextImage = existTextImage.filter((v)=> !content.includes(v))
+    console.log(filterTextImage)
+    console.log(filterImage, "나는 없어진 이미지!");
+    let index = filterImage.map((v) => preImages.indexOf(v));
+    console.log(index, "나는 없어진 친구 인덱스");
+    let newEditorImage = editorImage.filter((_, i) => !index.includes(i));
+    console.log(
+      editorImage.filter((_, i) => !index.includes(i)),
+      "나는 필터된 file!!"
+    );
+    let newPreImages = preImages.filter((v) => content.includes(v));
+    console.log(
+      preImages.filter((v) => content.includes(v)),
+      "필터된 친구"
+    );
+    let preFilterImages = preImages.filter((v) => content.includes(v));
+    console.log(preFilterImages);
 
     if (!thumbnail && !preview) {
       window.alert("썸네일 사진을 추가해 주세요 :)");
@@ -162,13 +181,13 @@ const UserWrite = () => {
       //   console.log('여기는?')
       //   formData.append("images", preview)
       // }
-      console.log(newEditorImage,'필터된 파일객체들')
-      console.log(newPreImages,'필터된 url들')
-      newEditorImage.forEach((file)=> formData.append('images',file))
+      console.log(newEditorImage, "필터된 파일객체들");
+      console.log(newPreImages, "필터된 url들");
+      newEditorImage.forEach((file) => formData.append("images", file));
 
       formData.append("title", title);
       formData.append("content", content);
-      formData.append("tagList",tagList)
+      formData.append("tagList", tagList);
       formData.append("mainAddress", address ? address : data.mainAddress);
       formData.append("subAddress", data.subAddress);
       formData.append("category", data.category);
@@ -198,197 +217,203 @@ const UserWrite = () => {
   };
   return (
     <>
-    <MetaTag title={'숙소정보를 공유해 주세요 :) | 멘도롱 제주'}/>
-    <Wrap>
-      <Container background={preview}>
-        <Dropzone multiple={false} onDrop={onDrop}>
-          {({ getRootProps, getInputProps, isDragActive }) => (
-            <div
-              {...getRootProps()}
-              style={{ backgroundImage: `url(${preview})`,backgroundRepeat:'no-repeat',backgroundSize:'cover',backgroundPosition:'center center' }}
-            >
-              <input {...getInputProps()} />
-              {isDragActive ? (
-                <p>파일 올렷어요</p>
-              ) : (
-                <p>
-                  드래그 앤 드롭이나 추가하기 버튼으로 커버사진을 업로드
-                  해주세요.
-                </p>
-              )}
-              <button>커버 사진 추가하기</button>
-            </div>
-          )}
-        </Dropzone>
-      </Container>
+      <MetaTag title={"숙소정보를 공유해 주세요 :) | 멘도롱 제주"} />
 
-      <Title>
-        <input
-          placeholder="제목을 입력해 주세요."
-          onChange={titleChange}
-          maxLength="20"
-          value={title || ""}
-        ></input>
-        <p>{title?.length ? title.length : 0}/20</p>
-      </Title>
-      <PostEditer
-        setContent={setContent}
-        preImages={preImages}
-        setPreImages={setPreImages}
-        content={data?.content}
-        setEditorImage={setEditorImage}
-      ></PostEditer>
-      <Tag>
-        <h2>태그</h2>
-        <TagList
-          maxLength={10}
-          width={"80%"}
-          margin={"0px"}
-          tagList={tagList}
-          setTagList={setTagList}
-        />
-      </Tag>
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        <InputWrap>
-          <h2>방문하신 숙소에 대한 포스팅인가요?</h2>
-          <div className="sub">
-            더 원활한 소통을 위해서 숙소에 대한 정보를 입력해주세요.
-          </div>
-          <div className="title">
-            <h3>숙소 이름 *</h3>
-            <div>
-              <input
-                placeholder="숙소 명을 입력해주세요."
-                {...register("houseTitle", { required: true })}
-                defaultValue={data?.houseTitle ? data.houseTitle : ""}
-              ></input>
-              <p className="errorMessage">
-                {errors.houseTitle?.type === "required" &&
-                  "숙소 명은 필수 입력사항 입니다 :)"}
-              </p>
-            </div>
-          </div>
-          <div className="category">
-            <h3>카테고리 *</h3>
-            <div>
-              <Select
-                // onChange={handleChange}
-                defaultValue={data?.category ? data?.category : ""}
-                // value={data.category ? data.category : ""}
-                {...register("category", { required: true })}
+      <Wrap>
+        <Container background={preview}>
+          <Dropzone multiple={false} onDrop={onDrop}>
+            {({ getRootProps, getInputProps, isDragActive }) => (
+              <div
+                {...getRootProps()}
                 style={{
-                  width: "100%",
-                  height: "56px",
-                  border: "none",
-                  paddingLeft: "5px",
-                  fontStyle: "normal",
-                  fontWeight: "500",
-                  fontSize: "18px",
-                  lineHeight: "150%",
-                  borderRadius: "10px",
-                  background: "#F7F3EF",
+                  backgroundImage: `url(${preview})`,
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center center",
                 }}
-                displayEmpty
-                inputProps={{ "aria-label": "Without label" }}
               >
-                <MenuItem value="" disabled={true}>
-                  숙소의 카테고리를 선택해주세요.
-                </MenuItem>
-                <MenuItem value="해변근처">해변근처</MenuItem>
-                <MenuItem value="내륙">내륙</MenuItem>
-                <MenuItem value="관광지근처">관광지근처</MenuItem>
-                <MenuItem value="조용한마을">조용한마을</MenuItem>
-                <MenuItem value="우도">우도</MenuItem>
-                {/* <MenuItem value="성산일출봉">성산일출봉</MenuItem> */}
-              </Select>
-              <p className="errorMessage">
-                {errors.category?.type === "required" &&
-                  "카테고리는 필수 선택사항입니다 :)"}
-              </p>
-            </div>
-          </div>
-          <div className="type">
-            <h3>숙소 형태 *</h3>
-            <div>
-              <Select
-                defaultValue={data?.type ? data.type : ""}
-                // onChange={handleChange}
-                {...register("type", { required: true })}
-                style={{
-                  width: "100%",
-                  height: "56px",
-                  border: "none",
-                  paddingLeft: "5px",
-                  fontStyle: "normal",
-                  fontWeight: "500",
-                  fontSize: "18px",
-                  lineHeight: "150%",
-                  borderRadius: "10px",
-                  background: "#F7F3EF",
-                }}
-                displayEmpty
-                inputProps={{ "aria-label": "Without label" }}
-              >
-                <MenuItem value="" disabled={true}>
-                  숙소의 형태를 선택해주세요.
-                </MenuItem>
-                <MenuItem value="게스트하우스">게스트하우스</MenuItem>
-                <MenuItem value="한옥">한옥</MenuItem>
-                <MenuItem value="펜션">펜션</MenuItem>
-                <MenuItem value="오피스텔/아파트">오피스텔/아파트</MenuItem>
-              </Select>
-              <p className="errorMessage">
-                {errors.type?.type === "required" &&
-                  "숙소 형태는 필수 선택사항 입니다 :)"}
-              </p>
-            </div>
-          </div>
-          <div className="region">
-            <h3>지역 *</h3>
-            <div className="regionInput">
-              <div className="mainAddress">
-                <input
-                  placeholder="주소를 검색해 주세요."
-                  {...register("mainAddress")}
-                  // value={address || ""}
-                  defaultValue={address}
-                  readOnly
-                ></input>
-                <AddressModal setAddress={setAddress} />
+                <input {...getInputProps()} />
+                {isDragActive ? (
+                  <p>파일 올렷어요</p>
+                ) : (
+                  <p>
+                    드래그 앤 드롭이나 추가하기 버튼으로 커버사진을 업로드
+                    해주세요.
+                  </p>
+                )}
+                <button>커버 사진 추가하기</button>
               </div>
-              <input
-                className="subAddress"
-                placeholder="상세 주소를 입력해 주세요."
-                {...register("subAddress")}
-                defaultValue={data?.subAddress ? data.subAddress : ""}
-              ></input>
-              <p className="errorMessage">
-                {!address && "지역은 필수 입력사항 입니다 :)"}
-              </p>
+            )}
+          </Dropzone>
+        </Container>
+
+        <Title>
+          <input
+            placeholder="제목을 입력해 주세요."
+            onChange={titleChange}
+            maxLength="20"
+            value={title || ""}
+          ></input>
+          <p>{title?.length ? title.length : 0}/20</p>
+        </Title>
+        <PostEditer
+          setContent={setContent}
+          preImages={preImages}
+          setPreImages={setPreImages}
+          content={data?.content}
+          setEditorImage={setEditorImage}
+        ></PostEditer>
+        <Tag>
+          <h2>태그</h2>
+          <TagList
+            maxLength={10}
+            width={"80%"}
+            margin={"0px"}
+            tagList={tagList}
+            setTagList={setTagList}
+          />
+        </Tag>
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          <InputWrap>
+            <h2>방문하신 숙소에 대한 포스팅인가요?</h2>
+            <div className="sub">
+              더 원활한 소통을 위해서 숙소에 대한 정보를 입력해주세요.
             </div>
-          </div>
-          <div className="link">
-            <h3>링크</h3>
-            <input
-              placeholder="숙소 사이트, SNS 등 URL을 입력해주세요."
-              {...register("link")}
-              defaultValue={data?.link ? data.link : ""}
-            ></input>
-          </div>
-        </InputWrap>
-        <WriteFooter
-          title={title}
-          thumbnail={thumbnail}
-          reset={reset}
-          getValues={getValues}
-          open={open}
-          setOpen={setOpen}
-          isHost={false}
-          address={address}
-          content={content}
-        ></WriteFooter>
-      </Form>
-    </Wrap>
+            <div className="title">
+              <h3>숙소 이름 *</h3>
+              <div>
+                <input
+                  placeholder="숙소 명을 입력해주세요."
+                  {...register("houseTitle", { required: true })}
+                  defaultValue={data?.houseTitle ? data.houseTitle : ""}
+                ></input>
+                <p className="errorMessage">
+                  {errors.houseTitle?.type === "required" &&
+                    "숙소 명은 필수 입력사항 입니다 :)"}
+                </p>
+              </div>
+            </div>
+            <div className="category">
+              <h3>카테고리 *</h3>
+              <div>
+                <Select
+                  // onChange={handleChange}
+                  defaultValue={data?.category ? data?.category : ""}
+                  // value={data.category ? data.category : ""}
+                  {...register("category", { required: true })}
+                  style={{
+                    width: "100%",
+                    height: "56px",
+                    border: "none",
+                    paddingLeft: "5px",
+                    fontStyle: "normal",
+                    fontWeight: "500",
+                    fontSize: "18px",
+                    lineHeight: "150%",
+                    borderRadius: "10px",
+                    background: "#F7F3EF",
+                  }}
+                  displayEmpty
+                  inputProps={{ "aria-label": "Without label" }}
+                >
+                  <MenuItem value="" disabled={true}>
+                    숙소의 카테고리를 선택해주세요.
+                  </MenuItem>
+                  <MenuItem value="해변근처">해변근처</MenuItem>
+                  <MenuItem value="내륙">내륙</MenuItem>
+                  <MenuItem value="관광지근처">관광지근처</MenuItem>
+                  <MenuItem value="조용한마을">조용한마을</MenuItem>
+                  <MenuItem value="우도">우도</MenuItem>
+                  {/* <MenuItem value="성산일출봉">성산일출봉</MenuItem> */}
+                </Select>
+                <p className="errorMessage">
+                  {errors.category?.type === "required" &&
+                    "카테고리는 필수 선택사항입니다 :)"}
+                </p>
+              </div>
+            </div>
+            <div className="type">
+              <h3>숙소 형태 *</h3>
+              <div>
+                <Select
+                  defaultValue={data?.type ? data.type : ""}
+                  // onChange={handleChange}
+                  {...register("type", { required: true })}
+                  style={{
+                    width: "100%",
+                    height: "56px",
+                    border: "none",
+                    paddingLeft: "5px",
+                    fontStyle: "normal",
+                    fontWeight: "500",
+                    fontSize: "18px",
+                    lineHeight: "150%",
+                    borderRadius: "10px",
+                    background: "#F7F3EF",
+                  }}
+                  displayEmpty
+                  inputProps={{ "aria-label": "Without label" }}
+                >
+                  <MenuItem value="" disabled={true}>
+                    숙소의 형태를 선택해주세요.
+                  </MenuItem>
+                  <MenuItem value="게스트하우스">게스트하우스</MenuItem>
+                  <MenuItem value="한옥">한옥</MenuItem>
+                  <MenuItem value="펜션">펜션</MenuItem>
+                  <MenuItem value="오피스텔/아파트">오피스텔/아파트</MenuItem>
+                </Select>
+                <p className="errorMessage">
+                  {errors.type?.type === "required" &&
+                    "숙소 형태는 필수 선택사항 입니다 :)"}
+                </p>
+              </div>
+            </div>
+            <div className="region">
+              <h3>지역 *</h3>
+              <div className="regionInput">
+                <div className="mainAddress">
+                  <input
+                    placeholder="주소를 검색해 주세요."
+                    {...register("mainAddress")}
+                    // value={address || ""}
+                    defaultValue={address}
+                    readOnly
+                  ></input>
+                  <AddressModal setAddress={setAddress} />
+                </div>
+                <input
+                  className="subAddress"
+                  placeholder="상세 주소를 입력해 주세요."
+                  {...register("subAddress")}
+                  defaultValue={data?.subAddress ? data.subAddress : ""}
+                ></input>
+                <p className="errorMessage">
+                  {!address && "지역은 필수 입력사항 입니다 :)"}
+                </p>
+              </div>
+            </div>
+            <div className="link">
+              <h3>링크</h3>
+              <input
+                placeholder="숙소 사이트, SNS 등 URL을 입력해주세요."
+                {...register("link")}
+                defaultValue={data?.link ? data.link : ""}
+              ></input>
+            </div>
+          </InputWrap>
+          <WriteFooter
+            title={title}
+            thumbnail={thumbnail}
+            reset={reset}
+            getValues={getValues}
+            open={open}
+            setOpen={setOpen}
+            isHost={false}
+            address={address}
+            content={content}
+          ></WriteFooter>
+        </Form>
+      </Wrap>
     </>
   );
 };

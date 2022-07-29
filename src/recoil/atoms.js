@@ -57,3 +57,11 @@ export const deletedImgList = atom ({
   key:"deleteImg",
   default:[]
 });
+export const thumbnailURL = atom ({
+  key:"thumbnailURL",
+  default:[]
+});
+export const textImageURL = atom ({
+  key:"textImageURL",
+  default:[]
+});
