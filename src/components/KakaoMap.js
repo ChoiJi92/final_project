@@ -9,7 +9,9 @@ import unsaveIcon from "../assests/css/unsaveIcon.png";
 import saveIcon from "../assests/css/saveIcon.png";
 import cancelIcon from "../assests/css/cancelIcon.png";
 import { useNavigate } from "react-router-dom";
-const TestMap2 = ({ data, height }) => {
+import { useRecoilValue } from "recoil";
+import { hostData } from "../recoil/atoms";
+const KakaoMap = ({ height }) => {
   const { kakao } = window;
   const [isOpen, setIsOpen] = useState(false);
   const [map, setMap] = useState();
@@ -17,6 +19,7 @@ const TestMap2 = ({ data, height }) => {
   const [info, setInfo] = useState();
   const [save, setSave] = useState(false);
   const navigate=useNavigate()
+  const data = useRecoilValue(hostData)
   console.log(data)
   useEffect(() => {
     if (!map) return;
@@ -56,7 +59,7 @@ const TestMap2 = ({ data, height }) => {
         map.setBounds(bounds);
       });
     }
-  }, [map]);
+  }, [map,data]);
   const mapRef = useRef();
   const zoomIn = () => {
     const map = mapRef.current;
@@ -258,4 +261,4 @@ const Wrap = styled.div`
   }
 `;
 
-export default TestMap2;
+export default KakaoMap;

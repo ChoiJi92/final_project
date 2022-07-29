@@ -17,7 +17,7 @@ import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { hostData } from "../recoil/atoms";
 import instance from "../shared/axios";
-import Map from "../components/Map";
+import KakaoMap from "../components/KakaoMap";
 import Footer from "../components/Footer";
 import MetaTag from "./MetaTag";
 
@@ -45,7 +45,7 @@ const HouseInfo = () => {
   const location = useLocation();
   // console.log(location.state.address)
   const [isCozy, setIsCozy] = useState("cozy");
-  const [isHostData, isSetHostData] = useRecoilState(hostData);
+  const [isHostData, setIsHostData] = useRecoilState(hostData);
   const [address, setAddress] = useState(
     location.state?.address ? location.state?.address : ""
   );
@@ -64,9 +64,9 @@ const HouseInfo = () => {
         .then((res) => {
           // console.log(res.data);
           if (category === "all") {
-            isSetHostData(res.data.findAllAcc);
+            setIsHostData(res.data.findAllAcc);
           } else {
-            isSetHostData(
+            setIsHostData(
               res.data.findAllAcc.filter((v) => v.category === category)
             );
           }
@@ -78,7 +78,7 @@ const HouseInfo = () => {
     {
       refetchOnWindowFocus: false,
       // onSuccess: (data) => {
-      //   isSetHostData(data);
+      //   setIsHostData(data);
       // },
     }
   );
@@ -95,7 +95,7 @@ const HouseInfo = () => {
         .get(`/host/address/search`, { params: { search: address } })
         .then((res) => {
           console.log(res.data, "지역검색");
-          isSetHostData(res.data.hostPost);
+          setIsHostData(res.data.hostPost);
         })
         .catch((err) => console.log(err)),
     {
@@ -114,7 +114,7 @@ const HouseInfo = () => {
         .get(`/host/type/search`, { params: { search: type } })
         .then((res) => {
           console.log(res.data, "숙소형태검색");
-          isSetHostData(res.data.housebyType);
+          setIsHostData(res.data.housebyType);
         })
         .catch((err) => console.log(err)),
     {
@@ -239,7 +239,7 @@ const HouseInfo = () => {
             className="cozy"
             onClick={() => {
               setIsCozy("cozy");
-              isSetHostData(data.findAllAcc);
+              setIsHostData(data.findAllAcc);
             }}
           >
             편하게 한달 살기
@@ -247,7 +247,7 @@ const HouseInfo = () => {
           <div
             className="uncozy"
             onClick={() => {
-              isSetHostData(
+              setIsHostData(
                 data.findAllAcc.filter((v) => v.houseInfo === "게스트하우스")
               );
               setIsCozy("uncozy");
@@ -262,7 +262,7 @@ const HouseInfo = () => {
             // ref={firstBox}
             className="all"
             onClick={() => {
-              isSetHostData(data.findAllAcc);
+              setIsHostData(data.findAllAcc);
               setCategory("all");
             }}
             id="spot"
@@ -275,7 +275,7 @@ const HouseInfo = () => {
             className="내륙"
             // onClick={menuOnClick}
             onClick={() => {
-              isSetHostData(
+              setIsHostData(
                 data.findAllAcc.filter((v) => v.category === "내륙")
               );
               setCategory("내륙");
@@ -290,7 +290,7 @@ const HouseInfo = () => {
             className="관광지근처"
             // onClick={menuOnClick}
             onClick={() => {
-              isSetHostData(
+              setIsHostData(
                 data.findAllAcc.filter((v) => v.category === "관광지근처")
               );
               setCategory("관광지근처");
@@ -304,7 +304,7 @@ const HouseInfo = () => {
             className="조용한마을"
             // onClick={menuOnClick}
             onClick={() => {
-              isSetHostData(
+              setIsHostData(
                 data.findAllAcc.filter((v) => v.category === "조용한마을")
               );
               setCategory("조용한마을");
@@ -319,7 +319,7 @@ const HouseInfo = () => {
             className="우도"
             // onClick={menuOnClick}
             onClick={() => {
-              isSetHostData(
+              setIsHostData(
                 data.findAllAcc.filter((v) => v.category === "우도")
               );
               setCategory("우도");
@@ -334,7 +334,7 @@ const HouseInfo = () => {
             className="해변근처"
             // onClick={menuOnClick}
             onClick={() => {
-              isSetHostData(
+              setIsHostData(
                 data.findAllAcc.filter((v) => v.category === "해변근처")
               );
               setCategory("해변근처");
@@ -478,7 +478,7 @@ const HouseInfo = () => {
             </ListWrap>
           </ContentsBox>
           <MapBox>
-            <Map isinfo={"isinfo"} data={isHostData} height={"85%"} />
+            <KakaoMap isinfo={"isinfo"} data={isHostData} height={"85%"} />
           </MapBox>
         </div>
       </MainBox>
