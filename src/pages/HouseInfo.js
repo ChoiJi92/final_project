@@ -56,6 +56,7 @@ const HouseInfo = () => {
     location.state?.category ? location.state?.category : "all"
   );
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const { data } = useQuery(
     ["houseInfo"],
     () =>
@@ -158,13 +159,20 @@ const HouseInfo = () => {
   );
 
   const saveClick = (id) => {
-    savePost.mutate(id);
+    if(userId){
+      savePost.mutate(id);
+    }else{
+      navigate("/loginerror")
+    }
     // saveDelete.mutate(id)
-    console.log(id);
   };
 
   const cancelSaveClick = (id) => {
-    saveDelete.mutate(id);
+    if(userId){
+      saveDelete.mutate(id);
+    }else{
+      navigate("/loginerror")
+    }
   };
 
   // useEffect(() => {
@@ -443,7 +451,7 @@ const HouseInfo = () => {
                         </span>
                       </div>
                       <LikeBox>
-                        <div style={{}}>
+                        <div >
                           <StarIcon />
                           <span
                             style={{

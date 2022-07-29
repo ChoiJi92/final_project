@@ -45,8 +45,8 @@ const HouseDetail = () => {
   const openModal = (id, review, star, reviewId) => {
     if (!userId) {
       //로그인이 필요한 페이지 입니다.
-      // navigate("/")
-      alert("로그인이 필요합니다.");
+      navigate("/loginerror")
+      // alert("로그인이 필요합니다.");
     } else {
       setModalOpen(true);
       setIsReviewUpdate({
@@ -166,13 +166,19 @@ const HouseDetail = () => {
   );
   
   const saveClick = (id) => {
-    savePost.mutate(id)
-    // saveDelete.mutate(id)
-    console.log(id)
+    if(userId){
+      savePost.mutate(id);
+    }else{
+      navigate("/loginerror")
+    }
   }
 
   const cancelSaveClick = (id) => {
-    saveDelete.mutate(id)
+    if(userId){
+      saveDelete.mutate(id);
+    }else{
+      navigate("/loginerror")
+    }
   }
 
   let testscore = 0;
@@ -480,12 +486,6 @@ const HouseDetail = () => {
                 <span>{data?.findAllAcc?.mainAddress}</span>
                 
               </div>
-              {/* <div id="barLink">
-                <a href={data?.findAllAcc?.link}>
-                  <span>{data?.findAllAcc?.link}</span>
-                </a>
-                
-              </div> */}
               <div id="barTag">
                 {data?.findAllAcc?.tagList.length > 0 && data?.findAllAcc?.tagList.slice(0, 4).map((item, idx) => (
                   <HashTagBox key={idx}>{item}</HashTagBox>
@@ -512,17 +512,7 @@ const HouseDetail = () => {
             </div>
           </RightBarBox>
         </div>
-        {/* <div>
-          <button
-            onClick={() => {
-              onDelete(data?.findAllAcc?.hostId);
-            }}
-          >
-            삭제
-          </button>
-        </div> */}
       </div>
-      
     </Wrap>
     <Footer/>
     </>
