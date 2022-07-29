@@ -192,7 +192,11 @@ const CommunityDetail = () => {
                         <button
                           style={{ width: "40%" }}
                           onClick={() => {
+                            if(userId){
                             unLike.mutate(data.allPost[0].postId);
+                            }else{
+                              navigate('/loginerror')
+                            }
                           }}
                         >
                           좋아요
@@ -206,7 +210,11 @@ const CommunityDetail = () => {
                         <button
                           style={{ width: "40%" }}
                           onClick={() => {
+                            if(userId){
                             Like.mutate(data.allPost[0].postId);
+                            }else{
+                              navigate('/loginerror')
+                            }
                           }}
                         >
                           좋아요
@@ -262,8 +270,10 @@ const CommunityDetail = () => {
                   ></SlideImg>
                   <div className="content">
                     <div className="title">
-                      <h2>{data.findAllAcc[0].title}</h2>
-                      <p>{data.findAllAcc[0].hostContent}</p>
+                      <h2 onClick={()=>[
+                      navigate(`/house/${data.findAllAcc[0].hostId}`)
+                    ]}>{data.findAllAcc[0].title}</h2>
+                      <p>{data.findAllAcc[0].hostContent.length > 50 ?data.findAllAcc[0].hostContent.slice(0,50)+' ...' : data.findAllAcc[0].hostContent }</p>
                     </div>
                     <div className="iconWrap">
                       <div>
@@ -272,11 +282,19 @@ const CommunityDetail = () => {
                       </div>
                       {data.findAllAcc[0].isSave ? (
                         <img src={saveIcon} alt="save" onClick={()=>{
+                          if(userId){
                           savePost.mutate(data.findAllAcc[0].hostId)
+                          }else{
+                            navigate('/loginerror')
+                          }
                         }}></img>
                       ) : (
                         <img src={unsaveIcon} alt="unsave" onClick={()=>{
+                          if(userId){
                           saveDelete.mutate(data.findAllAcc[0].hostId)
+                          }else{
+                            navigate('/loginerror')
+                          }
                         }}></img>
                       )}
                     </div>
@@ -309,7 +327,11 @@ const CommunityDetail = () => {
                             {v.islike ? (
                               <img
                                 onClick={() => {
+                                  if(userId){
                                   unLike.mutate(v.postId);
+                                  }else{
+                                    navigate('/loginerror')
+                                  }
                                   // setIslike(false);
                                 }}
                                 src={likeIcon}
@@ -318,7 +340,11 @@ const CommunityDetail = () => {
                             ) : (
                               <img
                                 onClick={() => {
+                                  if(userId){
                                   Like.mutate(v.postId);
+                                  }else{
+                                    navigate('/loginerror')
+                                  }
                                   // setIslike(true);
                                 }}
                                 src={unlikeIcon}
@@ -591,6 +617,7 @@ const WrapBottom = styled.div`
       line-height: 46px;
       color: #828282;
       margin-bottom: 20px;
+      cursor: pointer;
     }
     p {
       font-style: normal;
@@ -598,6 +625,7 @@ const WrapBottom = styled.div`
       font-size: 24px;
       line-height: 140%;
       color: #828282;
+
     }
     img{
       cursor: pointer;
