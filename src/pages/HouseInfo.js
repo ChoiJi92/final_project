@@ -658,7 +658,8 @@ const StyleSelect = styled(Select)`
 const ContentsListBox = styled.div`
   height: 260px;
   display: flex;
-  box-shadow: 0px 6px 32px rgba(0, 0, 0, 0.12);
+  background: #fdfcfb;
+  box-shadow: 0px 12px 42px #eee9e4;
   border-radius: 20px;
   width: 99%;
   margin-bottom: 20px;
@@ -672,6 +673,13 @@ const DesBox = styled.div`
   width: 100%;
   height: 220px;
   margin-left: 20px;
+  h2 {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 35px;
+    color: #828282;
+  }
   span {
     margin-bottom: 10px;
   }
@@ -679,6 +687,11 @@ const DesBox = styled.div`
     height: 200px;
     display: flex;
     align-items: center;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 140%;
+    color: #828282;
   }
 `;
 const LikeBox = styled.div`
