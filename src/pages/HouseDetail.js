@@ -478,6 +478,13 @@ const HouseDetail = () => {
               <div id="barTitle">
                 <h3>{data?.findAllAcc?.title}</h3>
                 <span>{data?.findAllAcc?.mainAddress}</span>
+                
+              </div>
+              <div id="barLink">
+                <a href={data?.findAllAcc?.link}>
+                  <span>{data?.findAllAcc?.link}</span>
+                </a>
+                {/* </Link> */}
               </div>
               <div id="barTag">
                 {data?.findAllAcc?.tagList.length > 0 && data?.findAllAcc?.tagList.slice(0, 4).map((item, idx) => (
@@ -596,6 +603,7 @@ const HashTagBox = styled.div`
   font-weight: 600;
   font-size: 21px;
   line-height: 25px;
+  color:#636366;
 `;
 
 const IconImg = styled.img`
@@ -753,7 +761,7 @@ const RightBarBox = styled.div`
   #srollBar {
     /* top: 50px; */
     position: sticky;
-    height: 646px;
+    height: auto;
     top: 50px;
     width: 100%;
     border-radius: 20px;
@@ -774,10 +782,13 @@ const RightBarBox = styled.div`
       line-height: 33px;
       margin-bottom: 25px;
     }
+    span{
+      font-size: 18px;
+    }
   }
   #barDes {
     width: 100%;
-    height: 250px;
+    height: auto;
     border: 1px solid #e5e5ea;
     border-radius: 20px;
     margin-top: 30px;
@@ -786,6 +797,7 @@ const RightBarBox = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    color: #636366;
   }
   #btnBox {
     width: 100%;
@@ -796,6 +808,17 @@ const RightBarBox = styled.div`
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+  }
+  #barLink{
+    a{
+      text-decoration: none;
+      outline: none;
+      color: black;
+      :hover{
+        color: #3498db;
+      }
+    }
+    
   }
 `;
 
@@ -811,6 +834,7 @@ const HostBtn = styled.button`
   font-size: 20px;
   line-height: 24px;
   cursor: pointer;
+  color:#636366;
 `;
 
 const SubInfoBox = styled.div`
@@ -835,6 +859,7 @@ const SubInfoBox = styled.div`
     font-weight: 400;
     font-size: 21px;
     line-height: 30px;
+    color: #3A3A3C;
     img {
       width: 38px;
       height: 38px;
@@ -842,5 +867,6 @@ const SubInfoBox = styled.div`
     }
   }
 `;
+
 
 export default HouseDetail;
