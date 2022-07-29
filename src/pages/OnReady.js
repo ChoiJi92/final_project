@@ -15,7 +15,7 @@ const OnReady = () => {
         <Container>
         <img className="error" src={readyPage} alt="준비중" />
         <p>페이지를 준비중입니다.</p>
-        <p>조그만 더 기다려주세요!</p>
+        <p>조금만 더 기다려주세요!</p>
         <button onClick={()=>{
           navigate(-1)
         }}>이전페이지로 돌아가기 <img src={refreshIcon} alt="숙소로 돌아가기"></img></button>

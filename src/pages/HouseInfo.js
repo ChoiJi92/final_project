@@ -444,7 +444,7 @@ const HouseInfo = () => {
                             fontSize: "27px",
                           }}
                         >
-                          {item.average}
+                          {item.average.toFixed(1)}
                         </span>
                       </div>
                       {item.isSave ? (

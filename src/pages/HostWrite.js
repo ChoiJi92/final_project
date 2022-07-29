@@ -35,14 +35,11 @@ const HostWrite = () => {
 
   const [testImg, setTestImg] = useRecoilState(updateImgList);
   const [deletedImg, setDeletedImg] = useRecoilState(deletedImgList);
-  
+
   const [deleteState, setDeleteState] = useState([]);
-
-
 
   const [newImgList, setNewImgList] = useState([]);
 
- 
   const { data } = useQuery(
     ["hostWrite", hostId],
 
@@ -52,18 +49,18 @@ const HostWrite = () => {
     },
     {
       onSuccess: (data) => {
-        setTestImg(data.images);//삭제되고 추가되고 보여지는 스테이트
-        setDeletedImg(data.images);// 삭제되고 남아있는 스테이트
+        setTestImg(data.images); //삭제되고 추가되고 보여지는 스테이트
+        setDeletedImg(data.images); // 삭제되고 남아있는 스테이트
       },
       refetchOnWindowFocus: false,
       enabled: !!hostId,
     }
   );
 
-    // 첫 번째 이미지 파일을 스테이트에 저장하고
-    // 두 번째 기존에 있던거랑 
-    // [{key:"",url:""},]
-    
+  // 첫 번째 이미지 파일을 스테이트에 저장하고
+  // 두 번째 기존에 있던거랑
+  // [{key:"",url:""},]
+
   const {
     register,
     handleSubmit,
@@ -108,7 +105,7 @@ const HostWrite = () => {
     } else {
       const imgLists = e.target.files;
       let testImgUrlLists = [...testImg]; //기존 이미지 스테이트
-      let testList2 = []; // 새로 추가 된 이미지 
+      let testList2 = []; // 새로 추가 된 이미지
       for (let i = 0; i < imgLists.length; i++) {
         const currentImageUrl = URL.createObjectURL(imgLists[i]);
         testList2.push(imgLists[i]);
@@ -136,11 +133,13 @@ const HostWrite = () => {
     //이거슨 삭제되고 보여지는 스테이트
     setTestImg(testImg.filter((_, idx) => idx !== id));
     setDeletedImg(deletedImg.filter((_, idx) => idx !== id));
-    
 
     setNewImgList(newImgList.filter((_, idx) => idx !== id));
     // 삭제 된 이미지 스테이트
-    setDeleteState(prev => [...prev, ...testImg.filter((_, idx) => idx == id)])
+    setDeleteState((prev) => [
+      ...prev,
+      ...testImg.filter((_, idx) => idx == id),
+    ]);
     //스테이트에 삭제 된 이미지들 저장해야함!!
   };
 
@@ -191,10 +190,10 @@ const HostWrite = () => {
     //   },
     // }
   );
-  // console.log(testImg ,"삭제되고 보여지는 스테이트");
-  // console.log(deleteState ,"삭제된 스테이트") ;
-  // console.log(newImgList, "추가된 이미지 스테이트")
-  // console.log(deletedImg, "삭제되고 남아 있는 스테이트")
+  console.log(testImg, "삭제되고 보여지는 스테이트");
+  console.log(deleteState, "삭제된 스테이트");
+  console.log(newImgList, "추가된 이미지 스테이트");
+  console.log(deletedImg, "삭제되고 남아 있는 스테이트");
   // console.log(testFileList ,"testfilelist")
   // console.log(multiImgs, "멀티이미지 스테이트")
   // console.log(testFileList)
@@ -204,7 +203,7 @@ const HostWrite = () => {
   // 새로 추가 된 파일객체를 또 하나의 스테이트에 저장해야함 newImgList
   // 보내야할 때 데이터는 기존에 있던거와 삭제 된거와 추가된거와 총 3가지 3가지의 스테이트를 보내야함
   // 기존에 있던 스테이트 삭제 된 이미지 스테이트 추가된 스테이트 총 3가지
-  //이미지를 보여줄 스테이트 하나 총 4가지 스테이트 
+  //이미지를 보여줄 스테이트 하나 총 4가지 스테이트
   // console.log(testFileList);
   const onSubmit = (data) => {
     // if (address === "") {
@@ -231,7 +230,7 @@ const HostWrite = () => {
       } else {
         console.log(imgFileList);
         testWrite.mutate(formData);
-        console.log(tagList)
+        console.log(tagList);
       }
       setOpen(true);
     } else {
@@ -263,316 +262,315 @@ const HostWrite = () => {
   // console.log(multiImgs.length, isMiniImg);
   return (
     <>
-       <MetaTag title={'숙소등록 | 멘도롱 제주'}/>
-    
-    <Wrap>
-      <HostForm onSubmit={handleSubmit(onSubmit)}>
-        <HouseBox>
-          <h1>숙소 정보 입력</h1>
-        </HouseBox>
-        <hr />
-        <ImgMainBox>
-          <ImgDesBox>
-            <input
-              multiple
-              id="input-file"
-              style={{ display: "none", outline: "none" }}
-              ref={currentImg}
-              type={"file"}
-              accept={"image/*"}
-              name="imgfile"
-              onChange={onImgChange}
-              // {...register("images", { required: "이미지는 필수 선택사항입니다 :)" })}
-            />
-            <div id="imgSelectBox" onClick={imgClick}>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
-              >
-                <h3 style={{ marginBottom: "10px" }}>숙소 이미지 등록 * </h3>
-                <img
-                  src={imageIcon}
-                  alt="이미지 선택"
-                  style={{ marginBottom: "5px" }}
-                ></img>
-                <span>이미지 등록</span>
-                <span style={{ marginTop: "10px" }}>
-                  {multiImgs.length ? (multiImgs.length) : (testImg.length)} / 8
-                </span>
-              </div>
-            </div>
-            <span style={{ color: "red", fontSize: "13px" }}>
-              {/* {errors.images?.message} */}
-            </span>
-            {/* {isMiniImg ? (<span>사진은 최소 4장 부터</span>) : ("")} */}
-          </ImgDesBox>
+      <MetaTag title={"숙소등록 | 멘도롱 제주"} />
 
-          <ImgBox>
-            <SortableList
-              onSortEnd={onSortEnd}
-              className="list"
-              draggedItemClassName="dragged"
-            >
-              {hostId ? (
-                <>
-                  {testImg.map((v, index) => (
-                    <SortableItem key={`item-${index}`}>
-                      <List>
-                        <Img
-                          src={v.postImageURL ? v.postImageURL : v}
-                          alt="이미지"
-                        />
-                        <DeleteIcon
-                          id="deleteIcon"
-                          onClick={() => uploadDeleteImg(index)}
-                        />
-                      </List>
-                    </SortableItem>
-                  ))}
-                </>
-              ) : (
-                <>
-                  {multiImgs.map((v, index) => (
-                    <SortableItem key={`item-${v}`}>
-                      <List>
-                        <Img src={v} alt="이미지" />
-                        <DeleteIcon
-                          id="deleteIcon"
-                          onClick={() => deleteImage(index)}
-                        />
-                      </List>
-                    </SortableItem>
-                  ))}
-                </>
-              )}
-            </SortableList>
-          </ImgBox>
-        </ImgMainBox>
-        <hr />
-        <InfoBox>
-          <h2>숙소 이름 *</h2>
-          <div id="infoTitle">
-            <input
-              placeholder="숙소 이름을 입력해주세요."
-              defaultValue={data?.title ? data.title : ""}
-              {...register("title", { required: true })}
-            />
-            <ErrorP1>
-              {errors.title?.type === "required" &&
-                "제목은 필수 선택사항입니다 :)"}
-            </ErrorP1>
-          </div>
-        </InfoBox>
-        <InfoBox>
-          <h2>카테고리 *</h2>
-          <div id="infoCategory">
-            <Select
-              style={{
-                width: "100%",
-                height: "50px",
-                borderRadius: "10px",
-                border: "none",
-                backgroundColor: "#f7F3EF",
-                padding: "10px",
-              }}
-              {...register("category", {
-                required: "카테고리는 필수 선택사항입니다 :)",
-              })}
-              displayEmpty
-              inputProps={{ "aria-label": "Without label" }}
-              defaultValue={data?.category ? data?.category : ""}
-            >
-              <MenuItem value="" disabled={true}>
-                카테고리를 선택해주세요.
-              </MenuItem>
-              <MenuItem value="해변근처">해변근처</MenuItem>
-              <MenuItem value="내륙">내륙</MenuItem>
-              <MenuItem value="관광지근처">관광지 근처</MenuItem>
-              <MenuItem value="조용한마을">조용한 마을</MenuItem>
-              <MenuItem value="우도">우도</MenuItem>
-            </Select>
-            <ErrorP>{errors.category?.message}</ErrorP>
-          </div>
-        </InfoBox>
-
-        <InfoBox>
-          <h2>숙소형태 *</h2>
-          <div id="infoHouse">
-            <Select
-              {...register("houseInfo", {
-                required: "숙소형태는 필수 선택사항입니다 :)",
-              })}
-              style={{
-                width: "100%",
-                height: "50px",
-                borderRadius: "10px",
-                fontStyle: "nomal",
-                border: "none",
-                backgroundColor: "#f7F3EF",
-                padding: "10px",
-              }}
-              displayEmpty
-              inputProps={{ "aria-label": "Without label" }}
-              defaultValue={data?.houseInfo ? data?.houseInfo : ""}
-            >
-              <MenuItem
-                style={{
-                  fontWeight: 500,
-                  lineHeight: "150%",
-                  color: "#8E8E93",
-                  fontStyle: "nomal",
-                }}
-                value=""
-                disabled={true}
-              >
-                숙소의 형태를 선택해주세요.
-              </MenuItem>
-              <MenuItem value="게스트하우스">게스트하우스</MenuItem>
-              <MenuItem value="펜션">펜션</MenuItem>
-              <MenuItem value="한옥">한옥</MenuItem>
-              <MenuItem value="오피스텔/아파트">오피스텔/아파트</MenuItem>
-            </Select>
-
-            <ErrorP>{errors.houseInfo?.message}</ErrorP>
-          </div>
-        </InfoBox>
-
-        <InfoBox>
-          <h2>주소 *</h2>
-          <div className="regionInput">
-            <div
-              style={{
-                borderRadius: "10px",
-                border: "none",
-                backgroundColor: "#f7F3EF",
-              }}
-              className="mainAddress"
-            >
+      <Wrap>
+        <HostForm onSubmit={handleSubmit(onSubmit)}>
+          <HouseBox>
+            <h1>숙소 정보 입력</h1>
+          </HouseBox>
+          <hr />
+          <ImgMainBox>
+            <ImgDesBox>
               <input
-                placeholder="주소를 검색해 주세요."
-                // {...register("mainAddress", { required: true })}
-                // value={address}
-                readOnly
-                value={address || data?.mainAddress}
+                multiple
+                id="input-file"
+                style={{ display: "none", outline: "none" }}
+                ref={currentImg}
+                type={"file"}
+                accept={"image/*"}
+                name="imgfile"
+                onChange={onImgChange}
+                // {...register("images", { required: "이미지는 필수 선택사항입니다 :)" })}
+              />
+              <div id="imgSelectBox" onClick={imgClick}>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <h3 style={{ marginBottom: "10px" }}>숙소 이미지 등록 * </h3>
+                  <img
+                    src={imageIcon}
+                    alt="이미지 선택"
+                    style={{ marginBottom: "5px" }}
+                  ></img>
+                  <span>이미지 등록</span>
+                  <span style={{ marginTop: "10px" }}>
+                    {multiImgs.length ? multiImgs.length : testImg.length} / 8
+                  </span>
+                </div>
+              </div>
+              <span style={{ color: "red", fontSize: "13px" }}>
+                {/* {errors.images?.message} */}
+              </span>
+              {/* {isMiniImg ? (<span>사진은 최소 4장 부터</span>) : ("")} */}
+            </ImgDesBox>
+
+            <ImgBox>
+              <SortableList
+                onSortEnd={onSortEnd}
+                className="list"
+                draggedItemClassName="dragged"
+              >
+                {hostId ? (
+                  <>
+                    {testImg.map((v, index) => (
+                      <SortableItem key={`item-${index}`}>
+                        <List>
+                          <Img
+                            src={v.postImageURL ? v.postImageURL : v}
+                            alt="이미지"
+                          />
+                          <DeleteIcon
+                            id="deleteIcon"
+                            onClick={() => uploadDeleteImg(index)}
+                          />
+                        </List>
+                      </SortableItem>
+                    ))}
+                  </>
+                ) : (
+                  <>
+                    {multiImgs.map((v, index) => (
+                      <SortableItem key={`item-${v}`}>
+                        <List>
+                          <Img src={v} alt="이미지" />
+                          <DeleteIcon
+                            id="deleteIcon"
+                            onClick={() => deleteImage(index)}
+                          />
+                        </List>
+                      </SortableItem>
+                    ))}
+                  </>
+                )}
+              </SortableList>
+            </ImgBox>
+          </ImgMainBox>
+          <hr />
+          <InfoBox>
+            <h2>숙소 이름 *</h2>
+            <div id="infoTitle">
+              <input
+                placeholder="숙소 이름을 입력해주세요."
+                defaultValue={data?.title ? data.title : ""}
+                {...register("title", { required: true })}
+              />
+              <ErrorP1>
+                {errors.title?.type === "required" &&
+                  "제목은 필수 선택사항입니다 :)"}
+              </ErrorP1>
+            </div>
+          </InfoBox>
+          <InfoBox>
+            <h2>카테고리 *</h2>
+            <div id="infoCategory">
+              <Select
                 style={{
+                  width: "100%",
+                  height: "50px",
                   borderRadius: "10px",
                   border: "none",
                   backgroundColor: "#f7F3EF",
                   padding: "10px",
                 }}
-                {...register("mainAddress")}
-                // defaultValue={address ? address : data?.mainAddress }
-              />
-              <AddressModal setAddress={setAddress}></AddressModal>
+                {...register("category", {
+                  required: "카테고리는 필수 선택사항입니다 :)",
+                })}
+                displayEmpty
+                inputProps={{ "aria-label": "Without label" }}
+                defaultValue={data?.category ? data?.category : ""}
+              >
+                <MenuItem value="" disabled={true}>
+                  카테고리를 선택해주세요.
+                </MenuItem>
+                <MenuItem value="해변근처">해변근처</MenuItem>
+                <MenuItem value="내륙">내륙</MenuItem>
+                <MenuItem value="관광지근처">관광지 근처</MenuItem>
+                <MenuItem value="조용한마을">조용한 마을</MenuItem>
+                <MenuItem value="우도">우도</MenuItem>
+              </Select>
+              <ErrorP>{errors.category?.message}</ErrorP>
             </div>
-            <input
-              className="subAddress"
-              placeholder="주소를 정확히 작성해야 지도에 표시됩니다."
-              {...register("subAddress", {
-                // required: "상세주소는 필수 선택사항입니다 :)",
-              })}
-              defaultValue={data?.subAddress ? data?.subAddress : ""}
-              style={{
-                borderRadius: "10px,",
-                border: "none",
-                backgroundColor: "#f7F3EF",
-                padding: "20px",
-              }}
-            ></input>
-            {addressError ? (
-              <ErrorP1>주소는 필수 선택사항입니다 :)</ErrorP1>
-            ) : (
-              <ErrorP1>{errors.subAddress?.message}</ErrorP1>
-            )}
-          </div>
-        </InfoBox>
+          </InfoBox>
 
-        <InfoBox>
-          <h2>스텝을 구하시나요? *</h2>
-          <div id="stepMainBox">
-            <div id="stepBox">
-              <MuiSelect
+          <InfoBox>
+            <h2>숙소형태 *</h2>
+            <div id="infoHouse">
+              <Select
+                {...register("houseInfo", {
+                  required: "숙소형태는 필수 선택사항입니다 :)",
+                })}
                 style={{
-                  width: "30.2%",
+                  width: "100%",
+                  height: "50px",
                   borderRadius: "10px",
-                  fontWeight: "500",
+                  fontStyle: "nomal",
                   border: "none",
                   backgroundColor: "#f7F3EF",
                   padding: "10px",
                 }}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
-                {...register("stepSelect", {
-                  required: "스텝여부는 필수 선택사항입니다 :)",
-                })}
-                defaultValue={data?.stepSelect ? data?.stepSelect : ""}
+                defaultValue={data?.houseInfo ? data?.houseInfo : ""}
               >
-                <MenuItem value="" disabled={true}>
-                  예 / 아니오
+                <MenuItem
+                  style={{
+                    fontWeight: 500,
+                    lineHeight: "150%",
+                    color: "#8E8E93",
+                    fontStyle: "nomal",
+                  }}
+                  value=""
+                  disabled={true}
+                >
+                  숙소의 형태를 선택해주세요.
                 </MenuItem>
-                <MenuItem value="예">예</MenuItem>
-                <MenuItem value="아니오">아니오</MenuItem>
-              </MuiSelect>
-              {hiddenSetp === "예" ? (
-                <div id="stepInputBox">
-                  <StepInput
-                    style={{ borderRadius: "10px" }}
-                    {...register("stepInfo", { required: true })}
-                    placeholder="예) 2주・유급・2일 근무, 2일 휴무"
-                    defaultValue={data?.stepInfo ? data?.stepInfo : ""}
-                  />
-                </div>
-              ) : (
-                ""
-              )}
+                <MenuItem value="게스트하우스">게스트하우스</MenuItem>
+                <MenuItem value="펜션">펜션</MenuItem>
+                <MenuItem value="한옥">한옥</MenuItem>
+                <MenuItem value="오피스텔/아파트">오피스텔/아파트</MenuItem>
+              </Select>
+
+              <ErrorP>{errors.houseInfo?.message}</ErrorP>
             </div>
-            <ErrorP>{errors.stepSelect?.message}</ErrorP>
-          </div>
-        </InfoBox>
-        <InfoBox>
-          <h2>링크 </h2>
-          <div id="infoLink">
-            <input
-              placeholder="숙소 사이트, SNS 등 URL을 입력해주세요."
-              {...register("link")}
-              defaultValue={data?.link ? data?.link : ""}
-            />
-          </div>
-        </InfoBox>
-        <InfoBox>
-          <h2>설명 *</h2>
-          <div id="infoDes">
-            <textarea
-              placeholder="숙소에 대한 정보를 최대한 상세하게 입력해주시면 더 많은 고객을 만나실 수 있어요."
-              {...register("postContent", { required: "설명은 필수입니다 :)" })}
-              defaultValue={data?.postContent ? data?.postContent : ""}
-              id="text"
-            ></textarea>
-            <ErrorP1>{errors.postContent?.message}</ErrorP1>
-          </div>
-        </InfoBox>
-        <WriteFooter
-          reset={reset}
-          onSubmit={onSubmit}
-          open={open}
-          setOpen={setOpen}
-          isHost={true}
-        />
-      </HostForm>
-      <Tag>
-        <h2>태그</h2>
-        <TagList
-          maxLength={10}
-          width={"75%"}
-          margin={"64px"}
-          tagList={tagList}
-          setTagList={setTagList}
-        />
-      </Tag>
-    </Wrap>
+          </InfoBox>
+
+          <InfoBox>
+            <h2>주소 *</h2>
+            <div className="regionInput">
+              <div
+                style={{
+                  borderRadius: "10px",
+                  border: "none",
+                  backgroundColor: "#f7F3EF",
+                }}
+                className="mainAddress"
+              >
+                <input
+                  placeholder="주소를 검색해 주세요."
+                  // {...register("mainAddress", { required: true })}
+                  // value={address}
+                  readOnly
+                  value={address || data?.mainAddress}
+                  style={{
+                    borderRadius: "10px",
+                    border: "none",
+                    backgroundColor: "#f7F3EF",
+                    padding: "10px",
+                  }}
+                  {...register("mainAddress")}
+                  // defaultValue={address ? address : data?.mainAddress }
+                />
+                <AddressModal setAddress={setAddress}></AddressModal>
+              </div>
+              <input
+                className="subAddress"
+                placeholder="주소를 정확히 작성해야 지도에 표시됩니다."
+                {...register("subAddress", {
+                  // required: "상세주소는 필수 선택사항입니다 :)",
+                })}
+                defaultValue={data?.subAddress ? data?.subAddress : ""}
+                style={{
+                  borderRadius: "10px,",
+                  border: "none",
+                  backgroundColor: "#f7F3EF",
+                  padding: "20px",
+                }}
+              ></input>
+
+              <ErrorP1> {!address && "주소검색은 필수 입력사항 입니다 :)"}</ErrorP1>
+            </div>
+          </InfoBox>
+
+          <InfoBox>
+            <h2>스텝을 구하시나요? *</h2>
+            <div id="stepMainBox">
+              <div id="stepBox">
+                <MuiSelect
+                  style={{
+                    width: "30%",
+                    borderRadius: "10px",
+                    fontWeight: "500",
+                    border: "none",
+                    backgroundColor: "#f7F3EF",
+                    padding: "10px",
+                  }}
+                  displayEmpty
+                  inputProps={{ "aria-label": "Without label" }}
+                  {...register("stepSelect", {
+                    required: "스텝여부는 필수 선택사항입니다 :)",
+                  })}
+                  defaultValue={data?.stepSelect ? data?.stepSelect : ""}
+                >
+                  <MenuItem value="" disabled={true}>
+                    예 / 아니오
+                  </MenuItem>
+                  <MenuItem value="예">예</MenuItem>
+                  <MenuItem value="아니오">아니오</MenuItem>
+                </MuiSelect>
+                {hiddenSetp === "예" ? (
+                  <div id="stepInputBox">
+                    <StepInput
+                      style={{ borderRadius: "10px" }}
+                      {...register("stepInfo", { required: true })}
+                      placeholder="예) 2주・유급・2일 근무, 2일 휴무"
+                      defaultValue={data?.stepInfo ? data?.stepInfo : ""}
+                    />
+                  </div>
+                ) : (
+                  ""
+                )}
+              </div>
+              <ErrorP>{errors.stepSelect?.message}</ErrorP>
+            </div>
+          </InfoBox>
+          <InfoBox>
+            <h2>링크 </h2>
+            <div id="infoLink">
+              <input
+                placeholder="숙소 사이트, SNS 등 URL을 입력해주세요."
+                {...register("link")}
+                defaultValue={data?.link ? data?.link : ""}
+              />
+            </div>
+          </InfoBox>
+          <InfoBox>
+            <h2>설명 *</h2>
+            <div id="infoDes">
+              <textarea
+                placeholder="숙소에 대한 정보를 최대한 상세하게 입력해주시면 더 많은 고객을 만나실 수 있어요."
+                {...register("postContent", {
+                  required: "설명은 필수입니다 :)",
+                })}
+                defaultValue={data?.postContent ? data?.postContent : ""}
+                id="text"
+              ></textarea>
+              <ErrorP1>{errors.postContent?.message}</ErrorP1>
+            </div>
+          </InfoBox>
+          <WriteFooter
+            reset={reset}
+            onSubmit={onSubmit}
+            open={open}
+            setOpen={setOpen}
+            isHost={true}
+          />
+        </HostForm>
+        <Tag>
+          <h2>태그</h2>
+          <TagList
+            maxLength={10}
+            width={"59.3%"}
+            margin={"272px"}
+            tagList={tagList}
+            setTagList={setTagList}
+          />
+        </Tag>
+      </Wrap>
     </>
   );
 };
@@ -808,16 +806,17 @@ const InfoBox = styled.div`
     /* border: 1px solid; */
   }
   #stepInputBox {
-    width: 48%;
+    width: 68%;
     height: 70px;
-    margin-right: 230px;
+    /* margin-right: 230px; */
   }
   #stepMainBox {
-    width: 80%;
-    margin-right: -11px;
+    width: 59.3%;
+    /* margin-right: 11px; */
     /* height: 60px; */
     display: flex;
     flex-direction: column;
+    margin-right: 272px;
     /* margin-right: 130px; */
     /* border: 1px solid; */
   }
@@ -879,11 +878,11 @@ const ErrorP = styled.p`
 `;
 
 const StepInput = styled.input`
-  width: 90%;
+  width: 100%;
   height: 56px;
   padding: 20px;
   border-radius: 10px;
-  margin-right: -200px;
+  /* margin-right: -200px; */
 
   font-style: normal;
   font-weight: 500;
@@ -903,7 +902,6 @@ const Tag = styled.div`
   width: 70%;
   margin: 0 auto 55px auto;
   padding: 20px 0;
-
   h2 {
     font-family: "Pretendard";
     font-style: normal;

@@ -7,7 +7,7 @@ import { reviewStarList } from "../recoil/atoms";
 
 
 const Profile = ({item, data}) => {
-    const userProfile = useRecoilValue(reviewStarList);
+    // const userProfile = useRecoilValue(reviewStarList);
     // console.log(!data)
 //    console.log(userProfile[idx])
     // console.log(item, "잇냐?");
@@ -15,14 +15,14 @@ const Profile = ({item, data}) => {
     <Main>
         {data ? (
         <>
-        <img src={data.images[0].userImageURL} alt="프로필"/>
+        <img src={data.userImageURL} alt="프로필"/>
         <div id="profileName">
             <SpanName >{data.nickname}</SpanName>
             <SpanTime></SpanTime>
         </div>
         </>) : (
         <>
-            <img src={item?.images[0]?.userImageURL} alt="프로필"/>
+            <img src={item.userImageURL} alt="프로필"/>
         <div id="profileName">
             <SpanName style={{}}>{item.nickname}</SpanName>
             <SpanTime></SpanTime>

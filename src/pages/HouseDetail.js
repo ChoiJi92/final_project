@@ -41,7 +41,8 @@ import { hostShareAndMap, reviewStarList } from "../recoil/atoms";
 import Share2 from "../components/Share2";
 import HouseReviewModal from "../components/HouseReviewModal";
 import Profile from "../components/Profile";
-import ReviewDetailModal from "../components/ReviewDetailModal";
+import HouseReviewDetail from "../components/HouseReviewDetail";
+import Footer from "../components/Footer";
 import LoginModal from "../components/LoginModal";
 import LoginError from "./LoginError";
 import instance from "../shared/axios";
@@ -116,7 +117,7 @@ const HouseDetail = () => {
     () => 
        instance
         .get(`/review/${hostId}/review`)
-        .then((res) => {console.log(res.data);return(res.data.review)})
+        .then((res) => {console.log(res.data);return(res.data)})
         .catch((err) => {
           console.log(err);
         }),
@@ -191,11 +192,11 @@ const HouseDetail = () => {
   }
 
   let testscore = 0;
-  for (let i = 0; i < isStarReview?.length; i++) {
-    testscore = testscore + parseInt(isStarReview[i].starpoint);
+  for (let i = 0; i < isStarReview?.reviewInfo.length; i++) {
+    testscore = testscore + parseInt(isStarReview.reviewInfo[i].starpoint);
     // console.log(testscore, "이거슨 점수");
   }
- 
+
   isHostShareAndMap(data);
 
   const openDialog = () => {
@@ -206,7 +207,7 @@ const HouseDetail = () => {
     setDialogOpen(false);
   };
 
-
+  
 
   const MapRadius = "20px";
 
@@ -222,25 +223,25 @@ const HouseDetail = () => {
     testDelete.mutate(id);
     navigate("/house");
   };
-  // console.log(data.findAllAcc.tagList.length, "이거슨 디테일 데이터");
-  // console.log(reviewDetail.data)
+  
+ 
   return (
+    <>
     <Wrap>
       <div id="detailMainBox">
         <ImgBox>
           {/* <SlideImg listImg={listImg} /> */}
           <ImgInnerBox1>
-            <img src={data?.findAllAcc?.images[0]?.postImageURL} alt="이미지" />
+            <img  src={data?.findAllAcc?.images[0]?.postImageURL} alt="이미지" />
           </ImgInnerBox1>
           <ImgInnerBox2>
-            <img src={data?.findAllAcc?.images[1]?.postImageURL} alt="이미지" />
-            {/* <img src={jeju2} alt="이미지" /> */}
-            <ImgDiv style={{"backgroundImage" :`url(${data?.findAllAcc?.images[2]?.postImageURL})`}}>
+            <img  src={data?.findAllAcc?.images[1]?.postImageURL} alt="이미지" />
+            <ImgDiv   style={{"backgroundImage" :`url(${data?.findAllAcc?.images[2]?.postImageURL})`}}>
               <button onClick={openDialog}>사진 모두보기</button>
               <DialogImg
-                onClose={closeDialog}
                 open={dialogOpen}
                 listImg={data?.findAllAcc?.images}
+                onClose={closeDialog}
               />
             </ImgDiv>
             {/* <div></div> */}
@@ -249,7 +250,7 @@ const HouseDetail = () => {
         <div style={{ display: "flex", flexDirection: "row" }}>
           <InfoBox>
             <HashMainBox>
-              {data?.findAllAcc?.tagList?.map((item, idx) => (
+              {data?.findAllAcc?.tagList.length > 0 && data?.findAllAcc?.tagList.map((item, idx) => (
                 <HashTagBox key={idx}>{item}</HashTagBox>
               ))}
             </HashMainBox>
@@ -361,7 +362,7 @@ const HouseDetail = () => {
                 {data?.findAllAcc?.houseInfo}
               </div>
               <div>
-                <img src={step} />
+                <img src={step} alt="스텝" />
                 {data?.findAllAcc?.stepSelect === "예"
                   ? "스텝 모집중"
                   : "스텝 모집 없음"}
@@ -373,7 +374,7 @@ const HouseDetail = () => {
             <hr />
             <h1 style={{ marginTop: "20px", fontSize: "48px" }}>숙소 위치</h1>
             <MapBox >
-              <Map MapRadius={MapRadius} data={data.findAllAcc} />
+              <TestMap2 data={[data.findAllAcc]} height={'100%'}></TestMap2>
             </MapBox>
             <div style={{ marginBottom: "30px" }}>
               <h2 style={{ marginTop: "20px", fontSize: "32px" }}>
@@ -389,12 +390,12 @@ const HouseDetail = () => {
                 <StarIcon />
                 <span>
                   {testscore
-                    ? (testscore / isStarReview?.length).toFixed(1)
+                    ? (testscore / isStarReview?.reviewInfo.length).toFixed(1)
                     : "0.0"}
                 </span>
 
                 <span style={{ marginLeft: "60px" }}>
-                  후기 {reviewDetail?.data?.length}개
+                  후기  {reviewDetail.data.reviewInfo.length}개
                 </span>
               </div>
               <div>
@@ -418,7 +419,7 @@ const HouseDetail = () => {
             </ReviewMainBox>
             <ReviewListBox>
               {/* 후기 작성 부분 */}
-              {reviewDetail?.data?.slice(0, 4).map((item, idx) => (
+              {reviewDetail.data.reviewInfo.slice(0, 4).map((item, idx) => (
                 // 후기 디테일 페이지 클릭해서 모달창 데이타 보여줄 예정
                 <ReviewBox key={`${item.reviewId}-${idx}`}>
                   {/* 프로필 부분에서 재사용 하기 위해 일단 컴포넌트로 나눔 */}
@@ -442,14 +443,14 @@ const HouseDetail = () => {
                   </div>
                 </ReviewBox>
               ))}
-              <ReviewDetailModal
+              <HouseReviewDetail
                 open={reviewModalOpen}
                 close={closeModalReview}
                 data={modalData}
               />
               {moreReview ? (
                 <>
-                  {reviewDetail?.data?.slice(4).map((item, idx) => (
+                  {reviewDetail.data.reviewInfo.slice(4).map((item, idx) => (
                     // 후기 디테일 페이지 클릭해서 모달창 데이타 보여줄 예정
                     <ReviewBox key={item.reviewId}>
                       {/* 프로필 부분에서 재사용 하기 위해 일단 컴포넌트로 나눔 */}
@@ -477,11 +478,11 @@ const HouseDetail = () => {
               ) : (
                 ""
               )}
-              {reviewDetail?.data?.length >= 5 ? (
+              {reviewDetail.data.reviewInfo.length >= 5 ? (
                 <MoreReview moreReview={moreReview} onClick={reviewClick}>
                   {moreReview
-                    ? `후기 ${reviewDetail?.data.length - 4}개 접기`
-                    : `후기 ${reviewDetail?.data.length - 4}개 더보기`}
+                    ? `후기 ${reviewDetail.data.reviewInfo.length - 4}개 접기`
+                    : `후기 ${reviewDetail.data.reviewInfo.length - 4}개 더보기`}
                 </MoreReview>
               ) : (
                 ""
@@ -495,16 +496,16 @@ const HouseDetail = () => {
                 <span>{data?.findAllAcc?.mainAddress}</span>
               </div>
               <div id="barTag">
-                {data?.findAllAcc?.tagList?.slice(0, 4).map((item, idx) => (
+                {data?.findAllAcc?.tagList.length > 0 && data?.findAllAcc?.tagList.slice(0, 4).map((item, idx) => (
                   <HashTagBox key={idx}>{item}</HashTagBox>
                 ))}
               </div>
               <div id="barDes">
-                {data?.findAllAcc?.stepInfo !== 'undefined' ? (
+                {data?.findAllAcc?.stepInfo !== '' ? (
                   data?.findAllAcc?.stepInfo
                 ) : (
                   <>
-                    <img style={{ width: "50%" }} src={stepImg} />
+                    <img style={{ width: "50%" }} src={stepImg} alt="스텝" />
                     <span>스텝 모집이 없어요.</span>
                   </>
                 )}
@@ -525,7 +526,10 @@ const HouseDetail = () => {
           </button>
         </div> */}
       </div>
+      
     </Wrap>
+    <Footer/>
+    </>
   );
 };
 
@@ -557,6 +561,7 @@ const ImgInnerBox1 = styled.div`
     height: 550px;
     margin-top: 10px;
     border-radius: 30px;
+  
   }
 `;
 
@@ -572,6 +577,7 @@ const ImgInnerBox2 = styled.div`
     width: 100%;
     height: 265px;
     border-radius: 30px;
+    
   }
 `;
 const InfoBox = styled.div`
@@ -666,6 +672,7 @@ const ImgDiv = styled.div`
   /* background-image: url(${jeju2}); */
   border-radius: 30px;
   background-size: cover;
+
   button {
     width: 48.5%;
     height: 46px;
