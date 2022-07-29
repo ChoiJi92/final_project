@@ -35,7 +35,7 @@ const CommunityDetail = () => {
     ["detailContent", params.id],
     () =>
       instance
-        .get(`/post/${params.id}`, { params: { userId: Number(userId) } })
+        .get(`/post/${params.id}`)
         .then((res) => {
           console.log(res.data);
           return res.data;
@@ -162,7 +162,7 @@ const CommunityDetail = () => {
     <>
     <MetaTag title={'커뮤니티 | 멘도롱 제주'}></MetaTag>
     <Container>
-      <Image image={data.allPost[0].images[0].thumbnailURL}></Image>
+      <Image image={data.allPost[0].images[0].postImageURL}></Image>
       <Wrap>
         <WrapLeft>
           <Content>
@@ -176,7 +176,7 @@ const CommunityDetail = () => {
               <User>
                 <div className="profileImage">
                   <img
-                    src={data.allPost[0].images[0].userImageURL}
+                    src={data.allPost[0].userImageURL}
                     alt="프로필"
                   ></img>
                   <div className="profile">
@@ -230,8 +230,8 @@ const CommunityDetail = () => {
                     <>
                       <button
                         onClick={() => {
-                          // navigate(`/userwrite/${params.id}`);
-                          navigate('/onready')
+                          navigate(`/userwrite/${params.id}`);
+                          // navigate('/onready')
                         }}
                       >
                         수정
@@ -317,7 +317,7 @@ const CommunityDetail = () => {
                 </div>
               ) : (
                 <>
-                  {data.outherPosts?.map((v) => (
+                  {data.outherPostInfo?.map((v) => (
                     <div className="otherWrap" key={v.postId}>
                       <Thumbnail image={v.images[0]?.thumbnailURL}></Thumbnail>
                       <div className="card">
@@ -364,7 +364,7 @@ const CommunityDetail = () => {
                 </>
               )}
             </div>
-            {data.outherPosts?.length > 0 && (
+            {data.outherPostInfo?.length > 0 && (
               <button
                 onClick={() => {
                   if (data.allPost[0].userId === Number(userId)) {

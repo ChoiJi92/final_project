@@ -33,10 +33,10 @@ const Community = () => {
     ["content"],
     () =>
       instance
-        .get("/post", { params: { userId: Number(userId) } })
+        .get("/post")
         .then((res) => {
           console.log(res.data);
-          setBestData(res.data.Top5post);
+          setBestData(res.data.Top5);
           setCommunityData(res.data.allPost);
           return res.data.allPost;
         }),
@@ -99,7 +99,7 @@ const Community = () => {
               <div className="wrap">
                 <div className="user">
                   <img src={bestData[count]?.images[0].userImageURL} alt="프로필"></img>
-                  <p>{bestData[count]?.nickname}</p>
+                  <p>{bestData[count]?.user?.nickname}</p>
                 </div>
                 <div className="like">
                   <div>
@@ -214,7 +214,7 @@ const Community = () => {
           {communityData.map((v) => (
             <Card key={v.postId}>
               <div className="leftContent">
-                <div className="user">{v.nickname}</div>
+                <div className="user">{v.user?.nickname}</div>
                 <h1
                   className="title"
                   onClick={() => {
