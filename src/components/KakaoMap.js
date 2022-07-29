@@ -11,6 +11,8 @@ import cancelIcon from "../assests/css/cancelIcon.png";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { hostData } from "../recoil/atoms";
+import { useMutation, useQueryClient } from "react-query";
+import instance from "../shared/axios";
 const KakaoMap = ({ data, height }) => {
   const { kakao } = window;
   const [isOpen, setIsOpen] = useState(false);
@@ -18,9 +20,62 @@ const KakaoMap = ({ data, height }) => {
   const [markers, setMarkers] = useState([]);
   const [info, setInfo] = useState();
   const [save, setSave] = useState(false);
+  const userId = localStorage.getItem("userId");
   const navigate=useNavigate()
   // const data = useRecoilValue(hostData)
+  const queryClient = useQueryClient();
   console.log(data)
+  const savePost = useMutation(
+    ["save"],(id) =>
+      instance
+        .post(`/save/${id}`)
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err, "why");
+        }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("houseInfo");
+      },
+    }
+  );      
+  const saveDelete = useMutation(
+    ["save"],(id) =>
+      instance
+        .delete(`/save/${id}/unsave`)
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err, "why");
+        }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("houseInfo");
+      },
+    }
+  );
+  
+  const saveClick = (id) => {
+    if(userId){
+      setSave(true);
+      savePost.mutate(id);
+    }else{
+      navigate("/loginerror")
+    }
+  }
+
+  const cancelSaveClick = (id) => {
+    if(userId){
+      setSave(false);
+      
+      saveDelete.mutate(id);
+    }else{
+      navigate("/loginerror")
+    }
+  }
   useEffect(() => {
     if (!map) return;
     let geocoder = new kakao.maps.services.Geocoder();
@@ -105,9 +160,9 @@ const KakaoMap = ({ data, height }) => {
             />
             {isOpen && info.content === v.content && (
               <CustomOverlayMap position={v.position}>
-                <Wrap image={v.content.images[0].postImageURL}>
+                <Wrap  image={v.content.images[0].postImageURL}>
                   <div className="info">
-                    <div className="title">
+                    <div  className="title">
                       <img
                         src={cancelIcon}
                         className="close"
@@ -126,7 +181,7 @@ const KakaoMap = ({ data, height }) => {
                           {save ? (
                             <img
                               onClick={() => {
-                                setSave(false);
+                                saveClick(v.content.hostId)
                               }}
                               src={saveIcon}
                               alt="저장"
@@ -134,7 +189,7 @@ const KakaoMap = ({ data, height }) => {
                           ) : (
                             <img
                               onClick={() => {
-                                setSave(true);
+                                cancelSaveClick(v.content.hostId)
                               }}
                               src={unsaveIcon}
                               alt="저장"
@@ -209,11 +264,13 @@ const Wrap = styled.div`
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     position: relative;
+   
     img {
       position: absolute;
       right: 10px;
       top: 10px;
       cursor: pointer;
+      z-index: 99;
     }
   }
   .body {
