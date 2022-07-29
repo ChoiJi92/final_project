@@ -704,6 +704,9 @@ const HiddenMyLikeBox = styled.div`
       overflow: hidden;
       text-overflow: ellipsis;
       cursor: pointer;
+      :hover {
+      color: #3498db;
+    }
     }
   }
   .thumbnailImg {
