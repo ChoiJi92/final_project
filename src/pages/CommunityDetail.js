@@ -51,8 +51,8 @@ const CommunityDetail = () => {
     ["loadComment"],
     () =>
       instance.get(`/post/${params.id}/comment`).then((res) => {
-        console.log("전체코멘트", res.data.comments);
-        return res.data.comments;
+        console.log("전체코멘트", res.data);
+        return res.data.commentInfo;
       }),
     {
       // retry: false, // 재호출 안하기
@@ -181,7 +181,7 @@ const CommunityDetail = () => {
                   ></img>
                   <div className="profile">
                     <div className="nickname">{data.allPost[0].nickname}</div>
-                    <div className="time">2시간 전</div>
+                    {/* <div className="time">2시간 전</div> */}
                   </div>
                 </div>
                 <Button>

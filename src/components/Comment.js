@@ -52,13 +52,13 @@ const Comment = ({ value, index }) => {
   return (
     <Wrap key={value.commentId}>
       <div className="userWrap">
-        <img src={value.images[0].userImageURL} alt="프로필"></img>
+        <img src={value.userImageURL} alt="프로필"></img>
         <div className="content">
           <h3 className="nickName">{value.nickname}</h3>
           {!edit ? (
             <>
               <div className="comment">{value.comment}</div>
-              <div className="date">2시간 전</div>
+              {/* <div className="date">2시간 전</div> */}
             </>
           ) : (
             <input

@@ -8,6 +8,7 @@ import starIcon from "../assests/css/starIcon.png";
 import unsaveIcon from "../assests/css/unsaveIcon.png";
 import saveIcon from "../assests/css/saveIcon.png";
 import cancelIcon from "../assests/css/cancelIcon.png";
+import { useNavigate } from "react-router-dom";
 const TestMap2 = ({ data, height }) => {
   const { kakao } = window;
   const [isOpen, setIsOpen] = useState(false);
@@ -15,9 +16,10 @@ const TestMap2 = ({ data, height }) => {
   const [markers, setMarkers] = useState([]);
   const [info, setInfo] = useState();
   const [save, setSave] = useState(false);
-
+  const navigate=useNavigate()
+  console.log(data)
   useEffect(() => {
-    // if (!map) return;
+    if (!map) return;
     let geocoder = new kakao.maps.services.Geocoder();
     let markers = [];
     const bounds = new kakao.maps.LatLngBounds();
@@ -112,11 +114,11 @@ const TestMap2 = ({ data, height }) => {
                     </div>
                     <div className="body">
                       <div className="desc">
-                        <div className="house">{v.content.title}</div>
+                        <div className="house" onClick={()=>{navigate(`/house/${v.content.hostId}`)}}>{v.content.title}</div>
                         <div className="iconWrap">
                           <div>
                             <img src={starIcon} alt="별점"></img>
-                            <p>{v.content.average}</p>
+                            <p>{v.content.average.toFixed(1)}</p>
                           </div>
                           {save ? (
                             <img
@@ -228,6 +230,7 @@ const Wrap = styled.div`
     line-height: 32px;
     color: #828282;
     margin-bottom: 11px;
+    cursor: pointer;
   }
   .iconWrap {
     display: flex;

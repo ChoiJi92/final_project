@@ -312,7 +312,6 @@ const Card = styled.div`
     }
   }
   .roomInfo {
-    
     h3 {
       margin-bottom: 12px;
       font-style: normal;
@@ -322,7 +321,6 @@ const Card = styled.div`
       color: #636366;
     }
     .avatar {
-      /* border: 1px solid; */
       width: 70%;
       display: flex;
       flex-direction: row;
@@ -334,6 +332,9 @@ const Card = styled.div`
       align-items: center;
       /* margin-right: 40px; */
       width: 280px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      /* overflow: hidden; */
       /* border: 1px solid; */
       p {
         margin-left: 10px;
