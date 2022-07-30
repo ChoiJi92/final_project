@@ -35,7 +35,7 @@ const CommunityDetail = () => {
     ["detailContent", params.id],
     () =>
       instance.get(`/post/${params.id}`).then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         return res.data;
       }),
     {
@@ -78,7 +78,7 @@ const CommunityDetail = () => {
     ["Like"],
     (id) =>
       instance.post(`/like/${id}`).then((res) => {
-        // console.log(res.data)
+        console.log(res.data)
         return res.data;
       }),
     {
