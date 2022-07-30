@@ -35,7 +35,7 @@ const Community = () => {
       instance
         .get("/post")
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           setBestData(res.data.Top5);
           setCommunityData(res.data.allPost);
           return res.data.allPost;
@@ -46,7 +46,10 @@ const Community = () => {
   );
   const Like = useMutation(
     ["Like"],
-    (id) => instance.post(`/like/${id}`).then((res) => console.log(res.data)),
+    (id) => instance.post(`/like/${id}`).then((res) => {
+      // console.log(res.data)
+      return res.data
+    }),
     {
       onSuccess: () => {
         // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
@@ -60,7 +63,10 @@ const Community = () => {
     (id) =>
       instance
         .delete(`/like/${id}/unlike`)
-        .then((res) => console.log(res.data)),
+        .then((res) => {
+          // console.log(res.data)
+          return res.data
+        }),
     {
       onSuccess: () => {
         // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)

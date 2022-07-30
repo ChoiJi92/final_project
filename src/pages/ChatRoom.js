@@ -35,7 +35,7 @@ const ChatRoom = () => {
       instance
         .get(`/room/${params.id}`)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           setChat([
             ...res.data.loadChat.map((v) => ({
               messageChat: v.chat,
@@ -46,7 +46,7 @@ const ChatRoom = () => {
           return res.data;
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
         }),
     {
       enabled:!!params.id,
@@ -64,10 +64,10 @@ const ChatRoom = () => {
   // useBeforeunload((event) => event.preventDefault());
 
   useEffect(() => {
-    console.log("연결");
+    // console.log("연결");
     socket.current = io(url);
     // socketRef.current = io.connect(url);
-    console.log("나는 이펙트 소켓", socket.current);
+    // console.log("나는 이펙트 소켓", socket.current);
     socket.current.emit("join-room", params.id, userId);
 
     return () => {
@@ -89,24 +89,24 @@ const ChatRoom = () => {
 
     });
     socket.current.on("bye", (nickname) => {
-      console.log(nickname, "님이 퇴장하셨습니다.","웰컴과 같은 자리");
+      // console.log(nickname, "님이 퇴장하셨습니다.","웰컴과 같은 자리");
       setChat([
         ...chat,
         { messageChat: `${nickname}님이 퇴장하셨습니다.`, user: "system" },
       ]);
 
     });
-    console.log(chat,'나는 채팅리스트')
+    // console.log(chat,'나는 채팅리스트')
   }, [chat]);
   const sendMessage = (message) => {
-    console.log("나는 메세지 소켓", socket);
+    // console.log("나는 메세지 소켓", socket);
     if (message !== "") {
       socket.current.emit("chat_message", message, userId, params.id);
       setChat([
         ...chat,
         { messageChat: message, user: nickName, profileImage: userImage },
       ]);
-      console.log(message, userId);
+      // console.log(message, userId);
       messageRef.current.value = "";
     }
   };
@@ -132,7 +132,7 @@ const ChatRoom = () => {
             profileImage: userImage,
           },
         ]);
-        console.log(chat);
+        // console.log(chat);
         messageRef.current.value = "";
       }
     }

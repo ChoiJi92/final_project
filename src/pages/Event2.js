@@ -9,11 +9,12 @@ import Fade from "@mui/material/Fade";
 import Typography from "@mui/material/Typography";
 import cancelIcon from "../assests/css/cancelIcon.png";
 import event1 from "../assests/css/eventImage1.webp";
-
+import event2 from "../assests/css/eventImage2.webp";
+import { Link, useNavigate } from "react-router-dom";
 const style = {
   position: "absolute",
-  top: "50%",
-  left: "60%",
+  top: "40%",
+  left: "40%",
   transform: "translate(-50%, -50%)",
   width: 572,
   bgcolor: "background.paper",
@@ -23,13 +24,16 @@ const style = {
   p: 2,
   outline: "none",
 };
-const Event = () => {
-  const COOKIE_KEY = "mendoronjeju"; // 쿠키이름세팅
+const Event2 = () => {
+  const COOKIE_KEY = "mendoronjeju2"; // 쿠키이름세팅
   const [cookies, setCookie] = useCookies([COOKIE_KEY]);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
+  const handleClose = () => {
+    setOpen(false);
+    // navigate("/community");
+  };
+  const navigate = useNavigate();
   const hideModal = () => {
     const decade = moment(); // 일단 moment 로 시간변수를 만들어주고
     decade.add(24, "h"); // 하루뒤로 값을 add 해준다.
@@ -52,9 +56,6 @@ const Event = () => {
   }, []);
   return (
     <div>
-      {/* <div style={{ fontSize: "23px" }} className="login" onClick={handleOpen}>
-        로그인
-      </div> */}
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -78,11 +79,17 @@ const Event = () => {
               ></img>
             </Container>
             <Middle id="transition-modal-description" sx={{ mt: 2 }}>
-                <Img src={event1} alt="이벤트"></Img>
-              {/* <Img src={event2} alt="이벤트"></Img> */}
+              <Img src={event2} alt="이벤트"></Img>
             </Middle>
             <EventBtn>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdm8GprASrYq2aP3mCDhGKKt89Q09R7KwKmDtEz9Higuv7jaw/viewform" target='_blank' onClick={()=>{handleClose()}}>이벤트 참여하러 가기</a>
+              <button
+                onClick={() => {
+                  handleClose();
+                  navigate('/community')
+                }}
+              >
+                이벤트 참여하러 가기
+              </button>
             </EventBtn>
             <Btn>
               <button onClick={hideModal}>하루동안 보지 않기 </button>
@@ -129,7 +136,7 @@ const EventBtn = styled.div`
   display: flex;
   justify-content: center;
   margin-bottom: 10px;
-  a {
+  button {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -145,6 +152,7 @@ const EventBtn = styled.div`
     line-height: 150%;
     color: #48484a;
     text-decoration: none;
+    cursor: pointer;
   }
 `;
 const Btn = styled.div`
@@ -161,4 +169,4 @@ const Btn = styled.div`
     cursor: pointer;
   }
 `;
-export default Event;
+export default Event2;

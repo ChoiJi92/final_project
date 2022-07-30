@@ -34,12 +34,10 @@ const CommunityDetail = () => {
   const { data } = useQuery(
     ["detailContent", params.id],
     () =>
-      instance
-        .get(`/post/${params.id}`)
-        .then((res) => {
-          console.log(res.data);
-          return res.data;
-        }),
+      instance.get(`/post/${params.id}`).then((res) => {
+        console.log(res.data);
+        return res.data;
+      }),
     {
       // retry: false, // 재호출 안하기
       enabled: !!params.id,
@@ -51,7 +49,7 @@ const CommunityDetail = () => {
     ["loadComment"],
     () =>
       instance.get(`/post/${params.id}/comment`).then((res) => {
-        console.log("전체코멘트", res.data);
+        // console.log("전체코멘트", res.data);
         return res.data.commentInfo;
       }),
     {
@@ -78,7 +76,11 @@ const CommunityDetail = () => {
   // 좋아요
   const Like = useMutation(
     ["Like"],
-    (id) => instance.post(`/like/${id}`).then((res) => console.log(res.data)),
+    (id) =>
+      instance.post(`/like/${id}`).then((res) => {
+        // console.log(res.data)
+        return res.data;
+      }),
     {
       onSuccess: () => {
         // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
@@ -90,9 +92,10 @@ const CommunityDetail = () => {
   const unLike = useMutation(
     ["unLike"],
     (id) =>
-      instance
-        .delete(`/like/${id}/unlike`)
-        .then((res) => console.log(res.data)),
+      instance.delete(`/like/${id}/unlike`).then((res) => {
+        // console.log(res.data);
+        return res.data
+      }),
     {
       onSuccess: () => {
         // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
@@ -106,10 +109,11 @@ const CommunityDetail = () => {
       instance
         .post(`/save/${id}`)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
+          return res.data
         })
         .catch((err) => {
-          console.log(err, "why");
+          // console.log(err, "why");
         }),
     {
       onSuccess: () => {
@@ -123,10 +127,11 @@ const CommunityDetail = () => {
       instance
         .delete(`/save/${id}/unsave`)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
+          return res.data
         })
         .catch((err) => {
-          console.log(err, "why");
+          // console.log(err, "why");
         }),
     {
       onSuccess: () => {
@@ -148,7 +153,7 @@ const CommunityDetail = () => {
     ["deleteContent"],
     (postId) =>
       instance.delete(`/post/${postId}`).then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         navigate("/community");
       }),
     {
@@ -160,266 +165,281 @@ const CommunityDetail = () => {
   );
   return (
     <>
-    <MetaTag title={'커뮤니티 | 멘도롱 제주'}></MetaTag>
-    <Container>
-      <Image image={data.allPost[0].images[0].postImageURL}></Image>
-      <Wrap>
-        <WrapLeft>
-          <Content>
-            <div className="hashTag">
-              {data.allPost[0]?.tagList.length > 0 && data.allPost[0]?.tagList.map((v, i) => (
-                <p key={i}>{v}</p>
-              ))}
-            </div>
-            <div>
-              <h1>{data.allPost[0].title}</h1>
-              <User>
-                <div className="profileImage">
-                  <img
-                    src={data.allPost[0].userImageURL}
-                    alt="프로필"
-                  ></img>
-                  <div className="profile">
-                    <div className="nickname">{data.allPost[0].nickname}</div>
-                    {/* <div className="time">2시간 전</div> */}
-                  </div>
-                </div>
-                <Button>
-                  {Number(userId) !== data.allPost[0].userId ? (
-                    <>
-                      <Share data={data.allPost[0]}></Share>
-                      {data.allPost[0].islike ? (
-                        <button
-                          style={{ width: "40%" }}
-                          onClick={() => {
-                            if(userId){
-                            unLike.mutate(data.allPost[0].postId);
-                            }else{
-                              navigate('/loginerror')
-                            }
-                          }}
-                        >
-                          좋아요
-                          <img
-                            className="unlikeIcon"
-                            src={likeIcon}
-                            alt="좋아요"
-                          />
-                        </button>
-                      ) : (
-                        <button
-                          style={{ width: "40%" }}
-                          onClick={() => {
-                            if(userId){
-                            Like.mutate(data.allPost[0].postId);
-                            }else{
-                              navigate('/loginerror')
-                            }
-                          }}
-                        >
-                          좋아요
-                          <img
-                            className="unlikeIcon"
-                            src={unlikeIcon}
-                            alt="좋아요"
-                          />
-                        </button>
-                      )}
-                    </>
-                  ) : (
-                    <>
-                      <button
-                        onClick={() => {
-                          navigate(`/userwrite/${params.id}`);
-                          // navigate('/onready')
-                        }}
-                      >
-                        수정
-                        <img className="editIcon" src={editIcon} alt="수정" />
-                      </button>
-                      <button
-                        onClick={() => {
-                          deleteContent.mutate(data.allPost[0].postId);
-                        }}
-                      >
-                        삭제
-                        <img
-                          className="deleteIcon"
-                          src={deleteIcon}
-                          alt="삭제"
-                        />
-                      </button>
-                    </>
-                  )}
-                </Button>
-              </User>
-            </div>
-            <div className="post">
-              <Viewer initialValue={data.allPost[0].content}></Viewer>
-            </div>
-          </Content>
-          <WrapBottom>
-            {data.findAllAcc.length > 0 ? (
-              <>
-                <h2>포스팅에 나온 숙소보러가기</h2>
-                <div className="houseWrap">
-                  <SlideImg
-                    item={data.findAllAcc[0].images}
-                    width={"30.7%"}
-                    height={"260px"}
-                  ></SlideImg>
-                  <div className="content">
-                    <div className="title">
-                      <h2 onClick={()=>[
-                      navigate(`/house/${data.findAllAcc[0].hostId}`)
-                    ]}>{data.findAllAcc[0].title}</h2>
-                      <p>{data.findAllAcc[0].hostContent.length > 50 ?data.findAllAcc[0].hostContent.slice(0,50)+' ...' : data.findAllAcc[0].hostContent }</p>
-                    </div>
-                    <div className="iconWrap">
-                      <div>
-                        <img src={starIcon} alt="star"></img>
-                        <p>{data.findAllAcc[0].average}</p>
-                      </div>
-                      {data.findAllAcc[0].isSave ? (
-                        <img src={saveIcon} alt="save" onClick={()=>{
-                          if(userId){
-                          savePost.mutate(data.findAllAcc[0].hostId)
-                          }else{
-                            navigate('/loginerror')
-                          }
-                        }}></img>
-                      ) : (
-                        <img src={unsaveIcon} alt="unsave" onClick={()=>{
-                          if(userId){
-                          saveDelete.mutate(data.findAllAcc[0].hostId)
-                          }else{
-                            navigate('/loginerror')
-                          }
-                        }}></img>
-                      )}
+      <MetaTag title={"커뮤니티 | 멘도롱 제주"}></MetaTag>
+      <Container>
+        <Image image={data.allPost[0].images[0].postImageURL}></Image>
+        <Wrap>
+          <WrapLeft>
+            <Content>
+              <div className="hashTag">
+                {data.allPost[0]?.tagList.length > 0 &&
+                  data.allPost[0]?.tagList.map((v, i) => v==="" ? "" : <p key={i}>{v}</p>)}
+              </div>
+              <div>
+                <h1>{data.allPost[0].title}</h1>
+                <User>
+                  <div className="profileImage">
+                    <img src={data.allPost[0].userImageURL} alt="프로필"></img>
+                    <div className="profile">
+                      <div className="nickname">{data.allPost[0].nickname}</div>
+                      {/* <div className="time">2시간 전</div> */}
                     </div>
                   </div>
-                </div>
-              </>
-            ) : (
-              <KakaoMap data={data.allPost} height={"300px"} />
-            )}
-          </WrapBottom>
-        </WrapLeft>
-        <WrapRight>
-          <div className="otherContent">
-            <h2>글쓴이의 다른 글</h2>
-            <div className="otherContainer">
-              {data.outherPostInfo?.length === 0 ? (
-                <div className="noContent">
-                  <img src={mypageImg} alt="아직 없어요"></img>
-                  <p>아직 다른 글은 없어요.</p>
-                </div>
-              ) : (
+                  <Button>
+                    {Number(userId) !== data.allPost[0].userId ? (
+                      <>
+                        <Share data={data.allPost[0]}></Share>
+                        {data.allPost[0].islike ? (
+                          <button
+                            style={{ width: "40%" }}
+                            onClick={() => {
+                              if (userId) {
+                                unLike.mutate(data.allPost[0].postId);
+                              } else {
+                                navigate("/loginerror");
+                              }
+                            }}
+                          >
+                            좋아요
+                            <img
+                              className="unlikeIcon"
+                              src={likeIcon}
+                              alt="좋아요"
+                            />
+                          </button>
+                        ) : (
+                          <button
+                            style={{ width: "40%" }}
+                            onClick={() => {
+                              if (userId) {
+                                Like.mutate(data.allPost[0].postId);
+                              } else {
+                                navigate("/loginerror");
+                              }
+                            }}
+                          >
+                            좋아요
+                            <img
+                              className="unlikeIcon"
+                              src={unlikeIcon}
+                              alt="좋아요"
+                            />
+                          </button>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          onClick={() => {
+                            // navigate(`/userwrite/${params.id}`);
+                            navigate('/onready')
+                          }}
+                        >
+                          수정
+                          <img className="editIcon" src={editIcon} alt="수정" />
+                        </button>
+                        <button
+                          onClick={() => {
+                            deleteContent.mutate(data.allPost[0].postId);
+                          }}
+                        >
+                          삭제
+                          <img
+                            className="deleteIcon"
+                            src={deleteIcon}
+                            alt="삭제"
+                          />
+                        </button>
+                      </>
+                    )}
+                  </Button>
+                </User>
+              </div>
+              <div className="post">
+                <Viewer initialValue={data.allPost[0].content}></Viewer>
+              </div>
+            </Content>
+            <WrapBottom>
+              {data.findAllAcc.length > 0 ? (
                 <>
-                  {data.outherPostInfo?.map((v) => (
-                    <div className="otherWrap" key={v.postId}>
-                      <Thumbnail image={v.images[0]?.thumbnailURL}></Thumbnail>
-                      <div className="card">
-                        <h3>{v.title}</h3>
-                        <div className="icon">
-                          <div className="like">
-                            {v.islike ? (
-                              <img
-                                onClick={() => {
-                                  if(userId){
-                                  unLike.mutate(v.postId);
-                                  }else{
-                                    navigate('/loginerror')
-                                  }
-                                  // setIslike(false);
-                                }}
-                                src={likeIcon}
-                                alt="좋아요"
-                              />
-                            ) : (
-                              <img
-                                onClick={() => {
-                                  if(userId){
-                                  Like.mutate(v.postId);
-                                  }else{
-                                    navigate('/loginerror')
-                                  }
-                                  // setIslike(true);
-                                }}
-                                src={unlikeIcon}
-                                alt="좋아요"
-                              />
-                            )}
-                            <p>{v.likeNum}개</p>
-                          </div>
-                          <div className="comment">
-                            <img src={commentIcon} alt="댓글" />
-                            <p>{v.commentNum}개</p>
+                  <h2>포스팅에 나온 숙소보러가기</h2>
+                  <div className="houseWrap">
+                    <SlideImg
+                      item={data.findAllAcc[0].images}
+                      width={"30.7%"}
+                      height={"260px"}
+                    ></SlideImg>
+                    <div className="content">
+                      <div className="title">
+                        <h2
+                          onClick={() => [
+                            navigate(`/house/${data.findAllAcc[0].hostId}`),
+                          ]}
+                        >
+                          {data.findAllAcc[0].title}
+                        </h2>
+                        <p>
+                          {data.findAllAcc[0].hostContent.length > 50
+                            ? data.findAllAcc[0].hostContent.slice(0, 50) +
+                              " ..."
+                            : data.findAllAcc[0].hostContent}
+                        </p>
+                      </div>
+                      <div className="iconWrap">
+                        <div>
+                          <img src={starIcon} alt="star"></img>
+                          <p>{data.findAllAcc[0].average}</p>
+                        </div>
+                        {data.findAllAcc[0].isSave ? (
+                          <img
+                            src={saveIcon}
+                            alt="save"
+                            onClick={() => {
+                              if (userId) {
+                                savePost.mutate(data.findAllAcc[0].hostId);
+                              } else {
+                                navigate("/loginerror");
+                              }
+                            }}
+                          ></img>
+                        ) : (
+                          <img
+                            src={unsaveIcon}
+                            alt="unsave"
+                            onClick={() => {
+                              if (userId) {
+                                saveDelete.mutate(data.findAllAcc[0].hostId);
+                              } else {
+                                navigate("/loginerror");
+                              }
+                            }}
+                          ></img>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <KakaoMap data={data.allPost} height={"300px"} />
+              )}
+            </WrapBottom>
+          </WrapLeft>
+          <WrapRight>
+            <div className="otherContent">
+              <h2>글쓴이의 다른 글</h2>
+              <div className="otherContainer">
+                {data.outherPostInfo?.length === 0 ? (
+                  <div className="noContent">
+                    <img src={mypageImg} alt="아직 없어요"></img>
+                    <p>아직 다른 글은 없어요.</p>
+                  </div>
+                ) : (
+                  <>
+                    {data.outherPostInfo?.map((v) => (
+                      <div className="otherWrap" key={v.postId}>
+                        <Thumbnail
+                          image={v.images[0]?.thumbnailURL}
+                        ></Thumbnail>
+                        <div className="card">
+                          <h3>{v.title}</h3>
+                          <div className="icon">
+                            <div className="like">
+                              {v.islike ? (
+                                <img
+                                  onClick={() => {
+                                    if (userId) {
+                                      unLike.mutate(v.postId);
+                                    } else {
+                                      navigate("/loginerror");
+                                    }
+                                    // setIslike(false);
+                                  }}
+                                  src={likeIcon}
+                                  alt="좋아요"
+                                />
+                              ) : (
+                                <img
+                                  onClick={() => {
+                                    if (userId) {
+                                      Like.mutate(v.postId);
+                                    } else {
+                                      navigate("/loginerror");
+                                    }
+                                    // setIslike(true);
+                                  }}
+                                  src={unlikeIcon}
+                                  alt="좋아요"
+                                />
+                              )}
+                              <p>{v.likeNum}개</p>
+                            </div>
+                            <div className="comment">
+                              <img src={commentIcon} alt="댓글" />
+                              <p>{v.commentNum}개</p>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
-                </>
+                    ))}
+                  </>
+                )}
+              </div>
+              {data.outherPostInfo?.length > 0 && (
+                <button
+                  onClick={() => {
+                    if (data.allPost[0].userId === Number(userId)) {
+                      navigate("/mypage");
+                    } else {
+                      navigate(`/userpage/${data.allPost[0].userId}`);
+                    }
+                  }}
+                >
+                  글쓴이 글 더 보러가기
+                </button>
               )}
             </div>
-            {data.outherPostInfo?.length > 0 && (
-              <button
-                onClick={() => {
-                  if (data.allPost[0].userId === Number(userId)) {
-                    navigate("/mypage");
-                  } else {
-                    navigate(`/userpage/${data.allPost[0].userId}`);
-                  }
-                }}
-              >
-                글쓴이 글 더 보러가기
-              </button>
-            )}
-          </div>
-        </WrapRight>
-      </Wrap>
-      <Count>
-        <div className="likeShare">
-          <div>
-            <p>좋아요 {data.allPost[0].likeNum}개</p>
-            {/* <p>스크랩 00개</p> */}
-            <p>댓글 {loadComment.data.length}개</p>
-          </div>
-          <Share2 data={data.allPost[0]}></Share2>
-        </div>
-      </Count>
-      <CommentWrap>
-        <h3>댓글</h3>
-        {userId && (
-          <div className="comment">
-            <img src={userImage} alt="기본이미지"></img>
-            <div className="commentInput">
-              <input
-                ref={commentRef}
-                placeholder="칭찬과 격려의 댓글은 작성자에게 큰 힘이 됩니다."
-                onKeyPress={onKeyPress}
-              ></input>
-              <button
-                onClick={() => {
-                  if (commentRef.current.value === "") {
-                    window.alert("댓글을 입력해 주세요 :)");
-                  } else {
-                    createComment.mutate(commentRef.current.value);
-                    commentRef.current.value = "";
-                  }
-                }}
-              >
-                입력
-              </button>
+          </WrapRight>
+        </Wrap>
+        <Count>
+          <div className="likeShare">
+            <div>
+              <p>좋아요 {data.allPost[0].likeNum}개</p>
+              {/* <p>스크랩 00개</p> */}
+              <p>댓글 {loadComment.data.length}개</p>
             </div>
+            <Share2 data={data.allPost[0]}></Share2>
           </div>
-        )}
-      </CommentWrap>
-      <CommentList data={loadComment.data}></CommentList>
-    </Container>
-    <Footer/>
+        </Count>
+        <CommentWrap>
+          <h3>댓글</h3>
+          {userId && (
+            <div className="comment">
+              <img src={userImage} alt="기본이미지"></img>
+              <div className="commentInput">
+                <input
+                  ref={commentRef}
+                  placeholder="칭찬과 격려의 댓글은 작성자에게 큰 힘이 됩니다."
+                  onKeyPress={onKeyPress}
+                ></input>
+                <button
+                  onClick={() => {
+                    if (commentRef.current.value === "") {
+                      window.alert("댓글을 입력해 주세요 :)");
+                    } else {
+                      createComment.mutate(commentRef.current.value);
+                      commentRef.current.value = "";
+                    }
+                  }}
+                >
+                  입력
+                </button>
+              </div>
+            </div>
+          )}
+        </CommentWrap>
+        <CommentList data={loadComment.data}></CommentList>
+      </Container>
+      <Footer />
     </>
   );
 };
@@ -625,9 +645,8 @@ const WrapBottom = styled.div`
       font-size: 24px;
       line-height: 140%;
       color: #828282;
-
     }
-    img{
+    img {
       cursor: pointer;
     }
   }

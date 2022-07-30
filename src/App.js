@@ -28,6 +28,7 @@ import Mypage from './pages/Mypage'
 import MetaTag from './pages/MetaTag';
 import OnReady from './pages/OnReady';
 import Event from './pages/Event';
+import Event2 from './pages/Event2';
 
 
 function App() {
@@ -36,7 +37,9 @@ function App() {
     <div className="App">
        <MetaTag title={'멘도롱 제주'}></MetaTag>
       <GlobalStyles />
+      <Event2/>
       <Event/>
+      
       <Header/>
       <Routes>
         <Route path="/" element={<Main />} />
