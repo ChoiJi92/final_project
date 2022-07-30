@@ -45,6 +45,7 @@ const HostRegistModal = ({ isOpen }) => {
       })
       .catch((err) => {
         // console.log(err);
+        window.alert(err.reponse.data.message)
       });
   });
   return (
