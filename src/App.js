@@ -37,8 +37,7 @@ function App() {
     <div className="App">
        <MetaTag title={'멘도롱 제주'}></MetaTag>
       <GlobalStyles />
-      <Event2/>
-      <Event/>
+     
       
       <Header/>
       <Routes>
