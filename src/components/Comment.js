@@ -70,6 +70,7 @@ const Comment = ({ value, index }) => {
               autoFocus
               ref={commentRef}
               placeholder="칭찬과 격려의 댓글 수정"
+              defaultValue={value.comment}
             ></input>
           )}
         </div>
