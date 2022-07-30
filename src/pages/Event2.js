@@ -28,11 +28,13 @@ const Event2 = () => {
   const COOKIE_KEY = "mendoronjeju2"; // 쿠키이름세팅
   const [cookies, setCookie] = useCookies([COOKIE_KEY]);
   const [open, setOpen] = useState(false);
+//   const [location , setLocation] = useState(false)
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
-    // navigate("/community");
+   
   };
+
   const navigate = useNavigate();
   const hideModal = () => {
     const decade = moment(); // 일단 moment 로 시간변수를 만들어주고
@@ -84,8 +86,8 @@ const Event2 = () => {
             <EventBtn>
               <button
                 onClick={() => {
-                  handleClose();
-                  navigate('/community')
+                  handleClose()
+                  setTimeout(()=>{navigate('/community')},0)
                 }}
               >
                 이벤트 참여하러 가기
