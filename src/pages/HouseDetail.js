@@ -45,8 +45,8 @@ const HouseDetail = () => {
   const openModal = (id, review, star, reviewId) => {
     if (!userId) {
       //로그인이 필요한 페이지 입니다.
-      navigate("/loginerror")
-      // alert("로그인이 필요합니다.");
+      // navigate("/")
+      alert("로그인이 필요합니다.");
     } else {
       setModalOpen(true);
       setIsReviewUpdate({
@@ -55,7 +55,7 @@ const HouseDetail = () => {
         star:star,
         reviewId:reviewId
       });
-      console.log(review, star, " 이거슨 리뷰와 별점")
+      // console.log(review, star, " 이거슨 리뷰와 별점")
     }
   };
   // console.log(isReivewUpdate , "이거슨 유저아이디");
@@ -87,7 +87,7 @@ const HouseDetail = () => {
     ["houseDetail", hostId],
 
     () => 
-      instance.get(`/host/${hostId}`).then((res) => {console.log(res.data);return res.data}),
+      instance.get(`/host/${hostId}`).then((res) => {return res.data}),
     
     {
       refetchOnWindowFocus: false,
@@ -101,9 +101,9 @@ const HouseDetail = () => {
     () => 
        instance
         .get(`/review/${hostId}/review`)
-        .then((res) => {console.log(res.data);return(res.data)})
+        .then((res) => {return(res.data)})
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
         }),
     
     {
@@ -121,8 +121,12 @@ const HouseDetail = () => {
 
   const deleteReview = useMutation((reviewId)=>{
     return instance.delete(`/review/${hostId}/${reviewId}`)
-    .then((res)=>console.log(res))
-    .catch((erro)=>console.log(erro));
+    .then((res)=>{
+      // console.log(res)
+    })
+    .catch((erro)=>{
+      // console.log(erro)
+    });
   },
   {
     onSuccess: () => {
@@ -137,10 +141,10 @@ const HouseDetail = () => {
       instance
         .post(`/save/${id}`)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
         })
         .catch((err) => {
-          console.log(err, "why");
+          // console.log(err, "why");
         }),
     {
       onSuccess: () => {
@@ -153,10 +157,10 @@ const HouseDetail = () => {
       instance
         .delete(`/save/${id}/unsave`)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
         })
         .catch((err) => {
-          console.log(err, "why");
+          // console.log(err, "why");
         }),
     {
       onSuccess: () => {
@@ -166,19 +170,13 @@ const HouseDetail = () => {
   );
   
   const saveClick = (id) => {
-    if(userId){
-      savePost.mutate(id);
-    }else{
-      navigate("/loginerror")
-    }
+    savePost.mutate(id)
+    // saveDelete.mutate(id)
+    // console.log(id)
   }
 
   const cancelSaveClick = (id) => {
-    if(userId){
-      saveDelete.mutate(id);
-    }else{
-      navigate("/loginerror")
-    }
+    saveDelete.mutate(id)
   }
 
   let testscore = 0;
@@ -486,6 +484,12 @@ const HouseDetail = () => {
                 <span>{data?.findAllAcc?.mainAddress}</span>
                 
               </div>
+              {/* <div id="barLink">
+                <a href={data?.findAllAcc?.link}>
+                  <span>{data?.findAllAcc?.link}</span>
+                </a>
+                
+              </div> */}
               <div id="barTag">
                 {data?.findAllAcc?.tagList.length > 0 && data?.findAllAcc?.tagList.slice(0, 4).map((item, idx) => (
                   <HashTagBox key={idx}>{item}</HashTagBox>
@@ -512,7 +516,17 @@ const HouseDetail = () => {
             </div>
           </RightBarBox>
         </div>
+        {/* <div>
+          <button
+            onClick={() => {
+              onDelete(data?.findAllAcc?.hostId);
+            }}
+          >
+            삭제
+          </button>
+        </div> */}
       </div>
+      
     </Wrap>
     <Footer/>
     </>

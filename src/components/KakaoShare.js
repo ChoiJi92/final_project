@@ -8,7 +8,7 @@ const KakaoShare = ({ data }) => {
   // const isUserShare = useRecoilValue(userShare);
   const isHostShare = useRecoilValue(hostShareAndMap);
   // console.log(!isUserShare);
-  console.log(isHostShare.findAllAcc," 이거슨 카카오 쉐어");
+  // console.log(isHostShare.findAllAcc," 이거슨 카카오 쉐어");
   // console.log(data);
   const url = window.location.href; //현재 url가져오기
   useEffect(() => {

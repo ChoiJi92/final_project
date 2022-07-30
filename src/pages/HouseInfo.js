@@ -85,7 +85,7 @@ const HouseInfo = () => {
   );
 
   const addressChange = (e) => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     setAddress(e.target.value);
   };
 
@@ -95,10 +95,12 @@ const HouseInfo = () => {
       instance
         .get(`/host/address/search`, { params: { search: address } })
         .then((res) => {
-          console.log(res.data, "지역검색");
+          // console.log(res.data, "지역검색");
           setIsHostData(res.data.hostPost);
         })
-        .catch((err) => console.log(err)),
+        .catch((err) => {
+          // console.log(err)
+        }),
     {
       enabled: !!address,
       refetchOnWindowFocus: false,
@@ -114,10 +116,12 @@ const HouseInfo = () => {
       instance
         .get(`/host/type/search`, { params: { search: type } })
         .then((res) => {
-          console.log(res.data, "숙소형태검색");
+          // console.log(res.data, "숙소형태검색");
           setIsHostData(res.data.housebyType);
         })
-        .catch((err) => console.log(err)),
+        .catch((err) => {
+          // console.log(err)
+        }),
     {
       enabled: !!type,
       refetchOnWindowFocus: false,
@@ -129,10 +133,10 @@ const HouseInfo = () => {
       instance
         .post(`/save/${id}`)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
         })
         .catch((err) => {
-          console.log(err, "why");
+          // console.log(err, "why");
         }),
     {
       onSuccess: () => {
@@ -146,10 +150,10 @@ const HouseInfo = () => {
       instance
         .delete(`/save/${id}/unsave`)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
         })
         .catch((err) => {
-          console.log(err, "why");
+          // console.log(err, "why");
         }),
     {
       onSuccess: () => {
