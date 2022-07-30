@@ -86,7 +86,7 @@ const HostWrite = () => {
   const onImgChange = (e) => {
     if (!hostId) {
       const imgLists = e.target.files;
-      console.log(imgLists, "이거 타겟");
+      // console.log(imgLists, "이거 타겟");
       let imgUrlLists = [...multiImgs];
       let testList = [];
       for (let i = 0; i < imgLists.length; i++) {
@@ -161,10 +161,10 @@ const HostWrite = () => {
       instance
         .post(`/host`, data)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
         })
         .catch((err) => {
-          console.log(err, "why");
+          // console.log(err, "why");
         }),
     {
       onSuccess: () => {
@@ -189,10 +189,10 @@ const HostWrite = () => {
     //   },
     // }
   );
-  console.log(testImg, "삭제되고 보여지는 스테이트");
-  console.log(deleteState, "삭제된 스테이트");
-  console.log(newImgList, "추가된 이미지 스테이트");
-  console.log(deletedImg, "삭제되고 남아 있는 스테이트");
+  // console.log(testImg, "삭제되고 보여지는 스테이트");
+  // console.log(deleteState, "삭제된 스테이트");
+  // console.log(newImgList, "추가된 이미지 스테이트");
+  // console.log(deletedImg, "삭제되고 남아 있는 스테이트");
   // console.log(testFileList ,"testfilelist")
   // console.log(multiImgs, "멀티이미지 스테이트")
   // console.log(testFileList)
@@ -210,7 +210,7 @@ const HostWrite = () => {
     // }
     // if (hostId) {
     if (multiImgs.length > 3) {
-      console.log("hi");
+      // console.log("hi");
       const formData = new FormData();
       formData.append("category", data.category);
       formData.append("houseInfo", data.houseInfo);
@@ -225,11 +225,11 @@ const HostWrite = () => {
       imgFileList.forEach((item) => formData.append("images", item));
 
       if (hostId) {
-        updateMutation.mutate(formData);
+        // updateMutation.mutate(formData);
       } else {
-        console.log(imgFileList);
+        // console.log(imgFileList);
         testWrite.mutate(formData);
-        console.log(tagList);
+        // console.log(tagList);
       }
       setOpen(true);
     } else {
@@ -257,7 +257,7 @@ const HostWrite = () => {
   };
 
   const hiddenSetp = watch("stepSelect");
-  console.log(data.userId)
+  // console.log(data.userId)
   // console.log(multiImgs.length, isMiniImg);
   return (
     <>

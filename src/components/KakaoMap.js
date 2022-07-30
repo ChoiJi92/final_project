@@ -24,7 +24,7 @@ const KakaoMap = ({ data, height }) => {
   const navigate=useNavigate()
   // const data = useRecoilValue(hostData)
   const queryClient = useQueryClient();
-  console.log(data)
+  // console.log(data)
   const savePost = useMutation(
     ["save"],(id) =>
       instance
