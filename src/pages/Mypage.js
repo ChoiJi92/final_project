@@ -54,14 +54,14 @@ const Mypage = () => {
       instance
         .get(`oauth/mypage/${userId}`)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           return (
             //   setMyLikePost(res.data.mylikespost), setMyPost(res.data.mypostinfo)
             res.data
           );
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           if(err.response.status === 401){
             localStorage.clear()
             window.location.reload()

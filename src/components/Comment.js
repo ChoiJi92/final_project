@@ -4,8 +4,8 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import editIcon from "../assests/css/editIcon.png";
 import deleteIcon from "../assests/css/deleteIcon.png";
-import checkIcon from '../assests/css/checkIcon.webp'
-import cancelIcon from '../assests/css/cancelIcon.webp'
+import checkIcon from "../assests/css/checkIcon.webp";
+import cancelIcon from "../assests/css/cancelIcon.webp";
 import instance from "../shared/axios";
 const Comment = ({ value, index }) => {
   const queryClient = useQueryClient();
@@ -19,11 +19,14 @@ const Comment = ({ value, index }) => {
     (comment) =>
       instance
         .put(`/post/${params.id}/${value.commentId}`, { comment })
-        .then((res) => console.log(res.data)),
+        .then((res) => {
+          // console.log(res.data)
+          return res.data;
+        }),
     {
       onSuccess: () => {
         // update 성공하면 'loadComment'라는 key를 가진 친구가 실행
-        console.log("성공");
+        // console.log("성공");
         queryClient.invalidateQueries("loadComment");
       },
     }
@@ -32,9 +35,10 @@ const Comment = ({ value, index }) => {
   const deleteComment = useMutation(
     ["deleteComment"],
     (commentId) =>
-      instance
-        .delete(`/post/${params.id}/${commentId}`)
-        .then((res) => console.log(res.data)),
+      instance.delete(`/post/${params.id}/${commentId}`).then((res) => {
+        // console.log(res.data);
+        return res.data
+      }),
     {
       onSuccess: () => {
         // delete 성공하면 'detailContent'라는 key를 가진 친구가 실행

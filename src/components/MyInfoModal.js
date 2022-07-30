@@ -68,13 +68,13 @@ const MyInfoModal = () => {
         },
       })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         localStorage.setItem("userImage", res.data.userImageURL[0]);
         handleClose();
         window.location.reload();
       })
       .catch((err) => {
-        console.log(err, "why");
+        // console.log(err, "why");
       });
   });
 

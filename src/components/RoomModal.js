@@ -19,29 +19,34 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 500,
-  height: 'auto',
+  height: "auto",
   bgcolor: "background.paper",
   borderRadius: "30px",
   outline: "none",
   boxShadow: 24,
   p: 4,
-  background: 'linear-gradient(0deg, rgba(246, 243, 239, 0.5), rgba(246, 243, 239, 0.5)), #FFFFFF' 
+  background:
+    "linear-gradient(0deg, rgba(246, 243, 239, 0.5), rgba(246, 243, 239, 0.5)), #FFFFFF",
 };
 
-const RoomModal = ({ width,borderRadius }) => {
+const RoomModal = ({ width, borderRadius }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [tagList, setTagList] = useState([]);
-  const [userCount, setUserCount]=useState()
+  const [userCount, setUserCount] = useState();
   const queryClient = useQueryClient();
   const roomNameRef = useRef();
   const userCountRef = useRef();
-  const userId =localStorage.getItem('userId')
-  const navigate = useNavigate()
+  const userId = localStorage.getItem("userId");
+  const navigate = useNavigate();
   const createChatRoom = useMutation(
     ["createChatRoom"],
-    (data) => instance.post("/room", data).then((res) => console.log(res.data)),
+    (data) =>
+      instance.post("/room", data).then((res) => {
+        // console.log(res.data);
+        return res.data
+      }),
     {
       onSuccess: () => {
         // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
@@ -59,9 +64,9 @@ const RoomModal = ({ width,borderRadius }) => {
     } else if (!userCount) {
       window.alert("방 인원을 정해주세요 :)");
     } else {
-      console.log(roomNameRef.current.value)
-      console.log(userCount)
-      console.log(tagList)
+      // console.log(roomNameRef.current.value);
+      // console.log(userCount);
+      // console.log(tagList);
       const data = {
         title: roomNameRef.current.value,
         max: userCount,
@@ -74,12 +79,18 @@ const RoomModal = ({ width,borderRadius }) => {
   };
   return (
     <Wrap width={width}>
-      <RoomButton borderRadius={borderRadius} onClick={()=>{
-        if(userId){
-        handleOpen()}else{
-          navigate('/loginerror')
-        }
-      }}>챗방 만들기</RoomButton>
+      <RoomButton
+        borderRadius={borderRadius}
+        onClick={() => {
+          if (userId) {
+            handleOpen();
+          } else {
+            navigate("/loginerror");
+          }
+        }}
+      >
+        챗방 만들기
+      </RoomButton>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -99,8 +110,10 @@ const RoomModal = ({ width,borderRadius }) => {
                 className="cancel"
                 src={cancelIcon}
                 alt="닫기"
-                onClick={()=>{handleClose()
-                setTagList([])}}
+                onClick={() => {
+                  handleClose();
+                  setTagList([]);
+                }}
               ></img>
             </Container>
             <Middle
@@ -119,42 +132,40 @@ const RoomModal = ({ width,borderRadius }) => {
               <div className="userCount">
                 <h3>인원</h3>
                 <Select
-                defaultValue=""
-                onChange={userCountChange}
-                style={{
-                  width: "80%",
-                  height: "56px",
-                  border: "none",
-                  background: '#F7F3EF',
-                  fontStyle: "normal",
-                  fontWeight: "500",
-                  fontSize: "18px",
-                  lineHeight: "150%",
-                  borderRadius: "10px",
-                }}
-                displayEmpty
-                inputProps={{ "aria-label": "Without label" }}
-              >
-                <MenuItem value="" disabled={true}>
-                  채팅방 인원을 선택해주세요.
-                </MenuItem>
-                <MenuItem value="2">
-                  2
-                </MenuItem>
-                <MenuItem value="3">3</MenuItem>
-                <MenuItem value="4">4</MenuItem>
-                <MenuItem value="5">5</MenuItem>
-                <MenuItem value="6">6</MenuItem>
-                <MenuItem value="7">7</MenuItem>
-                <MenuItem value="8">8</MenuItem>
-              </Select>
+                  defaultValue=""
+                  onChange={userCountChange}
+                  style={{
+                    width: "80%",
+                    height: "56px",
+                    border: "none",
+                    background: "#F7F3EF",
+                    fontStyle: "normal",
+                    fontWeight: "500",
+                    fontSize: "18px",
+                    lineHeight: "150%",
+                    borderRadius: "10px",
+                  }}
+                  displayEmpty
+                  inputProps={{ "aria-label": "Without label" }}
+                >
+                  <MenuItem value="" disabled={true}>
+                    채팅방 인원을 선택해주세요.
+                  </MenuItem>
+                  <MenuItem value="2">2</MenuItem>
+                  <MenuItem value="3">3</MenuItem>
+                  <MenuItem value="4">4</MenuItem>
+                  <MenuItem value="5">5</MenuItem>
+                  <MenuItem value="6">6</MenuItem>
+                  <MenuItem value="7">7</MenuItem>
+                  <MenuItem value="8">8</MenuItem>
+                </Select>
               </div>
               <div className="hashTag">
                 <h3>태그</h3>
                 <TagList
                   maxLength={4}
-                  width= {'100%'}
-                  margin={'0'}
+                  width={"100%"}
+                  margin={"0"}
                   tagList={tagList}
                   setTagList={setTagList}
                 />
@@ -178,8 +189,9 @@ const RoomButton = styled.button`
   font-weight: 700;
   font-size: 20px;
   line-height: 24px;
-  border-radius: ${(props)=>props.borderRadius};
-  background:linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), #EEE9E4;;
+  border-radius: ${(props) => props.borderRadius};
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+    #eee9e4;
   color: white;
   border: none;
   cursor: pointer;
@@ -215,7 +227,7 @@ const Middle = styled(Typography)`
       width: 80%;
       height: 56px;
       border: none;
-      background: #F7F3EF;
+      background: #f7f3ef;
       border-radius: 10px;
       font-style: normal;
       font-weight: 500;
@@ -274,7 +286,8 @@ const Btn = styled.button`
   font-size: 18px;
   line-height: 24px;
   border-radius: 10px;
-  background:linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), #EEE9E4;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+    #eee9e4;
   color: white;
   display: flex;
   justify-content: center;

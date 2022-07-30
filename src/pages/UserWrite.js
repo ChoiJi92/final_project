@@ -22,18 +22,18 @@ import { textImageURL, thumbnailURL } from "../recoil/atoms";
 const UserWrite = () => {
   const params = useParams();
   const userId = localStorage.getItem("userId");
-  const [existThumbnail, setExistThumbnail] = useRecoilState(thumbnailURL);
-  const [existTextImage, setExistTextImage] = useRecoilState(textImageURL);
+  // const [existThumbnail, setExistThumbnail] = useRecoilState(thumbnailURL);
+  // const [existTextImage, setExistTextImage] = useRecoilState(textImageURL);
   // params.id에 의 queryfunction이 실행될지 말지를 결정하므로 queryKey에 넣어줘야함
   const { data } = useQuery(
     ["editContent", params.id],
     () =>
       instance.get(`/post/${params.id}`).then((res) => {
-        console.log(res.data);
-        setExistThumbnail([res.data.allPost[0].images[0]]);
-        setExistTextImage([
-          ...res.data.allPost[0].images.filter((_, i) => i !== 0),
-        ]);
+        // console.log(res.data);
+        // setExistThumbnail([res.data.allPost[0].images[0]]);
+        // setExistTextImage([
+        //   ...res.data.allPost[0].images.filter((_, i) => i !== 0),
+        // ]);
         return res.data.allPost[0];
       }),
     {
@@ -143,27 +143,27 @@ const UserWrite = () => {
     // console.log(editorImage); // foreach 돌려야함
     // console.log(preImages);
     // console.log("저장");
-    console.log(existThumbnail); //처음에 저장된 썸네일
-    console.log(existTextImage); //처음에 저장된 텍스트 이미지
+    // console.log(existThumbnail); //처음에 저장된 썸네일
+    // console.log(existTextImage); //처음에 저장된 텍스트 이미지
 
     let filterImage = preImages.filter((v) => !content.includes(v)); // 삭제된 imageurl
-    let filterTextImage = existTextImage.filter((v)=> !content.includes(v))
-    console.log(filterTextImage)
-    console.log(filterImage, "나는 없어진 이미지!");
+    // let filterTextImage = existTextImage.filter((v)=> !content.includes(v))
+    // console.log(filterTextImage)
+    // console.log(filterImage, "나는 없어진 이미지!");
     let index = filterImage.map((v) => preImages.indexOf(v));
-    console.log(index, "나는 없어진 친구 인덱스");
+    // console.log(index, "나는 없어진 친구 인덱스");
     let newEditorImage = editorImage.filter((_, i) => !index.includes(i));
-    console.log(
-      editorImage.filter((_, i) => !index.includes(i)),
-      "나는 필터된 file!!"
-    );
+    // console.log(
+    //   editorImage.filter((_, i) => !index.includes(i)),
+    //   "나는 필터된 file!!"
+    // );
     let newPreImages = preImages.filter((v) => content.includes(v));
-    console.log(
-      preImages.filter((v) => content.includes(v)),
-      "필터된 친구"
-    );
+    // console.log(
+    //   preImages.filter((v) => content.includes(v)),
+    //   "필터된 친구"
+    // );
     let preFilterImages = preImages.filter((v) => content.includes(v));
-    console.log(preFilterImages);
+    // console.log(preFilterImages);
 
     if (!thumbnail && !preview) {
       window.alert("썸네일 사진을 추가해 주세요 :)");
@@ -181,8 +181,8 @@ const UserWrite = () => {
       //   console.log('여기는?')
       //   formData.append("images", preview)
       // }
-      console.log(newEditorImage, "필터된 파일객체들");
-      console.log(newPreImages, "필터된 url들");
+      // console.log(newEditorImage, "필터된 파일객체들");
+      // console.log(newPreImages, "필터된 url들");
       newEditorImage.forEach((file) => formData.append("images", file));
 
       formData.append("title", title);

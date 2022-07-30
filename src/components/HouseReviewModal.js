@@ -58,7 +58,7 @@ const HouseReviewModal = (props) => {
           // console.log(res.data);
         })
         .catch((err) => {
-          console.log(err, "why");
+          // console.log(err, "why");
         }),
     {
       onSuccess: () => {
@@ -75,7 +75,7 @@ const HouseReviewModal = (props) => {
           // console.log(res.data);
         })
         .catch((err) => {
-          console.log(err, "why");
+          // console.log(err, "why");
         }),
     {
       onSuccess: () => {
@@ -90,7 +90,7 @@ const HouseReviewModal = (props) => {
       // console.log(res.data);
     })
     .catch((error)=>{
-      console.log(error, "why");
+      // console.log(error, "why");
     }),{
       onSuccess: () => {
         queryClient.invalidateQueries("reviewDetail");

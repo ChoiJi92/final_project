@@ -35,16 +35,16 @@ const HostRegistModal = ({ isOpen }) => {
   const [ishost, setIshost] = useState(false);
   const navigate = useNavigate();
   const hostRegister = useMutation((CNU) => {
-    console.log(CNU);
+    // console.log(CNU);
     instance
       .put("/oauth/mypage/checkCNU", { CNU })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setIshost(res.data.result);
         localStorage.setItem("host", res.data.result);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   });
   return (

@@ -8,10 +8,10 @@ import instance from '../shared/axios';
 import { useNavigate } from 'react-router-dom';
 import saveIcon from "../assests/css/saveIcon.png";
 const SearchResult = ({search}) => {
-    console.log(search ,'나는 서치할것!!')
+    // console.log(search ,'나는 서치할것!!')
     const {data}  = useQuery(['searchRoom',search],()=>
     instance.get(`/room/search`,{params:{search:search}}).then((res)=>{
-      console.log(res)
+      // console.log(res)
       return res.data.searchResult
     }),{
       enabled:!!search,
@@ -23,11 +23,11 @@ const SearchResult = ({search}) => {
           instance
             .post(`/room/${roomId}`)
             .then((res) => {
-              console.log(res.data);
+              // console.log(res.data);
               navigate(`/chatroom/${roomId}`);
             })
             .catch((err) => {
-              console.log(err);
+              // console.log(err);
               window.alert(err.response.data.msg);
             })
       );

@@ -27,7 +27,7 @@ const AddressModal = ({setAddress}) => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const handleComplete = (data) => {
-      console.log(data)
+      // console.log(data)
         let fullAddress = data.roadAddress;
         // let extraAddress = '';
         // if (data.addressType === 'R') {

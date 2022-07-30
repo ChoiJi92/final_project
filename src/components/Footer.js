@@ -1,18 +1,22 @@
 import React from "react";
 import styled from "styled-components";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 const Footer = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <Wrap>
       <div className="wrap">
         <div className="title">멘도롱제주</div>
         <div className="service">
-          <p onClick={()=>{
-            navigate('/userpolicy')
-          }}>개인정보 처리 방침</p>
+          <p
+            onClick={() => {
+              navigate("/userpolicy");
+            }}
+          >
+            개인정보 처리 방침
+          </p>
           <p>문의하기</p>
-          <p>인스타그램</p>
+          <a href="https://www.instagram.com/_mendorong_jeju/" target='_black'>인스타그램</a>
         </div>
       </div>
     </Wrap>
@@ -56,7 +60,17 @@ const Wrap = styled.footer`
       opacity: 0.2;
       margin-right: 60px;
       cursor: pointer;
-      :hover{
+      :hover {
+        opacity: 1;
+      }
+    }
+    a {
+      text-decoration: none;
+      color: black;
+      opacity: 0.2;
+      margin-right: 60px;
+      cursor: pointer;
+      :hover {
         opacity: 1;
       }
     }
