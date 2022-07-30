@@ -83,20 +83,7 @@ const HouseReviewModal = (props) => {
       },
     }
   );  
-  //   const updateReview1= useMutation((data)=>(
-  //   instance
-  //   .put(`/review/${hostId}/${isReivewUpdate.reviewId}`, data)
-  //   .then((res)=>{
-  //     // console.log(res.data);
-  //   })
-  //   .catch((error)=>{
-  //     // console.log(error, "why");
-  //   }),{
-  //     onSuccess: () => {
-  //       queryClient.invalidateQueries("reviewDetail");
-  //     },
-  //   }
-  // ))
+
   const reviewSubmit = () => {
     
     if(!isReivewUpdate.review){

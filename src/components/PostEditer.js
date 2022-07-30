@@ -53,7 +53,7 @@ const PostEditer = ({setContent,setPreImages,content,setEditorImage}) => {
         language="ko-KR" // 도구설명 한글
         hooks={{
             addImageBlobHook : async (blob, callback) => {
-                console.log(blob)
+                // console.log(blob)
                 const imageUrl = URL.createObjectURL(blob)
                 setPreImages((prevState)=>[...prevState,imageUrl])
                 setEditorImage((prevState)=>[...prevState,blob])

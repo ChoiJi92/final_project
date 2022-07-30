@@ -17,28 +17,28 @@ const WriteFooter = ({
 }) => {
   const params = useParams();
   const navigate = useNavigate();
-  const temporary = useMutation(["tempPost"], (formData) =>
-    instance.post("/post", formData).then((res) => {
-      console.log(res.data);
-    })
-  );
-  const tempPost = () => {
-    console.log(`${address} ${getValues("subAddress")}`);
-    console.log(getValues());
-    // const post = {
-    //   title: title,
-    //   postContent: content,
-    // tripLocation: `${address} ${getValues('subAddress')}`
-    // };
-    // const formData = new FormData();
-    // // thumbnail.forEach((file) => formData.append("file", file));
-    // formData.append("file", thumbnail);
-    // const json = JSON.stringify(post);
-    // const blob = new Blob([json], { type: "application/json" });
-    // formData.append("contents", blob);
+  // const temporary = useMutation(["tempPost"], (formData) =>
+  //   instance.post("/post", formData).then((res) => {
+  //     // console.log(res.data);
+  //   })
+  // );
+  // const tempPost = () => {
+  //   // console.log(`${address} ${getValues("subAddress")}`);
+  //   // console.log(getValues());
+  //   // const post = {
+  //   //   title: title,
+  //   //   postContent: content,
+  //   // tripLocation: `${address} ${getValues('subAddress')}`
+  //   // };
+  //   // const formData = new FormData();
+  //   // // thumbnail.forEach((file) => formData.append("file", file));
+  //   // formData.append("file", thumbnail);
+  //   // const json = JSON.stringify(post);
+  //   // const blob = new Blob([json], { type: "application/json" });
+  //   // formData.append("contents", blob);
 
-    // temporary.mutate(formData)
-  };
+  //   // temporary.mutate(formData)
+  // };
   return (
     <Wrap>
       <input
@@ -48,7 +48,7 @@ const WriteFooter = ({
           if (confirm) {
             reset();
             navigate(-1);
-            console.log("취소");
+            // console.log("취소");
           }
         }}
         value="작성 취소"

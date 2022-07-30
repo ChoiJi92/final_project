@@ -25,7 +25,7 @@ const ChatList = () => {
     ["loadChatRoom"],
     () =>
       instance.get("/room").then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         return res.data;
       }),
     {
@@ -41,7 +41,7 @@ const ChatList = () => {
           navigate(`/chatroom/${roomId}`);
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           window.alert(err.response.data.msg);
         })
     // ,{

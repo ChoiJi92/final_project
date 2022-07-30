@@ -7,7 +7,7 @@ const NaverRedirect = () => {
     let params = new URL(window.location.href).searchParams;
     let code = params.get("code"); // 인가코드 받는 부분
     let state = params.get('state')
-    console.log(code)
+    // console.log(code)
     
     useEffect(()=>{
       async function naverLogin(){
@@ -15,7 +15,7 @@ const NaverRedirect = () => {
         await instance
         .get(`/oauth/naver/callback?code=${code}`)
         .then((response) => {
-          console.log(response)
+          // console.log(response)
           localStorage.setItem('token',response.data.users.token)  
           localStorage.setItem('userId',response.data.users.userId)  
           localStorage.setItem('nickName',response.data.users.nickname)  
@@ -26,7 +26,7 @@ const NaverRedirect = () => {
           window.location.replace("/"); // 토큰 받고 로그인되면 화면 전환(메인으로)
         })
         .catch((err) => {
-          console.log("소셜로그인 에러", err);
+          // console.log("소셜로그인 에러", err);
           window.alert("로그인에 실패하였습니다.");
           // window.location.replace("/");
         });
