@@ -31,6 +31,7 @@ import HouseReviewDetail from "../components/HouseReviewDetail";
 import Footer from "../components/Footer";
 import instance from "../shared/axios";
 import KaKaoMap from "../components/KakaoMap";
+import { SaveAsOutlined } from "@mui/icons-material";
 
 const HouseDetail = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -101,9 +102,9 @@ const HouseDetail = () => {
     () => 
        instance
         .get(`/review/${hostId}/review`)
-        .then((res) => {return(res.data)})
+        .then((res) => { return(res.data)})
         .catch((err) => {
-          // console.log(err);
+          console.log(err);
         }),
     
     {
@@ -175,7 +176,9 @@ const HouseDetail = () => {
     }else{
       navigate("/loginerror")
     }
-    // saveDelete.mutate(id)
+    // savePost.mutate(id);
+    // savePost.mutate(id);
+    
     // console.log(id)
   }
 
@@ -185,6 +188,7 @@ const HouseDetail = () => {
     }else{
       navigate("/loginerror")
     }
+    
   }
 
   let testscore = 0;
@@ -220,7 +224,7 @@ const HouseDetail = () => {
     navigate("/house");
   };
   
- 
+//  console.log(data.findAllAcc.isSave);
   return (
     <>
     <Wrap>
