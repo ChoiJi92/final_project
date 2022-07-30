@@ -170,13 +170,21 @@ const HouseDetail = () => {
   );
   
   const saveClick = (id) => {
-    savePost.mutate(id)
+    if(userId){
+      savePost.mutate(id);
+    }else{
+      navigate("/loginerror")
+    }
     // saveDelete.mutate(id)
     // console.log(id)
   }
 
   const cancelSaveClick = (id) => {
-    saveDelete.mutate(id)
+    if(userId){
+      saveDelete.mutate(id);
+    }else{
+      navigate("/loginerror")
+    }
   }
 
   let testscore = 0;
