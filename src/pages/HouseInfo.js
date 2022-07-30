@@ -254,7 +254,7 @@ const HouseInfo = () => {
               setIsHostData(data.findAllAcc);
             }}
           >
-            편하게 한달 살기
+            편하게 한 달 살기
           </div>
           <div
             className="uncozy"
@@ -265,7 +265,7 @@ const HouseInfo = () => {
               setIsCozy("uncozy");
             }}
           >
-            최소비용으로 한달 살기
+            최소비용으로 한 달 살기
           </div>
           {/* <LiveUnderBar ref={liveUnderlineRef} /> */}
         </LiveMainBox>
@@ -280,7 +280,7 @@ const HouseInfo = () => {
             id="spot"
           >
             <img src={allCategory} alt="모두보기" />
-            <span>모두보기</span>
+            <span>모두 보기</span>
             {/* <SpotUnderBar ref={spotUnderlineRef} /> */}
           </div>
           <div
@@ -355,7 +355,7 @@ const HouseInfo = () => {
           >
             <img src={nearBySea} alt="해변근처" />
 
-            <span>해변근처</span>
+            <span>해변 근처</span>
           </div>
         </SpotMainBox>
 
@@ -376,7 +376,7 @@ const HouseInfo = () => {
                 onChange={typeChange}
               >
                 <MenuItem value="" disabled={true}>
-                  숙소형태
+                  숙소 형태
                 </MenuItem>
                 <MenuItem value="게스트하우스">게스트하우스</MenuItem>
                 <MenuItem value="펜션">펜션</MenuItem>
