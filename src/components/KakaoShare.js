@@ -34,7 +34,7 @@ const KakaoShare = ({ data }) => {
         content: {
           title: `${data? data.title : isHostShare.findAllAcc.title}`,
           description: `${data ? data.tagList : isHostShare.findAllAcc.tagList}`,
-          imageUrl: `${data ? data.images[0].thumbnailURL : isHostShare.findAllAcc.images[0].postImageURL }`,
+          imageUrl: `${data ? data.images[0].postImageURL : isHostShare.findAllAcc.images[0].postImageURL }`,
           link: {
             mobileWebUrl: url,
             webUrl: url,
