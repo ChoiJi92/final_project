@@ -35,7 +35,7 @@ const CommunityDetail = () => {
     ["detailContent", params.id],
     () =>
       instance.get(`/post/${params.id}`).then((res) => {
-        // console.log(res.data);
+        console.log(res.data);
         return res.data;
       }),
     {
@@ -109,7 +109,7 @@ const CommunityDetail = () => {
       instance
         .post(`/save/${id}`)
         .then((res) => {
-          // console.log(res.data);
+          console.log(res.data);
           return res.data
         })
         .catch((err) => {
@@ -127,7 +127,7 @@ const CommunityDetail = () => {
       instance
         .delete(`/save/${id}/unsave`)
         .then((res) => {
-          // console.log(res.data);
+          console.log(res.data);
           return res.data
         })
         .catch((err) => {
@@ -290,7 +290,7 @@ const CommunityDetail = () => {
                           <img src={starIcon} alt="star"></img>
                           <p>{data.findAllAcc[0].average}</p>
                         </div>
-                        {data.findAllAcc[0].isSave ? (
+                        {!data.findAllAcc[0].isSave ? (
                           <img
                             src={saveIcon}
                             alt="save"
