@@ -476,9 +476,10 @@ const Content = styled.div`
   width: 100%;
   /* height: 800px; */
   .hashTag {
-    height: 45px;
+    height: auto;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
     margin-bottom: 40px;
     p {
@@ -495,6 +496,7 @@ const Content = styled.div`
       font-size: 21px;
       font-weight: 600;
       line-height: 25.06px;
+      margin-bottom: 10px;
     }
   }
   h1 {
