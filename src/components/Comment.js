@@ -12,7 +12,7 @@ const Comment = ({ value, index }) => {
   const params = useParams();
   const commentRef = useRef();
   const [edit, setEdit] = useState(false);
-  const userId = localStorage.getItem("userId");
+  const userId = sessionStorage.getItem("userId");
   // 댓글 수정
   const updateComment = useMutation(
     ["updateComment"],

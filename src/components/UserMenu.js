@@ -92,7 +92,7 @@ const UserMenu = ({ userImage, nickName }) => {
             color: "#AEAEB2" 
           }}
           onClick={() => {
-            localStorage.clear();
+            sessionStorage.clear();
             handleClose();
             window.location.reload();
           }}

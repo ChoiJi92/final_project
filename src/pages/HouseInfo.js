@@ -479,7 +479,9 @@ const HouseInfo = () => {
             </ListWrap>
           </ContentsBox>
           <MapBox>
+
             <KakaoMap height={"85%"} />
+
           </MapBox>
         </div>
       </MainBox>

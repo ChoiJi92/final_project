@@ -19,13 +19,14 @@ import MetaTag from "./MetaTag";
 const ChatList = () => {
   const searchRef = useRef();
   const navigate = useNavigate();
-  const userId = localStorage.getItem("userId");
+  const userId = sessionStorage.getItem("userId");
+  const [hashTag, setHashTag] = useState()
   const [search, setSearch] = useState();
   const { data } = useQuery(
     ["loadChatRoom"],
     () =>
       instance.get("/room").then((res) => {
-        // console.log(res.data);
+        console.log(res.data);
         return res.data;
       }),
     {
@@ -85,7 +86,7 @@ const ChatList = () => {
           <div className="keyword">
             <div className="keywordTitle">인기 키워드</div>
             <div className="keywordList">
-              {data.tags?.slice(0,3).map((v,i)=> <p key={i}>{v}</p>)}
+              {data.tags?.map((v,i)=> <p key={i}>{v}</p>)}
             </div>
           </div>
         </Top>
@@ -171,7 +172,7 @@ const ChatList = () => {
               ))}
             </>
           ) : (
-            <SearchResult search={search}></SearchResult>
+            <SearchResult search={search} hashTag={hashTag}></SearchResult>
           )}
         </Bottom>
       </Container>

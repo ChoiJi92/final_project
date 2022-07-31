@@ -28,14 +28,14 @@ const Community = () => {
   const [category, setCategory] = useState("all");
   const [communityData, setCommunityData] = useRecoilState(postData);
   const [bestData, setBestData] = useRecoilState(bestPostData);
-  const userId = localStorage.getItem("userId");
+  const userId = sessionStorage.getItem("userId");
   const { data } = useQuery(
     ["content"],
     () =>
       instance
         .get("/post")
         .then((res) => {
-          // console.log(res.data);
+          console.log(res.data);
           setBestData(res.data.Top5);
           setCommunityData(res.data.allPost);
           return res.data.allPost;

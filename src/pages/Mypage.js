@@ -43,10 +43,10 @@ const Mypage = () => {
 
   const nicknameRef = useRef();
   const navigate = useNavigate();
-  const nickName = localStorage.getItem("nickName");
-  const userId = localStorage.getItem("userId");
-  const email = localStorage.getItem("email");
-  const host = localStorage.getItem("host");
+  const nickName = sessionStorage.getItem("nickName");
+  const userId = sessionStorage.getItem("userId");
+  const email = sessionStorage.getItem("email");
+  const host = sessionStorage.getItem("host");
 
   const { data } = useQuery(
     ["loadMyPage"],
@@ -62,10 +62,6 @@ const Mypage = () => {
         })
         .catch((err) => {
           // console.log(err);
-          if(err.response.status === 401){
-            localStorage.clear()
-            window.location.reload()
-          }
         }),
     {
       onSuccess: (data) => {

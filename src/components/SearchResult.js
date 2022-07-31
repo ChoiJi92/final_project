@@ -1,87 +1,99 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 import Avatar from "@mui/material/Avatar";
 import Badge from "@mui/material/Badge";
 import AvatarGroup from "@mui/material/AvatarGroup";
-import { useMutation, useQuery } from 'react-query';
-import instance from '../shared/axios';
-import { useNavigate } from 'react-router-dom';
+import { useMutation, useQuery } from "react-query";
+import instance from "../shared/axios";
+import { useNavigate } from "react-router-dom";
 import saveIcon from "../assests/css/saveIcon.png";
-const SearchResult = ({search}) => {
-    // console.log(search ,'나는 서치할것!!')
-    const {data}  = useQuery(['searchRoom',search],()=>
-    instance.get(`/room/search`,{params:{search:search}}).then((res)=>{
-      // console.log(res)
-      return res.data.searchResult
-    }),{
-      enabled:!!search,
+const SearchResult = ({ search, hashTag }) => {
+  // console.log(search ,'나는 서치할것!!')
+  const { data } = useQuery(
+    ["searchRoom", search],
+    () =>
+      instance
+        .get(`/room/search`, { params: { search: search } })
+        .then((res) => {
+          // console.log(res)
+          return res.data.searchResult;
+        }),
+    {
+      enabled: !!search,
       refetchOnWindowFocus: false,
-    })
-    const navigate=useNavigate()
-    const joinRoom = useMutation(
-        (roomId) =>
-          instance
-            .post(`/room/${roomId}`)
-            .then((res) => {
-              // console.log(res.data);
-              navigate(`/chatroom/${roomId}`);
-            })
-            .catch((err) => {
-              // console.log(err);
-              window.alert(err.response.data.msg);
-            })
-      );
-    return (
-      <>
-       {data.map((v, i) => (
-            <Card
-              key={v.roomId}
-              onClick={() => {
-                joinRoom.mutate(v.roomId);
-              }}
-            >
-              <div className="roomInfo">
-                <h3>{v.title}</h3>
-                <div className="avatar">
-                  <div className="host">
-                    <Badge
-                      overlap="circular"
-                      anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                      badgeContent={
-                        <img
-                          style={{ width: "17px", height: "17px" }}
-                          src={saveIcon}
-                          alt="호스트"
-                        ></img>
-                      }
-                    >
-                      <Avatar
-                        alt="호스트 이미지"
-                        src={v.hostImg}
-                        sx={{ width: 36, height: 36 }}
-                      />
-                    </Badge>
-                    <p>{v.hostNickname}</p>
-                  </div>
-                  <AvatarGroup max={4}>
-                    {v.roomUserImg.map((v, i) => (
-                      <Avatar
-                        key={i}
-                        alt={`${v}-${i}`}
-                        src={v}
-                        sx={{ width: 36, height: 36 }}
-                      />
-                    ))}
-                  </AvatarGroup>
-                </div>
+    }
+  );
+  const navigate = useNavigate();
+  const joinRoom = useMutation((roomId) =>
+    instance
+      .post(`/room/${roomId}`)
+      .then((res) => {
+        // console.log(res.data);
+        navigate(`/chatroom/${roomId}`);
+      })
+      .catch((err) => {
+        // console.log(err);
+        window.alert(err.response.data.msg);
+      })
+  );
+  return (
+    <>
+      {data.map((v, i) => (
+        <Card
+          key={v.roomId}
+          onClick={() => {
+            joinRoom.mutate(v.roomId);
+          }}
+        >
+          <div className="roomInfo">
+            <h3>{v.title}</h3>
+            <div className="avatar">
+              <div className="host">
+                <Badge
+                  overlap="circular"
+                  anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                  badgeContent={
+                    <img
+                      style={{ width: "17px", height: "17px" }}
+                      src={saveIcon}
+                      alt="호스트"
+                    ></img>
+                  }
+                >
+                  <Avatar
+                    alt="호스트 이미지"
+                    src={v.hostImg}
+                    sx={{ width: 36, height: 36 }}
+                  />
+                </Badge>
+                <p>{v.hostNickname}</p>
               </div>
-              <div className="roomUserNumber">
-                <p>참여자</p>
-                <p className="number">{v.roomUserNum}명</p>
-              </div>
-            </Card>
-          ))}</>
-    );
+              <AvatarGroup max={4}>
+                {v.roomUserImg.map((v, i) => (
+                  <Avatar
+                    key={i}
+                    alt={`${v}-${i}`}
+                    src={v}
+                    sx={{ width: 36, height: 36 }}
+                  />
+                ))}
+              </AvatarGroup>
+            </div>
+            <div className="tagList">
+              {v.hashTag.map((v, i) => (
+                <p key={i}>{v}</p>
+              ))}
+            </div>
+          </div>
+
+          <div className="roomUserNumber">
+            <p>참여자</p>
+            <p className="number">{v.roomUserNum}명</p>
+          </div>
+        </Card>
+      ))}
+    </>
+  );
 };
 
 const Card = styled.div`
@@ -90,17 +102,20 @@ const Card = styled.div`
   justify-content: space-between;
   width: 41.459%;
   height: 170px;
-  border-radius: 10px;
   border: none;
   padding: 20px;
-  background: #f7f3ef;
+  background: #fdfcfb;
+  box-shadow: 0px 12px 42px #eee9e4;
+  border-radius: 20px;
   position: relative;
   margin-bottom: 20px;
+  cursor: pointer;
   :hover {
-    background-color: #eee9e4;
+    background: #f7f3ef;
     .roomUserNumber {
-      background: linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
-        #eee9e4;
+      /* background: linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
+        #eee9e4; */
+      background: #eee9e4;
       border-radius: 10px;
     }
   }
@@ -114,7 +129,6 @@ const Card = styled.div`
       color: #636366;
     }
     .avatar {
-      /* border: 1px solid; */
       width: 70%;
       display: flex;
       flex-direction: row;
@@ -124,8 +138,12 @@ const Card = styled.div`
     .host {
       display: flex;
       align-items: center;
-      margin-right: 40px;
-      width: 200px;
+      /* margin-right: 40px; */
+      width: 280px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      /* overflow: hidden; */
+      /* border: 1px solid; */
       p {
         margin-left: 10px;
         font-style: normal;
@@ -133,6 +151,28 @@ const Card = styled.div`
         font-size: 20px;
         line-height: 24px;
         color: #636366;
+      }
+    }
+    .tagList {
+      margin-top: 22px;
+      display: flex;
+      flex-direction: row;
+      p {
+        /* margin-top: 10px; */
+        /* width: 25.865%; */
+        width: 122px;
+        height: 35px;
+        border-radius: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 10px;
+        background-color: #eee9e4;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 19px;
+        color: #3a3a3c;
       }
     }
     .MuiAvatar-root {
@@ -143,12 +183,12 @@ const Card = styled.div`
 
   .roomUserNumber {
     width: 130px;
-    border: 1px solid;
+    /* border: 1px solid; */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: #eee9e4;
+    background: #f7f3ef;
     border-radius: 10px;
     border: none;
     p {

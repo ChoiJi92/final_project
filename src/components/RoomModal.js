@@ -38,7 +38,7 @@ const RoomModal = ({ width, borderRadius }) => {
   const queryClient = useQueryClient();
   const roomNameRef = useRef();
   const userCountRef = useRef();
-  const userId = localStorage.getItem("userId");
+  const userId = sessionStorage.getItem("userId");
   const navigate = useNavigate();
   const createChatRoom = useMutation(
     ["createChatRoom"],
