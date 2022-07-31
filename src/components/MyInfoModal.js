@@ -27,9 +27,9 @@ const style = {
 };
 
 const MyInfoModal = () => {
-  const userImage = localStorage.getItem("userImage");
-  const nickName = localStorage.getItem("nickName");
-  const userId = localStorage.getItem("userId");
+  const userImage = sessionStorage.getItem("userImage");
+  const nickName = sessionStorage.getItem("nickName");
+  const userId = sessionStorage.getItem("userId");
   // const { open, close } = props;
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -69,7 +69,7 @@ const MyInfoModal = () => {
       })
       .then((res) => {
         // console.log(res.data);
-        localStorage.setItem("userImage", res.data.userImageURL[0]);
+        sessionStorage.setItem("userImage", res.data.userImageURL[0]);
         handleClose();
         window.location.reload();
       })

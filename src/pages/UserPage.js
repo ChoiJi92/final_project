@@ -25,10 +25,6 @@ const UserPage = () => {
 
   // 데이터
   const navigate = useNavigate();
-  const nickName = localStorage.getItem("nickName");
-  const userId = localStorage.getItem("userId");
-  const email = localStorage.getItem("email");
-  const userImage = localStorage.getItem("userImage");
   const params = useParams();
 
   const { data } = useQuery(

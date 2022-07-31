@@ -13,7 +13,7 @@ import { useRecoilValue } from "recoil";
 import { hostData } from "../recoil/atoms";
 import { useMutation, useQueryClient } from "react-query";
 import instance from "../shared/axios";
-const KakaoMap = ({ data, height }) => {
+const KakaoMap = ({ data, height,singleMarker }) => {
   const { kakao } = window;
   const [isOpen, setIsOpen] = useState(false);
   const [map, setMap] = useState();
@@ -79,7 +79,7 @@ const KakaoMap = ({ data, height }) => {
     let markers = [];
     const bounds = new kakao.maps.LatLngBounds();
     for (let i = 0; i < data.length; i++) {
-      geocoder.addressSearch(data[i].mainAddress + data[i].subAddress, function (result, status) {
+      geocoder.addressSearch(data[i].mainAddress, function (result, status) {
         // 정상적으로 검색이 완료됐으면
         if (status === kakao.maps.services.Status.OK) {
           // let content = `<div id= "label" class ="label">카카오!</div>`;
@@ -149,7 +149,7 @@ const KakaoMap = ({ data, height }) => {
             <MapMarker
               position={v.position}
               onClick={() => {
-                if (markers.length > 1) {
+                if (singleMarker) {
                   setInfo(v);
                   setIsOpen(true);
                 }

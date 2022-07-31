@@ -21,7 +21,7 @@ import { textImageURL, thumbnailURL } from "../recoil/atoms";
 
 const UserWrite = () => {
   const params = useParams();
-  const userId = localStorage.getItem("userId");
+  const userId = sessionStorage.getItem("userId");
   // const [existThumbnail, setExistThumbnail] = useRecoilState(thumbnailURL);
   // const [existTextImage, setExistTextImage] = useRecoilState(textImageURL);
   // params.id에 의 queryfunction이 실행될지 말지를 결정하므로 queryKey에 넣어줘야함

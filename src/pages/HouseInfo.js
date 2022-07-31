@@ -490,7 +490,7 @@ const HouseInfo = () => {
             </ListWrap>
           </ContentsBox>
           <MapBox>
-            <KakaoMap isinfo={"isinfo"} data={isHostData} height={"85%"} />
+            <KakaoMap singleMarker={true} isinfo={"isinfo"} data={isHostData} height={"85%"} />
           </MapBox>
         </div>
       </MainBox>

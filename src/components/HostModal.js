@@ -26,7 +26,7 @@ const style = {
 
 const HostModal = ({ close }) => {
   const navigate = useNavigate();
-  const host = localStorage.getItem("host");
+  const host = sessionStorage.getItem("host");
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
     if (host === "false") {

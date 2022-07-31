@@ -27,8 +27,8 @@ const CommunityDetail = () => {
   const params = useParams();
   const navigate = useNavigate();
   const commentRef = useRef();
-  const userId = localStorage.getItem("userId");
-  const userImage = localStorage.getItem("userImage");
+  const userId = sessionStorage.getItem("userId");
+  const userImage = sessionStorage.getItem("userImage");
   const [islike, setIslike] = useState(false);
 
   const { data } = useQuery(
@@ -320,7 +320,7 @@ const CommunityDetail = () => {
                   </div>
                 </>
               ) : (
-                <KakaoMap data={data.allPost} height={"300px"} />
+                <KakaoMap singleMarker={false} data={data.allPost} height={"300px"} />
               )}
             </WrapBottom>
           </WrapLeft>

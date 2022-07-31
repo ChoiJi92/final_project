@@ -19,9 +19,9 @@ const ChatRoom = () => {
   const navigate = useNavigate();
   const [chat, setChat] = useRecoilState(chatState);
   const [host, setHost] = useState(false);
-  const nickName = localStorage.getItem("nickName");
-  const userId = localStorage.getItem("userId");
-  const userImage = localStorage.getItem("userImage");
+  const nickName = sessionStorage.getItem("nickName");
+  const userId = sessionStorage.getItem("userId");
+  const userImage = sessionStorage.getItem("userImage");
   const url = process.env.REACT_APP_BASE_URL;
   const socket = useRef();
   const scrollToBottom = () => {

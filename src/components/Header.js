@@ -13,8 +13,8 @@ const Header = () => {
   const [menu, setMenu] = useState();
   const searchRef = useRef();
   const navigate = useNavigate();
-  const nickName = localStorage.getItem("nickName");
-  const userImage = localStorage.getItem("userImage");
+  const nickName = sessionStorage.getItem("nickName");
+  const userImage = sessionStorage.getItem("userImage");
   useEffect(()=>{
     setMenu(params)
   },[params])
