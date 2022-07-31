@@ -28,6 +28,12 @@ const ReviewDetailModal = (props) => {
   // console.log(userReview ,"its detail");
   const {open, close, data} = props;
   // console.log(data, "모달창에 있는 데이터")
+  console.log(data)
+  let totalStar = []
+  for(let i =0; i < data?.starpoint; i ++){
+    totalStar.push(i)
+  }
+  console.log(totalStar)
   return (
     <>
       {/* <Button onClick={handleOpen}>
@@ -62,8 +68,15 @@ const ReviewDetailModal = (props) => {
               <Profile data={data}/>
               </div>
               <div id="score">
+                
+                  
                 <StarIcon/>
-                <span>{data?.starpoint}</span>
+                <StarIcon/>
+                <StarIcon/>
+                <StarIcon/>
+                <StarIcon/>
+                
+                {/* <span>{data?.starpoint}</span> */}
               </div>
             </MainProfile>
             <Main>
@@ -121,10 +134,11 @@ const MainProfile = styled(Typography)`
   }
   #score{
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
     margin-top: 20px;
     margin-right: 20px;
     align-items: center;
+    
     span{
       opacity: 0.5;
       margin-top: 5px;
@@ -136,7 +150,8 @@ const StarIcon = styled(FaStar)`
   width: 25px;
   height: 25px;
   opacity: 0.7;
-  color: #2A7047;
+  /* color: #2A7047; */
+  margin-right: 10px;
 `
  
 export default ReviewDetailModal;
