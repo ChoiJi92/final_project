@@ -50,18 +50,17 @@ const HouseInfo = () => {
     location.state?.address ? location.state?.address : ""
   );
   const [type, setType] = useState("");
-  const userId = localStorage.getItem("userId");
+  const userId = sessionStorage.getItem("userId");
 
   const [category, setCategory] = useState(
     location.state?.category ? location.state?.category : "all"
   );
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
   const { data } = useQuery(
     ["houseInfo"],
     () =>
       instance
-        .get(`/host`)
+        .get(`/host`, { params: { userId: Number(userId) } })
         .then((res) => {
           // console.log(res.data);
           if (category === "all") {
@@ -85,7 +84,7 @@ const HouseInfo = () => {
   );
 
   const addressChange = (e) => {
-    // console.log(e.target.value);
+    console.log(e.target.value);
     setAddress(e.target.value);
   };
 
@@ -95,12 +94,10 @@ const HouseInfo = () => {
       instance
         .get(`/host/address/search`, { params: { search: address } })
         .then((res) => {
-          // console.log(res.data, "지역검색");
+          console.log(res.data, "지역검색");
           setIsHostData(res.data.hostPost);
         })
-        .catch((err) => {
-          // console.log(err)
-        }),
+        .catch((err) => console.log(err)),
     {
       enabled: !!address,
       refetchOnWindowFocus: false,
@@ -116,12 +113,10 @@ const HouseInfo = () => {
       instance
         .get(`/host/type/search`, { params: { search: type } })
         .then((res) => {
-          // console.log(res.data, "숙소형태검색");
+          console.log(res.data, "숙소형태검색");
           setIsHostData(res.data.housebyType);
         })
-        .catch((err) => {
-          // console.log(err)
-        }),
+        .catch((err) => console.log(err)),
     {
       enabled: !!type,
       refetchOnWindowFocus: false,
@@ -133,10 +128,10 @@ const HouseInfo = () => {
       instance
         .post(`/save/${id}`)
         .then((res) => {
-          // console.log(res.data);
+          console.log(res.data);
         })
         .catch((err) => {
-          // console.log(err, "why");
+          console.log(err, "why");
         }),
     {
       onSuccess: () => {
@@ -150,10 +145,10 @@ const HouseInfo = () => {
       instance
         .delete(`/save/${id}/unsave`)
         .then((res) => {
-          // console.log(res.data);
+          console.log(res.data);
         })
         .catch((err) => {
-          // console.log(err, "why");
+          console.log(err, "why");
         }),
     {
       onSuccess: () => {
@@ -163,20 +158,13 @@ const HouseInfo = () => {
   );
 
   const saveClick = (id) => {
-    if(userId){
-      savePost.mutate(id);
-    }else{
-      navigate("/loginerror")
-    }
+    savePost.mutate(id);
     // saveDelete.mutate(id)
+    console.log(id);
   };
 
   const cancelSaveClick = (id) => {
-    if(userId){
-      saveDelete.mutate(id);
-    }else{
-      navigate("/loginerror")
-    }
+    saveDelete.mutate(id);
   };
 
   // useEffect(() => {
@@ -316,10 +304,11 @@ const HouseInfo = () => {
             className="조용한마을"
             // onClick={menuOnClick}
             onClick={() => {
-              setIsHostData(
+              setCategory("조용한마을");
+              return setIsHostData(
                 data.findAllAcc.filter((v) => v.category === "조용한마을")
               );
-              setCategory("조용한마을");
+              // setCategory("조용한마을");
             }}
             id="spot"
           >
@@ -376,7 +365,7 @@ const HouseInfo = () => {
                 onChange={typeChange}
               >
                 <MenuItem value="" disabled={true}>
-                  숙소 형태
+                  숙소형태
                 </MenuItem>
                 <MenuItem value="게스트하우스">게스트하우스</MenuItem>
                 <MenuItem value="펜션">펜션</MenuItem>
@@ -455,7 +444,7 @@ const HouseInfo = () => {
                         </span>
                       </div>
                       <LikeBox>
-                        <div >
+                        <div style={{}}>
                           <StarIcon />
                           <span
                             style={{
@@ -490,7 +479,7 @@ const HouseInfo = () => {
             </ListWrap>
           </ContentsBox>
           <MapBox>
-            <KakaoMap isinfo={"isinfo"} data={isHostData} height={"85%"} />
+            <KakaoMap height={"85%"} />
           </MapBox>
         </div>
       </MainBox>

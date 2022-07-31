@@ -9,8 +9,8 @@ import unsaveIcon from "../assests/css/unsaveIcon.png";
 import saveIcon from "../assests/css/saveIcon.png";
 import cancelIcon from "../assests/css/cancelIcon.png";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import { hostData } from "../recoil/atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { hostData, testDataMap } from "../recoil/atoms";
 import { useMutation, useQueryClient } from "react-query";
 import instance from "../shared/axios";
 const KakaoMap = ({ data, height }) => {
@@ -20,9 +20,9 @@ const KakaoMap = ({ data, height }) => {
   const [markers, setMarkers] = useState([]);
   const [info, setInfo] = useState();
   const [save, setSave] = useState(false);
-  const userId = localStorage.getItem("userId");
+  const userId = sessionStorage.getItem("userId");
   const navigate=useNavigate()
-  // const data = useRecoilValue(hostData)
+  const isTest = useRecoilValue(hostData)
   const queryClient = useQueryClient();
   // console.log(data)
   const savePost = useMutation(
@@ -73,45 +73,61 @@ const KakaoMap = ({ data, height }) => {
       navigate("/loginerror")
     }
   }
-  useEffect(() => {
+  console.log("렌더링 one")
+  const bounds = new kakao.maps.LatLngBounds();
+  let geocoder = new kakao.maps.services.Geocoder();
+  let markers1 = [];
+  let markerr2 = []
+   useEffect(() => {
     if (!map) return;
-    let geocoder = new kakao.maps.services.Geocoder();
-    let markers = [];
-    const bounds = new kakao.maps.LatLngBounds();
-    for (let i = 0; i < data.length; i++) {
-      geocoder.addressSearch(data[i].mainAddress + data[i].subAddress, function (result, status) {
+   
+    // let markers1 = [];
+    if(data){
+      geocoder.addressSearch(data[0].mainAddress,  function (result, status) {
         // 정상적으로 검색이 완료됐으면
         if (status === kakao.maps.services.Status.OK) {
-          // let content = `<div id= "label" class ="label">카카오!</div>`;
-          // console.log(result);
-          // const bounds = new kakao.maps.LatLngBounds();
-          markers.push({
+          markers1.push({
             position: {
               lat: result[0].y,
               lng: result[0].x,
             },
-            content: data[i],
+            content: data[0],
           });
-          // console.log(markers);
+
           bounds.extend(new kakao.maps.LatLng(result[0].y, result[0].x));
-          // console.log(bounds)
-          // const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-
-          // 결과값으로 받은 위치를 마커로 표시합니다
-          // const marker = new kakao.maps.Marker({
-          //   map: map,
-          //   position: coords,
-          //   // image:jeju1,
-          // });
-          // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-          // map.setCenter(coords);
         }
-
-        setMarkers(markers);
+        console.log("렌더링 two~~~~")
         map.setBounds(bounds);
+        setMarkers(markers1);
       });
+      
+    }else{
+      for (let i = 0; i < isTest.length; i++) {
+        geocoder.addressSearch(isTest[i].mainAddress,  function (result, status) {
+          // 정상적으로 검색이 완료됐으면
+          if (status === kakao.maps.services.Status.OK) {
+            markerr2.push({
+              position: {
+                lat: result[0].y,
+                lng: result[0].x,
+              },
+              content: isTest[i],
+            });
+  
+            bounds.extend(new kakao.maps.LatLng(result[0].y, result[0].x));
+          }
+          console.log("렌더링 two~~~~")
+          map.setBounds(bounds);
+          // setMarkers(markers1);
+        });
+        
+      }
+      setMarkers(markerr2);
     }
-  }, [map,data]);
+    
+    
+    // setIsTest(markers1)
+  }, [map,data,isTest]);
   const mapRef = useRef();
   const zoomIn = () => {
     const map = mapRef.current;
@@ -121,6 +137,9 @@ const KakaoMap = ({ data, height }) => {
     const map = mapRef.current;
     map.setLevel(map.getLevel() + 1);
   };
+  console.log("렌더링 three")
+  console.log(markers, "렌더링 네번째")
+  
   return (
     <>
       <Map // 지도를 표시할 Container
