@@ -41,7 +41,7 @@ const HouseDetail = () => {
   const [isReivewUpdate, setIsReviewUpdate] = useState({});
 
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
-  const userId = localStorage.getItem("userId");
+  const userId = sessionStorage.getItem("userId");
   const navigate = useNavigate();
   const openModal = (id, review, star, reviewId) => {
     if (!userId) {
@@ -225,6 +225,7 @@ const HouseDetail = () => {
   };
   
 //  console.log(data.findAllAcc.isSave);
+
   return (
     <>
     <Wrap>

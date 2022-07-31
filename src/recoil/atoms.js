@@ -65,3 +65,8 @@ export const textImageURL = atom ({
   key:"textImageURL",
   default:[]
 });
+
+export const testDataMap = atom ({
+  key:"testData",
+  default:[]
+})

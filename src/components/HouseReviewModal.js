@@ -30,7 +30,7 @@ const style = {
 
 const HouseReviewModal = (props) => {
   // const [open, setOpen] = React.useState(false);
-  const userId = localStorage.getItem("userId");
+  const userId = sessionStorage.getItem("userId");
   const { open, close, isReivewUpdate } = props;
   const [score, setScore] = useState(0);
 

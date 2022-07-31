@@ -29,7 +29,7 @@ const HostWrite = () => {
   const [address, setAddress] = useState("");
   const [isMiniImg, setIsMiniImg] = useState(false);
 
-  const userId = localStorage.getItem("userId");
+  const userId = sessionStorage.getItem("userId");
   const currentImg = useRef(null);
 
   const [testImg, setTestImg] = useRecoilState(updateImgList);
