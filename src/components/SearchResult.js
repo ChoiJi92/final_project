@@ -8,18 +8,32 @@ import instance from "../shared/axios";
 import { useNavigate } from "react-router-dom";
 import saveIcon from "../assests/css/saveIcon.png";
 const SearchResult = ({ search, hashTag }) => {
-  // console.log(search ,'나는 서치할것!!')
-  const { data } = useQuery(
+  console.log(hashTag ,'나는 서치할것!!')
+  const searchRoom= useQuery(
     ["searchRoom", search],
     () =>
       instance
         .get(`/room/search`, { params: { search: search } })
         .then((res) => {
-          // console.log(res)
+          console.log(res)
           return res.data.searchResult;
         }),
     {
       enabled: !!search,
+      refetchOnWindowFocus: false,
+    }
+  );
+  const searchHashTag = useQuery(
+    ["searchHashTag", hashTag],
+    () =>
+      instance
+        .get(`/room/search/hashTag`, { params: { search: hashTag } })
+        .then((res) => {
+          console.log(res)
+          // return res.data;
+        }),
+    {
+      enabled: !!hashTag,
       refetchOnWindowFocus: false,
     }
   );
@@ -38,7 +52,7 @@ const SearchResult = ({ search, hashTag }) => {
   );
   return (
     <>
-      {data.map((v, i) => (
+      {searchRoom.data.map((v, i) => (
         <Card
           key={v.roomId}
           onClick={() => {

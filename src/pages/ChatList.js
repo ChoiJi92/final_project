@@ -22,6 +22,7 @@ const ChatList = () => {
   const userId = sessionStorage.getItem("userId");
   const [hashTag, setHashTag] = useState()
   const [search, setSearch] = useState();
+  console.log(hashTag)
   const { data } = useQuery(
     ["loadChatRoom"],
     () =>
@@ -86,7 +87,9 @@ const ChatList = () => {
           <div className="keyword">
             <div className="keywordTitle">인기 키워드</div>
             <div className="keywordList">
-              {data.tags?.map((v,i)=> <p key={i}>{v}</p>)}
+              {data.tags?.map((v,i)=> <p key={i} onClick={()=>{
+                setHashTag(v)
+              }}>{v}</p>)}
             </div>
           </div>
         </Top>
@@ -114,7 +117,7 @@ const ChatList = () => {
             </Select>
             <RoomModal width={"31.74%"} borderRadius={"10px"}></RoomModal>
           </div>
-          {!search ? (
+          {!search&&!hashTag? (
             <>
               {data.allRoom?.map((v, i) => (
                 <Card
@@ -283,6 +286,7 @@ const Top = styled.div`
         font-size: 16px;
         line-height: 19px;
         color: #3a3a3c;
+        cursor: pointer;
       }
     }
   }
