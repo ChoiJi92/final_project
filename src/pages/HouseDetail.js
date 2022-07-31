@@ -375,7 +375,7 @@ const HouseDetail = () => {
             <hr />
             <h1 style={{ marginTop: "20px", fontSize: "48px" }}>숙소 위치</h1>
             <MapBox >
-              <KaKaoMap data={[data.findAllAcc]} height={'100%'}></KaKaoMap>
+              <KaKaoMap data={[data.findAllAcc]} height={'100%'} singleMarker={true}></KaKaoMap>
             </MapBox>
             <div style={{ marginBottom: "30px" }}>
               <h2 style={{ marginTop: "20px", fontSize: "32px" }}>

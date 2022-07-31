@@ -13,7 +13,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { hostData, testDataMap } from "../recoil/atoms";
 import { useMutation, useQueryClient } from "react-query";
 import instance from "../shared/axios";
-const KakaoMap = ({ data, height,singleMarker }) => {
+const KakaoMap = ({ data, height, singleMarker }) => {
   const { kakao } = window;
   const [isOpen, setIsOpen] = useState(false);
   const [map, setMap] = useState();
@@ -21,12 +21,12 @@ const KakaoMap = ({ data, height,singleMarker }) => {
   const [info, setInfo] = useState();
   const [save, setSave] = useState(false);
   const userId = sessionStorage.getItem("userId");
-  const navigate=useNavigate()
-  const isTest = useRecoilValue(hostData)
+  const navigate = useNavigate();
+  // const isTest = useRecoilValue(hostData)
   const queryClient = useQueryClient();
-  // console.log(data)
   const savePost = useMutation(
-    ["save"],(id) =>
+    ["save"],
+    (id) =>
       instance
         .post(`/save/${id}`)
         .then((res) => {
@@ -40,9 +40,10 @@ const KakaoMap = ({ data, height,singleMarker }) => {
         queryClient.invalidateQueries("houseInfo");
       },
     }
-  );      
+  );
   const saveDelete = useMutation(
-    ["save"],(id) =>
+    ["save"],
+    (id) =>
       instance
         .delete(`/save/${id}/unsave`)
         .then((res) => {
@@ -57,78 +58,73 @@ const KakaoMap = ({ data, height,singleMarker }) => {
       },
     }
   );
-  
+
   const saveClick = (id, save) => {
-    if(userId){
+    if (userId) {
       savePost.mutate(id);
-    }else{
-      navigate("/loginerror")
+    } else {
+      navigate("/loginerror");
     }
-  }
+  };
 
   const cancelSaveClick = (id, save) => {
-    if(userId){
+    if (userId) {
       saveDelete.mutate(id);
-    }else{
-      navigate("/loginerror")
+    } else {
+      navigate("/loginerror");
     }
-  }
-  console.log("렌더링 one")
+  };
   const bounds = new kakao.maps.LatLngBounds();
   let geocoder = new kakao.maps.services.Geocoder();
-  let markers1 = [];
-  let markerr2 = []
-   useEffect(() => {
+  useEffect(() => {
     if (!map) return;
 
-    // let markers1 = [];
-    if(data){
-      geocoder.addressSearch(data[0].mainAddress,  function (result, status) {
-
+    let markers = [];
+    // if(data){
+    for (let i = 0; i < data.length; i++) {
+      geocoder.addressSearch(data[i].mainAddress, function (result, status) {
         // 정상적으로 검색이 완료됐으면
         if (status === kakao.maps.services.Status.OK) {
-          markers1.push({
+          markers.push({
             position: {
               lat: result[0].y,
               lng: result[0].x,
             },
-            content: data[0],
+            content: data[i],
           });
 
           bounds.extend(new kakao.maps.LatLng(result[0].y, result[0].x));
         }
-        console.log("렌더링 two~~~~")
         map.setBounds(bounds);
-        setMarkers(markers1);
+        setMarkers([...markers]);
       });
-      
-    }else{
-      for (let i = 0; i < isTest.length; i++) {
-        geocoder.addressSearch(isTest[i].mainAddress,  function (result, status) {
-          // 정상적으로 검색이 완료됐으면
-          if (status === kakao.maps.services.Status.OK) {
-            markerr2.push({
-              position: {
-                lat: result[0].y,
-                lng: result[0].x,
-              },
-              content: isTest[i],
-            });
-  
-            bounds.extend(new kakao.maps.LatLng(result[0].y, result[0].x));
-          }
-          console.log("렌더링 two~~~~")
-          map.setBounds(bounds);
-          // setMarkers(markers1);
-        });
-        
-      }
-      setMarkers(markerr2);
     }
-    
-    
+
+    // }else{
+    //   for (let i = 0; i < isTest.length; i++) {
+    //     geocoder.addressSearch(isTest[i].mainAddress,  function (result, status) {
+    //       // 정상적으로 검색이 완료됐으면
+    //       if (status === kakao.maps.services.Status.OK) {
+    //         markers.push({
+    //           position: {
+    //             lat: result[0].y,
+    //             lng: result[0].x,
+    //           },
+    //           content: isTest[i],
+    //         });
+
+    //         bounds.extend(new kakao.maps.LatLng(result[0].y, result[0].x));
+    //       }
+    //       console.log("렌더링 two~~~~")
+    //       map.setBounds(bounds);
+
+    //       setMarkers([...markers]);
+    //     });
+    //   }
+    // }
+
     // setIsTest(markers1)
-  }, [map,data,isTest]);
+  }, [map, data]);
   const mapRef = useRef();
   const zoomIn = () => {
     const map = mapRef.current;
@@ -138,9 +134,7 @@ const KakaoMap = ({ data, height,singleMarker }) => {
     const map = mapRef.current;
     map.setLevel(map.getLevel() + 1);
   };
-  console.log("렌더링 three")
-  console.log(markers, "렌더링 네번째")
-  
+console.log(markers)
   return (
     <>
       <Map // 지도를 표시할 Container
@@ -169,7 +163,7 @@ const KakaoMap = ({ data, height,singleMarker }) => {
             <MapMarker
               position={v.position}
               onClick={() => {
-                if (singleMarker) {
+                if (!singleMarker) {
                   setInfo(v);
                   setIsOpen(true);
                 }
@@ -177,9 +171,9 @@ const KakaoMap = ({ data, height,singleMarker }) => {
             />
             {isOpen && info.content === v.content && (
               <CustomOverlayMap position={v.position}>
-                <Wrap  image={v.content.images[0].postImageURL}>
+                <Wrap image={v.content.images[0].postImageURL}>
                   <div className="info">
-                    <div  className="title">
+                    <div className="title">
                       <img
                         src={cancelIcon}
                         className="close"
@@ -189,7 +183,14 @@ const KakaoMap = ({ data, height,singleMarker }) => {
                     </div>
                     <div className="body">
                       <div className="desc">
-                        <div className="house" onClick={()=>{navigate(`/house/${v.content.hostId}`)}}>{v.content.title}</div>
+                        <div
+                          className="house"
+                          onClick={() => {
+                            navigate(`/house/${v.content.hostId}`);
+                          }}
+                        >
+                          {v.content.title}
+                        </div>
                         <div className="iconWrap">
                           <div>
                             <img src={starIcon} alt="별점"></img>
@@ -198,7 +199,7 @@ const KakaoMap = ({ data, height,singleMarker }) => {
                           {v.content.isSave ? (
                             <img
                               onClick={() => {
-                                cancelSaveClick(v.content.hostId)
+                                cancelSaveClick(v.content.hostId);
                               }}
                               src={saveIcon}
                               alt="저장"
@@ -206,8 +207,7 @@ const KakaoMap = ({ data, height,singleMarker }) => {
                           ) : (
                             <img
                               onClick={() => {
-                                saveClick(v.content.hostId)
-                                
+                                saveClick(v.content.hostId);
                               }}
                               src={unsaveIcon}
                               alt="저장"
@@ -282,7 +282,7 @@ const Wrap = styled.div`
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     position: relative;
-   
+
     img {
       position: absolute;
       right: 10px;
