@@ -27,12 +27,10 @@ import Mypage from './pages/Mypage'
 
 import MetaTag from './pages/MetaTag';
 import OnReady from './pages/OnReady';
-import Event from './pages/Event';
-import Event2 from './pages/Event2';
 
 
 function App() {
- const userId = localStorage.getItem('userId')
+ const userId = sessionStorage.getItem('userId')
   return (
     <div className="App">
        <MetaTag title={'멘도롱 제주'}></MetaTag>

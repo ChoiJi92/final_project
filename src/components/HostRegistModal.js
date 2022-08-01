@@ -41,11 +41,11 @@ const HostRegistModal = ({ isOpen }) => {
       .then((res) => {
         // console.log(res.data);
         setIshost(res.data.result);
-        localStorage.setItem("host", res.data.result);
+        sessionStorage.setItem("host", res.data.result);
       })
       .catch((err) => {
-        // console.log(err);
-        window.alert(err.reponse.data.message)
+        // console.log(err.response.data.message);
+        window.alert(err.response.data.message)
       });
   });
   return (

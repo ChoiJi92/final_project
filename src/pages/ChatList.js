@@ -27,7 +27,7 @@ const ChatList = () => {
     ["loadChatRoom"],
     () =>
       instance.get("/room").then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         return res.data;
       }),
     {
