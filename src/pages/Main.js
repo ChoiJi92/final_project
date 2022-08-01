@@ -344,7 +344,7 @@ const OpenChat = styled.div`
     font-size: 56px;
     line-height: 110%;
     width: 70%;
-    margin: 0 auto 50px aut
+    margin: 0 auto 50px auto;
   }
 `;
 export default Main;
