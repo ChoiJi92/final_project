@@ -50,7 +50,7 @@ const HouseReviewModal = (props) => {
 
   const queryClient = useQueryClient();
 
-  const testReview = useMutation(
+  const postReview = useMutation(
     (testData) =>
       instance
         .post(`/review/${hostId}/review`, testData)
@@ -91,7 +91,7 @@ const HouseReviewModal = (props) => {
       review: textRef.current.value,
       starpoint: score,
     };
-    testReview.mutate(testData);
+    postReview.mutate(testData);
     // console.log(testData, "등록 데이터");
     setScore(0);
     close();

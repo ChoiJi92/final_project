@@ -24,7 +24,7 @@ const Profile = ({item, data}) => {
         <>
             <img src={item.userImageURL} alt="프로필"/>
         <div id="profileName">
-            <SpanName style={{}}>{item.nickname}</SpanName>
+            <SpanName>{item.nickname}</SpanName>
             <SpanTime></SpanTime>
         </div>
         </>
