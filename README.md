@@ -1,9 +1,9 @@
 # 🍊멘도롱 제주
 제주도 숙소 검색 및 숙소 정보 공유 커뮤니티 사이트입니다!😄
-
-
+<img width="1080" alt="이미지1" src="https://user-images.githubusercontent.com/103625778/182082800-4b30bea5-0e1f-46b6-ae24-96d1f3534615.png">
 
 ## 🏛 아키텍처
+![KakaoTalk_Photo_2022-07-31-17-05-16](https://user-images.githubusercontent.com/103625778/182083611-6b07b906-fa0c-4d7f-8851-8a54fd0df4d4.png)
 
 ## 📆 제작 기간 및 팀원 소개 👨‍💻
 - 2022.06.24 ~ 2022.08.05
@@ -40,7 +40,7 @@
 	<img src="https://img.shields.io/badge/react-444444?style=for-the-badge&logo=react"> 
 	 <img src="https://img.shields.io/badge/React--Query-FF4154?style=for-the-badge&logo=ReactQuery&logoColor=FFFFFF">
 	  <img src="https://img.shields.io/badge/recoil-2C5BB4?style=for-the-badge&logo=recoil&logoColor=white">
-      <img src="https://img.shields.io/badge/react--hook--form-EC5990?style=for-the-badge&logo=React Hook Form&logoColor=white">
+      		<img src="https://img.shields.io/badge/react--hook--form-EC5990?style=for-the-badge&logo=ReactHookForm&logoColor=white">
        <img src="https://img.shields.io/badge/socket.io-010101?style=for-the-badge&logo=socket.io&logoColor=white">
 		 <br/>
 		 <img src="https://img.shields.io/badge/React Router-CA4245?style=for-the-badge&logo=React Router&logoColor=white">
