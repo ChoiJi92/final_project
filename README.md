@@ -114,3 +114,22 @@ Toast UI 라이브러리에 내장되어있는 addImageBlobHook 을 이용하여
 
 </div>
 </details>
+
+<details>
+<summary>카카오 로그인 Scope</summary>
+<div markdown="1">
+
+`문제점`
+
+로컬에서 테스트 할 때 기존에 로그인을 했었던 유저들은 배포상황에서도 로그인이 되는데 신규 유저들은 로그인이 안되는 상황이 발생
+![image](https://user-images.githubusercontent.com/103625778/182110624-b73a9d95-8c23-4681-aa86-f35ddf32e0b3.png)
+위 이미지처럼 username과 displayName 이 미연동계정이라고 응답이 옴
+
+`해결방법`
+KAKAO_AUTH_URL의 scope가 account_email로 되어있어서 카카오 측에서 유저의 이름은 보내주지 않고 이메일만 보내주는 것이었음
+```const KAKAO_AUTH_URL = 'https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=account_email'```;
+그래서
+scope를 지웠더니 해결
+```const KAKAO_AUTH_URL = 'https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${REDIRECT_URI}&response_type=code'```;
+</div>
+</details>
