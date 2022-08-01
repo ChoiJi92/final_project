@@ -76,7 +76,7 @@ const Mypage = () => {
     instance
       .put(`/oauth/mypage/${userId}/nick`, { nickname })
       .then((res) => {
-        localStorage.setItem("nickName", res.data.nickname);
+        sessionStorage.setItem("nickName", res.data.nickname);
         setIsEdit(false);
         window.location.reload();
       })

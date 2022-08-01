@@ -27,6 +27,9 @@ import Mypage from './pages/Mypage'
 
 import MetaTag from './pages/MetaTag';
 import OnReady from './pages/OnReady';
+import { BrowserView, MobileView } from 'react-device-detect';
+import MobileMain from './mobilepages/MobileMain';
+import MobileFooter from './mobilepages/MobileFooter';
 
 
 function App() {
@@ -35,8 +38,11 @@ function App() {
     <div className="App">
        <MetaTag title={'멘도롱 제주'}></MetaTag>
       <GlobalStyles />
-     
-      
+     <MobileView>
+      <MobileMain/>
+      <MobileFooter/>
+     </MobileView>
+      <BrowserView>
       <Header/>
       <Routes>
         <Route path="/" element={<Main />} />
@@ -60,7 +66,7 @@ function App() {
         <Route path='/oauth/naver/callback' element={<NaverRedirect/>}/>
         <Route path="*" element={<Error/>} />
       </Routes>
-
+      </BrowserView>
     </div>
   );
 }

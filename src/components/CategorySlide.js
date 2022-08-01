@@ -133,179 +133,180 @@ const CategorySlide = (props) => {
     setMouseOver(false);
   };
   return (
-    <ImgBox>
-      <h2>Categories</h2>
-      {mouseOver ? (
-        <SliderImg {...settings} {...arrows}>
-          <Wrap>
-            <Card
-              onClick={() => {
-                navigate("/house", { state: { category: "all" } });
-              }}
-              onMouseLeave={mouseLeave}
-              onMouseOver={mouseHover}
-              style={{
-                backgroundImage: `linear-gradient( 0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back7})`,
-              }}
-            >
-              <img src={beach} alt="beach"></img>
-              <p>모두보기</p>
-            </Card>
-          </Wrap>
-          <Wrap>
-            <Card
-              onClick={() => {
-                navigate("/house", { state: { category: "내륙" } });
-              }}
-              onMouseLeave={mouseLeave}
-              onMouseOver={mouseHover}
-              style={{
-                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back3})`,
-              }}
-            >
-              <img src={land} alt="land"></img>
-              <p>내륙</p>
-            </Card>
-          </Wrap>
+   
+        <ImgBox>
+          <h2>Categories</h2>
+          {mouseOver ? (
+            <SliderImg {...settings} {...arrows}>
+              <Wrap>
+                <Card
+                  onClick={() => {
+                    navigate("/house", { state: { category: "all" } });
+                  }}
+                  onMouseLeave={mouseLeave}
+                  onMouseOver={mouseHover}
+                  style={{
+                    backgroundImage: `linear-gradient( 0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back7})`,
+                  }}
+                >
+                  <img src={beach} alt="beach"></img>
+                  <p>모두보기</p>
+                </Card>
+              </Wrap>
+              <Wrap>
+                <Card
+                  onClick={() => {
+                    navigate("/house", { state: { category: "내륙" } });
+                  }}
+                  onMouseLeave={mouseLeave}
+                  onMouseOver={mouseHover}
+                  style={{
+                    backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back3})`,
+                  }}
+                >
+                  <img src={land} alt="land"></img>
+                  <p>내륙</p>
+                </Card>
+              </Wrap>
 
-          <Wrap>
-            <Card
-              onClick={() => {
-                navigate("/house", { state: { category: "관광지근처" } });
-              }}
-              onMouseLeave={mouseLeave}
-              onMouseOver={mouseHover}
-              style={{
-                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back2})`,
-              }}
-            >
-              <img src={tour} alt="tour"></img>
-              <p>관광지 근처</p>
-            </Card>
-          </Wrap>
-          <Wrap>
-            <Card
-              onClick={() => {
-                navigate("/house", { state: { category: "조용한마을" } });
-              }}
-              onMouseLeave={mouseLeave}
-              onMouseOver={mouseHover}
-              style={{
-                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back8})`,
-              }}
-            >
-              <img src={town} alt="town"></img>
-              <p>조용한 마을</p>
-            </Card>
-          </Wrap>
-          <Wrap>
-            <Card
-              onClick={() => {
-                navigate("/house", { state: { category: "우도" } });
-              }}
-              onMouseLeave={mouseLeave}
-              onMouseOver={mouseHover}
-              style={{
-                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back6})`,
-              }}
-            >
-              <img src={icecream} alt="icecream"></img>
-              <p>우도</p>
-            </Card>
-          </Wrap>
-          <Wrap>
-            <Card
-              onClick={() => {
-                navigate("/house", { state: { category: "해변근처" } });
-              }}
-              onMouseLeave={mouseLeave}
-              onMouseOver={mouseHover}
-              style={{
-                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back})`,
-              }}
-            >
-              <img src={sunrise} alt="sunrise"></img>
-              <p>해변근처</p>
-            </Card>
-          </Wrap>
-        </SliderImg>
-      ) : (
-        <SliderImg {...settings}>
-          <Wrap>
-            <Card
-              onMouseLeave={mouseLeave}
-              onMouseOver={mouseHover}
-              style={{
-                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back7})`,
-              }}
-            >
-              <img src={beach} alt="beach"></img>
-              <p>모두보기</p>
-            </Card>
-          </Wrap>
-          <Wrap>
-            <Card
-              onMouseLeave={mouseLeave}
-              onMouseOver={mouseHover}
-              style={{
-                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back3})`,
-              }}
-            >
-              <img src={land} alt="land"></img>
-              <p>내륙</p>
-            </Card>
-          </Wrap>
-          <Wrap>
-            <Card
-              onMouseLeave={mouseLeave}
-              onMouseOver={mouseHover}
-              style={{
-                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back2})`,
-              }}
-            >
-              <img src={tour} alt="trip"></img>
-              <p>관광지 근처</p>
-            </Card>
-          </Wrap>
-          <Wrap>
-            <Card
-              onMouseLeave={mouseLeave}
-              onMouseOver={mouseHover}
-              style={{
-                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back8})`,
-              }}
-            >
-              <img src={town} alt="town"></img>
-              <p>조용한 마을</p>
-            </Card>
-          </Wrap>
-          <Wrap>
-            <Card
-              onMouseLeave={mouseLeave}
-              onMouseOver={mouseHover}
-              style={{
-                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back6})`,
-              }}
-            >
-              <img src={icecream} alt="icecream"></img>
-              <p>우도</p>
-            </Card>
-          </Wrap>
-          <Wrap>
-            <Card
-              onMouseLeave={mouseLeave}
-              onMouseOver={mouseHover}
-              style={{
-                backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back})`,
-              }}
-            >
-              <img src={sunrise} alt="sunrise"></img>
-              <p>해변근처</p>
-            </Card>
-          </Wrap>
-        </SliderImg>
-      )}
-    </ImgBox>
+              <Wrap>
+                <Card
+                  onClick={() => {
+                    navigate("/house", { state: { category: "관광지근처" } });
+                  }}
+                  onMouseLeave={mouseLeave}
+                  onMouseOver={mouseHover}
+                  style={{
+                    backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back2})`,
+                  }}
+                >
+                  <img src={tour} alt="tour"></img>
+                  <p>관광지 근처</p>
+                </Card>
+              </Wrap>
+              <Wrap>
+                <Card
+                  onClick={() => {
+                    navigate("/house", { state: { category: "조용한마을" } });
+                  }}
+                  onMouseLeave={mouseLeave}
+                  onMouseOver={mouseHover}
+                  style={{
+                    backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back8})`,
+                  }}
+                >
+                  <img src={town} alt="town"></img>
+                  <p>조용한 마을</p>
+                </Card>
+              </Wrap>
+              <Wrap>
+                <Card
+                  onClick={() => {
+                    navigate("/house", { state: { category: "우도" } });
+                  }}
+                  onMouseLeave={mouseLeave}
+                  onMouseOver={mouseHover}
+                  style={{
+                    backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back6})`,
+                  }}
+                >
+                  <img src={icecream} alt="icecream"></img>
+                  <p>우도</p>
+                </Card>
+              </Wrap>
+              <Wrap>
+                <Card
+                  onClick={() => {
+                    navigate("/house", { state: { category: "해변근처" } });
+                  }}
+                  onMouseLeave={mouseLeave}
+                  onMouseOver={mouseHover}
+                  style={{
+                    backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back})`,
+                  }}
+                >
+                  <img src={sunrise} alt="sunrise"></img>
+                  <p>해변근처</p>
+                </Card>
+              </Wrap>
+            </SliderImg>
+          ) : (
+            <SliderImg {...settings}>
+              <Wrap>
+                <Card
+                  onMouseLeave={mouseLeave}
+                  onMouseOver={mouseHover}
+                  style={{
+                    backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back7})`,
+                  }}
+                >
+                  <img src={beach} alt="beach"></img>
+                  <p>모두보기</p>
+                </Card>
+              </Wrap>
+              <Wrap>
+                <Card
+                  onMouseLeave={mouseLeave}
+                  onMouseOver={mouseHover}
+                  style={{
+                    backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back3})`,
+                  }}
+                >
+                  <img src={land} alt="land"></img>
+                  <p>내륙</p>
+                </Card>
+              </Wrap>
+              <Wrap>
+                <Card
+                  onMouseLeave={mouseLeave}
+                  onMouseOver={mouseHover}
+                  style={{
+                    backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back2})`,
+                  }}
+                >
+                  <img src={tour} alt="trip"></img>
+                  <p>관광지 근처</p>
+                </Card>
+              </Wrap>
+              <Wrap>
+                <Card
+                  onMouseLeave={mouseLeave}
+                  onMouseOver={mouseHover}
+                  style={{
+                    backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back8})`,
+                  }}
+                >
+                  <img src={town} alt="town"></img>
+                  <p>조용한 마을</p>
+                </Card>
+              </Wrap>
+              <Wrap>
+                <Card
+                  onMouseLeave={mouseLeave}
+                  onMouseOver={mouseHover}
+                  style={{
+                    backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back6})`,
+                  }}
+                >
+                  <img src={icecream} alt="icecream"></img>
+                  <p>우도</p>
+                </Card>
+              </Wrap>
+              <Wrap>
+                <Card
+                  onMouseLeave={mouseLeave}
+                  onMouseOver={mouseHover}
+                  style={{
+                    backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back})`,
+                  }}
+                >
+                  <img src={sunrise} alt="sunrise"></img>
+                  <p>해변근처</p>
+                </Card>
+              </Wrap>
+            </SliderImg>
+          )}
+        </ImgBox>
   );
 };
 const ImgBox = styled.div`
@@ -392,4 +393,5 @@ const Card = styled.div`
     line-height: 30.8px;
   }
 `;
+
 export default CategorySlide;
