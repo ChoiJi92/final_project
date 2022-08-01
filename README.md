@@ -130,6 +130,7 @@ KAKAO_AUTH_URL의 scope가 account_email로 되어있어서 카카오 측에서 
 ```const KAKAO_AUTH_URL = 'https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=account_email'```;
 
 그래서 scope를 지웠더니 해결
+	
 ```const KAKAO_AUTH_URL = 'https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${REDIRECT_URI}&response_type=code'```;
 </div>
 </details>
