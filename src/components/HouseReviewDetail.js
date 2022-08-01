@@ -16,7 +16,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "30%",
+  width: "20%", 
   bgcolor: "background.paper",
   borderRadius: "30px",
   boxShadow: 24,
@@ -103,6 +103,12 @@ const Main = styled(Typography)`
   justify-content: center;
   align-items: center;
   /* width: 66.3%; */
+  @media screen and (max-width: 400px) {
+        width: 400px;
+        display: flex;
+  justify-content: center;
+  align-items: center;
+    }
   #reviewTitle{
     display: flex;
     justify-content: space-between;
