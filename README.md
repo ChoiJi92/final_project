@@ -126,7 +126,9 @@ Toast UI 라이브러리에 내장되어있는 addImageBlobHook 을 이용하여
 위 이미지처럼 username과 displayName 이 미연동계정이라고 응답이 옴
 
 `해결방법`
+	
 KAKAO_AUTH_URL의 scope가 account_email로 되어있어서 카카오 측에서 유저의 이름은 보내주지 않고 이메일만 보내주는 것이었음
+
 ```const KAKAO_AUTH_URL = 'https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=account_email'```;
 
 그래서 scope를 지웠더니 해결
