@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-// import main from "../assests/css/메인.png";
 import main from "../assests/css/메인.webp";
 import OpenChatSlide from "../components/OpenChatSlide";
 import CategorySlide from "../components/CategorySlide";
@@ -163,7 +162,7 @@ const RegionWrap = styled.div`
     width: 100%;
     div {
       width: 63.76%;
-      height: 200px;
+      height: auto;
       background: #f7f3ef;
       border-radius: 60px;
       border: none;
@@ -178,14 +177,18 @@ const RegionWrap = styled.div`
         font-size: 72px;
         line-height: 110%;
         color: #2c2c2e;
+        width: 50%;
+        text-align: center;
       }
       p {
+        width: 70%;
         font-style: normal;
         font-weight: 400;
         font-size: 28px;
         line-height: 42px;
         color: #000000;
         opacity: 0.2;
+        text-align: center;
       }
       :hover {
         background: #eee9e4;
@@ -205,7 +208,7 @@ const RegionWrap = styled.div`
     width: 100%;
     div {
       width: 63.76%;
-      height: 200px;
+      height: auto;
       background: #f7f3ef;
       border-radius: 60px;
       border: none;
@@ -220,15 +223,19 @@ const RegionWrap = styled.div`
         font-weight: 400;
         font-size: 72px;
         line-height: 110%;
+        width: 50%;
+        text-align: center;
         color: #2c2c2e;
       }
       p {
+        width: 80%;
         font-style: normal;
         font-weight: 400;
         font-size: 28px;
         line-height: 42px;
         color: #000000;
         opacity: 0.2;
+        text-align: center;
       }
       :hover {
         background: #eee9e4;
@@ -245,7 +252,7 @@ const RegionWrap = styled.div`
     width: 100%;
     div {
       width: 63.76%;
-      height: 200px;
+      height: auto;
       background: #f7f3ef;
       border-radius: 60px;
       border: none;
@@ -260,14 +267,18 @@ const RegionWrap = styled.div`
         font-size: 72px;
         line-height: 110%;
         color: #2c2c2e;
+        width: 50%;
+        text-align: center;
       }
       p {
+        width: 90%;
         font-style: normal;
         font-weight: 400;
         font-size: 28px;
         line-height: 42px;
         color: #000000;
         opacity: 0.2;
+        text-align: center;
       }
       :hover {
         background: #eee9e4;
@@ -286,7 +297,7 @@ const RegionWrap = styled.div`
     width: 100%;
     div {
       width: 63.76%;
-      height: 200px;
+      height: auto;
       background: #f7f3ef;
       border-radius: 60px;
       border: none;
@@ -301,14 +312,18 @@ const RegionWrap = styled.div`
         font-size: 72px;
         line-height: 110%;
         color: #2c2c2e;
+        width: 50%;
+        text-align: center;
       }
       p {
+        width: 90%;
         font-style: normal;
         font-weight: 400;
         font-size: 28px;
         line-height: 42px;
         color: #000000;
         opacity: 0.2;
+        text-align: center;
       }
       :hover {
         background: #eee9e4;
@@ -329,8 +344,7 @@ const OpenChat = styled.div`
     font-size: 56px;
     line-height: 110%;
     width: 70%;
-    margin: 0 auto 50px auto;
-    white-space: nowrap;
+    margin: 0 auto 50px aut
   }
 `;
 export default Main;

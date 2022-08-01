@@ -81,8 +81,10 @@ const KakaoMap = ({ data, height, singleMarker }) => {
 
     let markers = [];
     // if(data){
-    for (let i = 0; i < data.length; i++) {
-      geocoder.addressSearch(data[i].mainAddress, function (result, status) {
+    // for (let i = 0; i < data.length; i++) 
+    data.forEach((v,i) => 
+    {
+      geocoder.addressSearch(v.mainAddress, function (result, status) {
         // 정상적으로 검색이 완료됐으면
         if (status === kakao.maps.services.Status.OK) {
           markers.push({
@@ -90,7 +92,7 @@ const KakaoMap = ({ data, height, singleMarker }) => {
               lat: result[0].y,
               lng: result[0].x,
             },
-            content: data[i],
+            content: v,
           });
 
           bounds.extend(new kakao.maps.LatLng(result[0].y, result[0].x));
@@ -98,8 +100,8 @@ const KakaoMap = ({ data, height, singleMarker }) => {
         map.setBounds(bounds);
         setMarkers([...markers]);
       });
-    }
-
+    })
+    // setMarkers([...markers]);
     // }else{
     //   for (let i = 0; i < isTest.length; i++) {
     //     geocoder.addressSearch(isTest[i].mainAddress,  function (result, status) {
@@ -134,7 +136,6 @@ const KakaoMap = ({ data, height, singleMarker }) => {
     const map = mapRef.current;
     map.setLevel(map.getLevel() + 1);
   };
-console.log(markers)
   return (
     <>
       <Map // 지도를 표시할 Container
@@ -171,13 +172,18 @@ console.log(markers)
             />
             {isOpen && info.content === v.content && (
               <CustomOverlayMap position={v.position}>
-                <Wrap image={v.content.images[0].postImageURL}>
+                <Wrap image={v.content.images[0].postImageURL} >
                   <div className="info">
-                    <div className="title">
+                    <div className="title" onClick={(e)=>{
+                  e.stopPropagation()
+                  navigate(`/house/${v.content.hostId}`)
+                }}>
                       <img
                         src={cancelIcon}
                         className="close"
-                        onClick={() => setIsOpen(false)}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setIsOpen(false)}}
                         alt="닫기"
                       ></img>
                     </div>
@@ -185,7 +191,8 @@ console.log(markers)
                       <div className="desc">
                         <div
                           className="house"
-                          onClick={() => {
+                          onClick={(e) => {
+                            // e.stopPropagation()
                             navigate(`/house/${v.content.hostId}`);
                           }}
                         >
@@ -198,7 +205,8 @@ console.log(markers)
                           </div>
                           {v.content.isSave ? (
                             <img
-                              onClick={() => {
+                              onClick={(e) => {
+                                e.stopPropagation()
                                 cancelSaveClick(v.content.hostId);
                               }}
                               src={saveIcon}
@@ -206,7 +214,8 @@ console.log(markers)
                             ></img>
                           ) : (
                             <img
-                              onClick={() => {
+                              onClick={(e) => {
+                                e.stopPropagation()
                                 saveClick(v.content.hostId);
                               }}
                               src={unsaveIcon}
@@ -268,7 +277,6 @@ const Wrap = styled.div`
   border-radius: 20px;
   position: relative;
   bottom: 200px;
-
   .info {
     width: 400px;
     /* border: 1px solid red; */
@@ -282,7 +290,7 @@ const Wrap = styled.div`
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     position: relative;
-
+    cursor: pointer;
     img {
       position: absolute;
       right: 10px;
