@@ -193,6 +193,9 @@ const Main = styled(Typography)`
   justify-content: center;
   align-items: center;
   color: #636366;
+  @media screen and (max-width: 400px) {
+        width: 400px;
+    }
   img {
     width: 40px;
     height: 40px;
