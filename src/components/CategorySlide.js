@@ -20,7 +20,6 @@ import back6 from "../assests/css/배경6.webp";
 import back7 from "../assests/css/배경7.webp";
 import back8 from "../assests/css/배경8.webp";
 import { useNavigate } from "react-router-dom";
-import { BrowserView, MobileView } from "react-device-detect";
 
 const CategorySlide = (props) => {
   const [mouseOver, setMouseOver] = useState(false);
@@ -134,87 +133,7 @@ const CategorySlide = (props) => {
     setMouseOver(false);
   };
   return (
-    <>
-      <MobileView>
-        <MobileImgBox>
-          <h2>Categories</h2>
-          <MobileSliderImg {...settings}>
-            <MobileWrap>
-              <MobileCard
-                onMouseLeave={mouseLeave}
-                onMouseOver={mouseHover}
-                style={{
-                  backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back7})`,
-                }}
-              >
-                <img src={beach} alt="beach"></img>
-                <p>모두보기</p>
-              </MobileCard>
-            </MobileWrap>
-            <MobileWrap>
-              <MobileCard
-                onMouseLeave={mouseLeave}
-                onMouseOver={mouseHover}
-                style={{
-                  backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back3})`,
-                }}
-              >
-                <img src={land} alt="land"></img>
-                <p>내륙</p>
-              </MobileCard>
-            </MobileWrap>
-            <MobileWrap>
-              <MobileCard
-                onMouseLeave={mouseLeave}
-                onMouseOver={mouseHover}
-                style={{
-                  backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back2})`,
-                }}
-              >
-                <img src={tour} alt="trip"></img>
-                <p>관광지 근처</p>
-              </MobileCard>
-            </MobileWrap>
-            <MobileWrap>
-              <MobileCard
-                onMouseLeave={mouseLeave}
-                onMouseOver={mouseHover}
-                style={{
-                  backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back8})`,
-                }}
-              >
-                <img src={town} alt="town"></img>
-                <p>조용한 마을</p>
-              </MobileCard>
-            </MobileWrap>
-            <MobileWrap>
-              <MobileCard
-                onMouseLeave={mouseLeave}
-                onMouseOver={mouseHover}
-                style={{
-                  backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back6})`,
-                }}
-              >
-                <img src={icecream} alt="icecream"></img>
-                <p>우도</p>
-              </MobileCard>
-            </MobileWrap>
-            <MobileWrap>
-              <MobileCard
-                onMouseLeave={mouseLeave}
-                onMouseOver={mouseHover}
-                style={{
-                  backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${back})`,
-                }}
-              >
-                <img src={sunrise} alt="sunrise"></img>
-                <p>해변근처</p>
-              </MobileCard>
-            </MobileWrap>
-          </MobileSliderImg>
-        </MobileImgBox>
-      </MobileView>
-      <BrowserView>
+   
         <ImgBox>
           <h2>Categories</h2>
           {mouseOver ? (
@@ -388,8 +307,6 @@ const CategorySlide = (props) => {
             </SliderImg>
           )}
         </ImgBox>
-      </BrowserView>
-    </>
   );
 };
 const ImgBox = styled.div`
@@ -474,92 +391,6 @@ const Card = styled.div`
     font-size: 28px;
     font-weight: 700;
     line-height: 30.8px;
-  }
-`;
-
-const MobileImgBox = styled.div`
-  width: 100%;
-  margin: 40px 0;
-  .slick-prev:before {
-    display: none;
-  }
-  .slick-next:before {
-    display: none;
-  }
-  h2 {
-    font-style: normal;
-    font-weight: 500;
-    font-size: 24px;
-    line-height: 110%;
-    color: #333333;
-  }
-`;
-const MobileSliderImg = styled(Slider)`
-  width: 100%;
-  height: auto;
-  /* border: 1px solid; */
-  .dots_custom {
-    /* display: inline-block; */
-    /* vertical-align: middle; */
-    margin: auto 0;
-    padding: 0;
-  }
-  .dots_custom li {
-    list-style: none;
-    cursor: pointer;
-    display: inline-block;
-    margin: 0 6px;
-    padding: 0;
-  }
-  .dots_custom li button {
-    border: none;
-    background: gray;
-    color: transparent;
-    cursor: pointer;
-    display: block;
-    height: 6px;
-    width: 6px;
-    border-radius: 100%;
-    padding: 0;
-    display: hidden;
-  }
-  .dots_custom li.slick-active button {
-    background-color: #fff;
-  }
-`;
-const MobileWrap = styled.div`
-  width: 100%;
-  margin-right: 10px;
-  /* height: 300px; */
-`;
-const MobileCard = styled.div`
-  border-radius: 8.93284px;
-  margin-top: 12px;
-  width: 96px;
-  height: 120px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-blend-mode: multiply, normal;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center center;
-  color: white;
-  cursor: pointer;
-  /* :hover {
-    box-shadow: rgb(0 0 0 / 50%) 0px 5px 10px 0px;
-    transform: translateY(-10px);
-  } */
-  img {
-    width: 40%;
-    margin-bottom: 6px;
-  }
-  p {
-    font-style: normal;
-font-weight: 700;
-font-size: 12px;
-line-height: 110%;
   }
 `;
 
