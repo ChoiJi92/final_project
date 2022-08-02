@@ -49,12 +49,7 @@ const HouseDetail = () => {
   const navigate = useNavigate();
   const openModal = (id, review, star, reviewId) => {
     if (!userId) {
-      //로그인이 필요한 페이지 입니다.
-      
-      
         setOpen(true);
-     
-      // alert("로그인이 필요합니다.");
     } else {
       setModalOpen(true);
       setIsReviewUpdate({
@@ -308,7 +303,7 @@ const HouseDetail = () => {
                   <>
                   <span style={{ fontSize: "21px" }}>수정하기</span>
                   {/* <Link to={`/hostwrite/${data.findAllAcc.hostId}`}> */}
-                  <Link to={`/onready`}>
+                  <Link to={`/hostwrite/${data?.findAllAcc?.hostId}`}>
                   <IconImg src={editIcon} alt="수정" />
                   </Link>
                   </>) : (
@@ -793,7 +788,7 @@ const RightBarBox = styled.div`
     /* top: 50px; */
     position: sticky;
     height: auto;
-    top: 50px;
+    top: 110px;
     width: 100%;
     border-radius: 20px;
     box-shadow: 0px 12px 42px rgba(0, 0, 0, 0.2);
