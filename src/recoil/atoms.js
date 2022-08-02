@@ -7,6 +7,10 @@ export const bestPostData = atom({
   key: "bestPostData",
   default: [],
 });
+export const chatRoomList = atom({
+  key: "chatRoomList",
+  default: [],
+});
 export const chatState = atom({
   key: "chatState",
   default: [],
@@ -42,7 +46,6 @@ export const hostData = atom({
   key: "hostData",
   default: [],
 });
-
 export const updateImgList = atom({ 
   key: "images", 
   default: [] 

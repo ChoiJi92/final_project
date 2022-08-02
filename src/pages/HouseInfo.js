@@ -14,8 +14,8 @@ import SlideImg from "../components/SlideImg";
 import saveIcon from "../assests/css/saveIcon.webp";
 import unsaveIcon2 from "../assests/css/unsaveIcon2.webp";
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { hostData } from "../recoil/atoms";
+import { useRecoilState, useResetRecoilState} from "recoil";
+import { hostData, selectAddress} from "../recoil/atoms";
 import instance from "../shared/axios";
 import KakaoMap from "../components/KakaoMap";
 import Footer from "../components/Footer";
@@ -43,13 +43,18 @@ const HouseInfo = () => {
   // // const firstBox = useRef(null);
   // const liveFirstBox = useRef(null);
   const location = useLocation();
+  const navigate = useNavigate()
   // console.log(location.state.address)
   const [isCozy, setIsCozy] = useState("cozy");
   const [isHostData, setIsHostData] = useRecoilState(hostData);
   const [address, setAddress] = useState(
     location.state?.address ? location.state?.address : ""
   );
+  const [search, setSearch] = useState(
+    location.state?.search ? location.state?.search : ""
+  );
   const [type, setType] = useState("");
+  const [sort, setSort] = useState("");
   const userId = sessionStorage.getItem("userId");
 
   const [category, setCategory] = useState(
@@ -60,7 +65,7 @@ const HouseInfo = () => {
     ["houseInfo"],
     () =>
       instance
-        .get(`/host`, { params: { userId: Number(userId) } })
+        .get(`/host`)
         .then((res) => {
           // console.log(res.data);
           if (category === "all") {
@@ -82,10 +87,27 @@ const HouseInfo = () => {
       // },
     }
   );
-
+  const searchData = useQuery(
+    ["searchData", search],
+    () =>
+      instance
+        .get(`/host/search`, { params: { search: search } })
+        .then((res) => {
+          console.log(res.data, "전체검색");
+          // setIsHostData(res.data.hostPost);
+        })
+        .catch((err) => console.log(err)),
+    {
+      enabled: !!search,
+      refetchOnWindowFocus: false,
+    }
+  );
   const addressChange = (e) => {
     console.log(e.target.value);
     setAddress(e.target.value);
+    setType("")
+    setSort("")
+    setCategory("all")
   };
 
   const addressData = useQuery(
@@ -95,6 +117,8 @@ const HouseInfo = () => {
         .get(`/host/address/search`, { params: { search: address } })
         .then((res) => {
           console.log(res.data, "지역검색");
+          setType("")
+          console.log(type)
           setIsHostData(res.data.hostPost);
         })
         .catch((err) => console.log(err)),
@@ -106,7 +130,11 @@ const HouseInfo = () => {
   const typeChange = (e) => {
     console.log(e.target.value);
     setType(e.target.value);
+    setAddress("")
+    setSort("")
+    setCategory("all")
   };
+  
   const typeData = useQuery(
     ["typeData", type],
     () =>
@@ -119,6 +147,26 @@ const HouseInfo = () => {
         .catch((err) => console.log(err)),
     {
       enabled: !!type,
+      refetchOnWindowFocus: false,
+    }
+  );
+  const sortChange = (e) =>{
+    setSort(e.target.value)
+    setType("");
+    setAddress("")
+    setCategory("all")
+  }
+  const sortData = useQuery(
+    ["sortData", sort],
+    () =>
+      instance
+        .get(`/host/starPoint`)
+        .then((res) => {
+          setIsHostData(res.data.findAllAcc);
+        })
+        .catch((err) => console.log(err)),
+    {
+      enabled: !!sort,
       refetchOnWindowFocus: false,
     }
   );
@@ -159,8 +207,6 @@ const HouseInfo = () => {
 
   const saveClick = (id) => {
     savePost.mutate(id);
-    // saveDelete.mutate(id)
-    console.log(id);
   };
 
   const cancelSaveClick = (id) => {
@@ -239,6 +285,10 @@ const HouseInfo = () => {
             className="cozy"
             onClick={() => {
               setIsCozy("cozy");
+              setCategory("all")
+              setSort("")
+              setType("");
+              setAddress("")
               setIsHostData(data.findAllAcc);
             }}
           >
@@ -251,6 +301,10 @@ const HouseInfo = () => {
                 data.findAllAcc.filter((v) => v.houseInfo === "게스트하우스")
               );
               setIsCozy("uncozy");
+              setCategory("all")
+              setSort("")
+              setType("");
+              setAddress("")
             }}
           >
             최소비용으로 한 달 살기
@@ -264,6 +318,9 @@ const HouseInfo = () => {
             onClick={() => {
               setIsHostData(data.findAllAcc);
               setCategory("all");
+              setSort("")
+              setType("");
+              setAddress("")
             }}
             id="spot"
           >
@@ -279,6 +336,9 @@ const HouseInfo = () => {
                 data.findAllAcc.filter((v) => v.category === "내륙")
               );
               setCategory("내륙");
+              setSort("")
+              setType("");
+              setAddress("")
             }}
             id="spot"
             // style={{"opacity":"0.3"}}
@@ -294,6 +354,9 @@ const HouseInfo = () => {
                 data.findAllAcc.filter((v) => v.category === "관광지근처")
               );
               setCategory("관광지근처");
+              setSort("")
+              setType("");
+              setAddress("")
             }}
             id="spot"
           >
@@ -305,7 +368,10 @@ const HouseInfo = () => {
             // onClick={menuOnClick}
             onClick={() => {
               setCategory("조용한마을");
-              return setIsHostData(
+              setSort("")
+              setType("");
+              setAddress("")
+              setIsHostData(
                 data.findAllAcc.filter((v) => v.category === "조용한마을")
               );
               // setCategory("조용한마을");
@@ -318,12 +384,14 @@ const HouseInfo = () => {
           </div>
           <div
             className="우도"
-            // onClick={menuOnClick}
             onClick={() => {
               setIsHostData(
                 data.findAllAcc.filter((v) => v.category === "우도")
               );
               setCategory("우도");
+              setSort("")
+              setType("");
+              setAddress("")
             }}
             id="spot"
           >
@@ -333,12 +401,14 @@ const HouseInfo = () => {
           </div>
           <div
             className="해변근처"
-            // onClick={menuOnClick}
             onClick={() => {
               setIsHostData(
                 data.findAllAcc.filter((v) => v.category === "해변근처")
               );
               setCategory("해변근처");
+              setSort("")
+              setType("");
+              setAddress("")
             }}
             id="spot"
           >
@@ -361,7 +431,8 @@ const HouseInfo = () => {
                 }}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
-                defaultValue={""}
+                // defaultValue={""}
+                value={type||""}
                 onChange={typeChange}
               >
                 <MenuItem value="" disabled={true}>
@@ -386,7 +457,8 @@ const HouseInfo = () => {
                 inputProps={{
                   "aria-label": "Without label",
                 }}
-                defaultValue={address}
+                // defaultValue={""}
+                value={address ||""}
                 onChange={addressChange}
               >
                 <MenuItem value="" disabled={true}>
@@ -408,12 +480,16 @@ const HouseInfo = () => {
                 }}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
-                defaultValue={""}
+                // defaultValue={""}
+                value={sort||""}
+                onChange={sortChange}
               >
-                <MenuItem value="" disabled={true}>
+                <MenuItem value="" onClick={()=>{
+                  setIsHostData(data.findAllAcc);
+                }}>
                   최신순
                 </MenuItem>
-                {/* <MenuItem value="별점순">별점순</MenuItem> */}
+                <MenuItem value="별점순">별점순</MenuItem>
               </Select>
             </OrderingBox>
             <div
@@ -459,14 +535,22 @@ const HouseInfo = () => {
                           <SaveImg
                             src={saveIcon}
                             onClick={() => {
+                              if(userId){
                               cancelSaveClick(item.hostId);
+                              }else{
+                                navigate('/loginerror')
+                              }
                             }}
                           />
                         ) : (
                           <SaveImg
                             src={unsaveIcon2}
                             onClick={() => {
-                              saveClick(item.hostId);
+                              if(userId){
+                                saveClick(item.hostId);
+                                }else{
+                                  navigate('/loginerror')
+                                }
                             }}
                           />
                         )}

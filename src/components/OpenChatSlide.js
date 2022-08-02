@@ -10,7 +10,6 @@ import back4 from "../assests/css/배경4.webp";
 import back5 from "../assests/css/배경5.webp";
 import back6 from "../assests/css/배경6.webp";
 import { useNavigate } from "react-router-dom";
-import { BrowserView, MobileView } from "react-device-detect";
 
 const OpenChatSlide = ({ rtl, data }) => {
   const [mouseOver, setMouseOver] = useState(false);
@@ -154,33 +153,6 @@ const OpenChatSlide = ({ rtl, data }) => {
   const backList = [back, back2, back3, back4, back5, back6];
   const navigate = useNavigate();
   return (
-    <>
-      <MobileView>
-        <MobileImgBox>
-          <MobileSliderImg {...settings} {...arrows}>
-            {data.length >= 1 &&
-              data?.map((v, i) => (
-                <MobileWrap key={v.roomId}>
-                  <MobileCard
-                    onClick={() => {
-                      navigate(`/chatroom/${v.roomId}`);
-                    }}
-                    onMouseLeave={mouseLeave}
-                    onMouseOver={mouseHover}
-                    style={{
-                      background: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ),url(${backList[i]}) no-repeat center center`,
-                      backgroundSize: "cover",
-                    }}
-                  >
-                    <p>{v.title}</p>
-                  </MobileCard>
-                </MobileWrap>
-              ))}
-          </MobileSliderImg>
-        </MobileImgBox>
-      </MobileView>
-
-      <BrowserView>
         <ImgBox>
           <SliderImg {...settings} {...arrows}>
             {data.length >= 1 &&
@@ -203,8 +175,6 @@ const OpenChatSlide = ({ rtl, data }) => {
               ))}
           </SliderImg>
         </ImgBox>
-      </BrowserView>
-    </>
   );
 };
 const ImgBox = styled.div`
@@ -278,79 +248,5 @@ const Card = styled.div`
   }
 `;
 
-const MobileImgBox = styled.div`
-  width: 100%;
-  /* height: 300px; */
-  margin: 10px auto 20px auto;
-  display: flex;
-  flex-wrap: nowrap;
-  h2 {
-    margin-bottom: 12px;
-  }
-`;
-const MobileSliderImg = styled(Slider)`
-  width: 100%;
-  height: 35px;
-  .dots_custom {
-    /* display: inline-block; */
-    /* vertical-align: middle; */
-    /* margin: auto 0; */
-    padding: 0;
-  }
-  .dots_custom li {
-    list-style: none;
-    cursor: pointer;
-    display: inline-block;
-    margin: 0 6px;
-    padding: 0;
-  }
-  .dots_custom li button {
-    border: none;
-    background: gray;
-    color: transparent;
-    cursor: pointer;
-    display: block;
-    height: 6px;
-    width: 6px;
-    border-radius: 100%;
-    padding: 0;
-    display: hidden;
-  }
-  .dots_custom li.slick-active button {
-    background-color: #fff;
-  }
-`;
-const MobileWrap = styled.div`
-  width: 100%;
-  margin-right: 6.36px;
-  /* height: 300px; */
-`;
-const MobileCard = styled.div`
-  border-radius: 9.53704px;
-  width: 160px;
-  height: 50px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
-  background-blend-mode: multiply, normal;
-  color: white;
-  cursor: pointer;
-  img {
-    width: 50%;
-    margin-bottom: 20px;
-  }
-  p {
-    width: 80%;
-    text-align: center;
-    font-style: normal;
-    font-weight: 700;
-    font-size: 11px;
-    line-height: 110%;
-  }
-`;
+
 export default OpenChatSlide;
