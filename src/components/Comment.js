@@ -2,10 +2,10 @@ import React, { useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import editIcon from "../assests/css/editIcon.png";
-import deleteIcon from "../assests/css/deleteIcon.png";
+import editIcon from "../assests/css/editIcon.webp";
+import deleteIcon from "../assests/css/deleteIcon.webp";
 import checkIcon from "../assests/css/checkIcon.webp";
-import cancelIcon from "../assests/css/cancelIcon.webp";
+import cancelIcon from "../assests/css/cancelIcon2.webp";
 import instance from "../shared/axios";
 const Comment = ({ value, index }) => {
   const queryClient = useQueryClient();

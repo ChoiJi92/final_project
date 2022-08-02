@@ -3,11 +3,10 @@ import { Map, MapMarker, CustomOverlayMap } from "react-kakao-maps-sdk";
 import plusIcon from "../assests/css/plusIcon.webp";
 import minusIcon from "../assests/css/minusIcon.webp";
 import styled from "styled-components";
-import back2 from "../assests/css/배경2.webp";
-import starIcon from "../assests/css/starIcon.png";
-import unsaveIcon from "../assests/css/unsaveIcon.png";
-import saveIcon from "../assests/css/saveIcon.png";
-import cancelIcon from "../assests/css/cancelIcon.png";
+import starIcon from "../assests/css/starIcon.webp";
+import unsaveIcon from "../assests/css/unsaveIcon.webp";
+import saveIcon from "../assests/css/saveIcon.webp";
+import cancelIcon from "../assests/css/cancelIcon.webp";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { hostData, testDataMap } from "../recoil/atoms";
@@ -339,8 +338,8 @@ const Wrap = styled.div`
       }
     }
     img {
-      width: 26px;
-      height: 26px;
+      width: 30px;
+      height: 30px;
       cursor: pointer;
     }
   }

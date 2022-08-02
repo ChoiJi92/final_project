@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import shareIcon2 from "../assests/css/shareIcon2.png";
-import shareIcon from "../assests/css/shareIcon.png";
+import shareIcon from "../assests/css/shareIcon.webp";
 import {
   FacebookShareButton,
   FacebookIcon,

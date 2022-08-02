@@ -9,9 +9,10 @@ import nearby from "../assests/css/관광지근처.webp";
 import quietVil from "../assests/css/조용한마을.webp";
 import udo from "../assests/css/우도.webp";
 import nearBySea from "../assests/css/해변근처.webp";
-import unlike from "../assests/css/whiteLike.webp";
+import whiteUnlike from "../assests/css/whiteUnLike.webp";
+import whiteLike from "../assests/css/whiteLike.webp";
 import like from "../assests/css/likeIcon.webp";
-import unlike2 from "../assests/css/unlikeIcon.webp";
+import unlike from "../assests/css/unlikeIcon.webp";
 import commentIcon from "../assests/css/commentIcon.webp";
 import commentIcon2 from "../assests/css/commentIcon2.webp";
 import nextIcon from "../assests/css/nextIcon2.webp";
@@ -113,7 +114,33 @@ const Community = () => {
                 </div>
                 <div className="like">
                   <div>
-                    <img src={unlike} alt="좋아요"></img>
+                  {bestData[count]?.islike ? (
+                      <img
+                      style={{cursor:'pointer'}}
+                        onClick={() => {
+                          if (userId) {
+                            unLike.mutate(bestData[count]?.postId);
+                          } else {
+                            setOpen(true);
+                          }
+                        }}
+                        src={whiteLike}
+                        alt="좋아요"
+                      />
+                    ) : (
+                      <img
+                      style={{cursor:'pointer'}}
+                        onClick={() => {
+                          if (userId) {
+                            Like.mutate(bestData[count]?.postId);
+                          } else {
+                            setOpen(true);
+                          }
+                        }}
+                        src={whiteUnlike}
+                        alt="좋아요"
+                      />
+                    )}
                     <p>{bestData[count]?.likeNum}개</p>
                   </div>
                   <div>
@@ -252,7 +279,7 @@ const Community = () => {
                             setOpen(true);
                           }
                         }}
-                        src={unlike2}
+                        src={unlike}
                         alt="좋아요"
                       />
                     )}
