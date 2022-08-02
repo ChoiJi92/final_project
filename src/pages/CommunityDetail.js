@@ -21,7 +21,10 @@ import SlideImg from "../components/SlideImg";
 import KakaoMap from "../components/KakaoMap";
 import MetaTag from "./MetaTag";
 import Footer from "../components/Footer";
+import { SettingsPowerRounded } from "@mui/icons-material";
+import LoginModal from "../components/LoginModal";
 import ScrollTopBtn from "../components/ScrollTopBtn";
+
 
 const CommunityDetail = () => {
   const queryClient = useQueryClient();
@@ -30,7 +33,7 @@ const CommunityDetail = () => {
   const commentRef = useRef();
   const userId = sessionStorage.getItem("userId");
   const userImage = sessionStorage.getItem("userImage");
-  const [islike, setIslike] = useState(false);
+  const [open, setOpen] =useState(false)
 
   const { data } = useQuery(
     ["detailContent", params.id],
@@ -197,7 +200,7 @@ const CommunityDetail = () => {
                               if (userId) {
                                 unLike.mutate(data.allPost[0].postId);
                               } else {
-                                navigate("/loginerror");
+                                setOpen(true)
                               }
                             }}
                           >
@@ -215,7 +218,7 @@ const CommunityDetail = () => {
                               if (userId) {
                                 Like.mutate(data.allPost[0].postId);
                               } else {
-                                navigate("/loginerror");
+                                setOpen(true)
                               }
                             }}
                           >
@@ -227,6 +230,7 @@ const CommunityDetail = () => {
                             />
                           </button>
                         )}
+                        <LoginModal open={open} setOpen={setOpen}/>
                       </>
                     ) : (
                       <>
