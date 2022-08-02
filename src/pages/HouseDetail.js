@@ -32,6 +32,7 @@ import Footer from "../components/Footer";
 import instance from "../shared/axios";
 import KaKaoMap from "../components/KakaoMap";
 import { SaveAsOutlined } from "@mui/icons-material";
+import ScrollTopBtn from "../components/ScrollTopBtn";
 
 const HouseDetail = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -46,8 +47,8 @@ const HouseDetail = () => {
   const openModal = (id, review, star, reviewId) => {
     if (!userId) {
       //로그인이 필요한 페이지 입니다.
-      // navigate("/")
-      alert("로그인이 필요합니다.");
+      navigate("/loginerror")
+      // alert("로그인이 필요합니다.");
     } else {
       setModalOpen(true);
       setIsReviewUpdate({
@@ -541,6 +542,7 @@ const HouseDetail = () => {
       </div>
       
     </Wrap>
+    <ScrollTopBtn/>
     <Footer/>
     </>
   );
