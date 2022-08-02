@@ -4,15 +4,11 @@ import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import Avatar from "@mui/material/Avatar";
-import Badge from "@mui/material/Badge";
 import styled from "styled-components";
-import { current } from "@reduxjs/toolkit";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation} from "react-query";
 import instance from "../shared/axios";
-import profileEdit from "../assests/css/images/editIcon2.webp";
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -26,24 +22,13 @@ const style = {
   p: 4,
 };
 
-const MyInfoModal = () => {
+const MyInfoModal = ({open,setOpen}) => {
   const userImage = sessionStorage.getItem("userImage");
-  const nickName = sessionStorage.getItem("nickName");
   const userId = sessionStorage.getItem("userId");
-  // const { open, close } = props;
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const currentImg = useRef(null);
-
-  const [isImgChnage, setIsImgChange] = useState(true);
-
-  const nickRef = useRef(null);
   const [isImgUrl, setIsImgUrl] = useState("");
   const [profile, setProfile] = useState();
-  const [isnickChange, setIsNickChange] = useState(nickName);
-
-  const queryClient = useQueryClient();
 
   // console.log(userImage, nickName);
   //   const handleOpen = () => setOpen(true);
@@ -57,7 +42,6 @@ const MyInfoModal = () => {
     setProfile(e.target.files[0]);
     const myImgChangeURl = URL.createObjectURL(userImgChange[0]);
     setIsImgUrl(myImgChangeURl);
-    setIsImgChange(false);
     
   };
   const updateMutation = useMutation((formData) => {
@@ -79,37 +63,16 @@ const MyInfoModal = () => {
   });
 
   const userInfoChangeClick = () => {
-    console.log("이미지", isImgUrl);
     const formData = new FormData();
     formData.append("images", profile);
     updateMutation.mutate(formData);
   };
+  
   return (
     <div>
-      <Badge
-        overlap="circular"
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        badgeContent={
-          <img
-            style={{ width: "24px", height: "24px" }}
-            src={profileEdit}
-            alt="프로필수정"
-          ></img>
-        }
-      >
-        <Avatar
-          alt="프로필 이미지"
-          src={userImage}
-          sx={{ width: 72, height: 72 }}
-          style={{ cursor: "pointer" }}
-          onClick={() => {
-            handleOpen();
-          }}
-        />
-      </Badge>
       <Modal
         aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
+        // aria-describedby="transition-modal-description"
         open={open}
         onClose={handleClose}
         closeAfterTransition
@@ -118,6 +81,7 @@ const MyInfoModal = () => {
           timeout: 500,
         }}
       >
+       
         <Fade in={open}>
           <Box sx={style}>
             <Main id="transition-modal-title" variant="h6" component="h2">
@@ -134,7 +98,7 @@ const MyInfoModal = () => {
                 />
               </div>
             </Main>
-            <Main component="div">
+            <Main id="transition-modal-title" variant="h6" component="h2">
               <div id="imgBox">
                 <MyImg src={isImgUrl ? isImgUrl : userImage}></MyImg>
                 <div className="btn">
@@ -163,6 +127,8 @@ const MyInfoModal = () => {
     </div>
   );
 };
+
+
 
 const Main = styled(Typography)`
   display: flex;

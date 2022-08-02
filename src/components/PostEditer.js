@@ -57,7 +57,7 @@ const PostEditer = ({setContent,setPreImages,content,setEditorImage}) => {
                 const imageUrl = URL.createObjectURL(blob)
                 setPreImages((prevState)=>[...prevState,imageUrl])
                 setEditorImage((prevState)=>[...prevState,blob])
-                let alt;
+                // let alt;
                 // const formData = new FormData()
                 // formData.append('images',blob)
                 // const imageUrl = await instance.post('image',formData,{
@@ -71,7 +71,7 @@ const PostEditer = ({setContent,setPreImages,content,setEditorImage}) => {
                 // }
                 // )
                 // setImageKey((prevState)=>[...prevState,alt])
-                callback(imageUrl,alt)
+                callback(imageUrl,"이미지")
                 // callback(imageUrl)
             }
         }}
