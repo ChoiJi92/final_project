@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import google_logo from '../assests/css/구글 로고.webp'
+import google_logo from '../assests/css/images/구글 로고.webp'
 
 
 const Google = () => {

@@ -5,8 +5,8 @@ import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Typography from "@mui/material/Typography";
 import styled from "styled-components";
-import cancelIcon from "../assests/css/cancelIcon.webp";
-import mendorong3 from "../assests/css/mendorong3.webp";
+import cancelIcon from "../assests/css/images/cancelIcon.webp";
+import mendorong3 from "../assests/css/images/mendorong3.webp";
 import { useNavigate, useParams } from "react-router-dom";
 const style = {
   position: "absolute",

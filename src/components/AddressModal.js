@@ -5,8 +5,8 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Typography from '@mui/material/Typography';
 import styled from 'styled-components';
-import cancelIcon from '../assests/css/cancelIcon.webp'
-import searchIcom from "../assests/css/search.webp";
+import cancelIcon from '../assests/css/images/cancelIcon.webp'
+import searchIcom from "../assests/css/images/search.webp";
 import DaumPostCode from 'react-daum-postcode';
 
 const style = {

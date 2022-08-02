@@ -7,7 +7,7 @@ import Select from "@mui/material/Select";
 import WriteFooter from "../components/WriteFooter";
 import SortableList, { SortableItem } from "react-easy-sort";
 import arrayMove from "array-move";
-import imageIcon from "../assests/css/imageIcon.png";
+import imageIcon from "../assests/css/images/imageIcon.png";
 import AddressModal from "../components/AddressModal";
 import TagList from "../components/TagList";
 import { useParams } from "react-router-dom";
