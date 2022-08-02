@@ -13,6 +13,8 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { hostData, testDataMap } from "../recoil/atoms";
 import { useMutation, useQueryClient } from "react-query";
 import instance from "../shared/axios";
+import { Login } from "@mui/icons-material";
+import LoginModal from "./LoginModal";
 const KakaoMap = ({ data, height, singleMarker }) => {
   const { kakao } = window;
   const [isOpen, setIsOpen] = useState(false);
@@ -24,6 +26,9 @@ const KakaoMap = ({ data, height, singleMarker }) => {
   const navigate = useNavigate();
   // const isTest = useRecoilValue(hostData)
   const queryClient = useQueryClient();
+
+  const [open, setOpen] = useState(false);
+
   const savePost = useMutation(
     ["save"],
     (id) =>
@@ -63,16 +68,12 @@ const KakaoMap = ({ data, height, singleMarker }) => {
     if (userId) {
       savePost.mutate(id);
     } else {
-      navigate("/loginerror");
+      setOpen(true)
     }
   };
 
   const cancelSaveClick = (id, save) => {
-    if (userId) {
       saveDelete.mutate(id);
-    } else {
-      navigate("/loginerror");
-    }
   };
   const bounds = new kakao.maps.LatLngBounds();
   let geocoder = new kakao.maps.services.Geocoder();
@@ -226,6 +227,7 @@ const KakaoMap = ({ data, height, singleMarker }) => {
                       </div>
                     </div>
                   </div>
+                  <LoginModal open={open} setOpen={setOpen}/>
                 </Wrap>
               </CustomOverlayMap>
             )}

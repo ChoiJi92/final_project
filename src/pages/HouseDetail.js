@@ -33,6 +33,7 @@ import instance from "../shared/axios";
 import KaKaoMap from "../components/KakaoMap";
 import { SaveAsOutlined } from "@mui/icons-material";
 import ScrollTopBtn from "../components/ScrollTopBtn";
+import LoginModal from "../components/LoginModal";
 
 const HouseDetail = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -40,6 +41,8 @@ const HouseDetail = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalDta] = useState([]);
   const [isReivewUpdate, setIsReviewUpdate] = useState({});
+  
+  const [open, setOpen] = useState(false);
 
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
   const userId = sessionStorage.getItem("userId");
@@ -47,7 +50,10 @@ const HouseDetail = () => {
   const openModal = (id, review, star, reviewId) => {
     if (!userId) {
       //로그인이 필요한 페이지 입니다.
-      navigate("/loginerror")
+      
+      
+        setOpen(true);
+     
       // alert("로그인이 필요합니다.");
     } else {
       setModalOpen(true);
@@ -175,7 +181,7 @@ const HouseDetail = () => {
     if(userId){
       savePost.mutate(id);
     }else{
-      navigate("/loginerror")
+      setOpen(true);
     }
     // savePost.mutate(id);
     // savePost.mutate(id);
@@ -417,6 +423,7 @@ const HouseDetail = () => {
                   close={closeModal}
                   isReivewUpdate={isReivewUpdate}
                 />
+                <LoginModal open={open} setOpen={setOpen}/>
               </div>
             </ReviewMainBox>
             <ReviewListBox>
