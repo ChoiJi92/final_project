@@ -10,7 +10,7 @@ import parasol from "../assests/css/images/parasol.webp";
 import lighthouse from "../assests/css/images/lighthouse.webp";
 import palmTree from "../assests/css/images/palmtree.webp";
 import dolhaleubang from "../assests/css/images/dolhaleubang.webp";
-import jeju from "../assests/css/jeju.webp";
+import jeju from "../assests/css/images/jeju.webp";
 import { useQuery } from "react-query";
 import instance from "../shared/axios";
 import Footer from "../components/Footer";

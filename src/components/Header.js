@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import UserMenu from "./UserMenu";
-import searchIcon from "../assests/css/search.webp";
-import cancelIcon from "../assests/css/cancelIcon.webp";
-import jejuLogo from "../assests/css/jejuLogo.webp";
+import searchIcon from "../assests/css/images/search.webp";
+import cancelIcon from "../assests/css/images/cancelIcon.webp";
+import jejuLogo from "../assests/css/images/jejuLogo.webp";
 import LoginModal from "./LoginModal";
 
 const Header = () => {
