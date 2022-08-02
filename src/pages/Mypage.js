@@ -14,7 +14,7 @@ import cancelIcon from "../assests/css/cancelIcon.webp";
 import HostRegistModal from "../components/HostRegistModal";
 import { useNavigate } from "react-router-dom";
 import MyInfoModal from "../components/MyInfoModal";
-import editIcon from "../assests/css/editIcon.png";
+import editIcon from "../assests/css/editIcon.webp";
 import { useMutation, useQuery } from "react-query";
 import instance from "../shared/axios";
 import { useRecoilState } from "recoil";

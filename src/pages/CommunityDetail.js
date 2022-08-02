@@ -5,8 +5,8 @@ import styled from "styled-components";
 import instance from "../shared/axios";
 import "@toast-ui/editor/dist/toastui-editor-viewer.css";
 import { Viewer } from "@toast-ui/react-editor";
-import editIcon from "../assests/css/editIcon.png";
-import deleteIcon from "../assests/css/deleteIcon.png";
+import editIcon from "../assests/css/editIcon.webp";
+import deleteIcon from "../assests/css/deleteIcon.webp";
 import unlikeIcon from "../assests/css/unlikeIcon.webp";
 import likeIcon from "../assests/css/likeIcon.webp";
 import starIcon from "../assests/css/starIcon.webp";
@@ -21,7 +21,6 @@ import SlideImg from "../components/SlideImg";
 import KakaoMap from "../components/KakaoMap";
 import MetaTag from "./MetaTag";
 import Footer from "../components/Footer";
-import { SettingsPowerRounded } from "@mui/icons-material";
 import LoginModal from "../components/LoginModal";
 import ScrollTopBtn from "../components/ScrollTopBtn";
 

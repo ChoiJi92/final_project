@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import cancelIcon from "../assests/css/cancelIcon.png";
+import cancelIcon from "../assests/css/cancelIcon.webp";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";

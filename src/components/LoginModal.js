@@ -5,7 +5,7 @@ import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Typography from "@mui/material/Typography";
 import styled from "styled-components";
-import cancelIcon from "../assests/css/cancelIcon.png";
+import cancelIcon from "../assests/css/cancelIcon.webp";
 import mendorongLogo from "../assests/css/mendorong.webp";
 import Kakao from "./Kakao";
 import Naver from "./Naver";

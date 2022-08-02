@@ -1,16 +1,10 @@
 import React from "react";
-import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import jeju2 from "../assests/css/jeju2.jpeg"
-import { reviewStarList } from "../recoil/atoms";
+
 
 
 
 const Profile = ({item, data}) => {
-    // const userProfile = useRecoilValue(reviewStarList);
-    // console.log(!data)
-//    console.log(userProfile[idx])
-    // console.log(item, "잇냐?");
     return(
     <Main>
         {data ? (

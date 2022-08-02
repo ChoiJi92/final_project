@@ -3,7 +3,7 @@ import styled from "styled-components";
 import RoomModal from "../components/RoomModal";
 import io from "socket.io-client";
 import instance from "../shared/axios";
-import enterIcon from "../assests/css/enterIcon.png";
+import enterIcon from "../assests/css/enterIcon.webp";
 import exitIcon from "../assests/css/exitIcon.webp";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";

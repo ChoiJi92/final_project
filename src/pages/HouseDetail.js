@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import editIcon from "../assests/css/editIcon.png";
-import deleteIcon from "../assests/css/deleteIcon.png";
+import editIcon from "../assests/css/editIcon.webp";
+import deleteIcon from "../assests/css/deleteIcon.webp";
 import stepImg from "../assests/css/mypageImg.webp";
 import land from "../assests/css/내륙.webp";
 import nearby from "../assests/css/관광지근처.webp";
@@ -9,12 +9,12 @@ import allCategory from "../assests/css/모두보기.webp";
 import quietVil from "../assests/css/조용한마을.webp";
 import udo from "../assests/css/우도.webp";
 import nearBySea from "../assests/css/해변근처.webp";
-import shareIcon2 from "../assests/css/shareIcon2.png";
+import shareIcon2 from "../assests/css/shareIcon2.webp";
 import saveIcon from "../assests/css/saveIcon.webp";
 import unsaveIcon2 from "../assests/css/unsaveIcon2.webp";
 
 import step from "../assests/css/step.webp";
-import scrap from "../assests/css/scrap.png";
+
 
 import { FaStar } from "react-icons/fa";
 import "slick-carousel/slick/slick.css";

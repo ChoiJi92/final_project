@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import styled from "styled-components";
-import cancelIcon from "../assests/css/cancelIcon.png";
+import cancelIcon from "../assests/css/cancelIcon.webp";
 import instance from "../shared/axios";
 import { useMutation, useQueryClient } from "react-query";
 import TagList from "./TagList";
