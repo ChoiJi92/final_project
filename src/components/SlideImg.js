@@ -3,9 +3,6 @@ import styled from "styled-components";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import nextIcon from '../assests/css/nextIcon2.webp'
-import prevIcon from '../assests/css/prevIcon2.webp'
-import { borderRadius } from "@mui/system";
 
 const SlideImg = (props) => {
   const [mouseOver, setMouseOver] = useState(false);
