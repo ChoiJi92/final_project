@@ -20,6 +20,7 @@ import instance from "../shared/axios";
 import KakaoMap from "../components/KakaoMap";
 import Footer from "../components/Footer";
 import MetaTag from "./MetaTag";
+import LoginModal from "../components/LoginModal";
 
 const HouseInfo = () => {
   // const [leftPosition, setLeftPosition] = useState("");
@@ -42,6 +43,8 @@ const HouseInfo = () => {
   // const spotUnderlineRef = useRef(null);
   // // const firstBox = useRef(null);
   // const liveFirstBox = useRef(null);
+  const [open, setOpen] = useState(false);
+
   const location = useLocation();
   const navigate = useNavigate()
   // console.log(location.state.address)
@@ -206,11 +209,15 @@ const HouseInfo = () => {
   );
 
   const saveClick = (id) => {
-    savePost.mutate(id);
+    if(userId){
+      savePost.mutate(id);
+    }else{
+      setOpen(true)
+    }
   };
 
   const cancelSaveClick = (id) => {
-    saveDelete.mutate(id);
+      saveDelete.mutate(id);
   };
 
   // useEffect(() => {
@@ -535,22 +542,16 @@ const HouseInfo = () => {
                           <SaveImg
                             src={saveIcon}
                             onClick={() => {
-                              if(userId){
+                             
                               cancelSaveClick(item.hostId);
-                              }else{
-                                navigate('/loginerror')
-                              }
+                             
                             }}
                           />
                         ) : (
                           <SaveImg
                             src={unsaveIcon2}
                             onClick={() => {
-                              if(userId){
                                 saveClick(item.hostId);
-                                }else{
-                                  navigate('/loginerror')
-                                }
                             }}
                           />
                         )}
@@ -562,6 +563,7 @@ const HouseInfo = () => {
               })}
             </ListWrap>
           </ContentsBox>
+          <LoginModal open={open} setOpen={setOpen}/>
           <MapBox>
 
             <KakaoMap data={isHostData} height={"85%"} singleMarker={false}/>
