@@ -22,6 +22,8 @@ import { useRecoilState } from "recoil";
 import { bestPostData, postData } from "../recoil/atoms";
 import MetaTag from "./MetaTag";
 import LoginModal from "../components/LoginModal";
+import ScrollTopBtn from "../components/ScrollTopBtn";
+
 
 const Community = () => {
   const navigate = useNavigate();
@@ -273,6 +275,7 @@ const Community = () => {
           <LoginModal open={open} setOpen={setOpen} />
         </Bottom>
       </Container>
+
       {userId && (
         <Edit
           onClick={() => {
@@ -282,6 +285,8 @@ const Community = () => {
           <img src={editIcon} alt="글쓰기" />
         </Edit>
       )}
+  <ScrollTopBtn/>
+
       <Footer />
     </>
   );
@@ -613,7 +618,7 @@ const Edit = styled.div`
   border-radius: 50%;
   position: fixed;
   bottom: 30px;
-  right: 30px;
+  right: 120px;
   display: flex;
   justify-content: center;
   align-items: center;
