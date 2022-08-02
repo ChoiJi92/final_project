@@ -26,7 +26,7 @@ const HostWrite = () => {
   const [testFileList, setTestFileList] = useState([]);
   const [tagList, setTagList] = useState([]);
   const [addressError, setAddressError] = useState(false);
-  const [address, setAddress] = useState("");
+  
   const [isMiniImg, setIsMiniImg] = useState(false);
 
   const userId = sessionStorage.getItem("userId");
@@ -34,7 +34,7 @@ const HostWrite = () => {
 
   const [testImg, setTestImg] = useRecoilState(updateImgList);
   const [deletedImg, setDeletedImg] = useRecoilState(deletedImgList);
-
+  
   const [deleteState, setDeleteState] = useState([]);
 
   const [newImgList, setNewImgList] = useState([]);
@@ -44,18 +44,18 @@ const HostWrite = () => {
 
     // ()=>getWriteData(paramsId),
     () => {
-      return instance.get(`/host/${hostId}`).then((res) => res.data.findAllAcc);
+      return instance.get(`/host/${hostId}`).then((res) => { return res.data.findAllAcc});
     },
     {
       onSuccess: (data) => {
-        setTestImg(data.images); //삭제되고 추가되고 보여지는 스테이트
+        setTestImg(data.images); //맨 처음 이미지 받아오는 스테이트
         setDeletedImg(data.images); // 삭제되고 남아있는 스테이트
       },
       refetchOnWindowFocus: false,
       enabled: !!hostId,
     }
   );
-
+  const [address, setAddress] = useState(data?.mainAddress);
   // 첫 번째 이미지 파일을 스테이트에 저장하고
   // 두 번째 기존에 있던거랑
   // [{key:"",url:""},]
@@ -81,6 +81,7 @@ const HostWrite = () => {
 
   const onSortEnd = (oldIndex, newIndex) => {
     setMultiImgs((array) => arrayMove(array, oldIndex, newIndex));
+    setTestImg((array) => arrayMove(array, oldIndex, newIndex))
   };
 
   const onImgChange = (e) => {
@@ -115,7 +116,7 @@ const HostWrite = () => {
       }
       setTestImg(testImgUrlLists);
       // setTestFileList(testImgUrlLists);
-      setNewImgList([...newImgList, ...testList2]);
+      setNewImgList([...newImgList, ...testList2]); //새롭게 추가된 이미지 파일 리스트
     }
   };
 
@@ -131,7 +132,6 @@ const HostWrite = () => {
   const uploadDeleteImg = (id) => {
     //이거슨 삭제되고 보여지는 스테이트
     setTestImg(testImg.filter((_, idx) => idx !== id));
-    setDeletedImg(deletedImg.filter((_, idx) => idx !== id));
 
     setNewImgList(newImgList.filter((_, idx) => idx !== id));
     // 삭제 된 이미지 스테이트
@@ -181,7 +181,13 @@ const HostWrite = () => {
 
   const updateMutation = useMutation(
     (updateData) => {
-      return instance.put(`/host/${hostId}`, updateData);
+      return instance.put(`/host/${hostId}`, updateData)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err, "why");
+      })
     }
     // {
     //   onSuccess: () => {
@@ -192,7 +198,9 @@ const HostWrite = () => {
   // console.log(testImg, "삭제되고 보여지는 스테이트");
   // console.log(deleteState, "삭제된 스테이트");
   // console.log(newImgList, "추가된 이미지 스테이트");
-  // console.log(deletedImg, "삭제되고 남아 있는 스테이트");
+  // console.log(deletedImg, "처음부터 받아온 스테이트");
+  // console.log(data?.mainAddress, "1");
+  // console.log(address, "2");
   // console.log(testFileList ,"testfilelist")
   // console.log(multiImgs, "멀티이미지 스테이트")
   // console.log(testFileList)
@@ -209,7 +217,7 @@ const HostWrite = () => {
     //   setAddressError(true);
     // }
     // if (hostId) {
-    if (multiImgs.length > 3) {
+    if (multiImgs.length  > 3 || testImg.length > 3) {
       // console.log("hi");
       const formData = new FormData();
       formData.append("category", data.category);
@@ -222,12 +230,17 @@ const HostWrite = () => {
       formData.append("stepSelect", data.stepSelect);
       formData.append("title", data.title);
       formData.append("tagList", tagList);
-      imgFileList.forEach((item) => formData.append("images", item));
+      
 
       if (hostId) {
-        // updateMutation.mutate(formData);
+        formData.append("existImages", deletedImg);
+        formData.append("deleteImages", deleteState);
+        newImgList.forEach((item) => formData.append("images", item));
+        updateMutation.mutate(formData);
+        // console.log(address)
+        
       } else {
-        // console.log(imgFileList);
+        imgFileList.forEach((item) => formData.append("images", item));
         testWrite.mutate(formData);
         // console.log(tagList);
       }
@@ -454,7 +467,7 @@ const HostWrite = () => {
                   // {...register("mainAddress", { required: true })}
                   // value={address}
                   readOnly
-                  value={address || data?.mainAddress}
+                  // value={address || data?.mainAddress}
                   style={{
                     borderRadius: "10px",
                     border: "none",
@@ -462,7 +475,7 @@ const HostWrite = () => {
                     padding: "10px",
                   }}
                   {...register("mainAddress")}
-                  // defaultValue={address ? address : data?.mainAddress }
+                  defaultValue={address}
                 />
                 <AddressModal setAddress={setAddress}></AddressModal>
               </div>
@@ -545,7 +558,7 @@ const HostWrite = () => {
                 {...register("postContent", {
                   required: "설명은 필수입니다 :)",
                 })}
-                defaultValue={data?.postContent ? data?.postContent : ""}
+                defaultValue={data?.hostContent ? data?.hostContent : ""}
                 id="text"
               ></textarea>
               <ErrorP1>{errors.postContent?.message}</ErrorP1>

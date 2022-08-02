@@ -12,12 +12,38 @@ const Header = () => {
   const [search, setSearch] = useState(false);
   const [menu, setMenu] = useState();
   const [open, setOpen] = useState(false);
+
+  
+
   const searchRef = useRef();
   const navigate = useNavigate();
   const nickName = sessionStorage.getItem("nickName");
   const userImage = sessionStorage.getItem("userImage");
+
+  const [isScroll, setIsScroll] = useState(false);
+  const throttle = (callback, delay) => {
+    let timer = null;
+    return () => {
+        if(timer)return;
+        timer = setTimeout(()=>{
+            callback();
+            timer = null;
+        }, delay) 
+    }
+  }
+  const updateScroll = () => {
+    const { scrollY } = window;
+    const isScrolled = scrollY !== 0;
+    setIsScroll(isScrolled);
+  };
+const handleScroll = throttle(updateScroll, 100);
+
   useEffect(() => {
     setMenu(params);
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, [params]);
   const onKeyPress = (e) => {
     if (e.key === "Enter") {
@@ -26,8 +52,11 @@ const Header = () => {
     }
   };
   return (
-    <Container>
-      <Wrap>
+    <Container scroll={isScroll}>
+      {/* {isScroll ? (<h1>gggg</h1>):("")} */}
+      <Wrap
+        scroll={isScroll}
+      >
         <img
           className="title"
           onClick={() => {
@@ -37,7 +66,7 @@ const Header = () => {
           src={jejuLogo}
           alt="로고"
         ></img>
-        <Center search={search} menu={menu}>
+        <Center scroll={isScroll} search={search} menu={menu}>
           <img
             className="search"
             src={searchIcon}
@@ -111,25 +140,34 @@ const Header = () => {
           )}
         </Center>
       </Wrap>
+      
     </Container>
   );
 };
 
 const Container = styled.div`
   width: 100%;
-  height: 120px;
+  height: ${(props)=>props.scroll ? "60px" : "120px"};
+  position: ${(props)=>props.scroll ? "fixed" : "none"};
+  z-index:${(props)=>props.scroll ? 3 : "0"};
   border-bottom: 2px solid #e5e5ea;
+  background: #fff;
+  top:0;
+  /* border: 1px solid blue; */
 `;
 const Wrap = styled.div`
   width: 70%;
-  height: 120px;
   margin: 0 auto;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  /* border: 1px solid red; */
+  height: ${(props)=>props.scroll ? "60px" : "120px"};
   .title {
     cursor: pointer;
+    width: ${(props)=>props.scroll ? "70px" : "121px"};
+    height: ${(props)=>props.scroll ? "40px" : "66px"};
   }
 `;
 const Center = styled.div`
@@ -149,7 +187,7 @@ const Center = styled.div`
 
   .searchInput {
     width: 85%;
-    height: 60px;
+    height: ${(props)=>props.scroll ? "45px" : "60px"};
     border-radius: 10px;
     background-color: #f7f3ef;
     margin-left: 20px;
@@ -159,7 +197,7 @@ const Center = styled.div`
     align-items: center;
     input {
       width: 80%;
-      height: 60px;
+      height: ${(props)=>props.scroll ? "45px" : "60px"};
       background-color: #f7f3ef;
       font-size: 24px;
       font-weight: 300;
