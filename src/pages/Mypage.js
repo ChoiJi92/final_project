@@ -26,6 +26,7 @@ import {
 } from "../recoil/atoms";
 import Footer from "../components/Footer";
 import MetaTag from "./MetaTag";
+import ScrollTopBtn from "../components/ScrollTopBtn";
 
 const Mypage = () => {
   const [myLike, setMyLike] = useState(true);
@@ -511,6 +512,7 @@ const Mypage = () => {
           )}
         </MyDefaultBoxBottom>
       </MainBox>
+      <ScrollTopBtn/>
       <Footer />
     </>
   );
