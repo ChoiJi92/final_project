@@ -15,6 +15,9 @@ import HostRegistModal from "../components/HostRegistModal";
 import { useNavigate } from "react-router-dom";
 import MyInfoModal from "../components/MyInfoModal";
 import editIcon from "../assests/css/images/editIcon.webp";
+import profileEdit from "../assests/css/images/profileEdit.webp";
+import Avatar from "@mui/material/Avatar";
+import Badge from "@mui/material/Badge";
 import { useMutation, useQuery } from "react-query";
 import instance from "../shared/axios";
 import { useRecoilState } from "recoil";
@@ -46,9 +49,10 @@ const Mypage = () => {
   const navigate = useNavigate();
   const nickName = sessionStorage.getItem("nickName");
   const userId = sessionStorage.getItem("userId");
+  const userImage = sessionStorage.getItem("userImage");
   const email = sessionStorage.getItem("email");
   const host = sessionStorage.getItem("host");
-
+  const [open, setOpen] = useState(false);
   const { data } = useQuery(
     ["loadMyPage"],
     () =>
@@ -57,7 +61,6 @@ const Mypage = () => {
         .then((res) => {
           // console.log(res.data);
           return (
-            //   setMyLikePost(res.data.mylikespost), setMyPost(res.data.mypostinfo)
             res.data
           );
         })
@@ -91,7 +94,28 @@ const Mypage = () => {
       <MainBox>
         <ProfileBox isEdit={isEdit}>
           <div className="profileWrap">
-            <MyInfoModal></MyInfoModal>
+          <Badge
+        overlap="circular"
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        badgeContent={
+          <img
+            style={{ width: "24px", height: "24px" }}
+            src={profileEdit}
+            alt="프로필수정"
+          ></img>
+        }
+      >
+        <Avatar
+          alt="프로필 이미지"
+          src={userImage}
+          sx={{ width: 72, height: 72 }}
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            setOpen(true);
+          }}
+        />
+      </Badge>
+            <MyInfoModal open={open} setOpen={setOpen}></MyInfoModal>
             <div id="profile">
               {isEdit ? (
                 <div className="nickname">
@@ -242,6 +266,9 @@ const Mypage = () => {
                           src={v.images[0]?.thumbnailURL}
                           key={i}
                           alt="이미지"
+                          onClick={()=>{
+                            navigate(`/community/${v.postId}`)
+                          }}
                         />
                       ))}
                     </DefaultImgBox>
@@ -261,6 +288,9 @@ const Mypage = () => {
                           src={v.images[0]?.thumbnailURL}
                           key={i}
                           alt="이미지"
+                          onClick={()=>{
+                            navigate(`/house/${v.hostId}`)
+                          }}
                         />
                       ))}
                     </DefaultImgBox>
@@ -429,6 +459,9 @@ const Mypage = () => {
                           src={v.images[0]?.thumbnailURL}
                           alt="이미지"
                           key={i}
+                          onClick={()=>{
+                            navigate(`/community/${v.postId}`)
+                          }}
                         />
                       ))}
                     </DefaultImgBox>
@@ -444,7 +477,9 @@ const Mypage = () => {
                   ) : (
                     <DefaultImgBox>
                       {myHostPost.slice(0, 3).map((v, i) => (
-                        <img  src={v.images[0].thumbnailURL} alt="이미지" />
+                        <img  src={v.images[0].thumbnailURL} alt="이미지" onClick={()=>{
+                          navigate(`/house/${v.hostId}`)
+                        }}/>
                       ))}
                     </DefaultImgBox>
                   )}
@@ -536,9 +571,9 @@ const ProfileBox = styled.div`
   margin-top: 92px;
   .profileWrap {
     display: flex;
+    margin-bottom: 21px;
   }
   #profile {
-    margin-bottom: 21px;
     width: 100%;
     margin-left: 20px;
     .nickname {
@@ -674,6 +709,7 @@ const DefaultImgBox = styled.div`
     height: 230px;
     margin-right: 20px;
     border-radius: 20px;
+    cursor: pointer;
   }
   #testBox {
     display: flex;

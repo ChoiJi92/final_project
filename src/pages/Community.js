@@ -17,7 +17,7 @@ import commentIcon from "../assests/css/images/commentIcon.webp";
 import commentIcon2 from "../assests/css/images/commentIcon2.webp";
 import nextIcon from "../assests/css/images/nextIcon2.webp";
 import prevIcon from "../assests/css/images/prevIcon2.webp";
-import editIcon from "../assests/css/images/editIcon.webp";
+import editIcon from "../assests/css/images/editIcon2.webp";
 import Footer from "../components/Footer";
 import { useRecoilState } from "recoil";
 import { bestPostData, postData } from "../recoil/atoms";
@@ -193,6 +193,16 @@ const Community = () => {
             <p>모두보기</p>
           </div>
           <div
+            className="nearBySea"
+            onClick={() => {
+              setCommunityData(data.filter((v) => v.category === "해변근처"));
+              setCategory("nearBySea");
+            }}
+          >
+            <img src={nearBySea} alt="해변 근처"></img>
+            <p>해변 근처</p>
+          </div>
+          <div
             className="land"
             onClick={() => {
               setCommunityData(data.filter((v) => v.category === "내륙"));
@@ -232,16 +242,7 @@ const Community = () => {
             <img src={udo} alt="우도"></img>
             <p>우도</p>
           </div>
-          <div
-            className="nearBySea"
-            onClick={() => {
-              setCommunityData(data.filter((v) => v.category === "해변근처"));
-              setCategory("nearBySea");
-            }}
-          >
-            <img src={nearBySea} alt="해변 근처"></img>
-            <p>해변 근처</p>
-          </div>
+          
         </Middle>
         <Bottom>
           {communityData.map((v) => (

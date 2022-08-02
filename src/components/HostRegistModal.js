@@ -26,11 +26,13 @@ const style = {
   outline: "none",
 };
 
-const HostRegistModal = ({ isOpen }) => {
-  // const [open, setOpen] = useState(false);
-  const [open, setOpen] = useState(isOpen);
+const HostRegistModal = ({ setHostOpen }) => {
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    setHostOpen(false)
+  };
   const inputRef = useRef();
   const [ishost, setIshost] = useState(false);
   const navigate = useNavigate();
@@ -44,10 +46,15 @@ const HostRegistModal = ({ isOpen }) => {
         sessionStorage.setItem("host", res.data.result);
       })
       .catch((err) => {
-        // console.log(err.response.data.message);
-        window.alert(err.response.data.message)
+        window.alert(err.response.data.message);
       });
   });
+  const onKeyPress=(e) =>{
+    if(e.key==='Enter'){
+      hostRegister.mutate(inputRef.current.value)
+    }
+    inputRef.current.value=""
+  }
   return (
     <div>
       <button
@@ -125,6 +132,7 @@ const HostRegistModal = ({ isOpen }) => {
                     type="number"
                     ref={inputRef}
                     placeholder="******"
+                    onKeyPress={onKeyPress}
                   ></input>
                   <button
                     onClick={() => {

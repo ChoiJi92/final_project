@@ -22,18 +22,18 @@ import { textImageURL, thumbnailURL } from "../recoil/atoms";
 const UserWrite = () => {
   const params = useParams();
   const userId = sessionStorage.getItem("userId");
-  // const [existThumbnail, setExistThumbnail] = useRecoilState(thumbnailURL);
-  // const [existTextImage, setExistTextImage] = useRecoilState(textImageURL);
+  const [existThumbnail, setExistThumbnail] = useRecoilState(thumbnailURL);
+  const [existTextImage, setExistTextImage] = useRecoilState(textImageURL);
   // params.id에 의 queryfunction이 실행될지 말지를 결정하므로 queryKey에 넣어줘야함
   const { data } = useQuery(
     ["editContent", params.id],
     () =>
       instance.get(`/post/${params.id}`).then((res) => {
         // console.log(res.data);
-        // setExistThumbnail([res.data.allPost[0].images[0]]);
-        // setExistTextImage([
-        //   ...res.data.allPost[0].images.filter((_, i) => i !== 0),
-        // ]);
+        setExistThumbnail([res.data.allPost[0].images[0]]);
+        setExistTextImage([
+          ...res.data.allPost[0].images.filter((_, i) => i !== 0),
+        ]);
         return res.data.allPost[0];
       }),
     {
@@ -124,7 +124,7 @@ const UserWrite = () => {
         })
         .then((res) => {
           setOpen(true);
-          // console.log(res.data);
+          console.log(res.data);
         }),
     {
       onSuccess: () => {
@@ -137,33 +137,34 @@ const UserWrite = () => {
     // console.log(data);
     // console.log(title);
     // console.log(content);
-    // // console.log(thumbnail);
-    // // console.log(address);
-    // // console.log(tagList);
-    // console.log(editorImage); // foreach 돌려야함
-    // console.log(preImages);
+    // console.log(thumbnail);
+    // console.log(address);
+    // console.log(tagList);
+    // console.log(editorImage,'텍스트 파일객체'); // foreach 돌려야함
+    // console.log(preImages,'텍스트 파일 blob');
     // console.log("저장");
-    // console.log(existThumbnail); //처음에 저장된 썸네일
-    // console.log(existTextImage); //처음에 저장된 텍스트 이미지
+    // console.log(existThumbnail,'처음에 저장된 썸네일'); //처음에 저장된 썸네일
+    // console.log(existTextImage,'처음에 저장된 텍스트 이미지'); //처음에 저장된 텍스트 이미지
 
     let filterImage = preImages.filter((v) => !content.includes(v)); // 삭제된 imageurl
-    // let filterTextImage = existTextImage.filter((v)=> !content.includes(v))
-    // console.log(filterTextImage)
+    
+    let filterTextImage = existTextImage.filter((v)=> !content.includes(v.postImageURL))  //필터된 텍스트이미지
+    // console.log(filterTextImage,'나는 필터된 텍스트이미지')
     // console.log(filterImage, "나는 없어진 이미지!");
-    let index = filterImage.map((v) => preImages.indexOf(v));
+    
+    let index = filterImage.map((v) => preImages.indexOf(v)); //없어진 이미지 인덱스
     // console.log(index, "나는 없어진 친구 인덱스");
-    let newEditorImage = editorImage.filter((_, i) => !index.includes(i));
+    
+    let newEditorImage = editorImage.filter((_, i) => !index.includes(i));  //필터된 파일 (파일객체 보내야됨)
     // console.log(
     //   editorImage.filter((_, i) => !index.includes(i)),
     //   "나는 필터된 file!!"
     // );
-    let newPreImages = preImages.filter((v) => content.includes(v));
+    let newPreImages = preImages.filter((v) => content.includes(v));  // 필터된 blob 객체(보내야됨)
     // console.log(
     //   preImages.filter((v) => content.includes(v)),
     //   "필터된 친구"
     // );
-    let preFilterImages = preImages.filter((v) => content.includes(v));
-    // console.log(preFilterImages);
 
     if (!thumbnail && !preview) {
       window.alert("썸네일 사진을 추가해 주세요 :)");
@@ -175,6 +176,7 @@ const UserWrite = () => {
       const formData = new FormData();
       if (thumbnail) {
         // console.log("여기 지나가나요?");
+        // console.log(thumbnail,'나는 썸네일')
         formData.append("images", thumbnail);
       }
       // else{
@@ -188,30 +190,27 @@ const UserWrite = () => {
       formData.append("title", title);
       formData.append("content", content);
       formData.append("tagList", tagList);
-      formData.append("mainAddress", address ? address : data.mainAddress);
+      formData.append("mainAddress", address);
       formData.append("subAddress", data.subAddress);
       formData.append("category", data.category);
       formData.append("type", data.type);
       formData.append("houseTitle", data.houseTitle);
       formData.append("link", data.link);
       formData.append("preImages", newPreImages);
-      // formData.append(
-      //   "thumbnailKEY",
-      //   thumbnailKey ? thumbnailKey : ""
-      // );
-      // formData.append(
-      //   "ImageKEY",
-      //   imageKey.filter((v) => !content.includes(v))
-      // );
+      formData.append("deleteImages",filterTextImage)
+    
       if (!params.id) {
-        // console.log("저장");
         createPost.mutate(formData);
-        // setOpen(true);
+        setOpen(true);
       } else {
-        // console.log(params.id);
-        // console.log("여기와야대!");
+        if(thumbnail){
+        formData.append('changeThumbnail',true)
         updatePost.mutate(formData);
-        // setOpen(true);
+        }else{
+          formData.append('changeThumbnail',false)
+          updatePost.mutate(formData);
+        }
+        setOpen(true);
       }
     }
   };

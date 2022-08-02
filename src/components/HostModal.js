@@ -24,7 +24,7 @@ const style = {
   outline: "none",
 };
 
-const HostModal = ({ close }) => {
+const HostModal = ({ setAnchorEl }) => {
   const navigate = useNavigate();
   const host = sessionStorage.getItem("host");
   const [open, setOpen] = useState(false);
@@ -33,7 +33,7 @@ const HostModal = ({ close }) => {
       setOpen(true);
     } else {
       navigate("/hostwrite");
-      close();
+      setAnchorEl(null);
     }
   };
   const handleClose = () => {
@@ -85,9 +85,7 @@ const HostModal = ({ close }) => {
               <p>멘도롱제주의 호스트가 되어주시겠어요?</p>
             </Middle>
             <Btn>
-              <HostRegistModal open={true} onClick={()=>{
-                handleClose()
-              }}></HostRegistModal>
+              <HostRegistModal setHostOpen={setOpen}></HostRegistModal>
               <button
                 className="home"
                 onClick={() => {

@@ -64,7 +64,7 @@ const UserMenu = ({ userImage, nickName }) => {
           </MenuItem>
         </Write>
         <MenuItem>
-          <HostModal close={handleClose}></HostModal>
+          <HostModal setAnchorEl={setAnchorEl}></HostModal>
         </MenuItem>
         <Divider  style={{margin:'20px 0'}}/>
         <MenuItem

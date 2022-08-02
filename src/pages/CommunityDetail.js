@@ -24,7 +24,6 @@ import Footer from "../components/Footer";
 import LoginModal from "../components/LoginModal";
 import ScrollTopBtn from "../components/ScrollTopBtn";
 
-
 const CommunityDetail = () => {
   const queryClient = useQueryClient();
   const params = useParams();
@@ -32,7 +31,7 @@ const CommunityDetail = () => {
   const commentRef = useRef();
   const userId = sessionStorage.getItem("userId");
   const userImage = sessionStorage.getItem("userImage");
-  const [open, setOpen] =useState(false)
+  const [open, setOpen] = useState(false);
 
   const { data } = useQuery(
     ["detailContent", params.id],
@@ -40,7 +39,7 @@ const CommunityDetail = () => {
       instance.get(`/post/${params.id}`).then((res) => {
         console.log(res.data);
         return res.data;
-      }),
+      }).catch((err)=>console.log(err)),
     {
       // retry: false, // 재호출 안하기
       enabled: !!params.id,
@@ -81,7 +80,7 @@ const CommunityDetail = () => {
     ["Like"],
     (id) =>
       instance.post(`/like/${id}`).then((res) => {
-        console.log(res.data)
+        console.log(res.data);
         return res.data;
       }),
     {
@@ -97,7 +96,7 @@ const CommunityDetail = () => {
     (id) =>
       instance.delete(`/like/${id}/unlike`).then((res) => {
         // console.log(res.data);
-        return res.data
+        return res.data;
       }),
     {
       onSuccess: () => {
@@ -113,7 +112,7 @@ const CommunityDetail = () => {
         .post(`/save/${id}`)
         .then((res) => {
           console.log(res.data);
-          return res.data
+          return res.data;
         })
         .catch((err) => {
           // console.log(err, "why");
@@ -131,7 +130,7 @@ const CommunityDetail = () => {
         .delete(`/save/${id}/unsave`)
         .then((res) => {
           console.log(res.data);
-          return res.data
+          return res.data;
         })
         .catch((err) => {
           // console.log(err, "why");
@@ -176,7 +175,9 @@ const CommunityDetail = () => {
             <Content>
               <div className="hashTag">
                 {data.allPost[0]?.tagList.length > 0 &&
-                  data.allPost[0]?.tagList.map((v, i) => v==="" ? "" : <p key={i}>{v}</p>)}
+                  data.allPost[0]?.tagList.map((v, i) =>
+                    v === "" ? "" : <p key={i}>{v}</p>
+                  )}
               </div>
               <div>
                 <h1>{data.allPost[0].title}</h1>
@@ -199,7 +200,7 @@ const CommunityDetail = () => {
                               if (userId) {
                                 unLike.mutate(data.allPost[0].postId);
                               } else {
-                                setOpen(true)
+                                setOpen(true);
                               }
                             }}
                           >
@@ -217,7 +218,7 @@ const CommunityDetail = () => {
                               if (userId) {
                                 Like.mutate(data.allPost[0].postId);
                               } else {
-                                setOpen(true)
+                                setOpen(true);
                               }
                             }}
                           >
@@ -229,14 +230,13 @@ const CommunityDetail = () => {
                             />
                           </button>
                         )}
-                        <LoginModal open={open} setOpen={setOpen}/>
+                        <LoginModal open={open} setOpen={setOpen} />
                       </>
                     ) : (
                       <>
                         <button
                           onClick={() => {
-                            // navigate(`/userwrite/${params.id}`);
-                            navigate('/onready')
+                            navigate(`/userwrite/${params.id}`);
                           }}
                         >
                           수정
@@ -294,15 +294,15 @@ const CommunityDetail = () => {
                           <img src={starIcon} alt="star"></img>
                           <p>{data.findAllAcc[0].average}</p>
                         </div>
-                        {!data.findAllAcc[0].isSave ? (
+                        {data.findAllAcc[0].isSave ? (
                           <img
                             src={saveIcon}
                             alt="save"
                             onClick={() => {
                               if (userId) {
-                                savePost.mutate(data.findAllAcc[0].hostId);
+                                saveDelete.mutate(data.findAllAcc[0].hostId);
                               } else {
-                                navigate("/loginerror");
+                                setOpen(true);
                               }
                             }}
                           ></img>
@@ -312,9 +312,9 @@ const CommunityDetail = () => {
                             alt="unsave"
                             onClick={() => {
                               if (userId) {
-                                saveDelete.mutate(data.findAllAcc[0].hostId);
+                                savePost.mutate(data.findAllAcc[0].hostId);
                               } else {
-                                navigate("/loginerror");
+                                setOpen(true);
                               }
                             }}
                           ></img>
@@ -324,7 +324,11 @@ const CommunityDetail = () => {
                   </div>
                 </>
               ) : (
-                <KakaoMap singleMarker={false} data={data.allPost} height={"300px"} />
+                <KakaoMap
+                  singleMarker={false}
+                  data={data.allPost}
+                  height={"300px"}
+                />
               )}
             </WrapBottom>
           </WrapLeft>
@@ -354,9 +358,8 @@ const CommunityDetail = () => {
                                     if (userId) {
                                       unLike.mutate(v.postId);
                                     } else {
-                                      navigate("/loginerror");
+                                      setOpen(true);
                                     }
-                                    // setIslike(false);
                                   }}
                                   src={likeIcon}
                                   alt="좋아요"
@@ -367,9 +370,8 @@ const CommunityDetail = () => {
                                     if (userId) {
                                       Like.mutate(v.postId);
                                     } else {
-                                      navigate("/loginerror");
+                                      setOpen(true);
                                     }
-                                    // setIslike(true);
                                   }}
                                   src={unlikeIcon}
                                   alt="좋아요"
@@ -443,7 +445,7 @@ const CommunityDetail = () => {
         </CommentWrap>
         <CommentList data={loadComment.data}></CommentList>
       </Container>
-      <ScrollTopBtn/>
+      <ScrollTopBtn />
       <Footer />
     </>
   );
@@ -681,7 +683,7 @@ const WrapRight = styled.div`
   margin-left: 20px;
   .otherContent {
     position: sticky;
-    top: 50px;
+    top: 110px;
     width: 100%;
     height: 657px;
     padding: 28px 20px 20px 20px;

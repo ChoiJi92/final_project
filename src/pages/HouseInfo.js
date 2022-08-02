@@ -44,10 +44,9 @@ const HouseInfo = () => {
   // // const firstBox = useRef(null);
   // const liveFirstBox = useRef(null);
   const [open, setOpen] = useState(false);
-
+  window.history.replaceState({}, document.title)
   const location = useLocation();
   const navigate = useNavigate()
-  // console.log(location.state.address)
   const [isCozy, setIsCozy] = useState("cozy");
   const [isHostData, setIsHostData] = useRecoilState(hostData);
   const [address, setAddress] = useState(
@@ -65,12 +64,12 @@ const HouseInfo = () => {
   );
   const queryClient = useQueryClient();
   const { data } = useQuery(
-    ["houseInfo"],
+    ["houseInfo",address],
     () =>
       instance
         .get(`/host`)
         .then((res) => {
-          // console.log(res.data);
+          console.log(res.data,'내가 검색되니?');
           if (category === "all") {
             setIsHostData(res.data.findAllAcc);
           } else {
@@ -84,6 +83,7 @@ const HouseInfo = () => {
           // console.log(err);
         }),
     {
+      enabled:!address,
       refetchOnWindowFocus: false,
       // onSuccess: (data) => {
       //   setIsHostData(data);
@@ -96,8 +96,9 @@ const HouseInfo = () => {
       instance
         .get(`/host/search`, { params: { search: search } })
         .then((res) => {
+          console.log(search,'요청')
           console.log(res.data, "전체검색");
-          // setIsHostData(res.data.hostPost);
+          setIsHostData(res.data.searchResult);
         })
         .catch((err) => console.log(err)),
     {
@@ -179,16 +180,11 @@ const HouseInfo = () => {
       instance
         .post(`/save/${id}`)
         .then((res) => {
-          console.log(res.data);
+          setIsHostData([...isHostData.map((v,i)=> v.hostId===id  ? {...v,isSave:true} : v)])
         })
         .catch((err) => {
           console.log(err, "why");
         }),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("houseInfo");
-      },
-    }
   );
   const saveDelete = useMutation(
     ["save"],
@@ -196,16 +192,13 @@ const HouseInfo = () => {
       instance
         .delete(`/save/${id}/unsave`)
         .then((res) => {
+          setIsHostData([...isHostData.map((v,i)=> v.hostId===id  ? {...v,isSave:false} : v)])
           console.log(res.data);
+          console.log(isHostData,'여기')
         })
         .catch((err) => {
           console.log(err, "why");
         }),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("houseInfo");
-      },
-    }
   );
 
   const saveClick = (id) => {
@@ -323,11 +316,11 @@ const HouseInfo = () => {
             // ref={firstBox}
             className="all"
             onClick={() => {
-              setIsHostData(data.findAllAcc);
+              setAddress("")
               setCategory("all");
               setSort("")
               setType("");
-              setAddress("")
+              setIsHostData(data.findAllAcc);
             }}
             id="spot"
           >
@@ -336,16 +329,33 @@ const HouseInfo = () => {
             {/* <SpotUnderBar ref={spotUnderlineRef} /> */}
           </div>
           <div
+            className="해변근처"
+            onClick={() => {
+              setAddress("")
+              setCategory("해변근처");
+              setSort("")
+              setType("");
+              setIsHostData(
+                data.findAllAcc.filter((v) => v.category === "해변근처")
+              );
+            }}
+            id="spot"
+          >
+            <img src={nearBySea} alt="해변근처" />
+
+            <span>해변 근처</span>
+          </div>
+          <div
             className="내륙"
             // onClick={menuOnClick}
             onClick={() => {
-              setIsHostData(
-                data.findAllAcc.filter((v) => v.category === "내륙")
-              );
+              setAddress("")
               setCategory("내륙");
               setSort("")
               setType("");
-              setAddress("")
+              setIsHostData(
+                data.findAllAcc.filter((v) => v.category === "내륙")
+              );
             }}
             id="spot"
             // style={{"opacity":"0.3"}}
@@ -357,13 +367,14 @@ const HouseInfo = () => {
             className="관광지근처"
             // onClick={menuOnClick}
             onClick={() => {
-              setIsHostData(
-                data.findAllAcc.filter((v) => v.category === "관광지근처")
-              );
+              setAddress("")
               setCategory("관광지근처");
               setSort("")
               setType("");
-              setAddress("")
+              setIsHostData(
+                data.findAllAcc.filter((v) => v.category === "관광지근처")
+              );
+              
             }}
             id="spot"
           >
@@ -374,10 +385,10 @@ const HouseInfo = () => {
             className="조용한마을"
             // onClick={menuOnClick}
             onClick={() => {
+              setAddress("")
               setCategory("조용한마을");
               setSort("")
               setType("");
-              setAddress("")
               setIsHostData(
                 data.findAllAcc.filter((v) => v.category === "조용한마을")
               );
@@ -406,23 +417,7 @@ const HouseInfo = () => {
 
             <span>우도</span>
           </div>
-          <div
-            className="해변근처"
-            onClick={() => {
-              setIsHostData(
-                data.findAllAcc.filter((v) => v.category === "해변근처")
-              );
-              setCategory("해변근처");
-              setSort("")
-              setType("");
-              setAddress("")
-            }}
-            id="spot"
-          >
-            <img src={nearBySea} alt="해변근처" />
-
-            <span>해변 근처</span>
-          </div>
+         
         </SpotMainBox>
 
         <div id="contentsMapBox">
