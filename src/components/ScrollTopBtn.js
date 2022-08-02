@@ -43,19 +43,12 @@ const Btn = styled(FaAngleDoubleUp)`
     right: 35px;
     z-index: 1;
     opacity: 0.6;
-    /* box-shadow: 0px 12px 42px #eee9e4; */
     box-shadow: 0px 12px 42px rgba(0, 0, 0, 0.2);
     /* transition: 0.4s; */
     background-image: url(${nextIcon}) no-repeat;
     border: none;
     cursor: pointer;
-    /* border: 1px solid red; */
     padding: 10px;
 `
-
-// const ImgBtn = styled.ImgBtn`
-//     width: 50px;
-//     height: 50px;   
-// `
 
 export default ScrollTopBtn;
