@@ -15,19 +15,23 @@ import RoomModal from "../components/RoomModal";
 import Footer from "../components/Footer";
 import SearchResult from "../components/SearchResult";
 import MetaTag from "./MetaTag";
+import { useRecoilState } from "recoil";
+import { chatRoomList } from "../recoil/atoms";
 
 const ChatList = () => {
   const searchRef = useRef();
   const navigate = useNavigate();
   const userId = sessionStorage.getItem("userId");
-  const [hashTag, setHashTag] = useState()
+  const [chatRoom, setChatRoom] = useRecoilState(chatRoomList);
+  const [sort, setSort] = useState("");
+  const [hashTag, setHashTag] = useState();
   const [search, setSearch] = useState();
-  console.log(hashTag)
   const { data } = useQuery(
     ["loadChatRoom"],
     () =>
       instance.get("/room").then((res) => {
-        // console.log(res.data);
+        setChatRoom(res.data.allRoom);
+        console.log(res.data)
         return res.data;
       }),
     {
@@ -39,12 +43,10 @@ const ChatList = () => {
       instance
         .post(`/room/${roomId}`)
         .then((res) => {
-          // console.log(res.data);
           navigate(`/chatroom/${roomId}`);
         })
         .catch((err) => {
-          // console.log(err);
-          window.alert(err.response.data.msg);
+          window.alert(err.response.data.errorMEssage);
         })
     // ,{
     //   onSuccess: () => {
@@ -59,10 +61,53 @@ const ChatList = () => {
       searchRef.current.value = "";
     }
   };
-
+  const popularChatRoom = useQuery(
+    ["popularChatRoom", sort],
+    () =>
+      instance.get("/room/populer").then((res) => {
+        // setChatRoom(res.data.allRoom)
+        console.log(res.data);
+        return res.data;
+      }),
+    {
+      enabled: !!sort,
+      refetchOnWindowFocus: false,
+    }
+  );
+  const sortChange = (e) => {
+    setSort(e.target.value);
+  };
+  const searchRoom = useQuery(
+    ["searchRoom", search],
+    () =>
+      instance
+        .get(`/room/search`, { params: { search: search } })
+        .then((res) => {
+          setChatRoom(res.data.searchResult);
+          return res.data.searchResult;
+        }).catch((err)=>console.log(err)),
+    {
+      enabled: !!search,
+      refetchOnWindowFocus: false,
+    }
+  );
+  const searchHashTag = useQuery(
+    ["searchHashTag", hashTag],
+    () =>
+      instance
+        .get(`/room/search/hashTag`, { params: { search: hashTag } })
+        .then((res) => {
+          setChatRoom(res.data.rooms);
+          return res.data.rooms;
+        }).catch((err)=>console.log(err)),
+    {
+      enabled: !!hashTag,
+      refetchOnWindowFocus: false,
+    }
+  );
   return (
     <>
-    <MetaTag title={'오픈채팅 | 멘도롱 제주'}></MetaTag>
+      <MetaTag title={"오픈채팅 | 멘도롱 제주"}></MetaTag>
       <Container>
         <Top>
           <div className="title">
@@ -87,17 +132,22 @@ const ChatList = () => {
           <div className="keyword">
             <div className="keywordTitle">인기 키워드</div>
             <div className="keywordList">
-              {data.tags?.map((v,i)=> <p key={i} onClick={()=>{
-                setHashTag(v)
-              }}>{v}</p>)}
+              {data.tags?.map((v, i) => (
+                <p
+                  key={i}
+                  onClick={() => {
+                    setHashTag(v);
+                  }}
+                >
+                  {v}
+                </p>
+              ))}
             </div>
           </div>
         </Top>
         <Bottom>
           <div className="header">
             <Select
-              // onChange={handleChange}
-              defaultValue="최신순"
               style={{
                 width: "26.3%",
                 height: "58px",
@@ -111,72 +161,71 @@ const ChatList = () => {
               }}
               displayEmpty
               inputProps={{ "aria-label": "Without label" }}
+              defaultValue={sort}
+              onChange={sortChange}
             >
-              <MenuItem value="최신순">최신순</MenuItem>
+              <MenuItem value="">최신순</MenuItem>
               <MenuItem value="인기순">인기순</MenuItem>
             </Select>
             <RoomModal width={"31.74%"} borderRadius={"10px"}></RoomModal>
           </div>
-          {!search&&!hashTag? (
-            <>
-              {data.allRoom?.map((v, i) => (
-                <Card
-                  key={v.roomId}
-                  onClick={() => {
-                    joinRoom.mutate(v.roomId);
-                  }}
-                >
-                  <div className="roomInfo">
-                    <h3>{v.title}</h3>
-                    <div className="avatar">
-                      <div className="host">
-                        <Badge
-                          overlap="circular"
-                          anchorOrigin={{
-                            vertical: "bottom",
-                            horizontal: "right",
-                          }}
-                          badgeContent={
-                            <img
-                              style={{ width: "17px", height: "17px" }}
-                              src={saveIcon}
-                              alt="호스트"
-                            ></img>
-                          }
-                        >
-                          <Avatar
-                            alt="호스트 이미지"
-                            src={v.hostImg}
-                            sx={{ width: 36, height: 36 }}
-                          />
-                        </Badge>
-                        <p>{v.hostNickname}</p>
-                      </div>
-                      <AvatarGroup max={4}>
-                        {v.roomUserImg.map((v, i) => (
-                          <Avatar
-                            key={i}
-                            alt={`${v}-${i}`}
-                            src={v}
-                            sx={{ width: 36, height: 36 }}
-                          />
-                        ))}
-                      </AvatarGroup>
-                    </div>
-                    <div className="tagList">
-                      {v.hashTag.map((v,i)=> <p key={i}>{v}</p>)}
-                    </div>
+
+          {chatRoom.map((v, i) => (
+            <Card
+              key={v.roomId}
+              onClick={() => {
+                joinRoom.mutate(v.roomId);
+              }}
+            >
+              <div className="roomInfo">
+                <h3>{v.title}</h3>
+                <div className="avatar">
+                  <div className="host">
+                    <Badge
+                      overlap="circular"
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "right",
+                      }}
+                      badgeContent={
+                        <img
+                          style={{ width: "17px", height: "17px" }}
+                          src={saveIcon}
+                          alt="호스트"
+                        ></img>
+                      }
+                    >
+                      <Avatar
+                        alt="호스트 이미지"
+                        src={v.hostImg}
+                        sx={{ width: 36, height: 36 }}
+                      />
+                    </Badge>
+                    <p>{v.hostNickname}</p>
                   </div>
-                  <div className="roomUserNumber">
-                    <p>참여자</p>
-                    <p className="number">{v.roomUserNum}명</p>
-                  </div>
-                </Card>
-              ))}
-            </>
-          ) : (
-            <SearchResult search={search} hashTag={hashTag}></SearchResult>
-          )}
+                  <AvatarGroup max={4}>
+                    {v.roomUserImg.map((v, i) => (
+                      <Avatar
+                        key={i}
+                        alt={`${v}-${i}`}
+                        src={v}
+                        sx={{ width: 36, height: 36 }}
+                      />
+                    ))}
+                  </AvatarGroup>
+                </div>
+                <div className="tagList">
+                  {v.hashTag.map((v, i) => (
+                    <p key={i}>{v}</p>
+                  ))}
+                </div>
+              </div>
+              <div className="roomUserNumber">
+                <p>참여자</p>
+                <p className="number">{v.roomUserNum}명</p>
+              </div>
+            </Card>
+          ))}
         </Bottom>
       </Container>
       <Footer />
@@ -306,11 +355,11 @@ const Card = styled.div`
   margin-bottom: 20px;
   cursor: pointer;
   :hover {
-    background: #F7F3EF;
+    background: #f7f3ef;
     .roomUserNumber {
       /* background: linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
         #eee9e4; */
-        background: #EEE9E4;
+      background: #eee9e4;
       border-radius: 10px;
     }
   }
@@ -348,7 +397,7 @@ const Card = styled.div`
         color: #636366;
       }
     }
-    .tagList{
+    .tagList {
       margin-top: 22px;
       display: flex;
       flex-direction: row;
@@ -383,7 +432,7 @@ const Card = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: #F7F3EF;
+    background: #f7f3ef;
     border-radius: 10px;
     border: none;
     p {

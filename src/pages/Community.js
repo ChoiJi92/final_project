@@ -16,11 +16,12 @@ import commentIcon from "../assests/css/commentIcon.webp";
 import commentIcon2 from "../assests/css/commentIcon2.webp";
 import nextIcon from "../assests/css/nextIcon2.webp";
 import prevIcon from "../assests/css/prevIcon2.webp";
-import editIcon from '../assests/css/editIcon.webp'
+import editIcon from "../assests/css/editIcon.webp";
 import Footer from "../components/Footer";
 import { useRecoilState } from "recoil";
 import { bestPostData, postData } from "../recoil/atoms";
 import MetaTag from "./MetaTag";
+import LoginModal from "../components/LoginModal";
 
 const Community = () => {
   const navigate = useNavigate();
@@ -28,28 +29,28 @@ const Community = () => {
   const [category, setCategory] = useState("all");
   const [communityData, setCommunityData] = useRecoilState(postData);
   const [bestData, setBestData] = useRecoilState(bestPostData);
+  const [open, setOpen] = useState(false);
   const userId = sessionStorage.getItem("userId");
   const { data } = useQuery(
     ["content"],
     () =>
-      instance
-        .get("/post")
-        .then((res) => {
-          console.log(res.data);
-          setBestData(res.data.Top5);
-          setCommunityData(res.data.allPost);
-          return res.data.allPost;
-        }),
+      instance.get("/post").then((res) => {
+        console.log(res.data);
+        setBestData(res.data.Top5);
+        setCommunityData(res.data.allPost);
+        return res.data.allPost;
+      }),
     {
       refetchOnWindowFocus: false, // 다른화면 갔다와도 재호출 안되게 함
     }
   );
   const Like = useMutation(
     ["Like"],
-    (id) => instance.post(`/like/${id}`).then((res) => {
-      // console.log(res.data)
-      return res.data
-    }),
+    (id) =>
+      instance.post(`/like/${id}`).then((res) => {
+        // console.log(res.data)
+        return res.data;
+      }),
     {
       onSuccess: () => {
         // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
@@ -61,12 +62,10 @@ const Community = () => {
   const unLike = useMutation(
     ["unLike"],
     (id) =>
-      instance
-        .delete(`/like/${id}/unlike`)
-        .then((res) => {
-          // console.log(res.data)
-          return res.data
-        }),
+      instance.delete(`/like/${id}/unlike`).then((res) => {
+        // console.log(res.data)
+        return res.data;
+      }),
     {
       onSuccess: () => {
         // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
@@ -78,7 +77,7 @@ const Community = () => {
   const [count, setCount] = useState(0);
   return (
     <>
-    <MetaTag title={'커뮤니티 | 멘도롱 제주'}></MetaTag>
+      <MetaTag title={"커뮤니티 | 멘도롱 제주"}></MetaTag>
       <Container>
         <Top
           rightImage={
@@ -104,7 +103,10 @@ const Community = () => {
               <h2>{bestData[count]?.title}</h2>
               <div className="wrap">
                 <div className="user">
-                  <img src={bestData[count]?.images[0].userImageURL} alt="프로필"></img>
+                  <img
+                    src={bestData[count]?.images[0].userImageURL}
+                    alt="프로필"
+                  ></img>
                   <p>{bestData[count]?.user?.nickname}</p>
                 </div>
                 <div className="like">
@@ -144,7 +146,7 @@ const Community = () => {
                 .length > 18
                 ? bestData[
                     count < bestData.length - 1 ? count + 1 : 0
-                  ].title.slice(0, 18)+"..."
+                  ].title.slice(0, 18) + "..."
                 : bestData[count < bestData.length - 1 ? count + 1 : 0]?.title}
             </h2>
           </div>
@@ -174,9 +176,7 @@ const Community = () => {
           <div
             className="nearby"
             onClick={() => {
-              setCommunityData(
-                data.filter((v) => v.category === "관광지근처")
-              );
+              setCommunityData(data.filter((v) => v.category === "관광지근처"));
               setCategory("nearby");
             }}
           >
@@ -186,9 +186,7 @@ const Community = () => {
           <div
             className="quietVil"
             onClick={() => {
-              setCommunityData(
-                data.filter((v) => v.category === "조용한마을")
-              );
+              setCommunityData(data.filter((v) => v.category === "조용한마을"));
               setCategory("quietVil");
             }}
           >
@@ -234,10 +232,10 @@ const Community = () => {
                     {v.islike ? (
                       <img
                         onClick={() => {
-                          if(userId){
-                          unLike.mutate(v.postId);
-                          }else{
-                            navigate('/loginerror')
+                          if (userId) {
+                            unLike.mutate(v.postId);
+                          } else {
+                            setOpen(true);
                           }
                         }}
                         src={like}
@@ -246,17 +244,17 @@ const Community = () => {
                     ) : (
                       <img
                         onClick={() => {
-                          if(userId){
+                          if (userId) {
                             Like.mutate(v.postId);
-                            }else{
-                              navigate('/loginerror')
-                            }
+                          } else {
+                            setOpen(true);
+                          }
                         }}
                         src={unlike2}
                         alt="좋아요"
                       />
                     )}
-
+                    
                     <p>{v.likeNum}</p>
                   </div>
                   <div className="comment">
@@ -272,13 +270,18 @@ const Community = () => {
               ></img>
             </Card>
           ))}
+          <LoginModal open={open} setOpen={setOpen} />
         </Bottom>
       </Container>
-      {userId && 
-      <Edit onClick={()=>{navigate('/userwrite')}}>
-        <img src={editIcon} alt="글쓰기"/>
-      </Edit>
-}
+      {userId && (
+        <Edit
+          onClick={() => {
+            navigate("/userwrite");
+          }}
+        >
+          <img src={editIcon} alt="글쓰기" />
+        </Edit>
+      )}
       <Footer />
     </>
   );
@@ -605,7 +608,7 @@ const Card = styled.div`
 `;
 const Edit = styled.div`
   width: 80px;
-  height: 80px ;
+  height: 80px;
   /* border: 1px solid; */
   border-radius: 50%;
   position: fixed;
@@ -614,13 +617,12 @@ const Edit = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #2A7047;
+  background-color: #2a7047;
   cursor: pointer;
   z-index: 1;
-  img{
+  img {
     width: 50px;
     height: 50px;
   }
-
-`
+`;
 export default Community;
