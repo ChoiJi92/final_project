@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import editIcon from "../assests/css/editIcon.webp";
-import deleteIcon from "../assests/css/deleteIcon.webp";
-import stepImg from "../assests/css/mypageImg.webp";
-import land from "../assests/css/내륙.webp";
-import nearby from "../assests/css/관광지근처.webp";
-import allCategory from "../assests/css/모두보기.webp";
-import quietVil from "../assests/css/조용한마을.webp";
-import udo from "../assests/css/우도.webp";
-import nearBySea from "../assests/css/해변근처.webp";
-import shareIcon2 from "../assests/css/shareIcon2.webp";
-import saveIcon from "../assests/css/saveIcon.webp";
-import unsaveIcon2 from "../assests/css/unsaveIcon2.webp";
+import editIcon from "../assests/css/images/editIcon.webp";
+import deleteIcon from "../assests/css/images/deleteIcon.webp";
+import stepImg from "../assests/css/images/mypageImg.webp";
+import land from "../assests/css/images/내륙.webp";
+import nearby from "../assests/css/images/관광지근처.webp";
+import allCategory from "../assests/css/images/모두보기.webp";
+import quietVil from "../assests/css/images/조용한마을.webp";
+import udo from "../assests/css/images/우도.webp";
+import nearBySea from "../assests/css/images/해변근처.webp";
+import shareIcon2 from "../assests/css/images/shareIcon2.webp";
+import saveIcon from "../assests/css/images/saveIcon.webp";
+import unsaveIcon2 from "../assests/css/images/unsaveIcon2.webp";
 
-import step from "../assests/css/step.webp";
+import step from "../assests/css/images/step.webp";
 
 
 import { FaStar } from "react-icons/fa";
@@ -362,11 +362,11 @@ const HouseDetail = () => {
             <hr style={{ marginTop: "20px" }} />
             <SubInfoBox>
               <div>
-                <img src={require(`../assests/css/${data?.findAllAcc?.category}.webp`)} alt={data.category} />
+                <img src={require(`../assests/css/images/${data?.findAllAcc?.category}.webp`)} alt={data.category} />
                 {data?.findAllAcc?.category}
               </div>
               <div>
-                <img src={require(`../assests/css/${data?.findAllAcc?.houseInfo}.webp`)} alt={data.houseInfo} />
+                <img src={require(`../assests/css/images/${data?.findAllAcc?.houseInfo}.webp`)} alt={data.houseInfo} />
                 {data?.findAllAcc?.houseInfo}
               </div>
               <div>

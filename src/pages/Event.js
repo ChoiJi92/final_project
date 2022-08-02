@@ -7,8 +7,8 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Typography from "@mui/material/Typography";
-import cancelIcon from "../assests/css/cancelIcon.webp";
-import event1 from "../assests/css/eventImage1.webp";
+import cancelIcon from "../assests/css/images/cancelIcon.webp";
+import event1 from "../assests/css/images/eventImage1.webp";
 
 const style = {
   position: "absolute",

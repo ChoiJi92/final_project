@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import errorPage from "../assests/css/errorPage.webp";
-import refreshIcon from '../assests/css/refreshIcon.webp'
+import errorPage from "../assests/css/images/errorPage.webp";
+import refreshIcon from '../assests/css/images/refreshIcon.webp'
 const Error = () => {
     const navigate = useNavigate()
   return (

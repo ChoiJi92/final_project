@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Map, MapMarker, CustomOverlayMap } from "react-kakao-maps-sdk";
-import plusIcon from "../assests/css/plusIcon.webp";
-import minusIcon from "../assests/css/minusIcon.webp";
+import plusIcon from "../assests/css/images/plusIcon.webp";
+import minusIcon from "../assests/css/images/minusIcon.webp";
 import styled from "styled-components";
-import starIcon from "../assests/css/starIcon.webp";
-import unsaveIcon from "../assests/css/unsaveIcon.webp";
-import saveIcon from "../assests/css/saveIcon.webp";
-import cancelIcon from "../assests/css/cancelIcon.webp";
+import starIcon from "../assests/css/images/starIcon.webp";
+import unsaveIcon from "../assests/css/images/unsaveIcon.webp";
+import saveIcon from "../assests/css/images/saveIcon.webp";
+import cancelIcon from "../assests/css/images/cancelIcon.webp";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { hostData, testDataMap } from "../recoil/atoms";

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import kakaoBtn from '../assests/css/카카오 버튼.webp'
+import kakaoBtn from '../assests/css/images/카카오 버튼.webp'
 
 const Kakao = () => {
   const clientId = process.env.REACT_APP_KAKAO_CLIENT_ID
