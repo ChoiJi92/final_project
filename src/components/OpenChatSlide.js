@@ -3,12 +3,12 @@ import styled from "styled-components";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import back from "../assests/css/배경1.webp";
-import back2 from "../assests/css/배경2.webp";
-import back3 from "../assests/css/배경3.webp";
-import back4 from "../assests/css/배경4.webp";
-import back5 from "../assests/css/배경5.webp";
-import back6 from "../assests/css/배경6.webp";
+import back from "../assests/css/images/배경1.webp";
+import back2 from "../assests/css/images/배경2.webp";
+import back3 from "../assests/css/images/배경3.webp";
+import back4 from "../assests/css/images/배경4.webp";
+import back5 from "../assests/css/images/배경5.webp";
+import back6 from "../assests/css/images/배경6.webp";
 import { useNavigate } from "react-router-dom";
 
 const OpenChatSlide = ({ rtl, data }) => {

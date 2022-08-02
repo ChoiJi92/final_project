@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import readyPage from "../assests/css/준비중.webp";
-import refreshIcon from '../assests/css/refreshIcon.webp'
+import readyPage from "../assests/css/images/준비중.webp";
+import refreshIcon from '../assests/css/images/refreshIcon.webp'
 import MetaTag from "./MetaTag";
 
 

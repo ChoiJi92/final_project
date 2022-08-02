@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import loadingPage from '../assests/css/loadingPage.webp'
+import loadingPage from '../assests/css/images/loadingPage.webp'
 const Loading = () => {
     return (
         <Container>

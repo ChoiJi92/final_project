@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import cancelIcon from "../assests/css/cancelIcon.webp";
+import cancelIcon from "../assests/css/images/cancelIcon.webp";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -12,7 +12,7 @@ import styled from "styled-components";
 import { current } from "@reduxjs/toolkit";
 import { useMutation, useQueryClient } from "react-query";
 import instance from "../shared/axios";
-import profileEdit from "../assests/css/editIcon2.webp";
+import profileEdit from "../assests/css/images/editIcon2.webp";
 const style = {
   position: "absolute",
   top: "50%",

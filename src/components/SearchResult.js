@@ -6,7 +6,7 @@ import AvatarGroup from "@mui/material/AvatarGroup";
 import { useMutation, useQuery } from "react-query";
 import instance from "../shared/axios";
 import { useNavigate } from "react-router-dom";
-import saveIcon from "../assests/css/saveIcon.webp";
+import saveIcon from "../assests/css/images/saveIcon.webp";
 const SearchResult = ({ search, hashTag }) => {
   const searchRoom= useQuery(
     ["searchRoom", search],
