@@ -23,13 +23,10 @@ const style = {
   outline: "none",
 };
 
-const LoginModal = () => {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+const LoginModal = ({open,setOpen}) => {
   const handleClose = () => setOpen(false);
   return (
     <div >
-      <div style={{fontSize:'23px'}} className="login" onClick={handleOpen}>로그인</div>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

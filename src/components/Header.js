@@ -8,19 +8,23 @@ import jejuLogo from "../assests/css/jejuLogo.png";
 import LoginModal from "./LoginModal";
 
 const Header = () => {
-  let params = new URL(window.location.href).pathname.slice(1)
+  let params = new URL(window.location.href).pathname.slice(1);
   const [search, setSearch] = useState(false);
   const [menu, setMenu] = useState();
+  const [open, setOpen] = useState(false);
   const searchRef = useRef();
   const navigate = useNavigate();
   const nickName = sessionStorage.getItem("nickName");
   const userImage = sessionStorage.getItem("userImage");
-  useEffect(()=>{
-    setMenu(params)
-  },[params])
-  const onKeyPres = ()=>{
-    
-  }
+  useEffect(() => {
+    setMenu(params);
+  }, [params]);
+  const onKeyPress = (e) => {
+    if (e.key === "Enter") {
+      navigate("/house", { state: { search: searchRef.current.value } });
+      setSearch(false);
+    }
+  };
   return (
     <Container>
       <Wrap>
@@ -44,7 +48,11 @@ const Header = () => {
           ></img>
           {search ? (
             <div className="searchInput">
-              <input placeholder="지역, 원하는테마" ref={searchRef}></input>
+              <input
+                placeholder="지역, 원하는 숙소"
+                ref={searchRef}
+                onKeyPress={onKeyPress}
+              ></input>
               <img
                 className="cancel"
                 src={cancelIcon}
@@ -79,14 +87,18 @@ const Header = () => {
                 onClick={() => {
                   // setMenu("chat");
                   navigate("/chat");
-                  
                 }}
               >
                 오픈 채팅방
               </div>
 
               {!nickName ? (
-                <LoginModal />
+                <>
+                <div style={{fontSize:'23px'}} className="login" onClick={()=>{
+                    setOpen(true)
+                }}>로그인</div>
+                <LoginModal open={open} setOpen={setOpen}/>
+                </>
               ) : (
                 <User>
                   <UserMenu
@@ -139,7 +151,7 @@ const Center = styled.div`
     width: 85%;
     height: 60px;
     border-radius: 10px;
-    background-color: #F7F3EF;;
+    background-color: #f7f3ef;
     margin-left: 20px;
     display: flex;
     flex-direction: row;
@@ -148,7 +160,7 @@ const Center = styled.div`
     input {
       width: 80%;
       height: 60px;
-      background-color: #F7F3EF;;
+      background-color: #f7f3ef;
       font-size: 24px;
       font-weight: 300;
       line-height: 28.8px;
@@ -178,18 +190,16 @@ const Center = styled.div`
       text-align: center;
       color: #828282;
       cursor: pointer;
-      :hover{
+      :hover {
         color: #636366;
         font-weight: 1000;
-        
       }
     }
     .${(props) => props.menu} {
-    color: #636366;
-    font-weight: 1000;
+      color: #636366;
+      font-weight: 1000;
+    }
   }
-  }
- 
 `;
 const User = styled.div`
   display: flex;
