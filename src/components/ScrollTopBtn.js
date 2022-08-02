@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import nextIcon from "../assests/css/nextIcon.webp";
 import { FaAngleDoubleUp } from "react-icons/fa";
 const ScrollTopBtn = () => {
     const [isScroll, setIsScroll] = useState(false);
@@ -45,7 +44,6 @@ const Btn = styled(FaAngleDoubleUp)`
     opacity: 0.6;
     box-shadow: 0px 12px 42px rgba(0, 0, 0, 0.2);
     /* transition: 0.4s; */
-    background-image: url(${nextIcon}) no-repeat;
     border: none;
     cursor: pointer;
     padding: 10px;

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import naverLogo from '../assests/css/네이버로고.webp'
+import naverLogo from '../assests/css/images/네이버로고.webp'
 const Naver = () => {
     const clientId = process.env.REACT_APP_NAVER_CLIENT_ID
     // const REDIRECT_URI = "http://localhost:3000/oauth/naver/callback";

@@ -1,17 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import mypageImg from "../assests/css/mypageImg.webp";
+import mypageImg from "../assests/css/images/mypageImg.webp";
 import styled from "styled-components";
-import starIcon from "../assests/css/starIcon.webp";
-import moreIcon from "../assests/css/moreIcon.webp";
-import noMoreIcon from "../assests/css/noMoreIcon.webp";
-import unsaveIcon2 from "../assests/css/unsaveIcon2.webp";
-import saveIcon from "../assests/css/saveIcon.webp";
-import likeIcon from "../assests/css/likeIcon.webp";
-import unlikeIcon from "../assests/css/unlikeIcon.webp";
-import commentIcon from "../assests/css/commentIcon.webp";
-import checkIcon from "../assests/css/checkIcon.webp";
-import cancelIcon from "../assests/css/cancelIcon.webp";
-import HostRegistModal from "../components/HostRegistModal";
+import moreIcon from "../assests/css/images/moreIcon.webp";
+import noMoreIcon from "../assests/css/images/noMoreIcon.webp";
+import unlikeIcon from "../assests/css/images/unlikeIcon.webp";
+import commentIcon from "../assests/css/images/commentIcon.webp";
+
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import instance from "../shared/axios";
