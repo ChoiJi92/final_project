@@ -1,7 +1,6 @@
 import React from 'react';
-import GoogleLogin, { GoogleLogout } from 'react-google-login'
 import styled from 'styled-components';
-import google_logo from '../assests/css/구글 로고.png'
+import google_logo from '../assests/css/구글 로고.webp'
 
 
 const Google = () => {

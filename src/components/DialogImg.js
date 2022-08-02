@@ -7,7 +7,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { TransitionProps } from "@mui/material/transitions";
 import Slide from "@mui/material/Slide";
 import styled from "styled-components";
-import goki from "../assests/css/고기.png"
 import { FaTimes } from "react-icons/fa";
 
 const Transition = React.forwardRef(function Transition(props, ref) {

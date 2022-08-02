@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { hostShare, hostShareAndMap, userShare } from "../recoil/atoms";
-import jeju14 from "../assests/css/제주9.jpeg";
 
 const KakaoShare = ({ data }) => {
   // const isUserShare = useRecoilValue(userShare);
