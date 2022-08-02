@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import MetaTag from "./MetaTag";
 import Event2 from "./Event2";
 import Event from "./Event";
+import ScrollTopBtn from "../components/ScrollTopBtn";
 const Main = () => {
   const { data } = useQuery(
     ["loadChatRoom"],
@@ -111,6 +112,7 @@ const Main = () => {
       </OpenChat>
       
     </Container>
+    <ScrollTopBtn/>
     <Footer/>
     </>
   );

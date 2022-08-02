@@ -21,6 +21,7 @@ import Footer from "../components/Footer";
 import { useRecoilState } from "recoil";
 import { bestPostData, postData } from "../recoil/atoms";
 import MetaTag from "./MetaTag";
+import ScrollTopBtn from "../components/ScrollTopBtn";
 
 const Community = () => {
   const navigate = useNavigate();
@@ -274,11 +275,12 @@ const Community = () => {
           ))}
         </Bottom>
       </Container>
-      {userId && 
+      
       <Edit onClick={()=>{navigate('/userwrite')}}>
         <img src={editIcon} alt="글쓰기"/>
       </Edit>
-}
+
+  <ScrollTopBtn/>
       <Footer />
     </>
   );
@@ -610,7 +612,7 @@ const Edit = styled.div`
   border-radius: 50%;
   position: fixed;
   bottom: 30px;
-  right: 30px;
+  right: 120px;
   display: flex;
   justify-content: center;
   align-items: center;

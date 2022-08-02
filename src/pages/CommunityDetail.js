@@ -21,6 +21,7 @@ import SlideImg from "../components/SlideImg";
 import KakaoMap from "../components/KakaoMap";
 import MetaTag from "./MetaTag";
 import Footer from "../components/Footer";
+import ScrollTopBtn from "../components/ScrollTopBtn";
 
 const CommunityDetail = () => {
   const queryClient = useQueryClient();
@@ -439,6 +440,7 @@ const CommunityDetail = () => {
         </CommentWrap>
         <CommentList data={loadComment.data}></CommentList>
       </Container>
+      <ScrollTopBtn/>
       <Footer />
     </>
   );
