@@ -10,9 +10,12 @@ import back4 from "../assests/css/images/배경4.webp";
 import back5 from "../assests/css/images/배경5.webp";
 import back6 from "../assests/css/images/배경6.webp";
 import { useNavigate } from "react-router-dom";
+import LoginModal from "./LoginModal";
 
 const OpenChatSlide = ({ rtl, data }) => {
   const [mouseOver, setMouseOver] = useState(false);
+  const userId =sessionStorage.getItem('userId')
+  const [open, setOpen]=useState(false)
   const SampleNextArrow = (props) => {
     const { className, style, onClick } = props;
     return (
@@ -160,7 +163,11 @@ const OpenChatSlide = ({ rtl, data }) => {
                 <Wrap key={v.roomId}>
                   <Card
                     onClick={() => {
+                      if(userId){
                       navigate(`/chatroom/${v.roomId}`);
+                      }else(
+                        setOpen(true)
+                      )
                     }}
                     onMouseLeave={mouseLeave}
                     onMouseOver={mouseHover}
@@ -174,6 +181,7 @@ const OpenChatSlide = ({ rtl, data }) => {
                 </Wrap>
               ))}
           </SliderImg>
+          <LoginModal open={open} setOpen={setOpen}/>
         </ImgBox>
   );
 };

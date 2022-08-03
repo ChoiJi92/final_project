@@ -139,12 +139,15 @@ const Wrap = styled.div`
     display: flex;
     flex-direction: row;
     width: 100%;
+    align-items: center;
   }
   img {
     width: 96px;
     height: 96px;
     border-radius: 50%;
     margin-right: 30px;
+
+    
   }
   .content {
     width: 100%;

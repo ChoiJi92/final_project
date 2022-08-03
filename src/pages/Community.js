@@ -304,7 +304,7 @@ const Community = () => {
         </Bottom>
       </Container>
 
-      {userId && (
+      {!userId && (
         <Edit
           onClick={() => {
             navigate("/userwrite");

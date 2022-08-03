@@ -17,6 +17,7 @@ import SearchResult from "../components/SearchResult";
 import MetaTag from "./MetaTag";
 import { useRecoilState } from "recoil";
 import { chatRoomList } from "../recoil/atoms";
+import ScrollTopBtn from "../components/ScrollTopBtn";
 
 const ChatList = () => {
   const searchRef = useRef();
@@ -68,7 +69,7 @@ const ChatList = () => {
         // setChatRoom(res.data.allRoom)
         console.log(res.data);
         return res.data;
-      }),
+      }).catch((err)=>console.log(err)),
     {
       enabled: !!sort,
       refetchOnWindowFocus: false,
@@ -164,7 +165,9 @@ const ChatList = () => {
               defaultValue={sort}
               onChange={sortChange}
             >
-              <MenuItem value="">최신순</MenuItem>
+              <MenuItem value="" onClick={()=>{
+                setChatRoom(data.allRoom)
+              }}>최신순</MenuItem>
               <MenuItem value="인기순">인기순</MenuItem>
             </Select>
             <RoomModal width={"31.74%"} borderRadius={"10px"}></RoomModal>
@@ -228,6 +231,7 @@ const ChatList = () => {
           ))}
         </Bottom>
       </Container>
+      <ScrollTopBtn/>
       <Footer />
     </>
   );
