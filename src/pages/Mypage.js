@@ -59,13 +59,13 @@ const Mypage = () => {
       instance
         .get(`oauth/mypage/${userId}`)
         .then((res) => {
-          // console.log(res.data);
+          console.log(res);
           return (
             res.data
           );
         })
         .catch((err) => {
-          // console.log(err);
+          console.log(err);
         }),
     {
       onSuccess: (data) => {

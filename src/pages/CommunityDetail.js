@@ -495,8 +495,9 @@ const Content = styled.div`
       justify-content: center;
       align-items: center;
       margin-right: 20px;
-      width: 173px;
-      height: 45px;
+      width: auto;
+      padding: 15px;
+      height: auto;
       border-radius: 10px;
       border: none;
       background: #f7f3ef;
@@ -635,7 +636,8 @@ const WrapBottom = styled.div`
   }
   .content {
     margin-left: 14px;
-    width: 567px;
+    /* width: 567px; */
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
