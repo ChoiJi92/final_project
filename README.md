@@ -30,7 +30,7 @@
 [멘도롱 제주](https://mendorong-jeju.co.kr/)
 
 ## 🎬 기능 구현 영상
-[유튜브영상]()
+[유튜브영상](https://youtu.be/7FfDIUuBeQU)
 
 ## 📘 팀 노션
 [멘도롱제주 노션](https://unmarred-judge-712.notion.site/875e0fb4b7bf42d69e2fe7b217286aaa)
@@ -41,8 +41,8 @@
 	 <img src="https://img.shields.io/badge/React--Query-FF4154?style=for-the-badge&logo=ReactQuery&logoColor=FFFFFF">
 	  <img src="https://img.shields.io/badge/recoil-2C5BB4?style=for-the-badge&logo=recoil&logoColor=white">
       		<img src="https://img.shields.io/badge/react--hook--form-EC5990?style=for-the-badge&logo=ReactHookForm&logoColor=white">
-       <img src="https://img.shields.io/badge/socket.io-010101?style=for-the-badge&logo=socket.io&logoColor=white">
 		 <br/>
+		   <img src="https://img.shields.io/badge/socket.io-010101?style=for-the-badge&logo=socket.io&logoColor=white">
 		 <img src="https://img.shields.io/badge/React Router-CA4245?style=for-the-badge&logo=React Router&logoColor=white">
 	  <img src="https://img.shields.io/badge/styled--components-DB7093?style=for-the-badge&logo=styledcomponents&logoColor=white">
        <img src="https://img.shields.io/badge/mui-007FFF?style=for-the-badge&logo=mui&logoColor=white">
@@ -108,7 +108,7 @@ Toast UI 라이브러리에 내장되어있는 addImageBlobHook 을 이용하여
 1. 백엔드에서 파일객체들이 담긴 리스트를 S3에 저장 후 S3 URL을 blob URL이 담긴 리스트와 비교
 
 * 이미지 치환 전 ```<p>제주도!</p><p><img src="blob:[http://localhost:3000/f2da32da-71c4-4dbc-8ad2-0db2ddaea21b](http://localhost:3000/f2da32da-71c4-4dbc-8ad2-0db2ddaea21b)" contenteditable="false">```
-** 이미지 치환 후 ```<p>제주도!</p><p><img src=\"[https://yushin-s3.s3.amazonaws.com/images/93d7504b-9d22-4aa4-ab79-56dce525a114.jpg\\](https://yushin-s3.s3.amazonaws.com/images/93d7504b-9d22-4aa4-ab79-56dce525a114.jpg%5C%5C)" contenteditable=\"false\">```
+* 이미지 치환 후 ```<p>제주도!</p><p><img src=\"[https://yushin-s3.s3.amazonaws.com/images/93d7504b-9d22-4aa4-ab79-56dce525a114.jpg\\](https://yushin-s3.s3.amazonaws.com/images/93d7504b-9d22-4aa4-ab79-56dce525a114.jpg%5C%5C)" contenteditable=\"false\">```
 
 2. 이미지 치환 후 데이터를 DB에 저장
 

@@ -53,12 +53,9 @@ const HostRegistModal = ({ setHostOpen }) => {
   const onKeyPress=(e) =>{
     if(e.key==='Enter'){
       hostRegister.mutate(inputRef.current.value)
+      inputRef.current.value=""
     }
-    inputRef.current.value=""
   }
-  // const hostChange = (e) => {
-  //   console.log(e.target.value);
-  // };
   return (
     <div>
       <button
@@ -136,13 +133,11 @@ const HostRegistModal = ({ setHostOpen }) => {
                     type="number"
                     ref={inputRef}
                     placeholder="******"
-                    // onKeyPress={onKeyPress}
-                    // onChange={hostChange}
+                    onKeyPress={onKeyPress}
                   ></input>
                   <button
                     onClick={() => {
                       hostRegister.mutate(inputRef.current.value);
-                      console.log(inputRef.current.value)
                       inputRef.current.value = "";
                     }}
                   >

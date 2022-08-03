@@ -65,8 +65,8 @@ const ChatList = () => {
   const popularChatRoom = useQuery(
     ["popularChatRoom", sort],
     () =>
-      instance.get("/room/populer").then((res) => {
-        // setChatRoom(res.data.allRoom)
+      instance.get("/room/search/populer").then((res) => {
+        setChatRoom(res.data.allRoom)
         console.log(res.data);
         return res.data;
       }).catch((err)=>console.log(err)),
@@ -77,6 +77,7 @@ const ChatList = () => {
   );
   const sortChange = (e) => {
     setSort(e.target.value);
+    console.log(e.target.value)
   };
   const searchRoom = useQuery(
     ["searchRoom", search],
@@ -162,7 +163,7 @@ const ChatList = () => {
               }}
               displayEmpty
               inputProps={{ "aria-label": "Without label" }}
-              defaultValue={sort}
+              defaultValue={""}
               onChange={sortChange}
             >
               <MenuItem value="" onClick={()=>{
