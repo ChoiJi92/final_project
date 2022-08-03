@@ -12,7 +12,6 @@ const Naver = () => {
     }}>
       <img src={naverLogo} alt='네이버'></img>
     <a href={NAVER_AUTH_URL}>네이버 로그인</a>
-    {/* <a href='/onready'>네이버 로그인</a> */}
   </Button>
   );
 };

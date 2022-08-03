@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import Main from "./pages/Main";
 import GlobalStyles from "./assests/css/GlobalStyles";
 import Header from "./components/Header";
 import { Route, Routes } from "react-router-dom";
 import KakaoRedirect from './components/KakaoRedirect';
 import GoogleRedirect from './components/GoogleRedirect';
-import Footer from './components/Footer';
 import NaverRedirect from './components/NaverRedirect';
 import UserWrite from './pages/UserWrite';
 
@@ -36,7 +35,6 @@ function App() {
     <div className="App">
        <MetaTag title={'멘도롱 제주'}></MetaTag>
       <GlobalStyles />
-   
       <Header/>
       <Routes>
         <Route path="/" element={<Main />} />

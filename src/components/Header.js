@@ -53,7 +53,6 @@ const handleScroll = throttle(updateScroll, 100);
   };
   return (
     <Container scroll={isScroll}>
-      {/* {isScroll ? (<h1>gggg</h1>):("")} */}
       <Wrap
         scroll={isScroll}
       >
@@ -96,7 +95,6 @@ const handleScroll = throttle(updateScroll, 100);
               <div
                 className="house"
                 onClick={() => {
-                  // setMenu("house");
                   navigate("/house");
                 }}
               >
@@ -105,7 +103,6 @@ const handleScroll = throttle(updateScroll, 100);
               <div
                 className="community"
                 onClick={() => {
-                  // setMenu("community");
                   navigate("/community");
                 }}
               >
@@ -114,7 +111,6 @@ const handleScroll = throttle(updateScroll, 100);
               <div
                 className="chat"
                 onClick={() => {
-                  // setMenu("chat");
                   navigate("/chat");
                 }}
               >
