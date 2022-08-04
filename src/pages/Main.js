@@ -16,8 +16,6 @@ import instance from "../shared/axios";
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
 import MetaTag from "./MetaTag";
-import Event2 from "./Event2";
-import Event from "./Event";
 import ScrollTopBtn from "../components/ScrollTopBtn";
 const Main = () => {
   const { data } = useQuery(
@@ -36,8 +34,6 @@ const Main = () => {
   return (
     <>
     <MetaTag title={'멘도롱 제주'}/>
-    <Event2/>
-      <Event/>
     <Container>
       <div
         style={{
