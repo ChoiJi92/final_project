@@ -5,6 +5,8 @@ import styled from "styled-components";
 
 
 const Profile = ({item, data}) => {
+    // console.log(item);
+    // console.log(data);
     return(
     <Main>
         {data ? (
