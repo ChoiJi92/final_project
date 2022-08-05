@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {useRef, useState } from "react";
 import styled from "styled-components";
-import { FaTimes, FaTimesCircle } from "react-icons/fa";
+import { FaTimesCircle } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
@@ -23,20 +23,11 @@ const HostWrite = () => {
   const [open, setOpen] = useState(false);
   const [multiImgs, setMultiImgs] = useState([]);
   const [imgFileList, setImgFileList] = useState([]);
-  const [testFileList, setTestFileList] = useState([]);
   const [tagList, setTagList] = useState([]);
-  const [addressError, setAddressError] = useState(false);
-  
-  const [isMiniImg, setIsMiniImg] = useState(false);
-
-  const userId = sessionStorage.getItem("userId");
   const currentImg = useRef(null);
-
-  const [testImg, setTestImg] = useRecoilState(updateImgList);
+  const [takeImg, setTakeImg] = useRecoilState(updateImgList);
   const [deletedImg, setDeletedImg] = useRecoilState(deletedImgList);
-  
   const [deleteState, setDeleteState] = useState([]);
-
   const [newImgList, setNewImgList] = useState([]);
 
   const { data } = useQuery(
@@ -48,7 +39,7 @@ const HostWrite = () => {
     },
     {
       onSuccess: (data) => {
-        setTestImg(data.images); //맨 처음 이미지 받아오는 스테이트
+        setTakeImg(data.images); //맨 처음 이미지 받아오는 스테이트
         setDeletedImg(data.images); // 삭제되고 남아있는 스테이트
       },
       refetchOnWindowFocus: false,
@@ -56,9 +47,6 @@ const HostWrite = () => {
     }
   );
   const [address, setAddress] = useState(data?.mainAddress);
-  // 첫 번째 이미지 파일을 스테이트에 저장하고
-  // 두 번째 기존에 있던거랑
-  // [{key:"",url:""},]
 
   const {
     register,
@@ -67,33 +55,23 @@ const HostWrite = () => {
     reset,
     watch,
   } = useForm({
-    defaultValues: {
-      // category:data?.category,
-      // houseInfo:data?.houseInfo,
-      // stepSelect:data?.value,
-      // stepInfo:data?.stepInfo,
-      // link:data?.link,
-      // postContent:data?.postContent,
-      // subAddress:data?.subAddress,
-      // mainAddress: data?.mainAddress,
-    },
+    defaultValues: {},
   });
 
   const onSortEnd = (oldIndex, newIndex) => {
     setMultiImgs((array) => arrayMove(array, oldIndex, newIndex));
-    setTestImg((array) => arrayMove(array, oldIndex, newIndex))
+    setTakeImg((array) => arrayMove(array, oldIndex, newIndex))
   };
 
   const onImgChange = (e) => {
     if (!hostId) {
       const imgLists = e.target.files;
-      // console.log(imgLists, "이거 타겟");
       let imgUrlLists = [...multiImgs];
-      let testList = [];
+      let postImgList = [];
       for (let i = 0; i < imgLists.length; i++) {
         const currentImageUrl = URL.createObjectURL(imgLists[i]);
 
-        testList.push(imgLists[i]);
+        postImgList.push(imgLists[i]);
         // setUploadTest(imgLists[i])
         imgUrlLists.push(currentImageUrl);
       }
@@ -101,22 +79,21 @@ const HostWrite = () => {
         imgUrlLists = imgUrlLists.slice(0, 8);
       }
       setMultiImgs(imgUrlLists); //보여지는 이미지들
-      setImgFileList([...imgFileList, ...testList]); // 포스트 요청보내는 이미지들
+      setImgFileList([...imgFileList, ...postImgList]); // 포스트 요청보내는 이미지들
     } else {
       const imgLists = e.target.files;
-      let testImgUrlLists = [...testImg]; //기존 이미지 스테이트
-      let testList2 = []; // 새로 추가 된 이미지
+      let testImgUrlLists = [...takeImg]; //기존 이미지 스테이트
+      let updateImgList = []; // 새로 추가 된 이미지
       for (let i = 0; i < imgLists.length; i++) {
         const currentImageUrl = URL.createObjectURL(imgLists[i]);
-        testList2.push(imgLists[i]);
+        updateImgList.push(imgLists[i]);
         testImgUrlLists.push(currentImageUrl);
       }
       if (testImgUrlLists.length > 8) {
         testImgUrlLists = testImgUrlLists.slice(0, 8);
       }
-      setTestImg(testImgUrlLists);
-      // setTestFileList(testImgUrlLists);
-      setNewImgList([...newImgList, ...testList2]); //새롭게 추가된 이미지 파일 리스트
+      setTakeImg(testImgUrlLists);
+      setNewImgList([...newImgList, ...updateImgList]); //새롭게 추가된 이미지 파일 리스트
     }
   };
 
@@ -131,40 +108,33 @@ const HostWrite = () => {
 
   const uploadDeleteImg = (id) => {
     //이거슨 삭제되고 보여지는 스테이트
-    setTestImg(testImg.filter((_, idx) => idx !== id));
+    setTakeImg(takeImg.filter((_, idx) => idx !== id));
 
     setNewImgList(newImgList.filter((_, idx) => idx !== id));
     // 삭제 된 이미지 스테이트
     setDeleteState((prev) => [
       ...prev,
-      ...testImg.filter((_, idx) => idx == id),
+      ...takeImg.filter((_, idx) => idx == id),
     ]);
     //스테이트에 삭제 된 이미지들 저장해야함!!
   };
 
   const queryClient = useQueryClient();
 
-  // const testWrite =  useMutation() => {
-  //   const { data } = instance.post("/host", hostData)
-  //     .then((res) => console.log(res));
-  //   return data;
-  // };
-  // const testWrite = useMutation((data)=>{
-  //   instance.post(`/host`, data).then((res)=>{
-  //       console.log(res.data)
-
-  // }).catch((err)=>{console.log(err,"why")})
-  // })
-
-  const testWrite = useMutation(
+  const hostWrite = useMutation(
     (data) =>
       instance
-        .post(`/host`, data)
+        .post(`/host`, data, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
         .then((res) => {
-          // console.log(res.data);
+          setOpen(true);
+
         })
         .catch((err) => {
-          // console.log(err, "why");
+
         }),
     {
       onSuccess: () => {
@@ -172,53 +142,27 @@ const HostWrite = () => {
       },
     }
   );
-  // const postMutate = useMutation(testWrite, {
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries("hostWrite");
-  //   },
-  // });
-  // console.log(data.images);
 
   const updateMutation = useMutation(
     (updateData) => {
-      return instance.put(`/host/${hostId}`, updateData)
+      return instance.put(`/host/${hostId}`, updateData,{
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
-        console.log(res.data);
+        setOpen(true);
       })
       .catch((err) => {
-        console.log(err, "why");
+
       })
     }
-    // {
-    //   onSuccess: () => {
-    //     queryClient.invalidateQueries("hostWrite");
-    //   },
-    // }
+   
   );
-  // console.log(testImg, "삭제되고 보여지는 스테이트");
-  // console.log(deleteState, "삭제된 스테이트");
-  // console.log(newImgList, "추가된 이미지 스테이트");
-  // console.log(deletedImg, "처음부터 받아온 스테이트");
-  // console.log(data?.mainAddress, "1");
-  // console.log(address, "2");
-  // console.log(testFileList ,"testfilelist")
-  // console.log(multiImgs, "멀티이미지 스테이트")
-  // console.log(testFileList)
-  // s3에서 온 이미지들은 하나의 스테이트 testImg
-  // 삭제되면 스테이트에도 없어져야 함 testImg
-  // 삭제 된 거를 다른 스테이트에 저장해야함 deleteState
-  // 새로 추가 된 파일객체를 또 하나의 스테이트에 저장해야함 newImgList
-  // 보내야할 때 데이터는 기존에 있던거와 삭제 된거와 추가된거와 총 3가지 3가지의 스테이트를 보내야함
-  // 기존에 있던 스테이트 삭제 된 이미지 스테이트 추가된 스테이트 총 3가지
-  //이미지를 보여줄 스테이트 하나 총 4가지 스테이트
-  // console.log(testFileList);
+ 
   const onSubmit = (data) => {
-    // if (address === "") {
-    //   setAddressError(true);
-    // }
-    // if (hostId) {
-    if (multiImgs.length  > 3 || testImg.length > 3) {
-      // console.log("hi");
+   
+    if (multiImgs.length  > 3 || takeImg.length > 3) {
       const formData = new FormData();
       formData.append("category", data.category);
       formData.append("houseInfo", data.houseInfo);
@@ -237,41 +181,16 @@ const HostWrite = () => {
         formData.append("deleteImages", deleteState);
         newImgList.forEach((item) => formData.append("images", item));
         updateMutation.mutate(formData);
-        // console.log(address)
-        
       } else {
         imgFileList.forEach((item) => formData.append("images", item));
-        testWrite.mutate(formData);
-        // console.log(tagList);
+        hostWrite.mutate(formData);
       }
-      setOpen(true);
     } else {
       window.alert("사진을 4장 이상 첨부해 주세요!!");
     }
-    // } else {
-    //   const formData = new FormData();
-    //   formData.append("category", data.category);
-    //   formData.append("houseInfo", data.houseInfo);
-    //   formData.append("link", data.link);
-    //   formData.append("mainAddress", address);
-    //   formData.append("subAddress", data.subAddress);
-    //   formData.append("hostContent", data.hostContent);
-    //   formData.append("stepInfo", data.stepInfo);
-    //   formData.append("stepSelect", data.stepSelect);
-    //   formData.append("title", data.title);
-    //   console.log(data);
-    //   imgFileList.forEach((item) => formData.append("images", item));
-    //   testWrite.mutate(formData);
-
-    //   // console.log("hello", data);
-    //   // postMutation.mutate(data, address);
-    //   setOpen(true);
-    // }
   };
 
   const hiddenSetp = watch("stepSelect");
-  // console.log(data.userId)
-  // console.log(multiImgs.length, isMiniImg);
   return (
     <>
       <MetaTag title={"숙소등록 | 멘도롱 제주"} />
@@ -293,7 +212,6 @@ const HostWrite = () => {
                 accept={"image/*"}
                 name="imgfile"
                 onChange={onImgChange}
-                // {...register("images", { required: "이미지는 필수 선택사항입니다 :)" })}
               />
               <div id="imgSelectBox" onClick={imgClick}>
                 <div
@@ -311,14 +229,12 @@ const HostWrite = () => {
                   ></img>
                   <span>이미지 등록</span>
                   <span style={{ marginTop: "10px" }}>
-                    {multiImgs.length ? multiImgs.length : testImg.length} / 8
+                    {multiImgs.length ? multiImgs.length : takeImg.length} / 8
                   </span>
                 </div>
               </div>
               <span style={{ color: "red", fontSize: "13px" }}>
-                {/* {errors.images?.message} */}
               </span>
-              {/* {isMiniImg ? (<span>사진은 최소 4장 부터</span>) : ("")} */}
             </ImgDesBox>
 
             <ImgBox>
@@ -329,7 +245,7 @@ const HostWrite = () => {
               >
                 {hostId ? (
                   <>
-                    {testImg.map((v, index) => (
+                    {takeImg.map((v, index) => (
                       <SortableItem key={`item-${index}`}>
                         <List>
                           <Img
@@ -464,10 +380,7 @@ const HostWrite = () => {
               >
                 <input
                   placeholder="주소를 검색해 주세요."
-                  // {...register("mainAddress", { required: true })}
-                  // value={address}
                   readOnly
-                  // value={address || data?.mainAddress}
                   style={{
                     borderRadius: "10px",
                     border: "none",
@@ -483,7 +396,6 @@ const HostWrite = () => {
                 className="subAddress"
                 placeholder="주소를 정확히 작성해야 지도에 표시됩니다."
                 {...register("subAddress", {
-                  // required: "상세주소는 필수 선택사항입니다 :)",
                 })}
                 defaultValue={data?.subAddress ? data?.subAddress : ""}
                 style={{
@@ -590,7 +502,6 @@ const HostWrite = () => {
 const Wrap = styled.div`
   height: auto;
   width: 100%;
-  /* border: 1px solid black; */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -605,7 +516,6 @@ const HostForm = styled.form`
   align-items: center;
   hr {
     width: 70%;
-    /* margin:15px 0px 15px 0px; */
     margin-top: 15px;
   }
 `;
@@ -621,7 +531,6 @@ const HouseBox = styled.div`
 const ImgMainBox = styled.div`
   display: flex;
   justify-content: space-between;
-  /* align-items: center; */
   width: 70%;
   margin-top: 3px;
 `;
@@ -636,7 +545,6 @@ const ImgDesBox = styled.div`
     justify-content: center;
     width: 251px;
     height: 272px;
-    /* margin: 15px 0px 10px 0px; */
     margin-top: 10px;
     border-radius: 10px;
     background-color: #f7f3ef;
@@ -649,7 +557,6 @@ const ImgBox = styled.div`
   height: auto;
   display: flex;
   flex-wrap: wrap;
-  /* border: 1px solid red; */
   .list {
     display: flex;
     flex-wrap: wrap;
@@ -675,7 +582,6 @@ const Img = styled.img`
   margin-top: 10px;
   margin-left: 21px;
   border-radius: 10px;
-  /* position: relative; */
   user-select: none;
   pointer-events: none;
 `;
@@ -687,13 +593,10 @@ const DeleteIcon = styled(FaTimesCircle)`
   color: #bdc3c7;
   z-index: 2;
   opacity: 1;
-  /* color: black; */
   cursor: pointer;
   position: absolute;
-  /* left: -15px; */
   right: 5px;
   bottom: 245px;
-  /* top:0px; */
   display: none;
 `;
 
@@ -787,13 +690,11 @@ const InfoBox = styled.div`
   }
 
   #infoDes {
-    /* height: 300px; */
     margin-right: 272px;
     width: 59.3%;
     display: flex;
     flex-direction: column;
     textarea {
-      /* width: 71.5%; */
       height: 420px;
       border-radius: 10px;
       padding: 20px;
@@ -815,22 +716,16 @@ const InfoBox = styled.div`
     display: flex;
     justify-content: space-between;
     margin-left: -5px;
-    /* border: 1px solid; */
   }
   #stepInputBox {
     width: 68%;
     height: 70px;
-    /* margin-right: 230px; */
   }
   #stepMainBox {
     width: 59.3%;
-    /* margin-right: 11px; */
-    /* height: 60px; */
     display: flex;
     flex-direction: column;
     margin-right: 272px;
-    /* margin-right: 130px; */
-    /* border: 1px solid; */
   }
   .tag {
     width: 75%;
@@ -843,7 +738,6 @@ const InfoBox = styled.div`
     div {
       border: 1px solid;
       border-radius: 20px;
-      /* width: 11%; */
       min-width: 11%;
       padding: 20px;
       height: 40px;
@@ -858,8 +752,6 @@ const InfoBox = styled.div`
       }
     }
     input {
-      /* width: 100%; */
-      /* display: ${(props) => (props.props ? "block" : "none")}; */
       height: 50px;
       padding: 20px;
       border-radius: 5px;
@@ -884,7 +776,6 @@ const ErrorP1 = styled.p`
 const ErrorP = styled.p`
   font-size: 13px;
   color: red;
-  /* margin-bottom: 8px; */
   margin-top: 10px;
   height: 100%;
 `;
@@ -894,8 +785,6 @@ const StepInput = styled.input`
   height: 56px;
   padding: 20px;
   border-radius: 10px;
-  /* margin-right: -200px; */
-
   font-style: normal;
   font-weight: 500;
   font-size: 18px;

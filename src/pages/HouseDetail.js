@@ -1,21 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import editIcon from "../assests/css/images/editIcon.webp";
 import deleteIcon from "../assests/css/images/deleteIcon.webp";
 import stepImg from "../assests/css/images/mypageImg.webp";
-import land from "../assests/css/images/내륙.webp";
-import nearby from "../assests/css/images/관광지근처.webp";
-import allCategory from "../assests/css/images/모두보기.webp";
-import quietVil from "../assests/css/images/조용한마을.webp";
-import udo from "../assests/css/images/우도.webp";
-import nearBySea from "../assests/css/images/해변근처.webp";
-import shareIcon2 from "../assests/css/images/shareIcon2.webp";
 import saveIcon from "../assests/css/images/saveIcon.webp";
 import unsaveIcon2 from "../assests/css/images/unsaveIcon2.webp";
-
 import step from "../assests/css/images/step.webp";
-
-
 import { FaStar } from "react-icons/fa";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -31,15 +21,15 @@ import HouseReviewDetail from "../components/HouseReviewDetail";
 import Footer from "../components/Footer";
 import instance from "../shared/axios";
 import KaKaoMap from "../components/KakaoMap";
-import { SaveAsOutlined } from "@mui/icons-material";
 import ScrollTopBtn from "../components/ScrollTopBtn";
 import LoginModal from "../components/LoginModal";
 
 const HouseDetail = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [moreReview, setMoreReview] = useState(false);
+  
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalData, setModalDta] = useState([]);
+  const [modalData, setModalData] = useState([]);
   const [isReivewUpdate, setIsReviewUpdate] = useState({});
   
   const [open, setOpen] = useState(false);
@@ -58,23 +48,16 @@ const HouseDetail = () => {
         star:star,
         reviewId:reviewId
       });
-      // console.log(review, star, " 이거슨 리뷰와 별점")
     }
   };
-  // console.log(isReivewUpdate , "이거슨 유저아이디");
   const closeModal = () => {
     setModalOpen(false);
   };
 
   const openModalReview = (data) => {
     setReviewModalOpen(true);
-    setModalDta(data)
+    setModalData(data)
   };
-  // console.log(modalData,"이거슨 모달 데이터")
-//   <ReviewDetailModal
-//   open={reviewModalOpen}
-//   close={closeModalReview}
-// />
 
   const closeModalReview = () => {
     setReviewModalOpen(false);
@@ -86,11 +69,12 @@ const HouseDetail = () => {
   const params = useParams();
   const hostId = params.id;
   const isHostShareAndMap = useSetRecoilState(hostShareAndMap);
+
   const { data } = useQuery(
     ["houseDetail", hostId],
 
     () => 
-      instance.get(`/host/${hostId}`).then((res) => {return res.data}),
+      instance.get(`/host/${hostId}`).then((res) => { return res.data}),
     
     {
       refetchOnWindowFocus: false,
@@ -118,22 +102,21 @@ const HouseDetail = () => {
     },
   );
 
-  const testDelete = useMutation(() => {
+  const hostDelete = useMutation(() => {
     return instance.delete(`/host/${hostId}`);
   });
 
   const deleteReview = useMutation((reviewId)=>{
     return instance.delete(`/review/${hostId}/${reviewId}`)
     .then((res)=>{
-      // console.log(res)
+
     })
-    .catch((erro)=>{
-      // console.log(erro)
+    .catch((err)=>{
+
     });
   },
   {
     onSuccess: () => {
-      // post 성공하면 'reviweDetail'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
       queryClient.invalidateQueries("reviewDetail");
     },
   }
@@ -144,10 +127,8 @@ const HouseDetail = () => {
       instance
         .post(`/save/${id}`)
         .then((res) => {
-          // console.log(res.data);
         })
         .catch((err) => {
-          // console.log(err, "why");
         }),
     {
       onSuccess: () => {
@@ -160,10 +141,8 @@ const HouseDetail = () => {
       instance
         .delete(`/save/${id}/unsave`)
         .then((res) => {
-          // console.log(res.data);
         })
         .catch((err) => {
-          // console.log(err, "why");
         }),
     {
       onSuccess: () => {
@@ -178,25 +157,15 @@ const HouseDetail = () => {
     }else{
       setOpen(true);
     }
-    // savePost.mutate(id);
-    // savePost.mutate(id);
-    
-    // console.log(id)
   }
 
   const cancelSaveClick = (id) => {
-    if(userId){
       saveDelete.mutate(id);
-    }else{
-      navigate("/loginerror")
-    }
-    
   }
 
-  let testscore = 0;
+  let starScore = 0;
   for (let i = 0; i < isStarReview?.reviewInfo.length; i++) {
-    testscore = testscore + parseInt(isStarReview.reviewInfo[i].starpoint);
-    // console.log(testscore, "이거슨 점수");
+    starScore = starScore + parseInt(isStarReview.reviewInfo[i].starpoint);
   }
 
   isHostShareAndMap(data);
@@ -209,37 +178,26 @@ const HouseDetail = () => {
     setDialogOpen(false);
   };
 
-  
-
-  const MapRadius = "20px";
-
-  const shareClick = () => {
-    Share();
-  };
   const reviewClick = () => {
     setMoreReview((prev) => !prev);
   };
 
-
   const onDelete = (id) => {
-    testDelete.mutate(id);
+    hostDelete.mutate(id);
     navigate("/house");
   };
   
-//  console.log(data.findAllAcc.isSave);
-
   return (
     <>
     <Wrap>
       <div id="detailMainBox">
         <ImgBox>
-          {/* <SlideImg listImg={listImg} /> */}
           <ImgInnerBox1>
             <img  src={data?.findAllAcc?.images[0]?.postImageURL} alt="이미지" />
           </ImgInnerBox1>
           <ImgInnerBox2>
             <img  src={data?.findAllAcc?.images[1]?.postImageURL} alt="이미지" />
-            <ImgDiv   style={{"backgroundImage" :`url(${data?.findAllAcc?.images[2]?.postImageURL})`}}>
+            <ImgDiv style={{"backgroundImage" :`url(${data?.findAllAcc?.images[2]?.postImageURL})`}}>
               <button onClick={openDialog}>사진 모두보기</button>
               <DialogImg
                 open={dialogOpen}
@@ -247,7 +205,6 @@ const HouseDetail = () => {
                 onClose={closeDialog}
               />
             </ImgDiv>
-            {/* <div></div> */}
           </ImgInnerBox2>
         </ImgBox>
         <div style={{ display: "flex", flexDirection: "row" }}>
@@ -269,14 +226,12 @@ const HouseDetail = () => {
                 <h1
                   style={{
                     width: "100%",
-                    // border: "1px solid red",
                     fontSize: "48px",
                   }}
                 >
                   {data?.findAllAcc?.title}
                 </h1>
               </div>
-              {/* {data.findAllAcc.userId === userId ? () : ()} */}
               <div
                 style={{
                   display: "flex",
@@ -284,36 +239,27 @@ const HouseDetail = () => {
                   justifyContent: "flex-end",
                   width: "100%",
                   marginRight:"5px",
-                  // border: "1px solid red"
                 }}
               >
                 <div
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    // marginBottom: "20px",
-                    // border: "1px solid blue",
-                    // marginRight:"50px",
                     justifyContent: "center",
                     width: "35%",
-                    // border: "1px solid blue"
                   }}
                 >
                   {data?.findAllAcc?.userId === Number(userId) ? (
                   <>
                   <span style={{ fontSize: "21px" }}>수정하기</span>
-                  {/* <Link to={`/hostwrite/${data.findAllAcc.hostId}`}> */}
                   <Link to={`/hostwrite/${data?.findAllAcc?.hostId}`}>
                   <IconImg src={editIcon} alt="수정" />
                   </Link>
                   </>) : (
                   <>
                     <span style={{ fontSize: "21px" }}>공유하기</span>
-                  {/* <Share props /> */}
-                  {/* <IconImg onClick={shareClick}  src={shareIcon2} alt="공유"/> */}
                   <Share />
                   </>)}
-                 
                 </div>
                 <div
                   style={{
@@ -321,7 +267,6 @@ const HouseDetail = () => {
                     alignItems: "center",
                     justifyContent: "center",
                     marginLeft:"20px",
-                    // border: "1px solid green"
                   }}
                 >
                   {data?.findAllAcc?.userId === Number(userId) ? (
@@ -380,21 +325,13 @@ const HouseDetail = () => {
               <KaKaoMap data={[data.findAllAcc]} height={'100%'} singleMarker={true}></KaKaoMap>
             </MapBox>
             <div style={{ marginBottom: "30px" }}>
-              <h2 style={{ marginTop: "20px", fontSize: "32px" }}>
-                {data?.mainAddress}
-              </h2>
-              <h2 style={{ fontSize: "32px", opacity: "0.2" }}>
-                {data?.subAddress}
-              </h2>
             </div>
             <hr />
             <ReviewMainBox>
               <div id="reviewScore">
                 <StarIcon />
                 <span>
-                  {testscore
-                    ? (testscore / isStarReview?.reviewInfo.length).toFixed(1)
-                    : "0.0"}
+                  {data.findAllAcc.average.toFixed(1)}
                 </span>
 
                 <span style={{ marginLeft: "60px" }}>
@@ -422,11 +359,8 @@ const HouseDetail = () => {
               </div>
             </ReviewMainBox>
             <ReviewListBox>
-              {/* 후기 작성 부분 */}
               {reviewDetail.data.reviewInfo.slice(0, 4).map((item, idx) => (
-                // 후기 디테일 페이지 클릭해서 모달창 데이타 보여줄 예정
                 <ReviewBox key={`${item.reviewId}-${idx}`}>
-                  {/* 프로필 부분에서 재사용 하기 위해 일단 컴포넌트로 나눔 */}
                   <div id="profileBox">
                     <Profile item={item} />
                     <div id="iconBox">
@@ -455,9 +389,7 @@ const HouseDetail = () => {
               {moreReview ? (
                 <>
                   {reviewDetail.data.reviewInfo.slice(4).map((item, idx) => (
-                    // 후기 디테일 페이지 클릭해서 모달창 데이타 보여줄 예정
                     <ReviewBox key={item.reviewId}>
-                      {/* 프로필 부분에서 재사용 하기 위해 일단 컴포넌트로 나눔 */}
                       <div id="profileBox">
                         <Profile item={item}/>
                         <div id="iconBox">
@@ -475,7 +407,6 @@ const HouseDetail = () => {
                           ? `${item.review.slice(0, 40)} ...`
                           : item.review}
                       </div>
-
                     </ReviewBox >
                   ))}
                 </>
@@ -500,12 +431,6 @@ const HouseDetail = () => {
                 <span>{data?.findAllAcc?.mainAddress}</span>
                 
               </div>
-              {/* <div id="barLink">
-                <a href={data?.findAllAcc?.link}>
-                  <span>{data?.findAllAcc?.link}</span>
-                </a>
-                
-              </div> */}
               <div id="barTag">
                 {data?.findAllAcc?.tagList.length > 0 && data?.findAllAcc?.tagList.slice(0, 4).map((item, idx) => (
                   <HashTagBox key={idx}>{item}</HashTagBox>
@@ -532,17 +457,7 @@ const HouseDetail = () => {
             </div>
           </RightBarBox>
         </div>
-        {/* <div>
-          <button
-            onClick={() => {
-              onDelete(data?.findAllAcc?.hostId);
-            }}
-          >
-            삭제
-          </button>
-        </div> */}
       </div>
-      
     </Wrap>
     <ScrollTopBtn/>
     <Footer/>
@@ -551,8 +466,6 @@ const HouseDetail = () => {
 };
 
 const Wrap = styled.div`
-  /* height: auto; */
-  /* margin: auto; */
   width: 100%;
   display: flex;
   justify-content: center;
@@ -653,9 +566,6 @@ const MapBox = styled.div`
   height: 400px;
   border-radius: 20px;
   position: relative;
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
 `;
 
 const ReviewMainBox = styled.div`
@@ -669,6 +579,8 @@ const ReviewMainBox = styled.div`
     font-size: 48px;
   }
   #reviewScore {
+    display: flex;
+    align-items: center;
     span {
       font-size: 32px;
     }
@@ -718,14 +630,12 @@ const ReviewListBox = styled.div`
   padding: 0;
   justify-content: space-between;
   margin-bottom: 20px;
-  /* border: 1px solid red; */
 `;
 
 const ReviewBox = styled.div`
   width: 48%;
   height: 204px;
   margin-top: 25px;
-  /* margin-right: 10px; */
   #reviewDetail {
     margin-top: 10px;
     padding: 20px;
@@ -776,16 +686,13 @@ const MoreReview = styled.div`
   cursor: pointer;
   background-color: #f7f3ef;
 
-  /* display: ${(props) => (props.moreReview ? "none" : "")}; */
 `;
 
 const RightBarBox = styled.div`
   width: 32.3%;
-  /* height: 646px; */
 
   margin-left: 20px;
   #srollBar {
-    /* top: 50px; */
     position: sticky;
     height: auto;
     top: 110px;
@@ -797,7 +704,6 @@ const RightBarBox = styled.div`
   #barTitle {
     width: 100%;
     height: 100px;
-    /* border: 1px solid red; */
     display: flex;
     flex-direction: column;
     h3 {
@@ -827,7 +733,6 @@ const RightBarBox = styled.div`
   }
   #btnBox {
     width: 100%;
-    /* height: 150px; */
     margin-top: 20px;
   }
   #barTag {
@@ -836,10 +741,7 @@ const RightBarBox = styled.div`
     flex-wrap: wrap;
   }
   #barLink{
-    /* border: 1px solid red; */
-
     display: flex;
-    
     margin-top: 10px;
     a{
       font-size: 18px;
@@ -896,12 +798,10 @@ const SubInfoBox = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* padding: 30px; */
   padding: 0px 60px;
   div {
     width: 30%;
     height: 50px;
-    /* border: 1px solid red; */
     display: flex;
     align-items: center;
     justify-content: center;

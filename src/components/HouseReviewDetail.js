@@ -1,16 +1,13 @@
-import React, { useRef, useState } from "react";
+import React from "react";
 import cancelIcon from "../assests/css/images/cancelIcon.webp";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import styled from "styled-components";
 import Profile from "./Profile";
 import { FaStar } from "react-icons/fa";
-import { useRecoilValue } from "recoil";
-import { reviewStarList } from "../recoil/atoms";
 const style = {
   position: "absolute",
   top: "50%",
@@ -24,17 +21,12 @@ const style = {
 };
 
 const ReviewDetailModal = (props) => {
-  const userReview = useRecoilValue(reviewStarList);
-  // console.log(userReview ,"its detail");
   const {open, close, data} = props;
-  // console.log(data, "모달창에 있는 데이터")
-  // console.log(data)
   let totalStar = []
   for(let i =0; i < data?.starpoint; i ++){
     totalStar.push(i)
   }
 
-  
   const nonStart = 5 - data?.starpoint;
 
   let totalNonStar = []
@@ -45,9 +37,6 @@ const ReviewDetailModal = (props) => {
  
   return (
     <>
-      {/* <Button onClick={handleOpen}>
-        Open modal
-      </Button> */}
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -83,7 +72,6 @@ const ReviewDetailModal = (props) => {
                 {totalNonStar?.map((i,idx)=>(
                   <NonStarIcon key={idx}/>
                 ) )}
-                {/* <span>{data?.starpoint}</span> */}
               </div>
             </MainProfile>
             <Main>
@@ -102,7 +90,7 @@ const Main = styled(Typography)`
   display: flex;
   justify-content: center;
   align-items: center;
-  /* width: 66.3%; */
+
   #reviewTitle{
     display: flex;
     justify-content: space-between;
@@ -141,7 +129,6 @@ const MainProfile = styled(Typography)`
   }
   #score{
     display: flex;
-    /* flex-direction: column; */
     margin-top: 20px;
     margin-right: 20px;
     align-items: center;

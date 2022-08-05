@@ -1,20 +1,15 @@
 import React, { useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { hostShare, hostShareAndMap, userShare } from "../recoil/atoms";
+import {hostShareAndMap } from "../recoil/atoms";
 
 const KakaoShare = ({ data }) => {
-  // const isUserShare = useRecoilValue(userShare);
   const isHostShare = useRecoilValue(hostShareAndMap);
-  // console.log(!isUserShare);
-  // console.log(isHostShare.findAllAcc," 이거슨 카카오 쉐어");
-  // console.log(data);
-  const url = window.location.href; //현재 url가져오기
+  const url = window.location.href;
   useEffect(() => {
-    initKakao(); //
+    initKakao(); 
   }, []);
 
-  //자바스크립트키로 카카오 init
   const initKakao = () => {
     if (window.Kakao) {
       const kakao = window.Kakao;
@@ -24,10 +19,8 @@ const KakaoShare = ({ data }) => {
     }
   };
 
-  //버튼을 누르면 실행되는 함수
   const shareKakao = () => {
     
-      //이부분이 매우 헷갈림 여러 사이트를 참고했는데 이 sendDefault부분을 잘 봐야한다.
       window.Kakao.Link.sendDefault({
         objectType: "feed",
         content: {
@@ -74,7 +67,6 @@ const KakaoShare = ({ data }) => {
 };
 
 const Wrap = styled.div`
-  /* border: 1px solid; */
   img {
     border-radius: 50%;
     border: none;

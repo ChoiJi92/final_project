@@ -23,30 +23,11 @@ import MetaTag from "./MetaTag";
 import LoginModal from "../components/LoginModal";
 
 const HouseInfo = () => {
-  // const [leftPosition, setLeftPosition] = useState("");
-  // const [rigthPosition, setRigthPosition] = useState("");
-  // const [fleftPosition, setFLeftPosition] = useState("");
-  // const [frigthPosition, setFRigthPosition] = useState("");
-
-  // const [secondPosition, setSecondPosition] = useState("");
-  // const [sRigthPosition, setSRigthPosition] = useState("");
-  // const [sFleftPosition, setSFLeftPosition] = useState("");
-  // const [sFrigthPosition, setSFRigthPosition] = useState("");
-
-  // const [firstUnderbar, setFirstUnderbar] = useState(false);
-  // const [secondUnderbar, setSecondtUnderbar] = useState(false);
-
-  // const liveCozy = useRef(null);
-  // const liveBudget = useRef(null);
-
-  // const liveUnderlineRef = useRef(null);
-  // const spotUnderlineRef = useRef(null);
-  // // const firstBox = useRef(null);
-  // const liveFirstBox = useRef(null);
+  //로그인 안 할시 로그인 모달창 오픈
   const [open, setOpen] = useState(false);
+
   window.history.replaceState({}, document.title)
   const location = useLocation();
-  const navigate = useNavigate()
   const [isCozy, setIsCozy] = useState("cozy");
   const [isHostData, setIsHostData] = useRecoilState(hostData);
   const [address, setAddress] = useState(
@@ -62,14 +43,13 @@ const HouseInfo = () => {
   const [category, setCategory] = useState(
     location.state?.category ? location.state?.category : "all"
   );
-  const queryClient = useQueryClient();
+
   const { data } = useQuery(
     ["houseInfo",address],
     () =>
       instance
         .get(`/host`)
         .then((res) => {
-          console.log(res.data,'내가 검색되니?');
           if (category === "all") {
             setIsHostData(res.data.findAllAcc);
           } else {
@@ -80,14 +60,10 @@ const HouseInfo = () => {
           return res.data;
         })
         .catch((err) => {
-          // console.log(err);
         }),
     {
       enabled:!address,
       refetchOnWindowFocus: false,
-      // onSuccess: (data) => {
-      //   setIsHostData(data);
-      // },
     }
   );
   const searchData = useQuery(
@@ -96,8 +72,6 @@ const HouseInfo = () => {
       instance
         .get(`/host/search`, { params: { search: search } })
         .then((res) => {
-          console.log(search,'요청')
-          console.log(res.data, "전체검색");
           setIsHostData(res.data.searchResult);
         })
         .catch((err) => console.log(err)),
@@ -107,7 +81,6 @@ const HouseInfo = () => {
     }
   );
   const addressChange = (e) => {
-    console.log(e.target.value);
     setAddress(e.target.value);
     setType("")
     setSort("")
@@ -120,9 +93,7 @@ const HouseInfo = () => {
       instance
         .get(`/host/address/search`, { params: { search: address } })
         .then((res) => {
-          console.log(res.data, "지역검색");
           setType("")
-          console.log(type)
           setIsHostData(res.data.hostPost);
         })
         .catch((err) => console.log(err)),
@@ -132,7 +103,6 @@ const HouseInfo = () => {
     }
   );
   const typeChange = (e) => {
-    console.log(e.target.value);
     setType(e.target.value);
     setAddress("")
     setSort("")
@@ -145,7 +115,6 @@ const HouseInfo = () => {
       instance
         .get(`/host/type/search`, { params: { search: type } })
         .then((res) => {
-          console.log(res.data, "숙소형태검색");
           setIsHostData(res.data.housebyType);
         })
         .catch((err) => console.log(err)),
@@ -193,8 +162,6 @@ const HouseInfo = () => {
         .delete(`/save/${id}/unsave`)
         .then((res) => {
           setIsHostData([...isHostData.map((v,i)=> v.hostId===id  ? {...v,isSave:false} : v)])
-          console.log(res.data);
-          console.log(isHostData,'여기')
         })
         .catch((err) => {
           console.log(err, "why");
@@ -213,69 +180,6 @@ const HouseInfo = () => {
       saveDelete.mutate(id);
   };
 
-  // useEffect(() => {
-  //   // autoSpotClick();
-  //   autoLiveClick();
-  // }, []);
-  // const autoSpotClick = () => {
-  //   spotUnderlineRef.current.style.left = firstBox.current.offsetLeft + "px";
-  //   spotUnderlineRef.current.style.width = firstBox.current.offsetWidth + "px";
-  //   setFLeftPosition(firstBox.current.offsetLeft + "px");
-  //   setFRigthPosition(firstBox.current.offsetWidth + "px");
-  // };
-  // 클릭시 메뉴 언더바 이동
-  // const menuOnClick = (e) => {
-  //   spotUnderlineRef.current.style.left = e.currentTarget.offsetLeft + "px";
-  //   spotUnderlineRef.current.style.width = e.currentTarget.offsetWidth + "px";
-  //   setLeftPosition(e.currentTarget.offsetLeft + "px");
-  //   setRigthPosition(e.currentTarget.offsetWidth + "px");
-  //   setFirstUnderbar(true);
-  // };
-
-  //마우스 올릴시 메뉴 언더바 이동
-
-  // const autoLiveClick = () => {
-  //   liveUnderlineRef.current.style.left =
-  //     liveFirstBox.current.offsetLeft + "px";
-  //   liveUnderlineRef.current.style.width =
-  //     liveFirstBox.current.offsetWidth + "px";
-  //   setSFLeftPosition(liveFirstBox.current.offsetLeft + "px");
-  //   setSFRigthPosition(liveFirstBox.current.offsetWidth + "px");
-  //   liveCozy.current.style.fontWeight = "bolder";
-  // };
-
-  // const liveOnLeave = () => {
-  //   if (secondUnderbar === true) {
-  //     liveUnderlineRef.current.style.left = secondPosition;
-  //     liveUnderlineRef.current.style.width = sRigthPosition;
-  //   } else {
-  //     liveUnderlineRef.current.style.left = sFleftPosition;
-  //     liveUnderlineRef.current.style.width = sFrigthPosition;
-  //   }
-  // };
-  // const liveOnOver = (e) => {
-  //   liveUnderlineRef.current.style.left = e.currentTarget.offsetLeft + "px";
-  //   liveUnderlineRef.current.style.width = e.currentTarget.offsetWidth + "px";
-  // };
-  // const liveOnClick = (e) => {
-  //   liveUnderlineRef.current.style.left = e.currentTarget.offsetLeft + "px";
-  //   liveUnderlineRef.current.style.width = e.currentTarget.offsetWidth + "px";
-  //   console.log(e.target.innerText);
-  //   // console.log(liveCozy.current.style.fontWeight)
-
-  //   if (e.target.innerText === "편하게 한달 살기") {
-  //     liveBudget.current.style.fontWeight = "";
-  //     liveCozy.current.style.fontWeight = "bolder";
-  //   } else {
-  //     liveCozy.current.style.fontWeight = "";
-  //     liveBudget.current.style.fontWeight = "bolder";
-  //   }
-  //   // liveCozy.current.style.fontWeight = "bolder"
-  //   // liveBudget.current.style.fontWeight = "bolder"
-  //   setSecondPosition(e.currentTarget.offsetLeft + "px");
-  //   setSRigthPosition(e.currentTarget.offsetWidth + "px");
-  //   setSecondtUnderbar(true);
-  // };
   return (
     <>
       <MetaTag title={"숙소찾기 | 멘도롱 제주"}></MetaTag>
@@ -309,11 +213,9 @@ const HouseInfo = () => {
           >
             최소비용으로 한 달 살기
           </div>
-          {/* <LiveUnderBar ref={liveUnderlineRef} /> */}
         </LiveMainBox>
         <SpotMainBox category={category}>
           <div
-            // ref={firstBox}
             className="all"
             onClick={() => {
               setAddress("")
@@ -326,7 +228,6 @@ const HouseInfo = () => {
           >
             <img src={allCategory} alt="모두보기" />
             <span>모두 보기</span>
-            {/* <SpotUnderBar ref={spotUnderlineRef} /> */}
           </div>
           <div
             className="해변근처"
@@ -347,7 +248,6 @@ const HouseInfo = () => {
           </div>
           <div
             className="내륙"
-            // onClick={menuOnClick}
             onClick={() => {
               setAddress("")
               setCategory("내륙");
@@ -358,14 +258,12 @@ const HouseInfo = () => {
               );
             }}
             id="spot"
-            // style={{"opacity":"0.3"}}
           >
             <img src={land} alt="내륙" />
             <span>내륙</span>
           </div>
           <div
             className="관광지근처"
-            // onClick={menuOnClick}
             onClick={() => {
               setAddress("")
               setCategory("관광지근처");
@@ -374,7 +272,6 @@ const HouseInfo = () => {
               setIsHostData(
                 data.findAllAcc.filter((v) => v.category === "관광지근처")
               );
-              
             }}
             id="spot"
           >
@@ -383,7 +280,6 @@ const HouseInfo = () => {
           </div>
           <div
             className="조용한마을"
-            // onClick={menuOnClick}
             onClick={() => {
               setAddress("")
               setCategory("조용한마을");
@@ -392,7 +288,6 @@ const HouseInfo = () => {
               setIsHostData(
                 data.findAllAcc.filter((v) => v.category === "조용한마을")
               );
-              // setCategory("조용한마을");
             }}
             id="spot"
           >
@@ -433,7 +328,6 @@ const HouseInfo = () => {
                 }}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
-                // defaultValue={""}
                 value={type||""}
                 onChange={typeChange}
               >
@@ -459,7 +353,6 @@ const HouseInfo = () => {
                 inputProps={{
                   "aria-label": "Without label",
                 }}
-                // defaultValue={""}
                 value={address ||""}
                 onChange={addressChange}
               >
@@ -482,7 +375,6 @@ const HouseInfo = () => {
                 }}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
-                // defaultValue={""}
                 value={sort||""}
                 onChange={sortChange}
               >
@@ -503,7 +395,6 @@ const HouseInfo = () => {
             <ListWrap>
               {isHostData.map((item, idx) => {
                 return (
-                  // <div id="testBox">
                   <ContentsListBox key={idx}>
                     <SlideImg
                       item={item.images}
@@ -537,9 +428,7 @@ const HouseInfo = () => {
                           <SaveImg
                             src={saveIcon}
                             onClick={() => {
-                             
                               cancelSaveClick(item.hostId);
-                             
                             }}
                           />
                         ) : (
@@ -553,16 +442,13 @@ const HouseInfo = () => {
                       </LikeBox>
                     </DesBox>
                   </ContentsListBox>
-                  // </div>
                 );
               })}
             </ListWrap>
           </ContentsBox>
           <LoginModal open={open} setOpen={setOpen}/>
           <MapBox>
-
             <KakaoMap data={isHostData} height={"85%"} singleMarker={false}/>
-
           </MapBox>
         </div>
       </MainBox>
@@ -598,8 +484,6 @@ const SpotMainBox = styled.div`
     cursor: pointer;
     width: 13%;
     margin-left: 40px;
-    /* border: 1px solid red; */
-    /* border-bottom: 4px solid red; */
     height: 120px;
     :hover {
       * {
@@ -609,7 +493,6 @@ const SpotMainBox = styled.div`
     span {
       text-align: center;
       margin-top: 5px;
-      /* margin-right: 16px; */
       font-size: 100%;
       opacity: 0.2;
       color: #828282;
@@ -628,37 +511,12 @@ const SpotMainBox = styled.div`
     }
   }
 `;
-// const SpotUnderBar = styled.div`
-//   position: absolute;
-//   height: 4px;
-//   background-color: #bdc3c7;
-//   transition: 0.5s;
-//   top: 295px;
-// `;
 
-// const LiveUnderBar = styled.div`
-//   position: absolute;
-//   height: 4px;
-//   transition: 0.5s;
-//   top: 176px;
-//   background-color: #bdc3c7;
-// `;
-
-// const SpotMiniBox = styled.div`
-//   width: 40%;
-//   height: 40px;
-//   border: 1px solid blue;
-//   img {
-//     width: 52px;
-//     height: 52px;
-//   }
-// `;
 
 const LiveMainBox = styled.div`
   width: 70%;
   height: 80px;
   display: flex;
-  /* padding: 0px 255px; */
   align-items: center;
   margin: 0 auto;
   div {
@@ -694,19 +552,13 @@ const ContentsBox = styled.div`
   width: 35%;
   height: 90vh;
   margin-left: 280px;
-  /* margin-right: 10px; */
   display: flex;
   flex-direction: column;
-  /* #testBox{
-        margin-right: 10px;
-        margin-top: 10px;
-    } */
   #houseCount {
     margin: 15px 0px 0px 15px;
   }
 `;
 const ListWrap = styled.div`
-  /* border: 1px solid red; */
   overflow-y: auto;
   padding: 0 10px;
 `;
@@ -714,24 +566,19 @@ const OrderingBox = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 20px 0px 20px 10px;
-  /* border: 1px solid red; */
   div {
-    /* width: 30%; */
     height: 50px;
-    /* border: 1px solid blue; */
     margin: 0px 15px 0px 5px;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 10px;
     font-size: 21px;
-    /* background-color: #f7f3ef; */
   }
 `;
 
 const StyleSelect = styled(Select)`
   height: 60px;
-  /* border: 1px solid blue; */
   border: none;
   outline: none;
   margin: 0px 15px 0px 5px;
@@ -812,8 +659,6 @@ const MapBox = styled.div`
   width: 50%;
   height: 90vh;
   display: flex;
-  /* justify-content: center; */
-  /* align-items: center; */
   position: relative;
   margin-top: 20px;
 `;

@@ -7,13 +7,11 @@ import Fade from "@mui/material/Fade";
 import Typography from "@mui/material/Typography";
 import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
-import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { useMutation, useQueryClient } from "react-query";
 import instance from "../shared/axios";
 import { useParams } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { reviewList } from "../recoil/atoms";
+
 
 const style = {
   position: "absolute",
@@ -28,36 +26,28 @@ const style = {
 };
 
 const HouseReviewModal = (props) => {
-  // const [open, setOpen] = React.useState(false);
   const userId = sessionStorage.getItem("userId");
   const { open, close, isReivewUpdate } = props;
-  const [score, setScore] = useState(0);
-
+  const [score, setScore] = useState(isReivewUpdate?.star ? isReivewUpdate?.star : 0);
   const [isText, setIsText] = useState("");
-  // const [ ] = useState("");
-
   const textRef = useRef(null);
-  // const [isReview, setIsReview] = useRecoilState(reviewList);
   const starRef = useRef();
   const params = useParams();
   const hostId = params.id;
-  // console.log(hostId, "its hostId");
-
   const textChange = (e) => {
     setIsText(e.target.value);
   };
 
   const queryClient = useQueryClient();
-
   const postReview = useMutation(
-    (testData) =>
+    (postData) =>
       instance
-        .post(`/review/${hostId}/review`, testData)
+        .post(`/review/${hostId}/review`, postData)
         .then((res) => {
-          // console.log(res.data);
+
         })
         .catch((err) => {
-          // console.log(err, "why");
+
         }),
     {
       onSuccess: () => {
@@ -67,14 +57,14 @@ const HouseReviewModal = (props) => {
   );
   
   const updateReview = useMutation(
-    (data) =>
+    (updateData) =>
       instance
-        .put(`/review/${hostId}/${isReivewUpdate.reviewId}`, data)
+        .put(`/review/${hostId}/${isReivewUpdate.reviewId}`, updateData)
         .then((res) => {
-          // console.log(res.data);
+
         })
         .catch((err) => {
-          // console.log(err, "why");
+
         }),
     {
       onSuccess: () => {
@@ -86,36 +76,29 @@ const HouseReviewModal = (props) => {
   const reviewSubmit = () => {
     
     if(!isReivewUpdate.review){
-      const testData = {
+      const postData = {
       review: textRef.current.value,
       starpoint: score,
     };
-    postReview.mutate(testData);
-    // console.log(testData, "등록 데이터");
+    postReview.mutate(postData);
     setScore(0);
     close();
     }else
     {
-      const data = {
+      const updateData = {
         review: textRef.current.value,
-        starpoint: isReivewUpdate.star ,
+        starpoint: score ,
       };
-      // console.log(data ,"수정 데이터")
-      updateReview.mutate(data);
+      updateReview.mutate(updateData);
       setScore(0);
       close();
     }
     
   };
-  // const handleChange = () => {
-  //   setScore(score)
-  // }
-  // console.log(isReivewUpdate.reviewId, "수정 데이터다잉");
+
   return (
     <>
-      {/* <Button onClick={handleOpen}>
-        Open modal
-      </Button> */}
+ 
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -150,7 +133,7 @@ const HouseReviewModal = (props) => {
                 <Rating
                   style={{ fontSize: "60px", color: "#2A7047" }}
                   name="half-rating"
-                  // defaultValue={score}
+
                   precision={1}
                   ref={starRef}
                   defaultValue={isReivewUpdate.star ? isReivewUpdate.star : score}
@@ -168,18 +151,18 @@ const HouseReviewModal = (props) => {
               <TextBox>
                 <textarea
                   ref={textRef}
-                  // defaultValue={isReivewUpdate.review}
+
                   defaultValue={isReivewUpdate.review}
                   placeholder="내용을 입력해주세요."
                   onChange={textChange}
                 />
-                {/* 버튼에서 등록 수정버튼 만들어야 함 */}
+
                 <Btn onClick={reviewSubmit}>{userId == isReivewUpdate.id
                     ? "수정하기"
                     : "확인"}</Btn>
               </TextBox>
             </Main>
-            {/* <ErrorMsg>{errors.review?.message}</ErrorMsg> */}
+
           </Box>
         </Fade>
       </Modal>
