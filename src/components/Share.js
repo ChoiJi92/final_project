@@ -10,7 +10,6 @@ import {
 import KakaoShare from "./KakaoShare";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import Popover from "@mui/material/Popover";
 import PopupState, { bindTrigger, bindPopover } from "material-ui-popup-state";
 
@@ -20,10 +19,6 @@ const Share = ({ data }) => {
     <PopupState variant="popover" popupId="demo-popup-popover">
       {(popupState) => (
         <Container>
-          {/* <Btn {...bindTrigger(popupState)}>
-            공유
-            <img className="shareIcon" src={shareIcon2} alt="공유" />
-          </Btn> */}
           {data ? (
             <Btn {...bindTrigger(popupState)}>
               공유
@@ -91,7 +86,6 @@ const Btn = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  /* width: 128px; */
   width: 100%;
   height: 58px;
   border-radius: 10px;
@@ -116,8 +110,6 @@ const GridContainer = styled.div`
   grid-template-columns: repeat(4, 48px);
   grid-column-gap: 10px;
   justify-content: center;
-  /* align-items: center; */
-  /* margin-bottom: 16px; */
 `;
 const URLShareButton = styled.button`
   width: 48px;
@@ -129,9 +121,6 @@ const URLShareButton = styled.button`
   font-size: 18px;
   cursor: pointer;
   background-color: #7362ff;
-  /* &:hover {
-    background-color: #a99fee;
-  } */
 `;
 
 const HouseImg = styled.img`

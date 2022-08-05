@@ -22,11 +22,9 @@ const Main = () => {
     ["loadChatRoom"],
     () =>
       instance.get("/room").then((res) => {
-        // console.log(res.data);
         return res.data.allRoom;
       }),
     {
-      // retry:0,
       refetchOnWindowFocus: false,
     }
   );
@@ -106,7 +104,6 @@ const Main = () => {
         <OpenChatSlide data={data.length > 5  ? data?.slice(0,5) : data} rtl={false}/>
         <OpenChatSlide data={data.length > 5  ? data?.slice(0,5) : data} rtl={true}/>
       </OpenChat>
-      
     </Container>
     <ScrollTopBtn/>
     <Footer/>
@@ -115,8 +112,6 @@ const Main = () => {
 };
 
 const Container = styled.div`
-  /* height: auto; */
-  /* min-height: 100vh; */
   width: 100%;
   padding-bottom: 80px;
 
@@ -143,15 +138,6 @@ const RegionWrap = styled.div`
   }
   .region {
     width: 100%;
-    /* width: 88.87%; */
-    /* @media screen and (min-width: 1366px) and (max-width: 1919px) {
-      transform: scale(0.75);
-    }
-    @media screen and (min-width: 865px) and (max-width: 1365px) {
-      transform: scale(0.55);
-    }
-    @media screen and (min-width: 601px) and (max-width: 864px) {
-      transform: scale(0.35); */
   }
   .eastArea {
     display: flex;

@@ -67,7 +67,6 @@ const SlideImg = (props) => {
   };
 
   const { item, width, height } = props;
-  // console.log(item, "이거슨 이미지 데이터")
   const mouseHover = () => {
     setMouseOver(true);
   };
@@ -81,7 +80,7 @@ const SlideImg = (props) => {
           {item.map((item, idx) => {
             return (
               <div onMouseLeave={mouseLeave} onMouseOver={mouseHover} key={idx}>
-                <img src={item.postImageURL} alt="이미지"/>
+                <img src={item.postImageURL} alt="이미지" />
               </div>
             );
           })}
@@ -91,7 +90,7 @@ const SlideImg = (props) => {
           {item.map((item, idx) => {
             return (
               <img
-              key = {idx}
+                key={idx}
                 onMouseLeave={mouseLeave}
                 onMouseOver={mouseHover}
                 src={item.postImageURL}
@@ -108,22 +107,18 @@ const SlideImg = (props) => {
 export default SlideImg;
 
 const ImgBox = styled.div`
-  width: ${(props)=>props.width};
-  /* border: 1px solid; */
+  width: ${(props) => props.width};
+
   img {
     border-radius: 12px;
     width: 100%;
-    height:${(props)=>props.height};
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 100%);
-    /* width: 260px;
-    height: 260px; */
+    height: ${(props) => props.height};
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.2) 100%
+    );
   }
-  /* .slick-prev:before {
-    display: none;
-  }
-  .slick-next:before {
-    display: none;
-  } */
 `;
 
 const SliderImg = styled(Slider)`

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery} from "react-query";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Select from "@mui/material/Select";
@@ -10,10 +10,8 @@ import AvatarGroup from "@mui/material/AvatarGroup";
 import saveIcon from "../assests/css/images/saveIcon.webp";
 import instance from "../shared/axios";
 import searchIconBlack from "../assests/css/images/searchIconBlack.webp";
-import { Link } from "react-router-dom";
 import RoomModal from "../components/RoomModal";
 import Footer from "../components/Footer";
-import SearchResult from "../components/SearchResult";
 import MetaTag from "./MetaTag";
 import { useRecoilState } from "recoil";
 import { chatRoomList } from "../recoil/atoms";
@@ -22,7 +20,6 @@ import ScrollTopBtn from "../components/ScrollTopBtn";
 const ChatList = () => {
   const searchRef = useRef();
   const navigate = useNavigate();
-  const userId = sessionStorage.getItem("userId");
   const [chatRoom, setChatRoom] = useRecoilState(chatRoomList);
   const [sort, setSort] = useState("");
   const [hashTag, setHashTag] = useState();
@@ -32,7 +29,6 @@ const ChatList = () => {
     () =>
       instance.get("/room").then((res) => {
         setChatRoom(res.data.allRoom);
-        console.log(res.data)
         return res.data;
       }),
     {
@@ -49,12 +45,6 @@ const ChatList = () => {
         .catch((err) => {
           window.alert(err.response.data.errorMEssage);
         })
-    // ,{
-    //   onSuccess: () => {
-    //     // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
-    //     queryClient.invalidateQueries("loadDetailRoom");
-    //   },
-    // }
   );
   const onKeyPress = (e) => {
     if (e.key === "Enter") {
@@ -67,7 +57,6 @@ const ChatList = () => {
     () =>
       instance.get("/room/search/populer").then((res) => {
         setChatRoom(res.data.allRoom)
-        console.log(res.data);
         return res.data;
       }).catch((err)=>console.log(err)),
     {

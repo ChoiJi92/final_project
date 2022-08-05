@@ -4,7 +4,6 @@ import kakaoBtn from '../assests/css/images/카카오 버튼.webp'
 
 const Kakao = () => {
   const clientId = process.env.REACT_APP_KAKAO_CLIENT_ID
-  // const REDIRECT_URI = "http://localhost:3000/oauth/kakao/callback";
   const REDIRECT_URI = "https://mendorong-jeju.co.kr/oauth/kakao/callback";
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${REDIRECT_URI}&response_type=code`;
   return (
@@ -16,7 +15,6 @@ const Kakao = () => {
 
 const Img = styled.img`
   width: 100%;
-  /* margin-bottom: 20px; */
 
 `
 

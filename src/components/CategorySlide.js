@@ -14,14 +14,12 @@ import nextIcon from "../assests/css/images/nextIcon.webp";
 import back from "../assests/css/images/배경1.webp";
 import back2 from "../assests/css/images/배경2.webp";
 import back3 from "../assests/css/images/배경3.webp";
-import back4 from "../assests/css/images/배경4.webp";
-import back5 from "../assests/css/images/배경5.webp";
 import back6 from "../assests/css/images/배경6.webp";
 import back7 from "../assests/css/images/배경7.webp";
 import back8 from "../assests/css/images/배경8.webp";
 import { useNavigate } from "react-router-dom";
 
-const CategorySlide = (props) => {
+const CategorySlide = () => {
   const [mouseOver, setMouseOver] = useState(false);
   const navigate = useNavigate();
   const SampleNextArrow = (props) => {
@@ -75,7 +73,6 @@ const CategorySlide = (props) => {
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
-    // dots: true,
     arrows: mouseOver,
     variableWidth: true,
     responsive: [
@@ -105,21 +102,6 @@ const CategorySlide = (props) => {
         },
       },
     ],
-    appendDots: (dots) => (
-      <div
-        style={{
-          width: "100%",
-          position: "absolute",
-          bottom: "5px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <ul> {dots} </ul>
-      </div>
-    ),
-    dotsClass: "dots_custom",
   };
 
   const arrows = {
@@ -329,40 +311,10 @@ const ImgBox = styled.div`
 const SliderImg = styled(Slider)`
   width: 100%;
   height: auto;
-  /* border: 1px solid; */
-  .dots_custom {
-    /* display: inline-block; */
-    /* vertical-align: middle; */
-    margin: auto 0;
-    padding: 0;
-  }
-  .dots_custom li {
-    list-style: none;
-    cursor: pointer;
-    display: inline-block;
-    margin: 0 6px;
-    padding: 0;
-  }
-  .dots_custom li button {
-    border: none;
-    background: gray;
-    color: transparent;
-    cursor: pointer;
-    display: block;
-    height: 6px;
-    width: 6px;
-    border-radius: 100%;
-    padding: 0;
-    display: hidden;
-  }
-  .dots_custom li.slick-active button {
-    background-color: #fff;
-  }
 `;
 const Wrap = styled.div`
   width: 100%;
   margin-right: 20px;
-  /* height: 300px; */
 `;
 const Card = styled.div`
   border-radius: 20px;

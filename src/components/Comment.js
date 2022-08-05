@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import editIcon from "../assests/css/images/editIcon.webp";
@@ -7,7 +7,7 @@ import deleteIcon from "../assests/css/images/deleteIcon.webp";
 import checkIcon from "../assests/css/images/checkIcon.webp";
 import cancelIcon from "../assests/css/images/cancelIcon2.webp";
 import instance from "../shared/axios";
-const Comment = ({ value, index }) => {
+const Comment = ({ value }) => {
   const queryClient = useQueryClient();
   const params = useParams();
   const commentRef = useRef();
@@ -20,13 +20,10 @@ const Comment = ({ value, index }) => {
       instance
         .put(`/post/${params.id}/${value.commentId}`, { comment })
         .then((res) => {
-          // console.log(res.data)
           return res.data;
         }),
     {
       onSuccess: () => {
-        // update 성공하면 'loadComment'라는 key를 가진 친구가 실행
-        // console.log("성공");
         queryClient.invalidateQueries("loadComment");
       },
     }
@@ -36,12 +33,10 @@ const Comment = ({ value, index }) => {
     ["deleteComment"],
     (commentId) =>
       instance.delete(`/post/${params.id}/${commentId}`).then((res) => {
-        // console.log(res.data);
         return res.data
       }),
     {
       onSuccess: () => {
-        // delete 성공하면 'detailContent'라는 key를 가진 친구가 실행
         queryClient.invalidateQueries("loadComment");
       },
     }
@@ -49,7 +44,6 @@ const Comment = ({ value, index }) => {
   const onKeyPress = (e) => {
     if (e.key === "Enter") {
       updateComment.mutate(commentRef.current.value);
-      // commentRef.current.value = "";
       setEdit(false);
     }
   };
@@ -104,7 +98,7 @@ const Comment = ({ value, index }) => {
                     window.alert("댓글을 입력해 주세요:)");
                   } else {
                     updateComment.mutate(commentRef.current.value);
-                    // commentRef.current.value = "";
+                    commentRef.current.value = "";
                     setEdit(false);
                   }
                 }}
@@ -174,20 +168,17 @@ const Wrap = styled.div`
     font-style: normal;
     font-weight: 600;
     font-size: 28px;
-    /* line-height: 160%; */
   }
   .comment {
     margin-bottom: 5px;
     font-style: normal;
     font-weight: 400;
     font-size: 24px;
-    /* line-height: 32px; */
   }
   .date {
     font-style: normal;
     font-weight: 400;
     font-size: 20px;
-    /* line-height: 32px; */
   }
 `;
 const Button = styled.div`
@@ -220,7 +211,6 @@ const Button = styled.div`
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    /* width: 100%; */
     width: 106px;
     height: 72px;
     border-radius: 10px;

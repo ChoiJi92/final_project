@@ -12,9 +12,6 @@ const Header = () => {
   const [search, setSearch] = useState(false);
   const [menu, setMenu] = useState();
   const [open, setOpen] = useState(false);
-
-  
-
   const searchRef = useRef();
   const navigate = useNavigate();
   const nickName = sessionStorage.getItem("nickName");
@@ -149,7 +146,6 @@ const Container = styled.div`
   border-bottom: 2px solid #e5e5ea;
   background: #fff;
   top:0;
-  /* border: 1px solid blue; */
 `;
 const Wrap = styled.div`
   width: 70%;
@@ -158,7 +154,6 @@ const Wrap = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  /* border: 1px solid red; */
   height: ${(props)=>props.scroll ? "60px" : "120px"};
   .title {
     cursor: pointer;
@@ -178,7 +173,6 @@ const Center = styled.div`
     position: relative;
     margin-left: ${(props) => (props.search ? "70px" : "450px")};
     cursor: pointer;
-    /* transition: 1s; */
   }
 
   .searchInput {

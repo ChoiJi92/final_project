@@ -32,11 +32,6 @@ export const myHostList = atom({
   default: [],
 });
 
-export const userShare = atom({
-  key: "userShare",
-  default: [],
-});
-
 export const hostShareAndMap = atom({
   key: "hostShare",
   default: [],
@@ -68,8 +63,3 @@ export const textImageURL = atom ({
   key:"textImageURL",
   default:[]
 });
-
-export const testDataMap = atom ({
-  key:"testData",
-  default:[]
-})

@@ -1,35 +1,25 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { Editor } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import styled from "styled-components";
 // toast-ui Viewer import
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
-import { Viewer } from '@toast-ui/react-editor';
 // toast-ui color import
 import 'tui-color-picker/dist/tui-color-picker.css';
 import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
 import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
 // toast-ui kor import
 import '@toast-ui/editor/dist/i18n/ko-kr'
-import instance from "../shared/axios";
 
 const PostEditer = ({setContent,setPreImages,content,setEditorImage}) => {
-  // const [,setContent] = useRecoilState(contentState)
     const editorRef = useRef();
     const onChange = ()=>{
         setContent(editorRef.current?.getInstance().getHTML())
-        // setContent(editorRef.current?.getInstance().getMarkdown())
-        // console.log(editorRef.current?.getInstance().getHTML())
     }
       // Toast-UI Editor 에 HTML 표시
   useEffect(() => {
-    // 1. DB에서 가져온 HTML이라고 가정
     const htmlString = content;
-
-    // 2. Editor DOM 내용에 HTML 주입
     editorRef.current?.getInstance().setHTML(htmlString);
-    // editorRef.current?.getInstance().setMarkdown(htmlString);
-    // editorRef.current?.getInstance().setHTML(data[2]?.content);
   }, []);
   return (
     <Wrap>
@@ -53,26 +43,10 @@ const PostEditer = ({setContent,setPreImages,content,setEditorImage}) => {
         language="ko-KR" // 도구설명 한글
         hooks={{
             addImageBlobHook : async (blob, callback) => {
-                // console.log(blob)
                 const imageUrl = URL.createObjectURL(blob)
                 setPreImages((prevState)=>[...prevState,imageUrl])
                 setEditorImage((prevState)=>[...prevState,blob])
-                // let alt;
-                // const formData = new FormData()
-                // formData.append('images',blob)
-                // const imageUrl = await instance.post('image',formData,{
-                //   headers:{
-                //     "Content-Type": "multipart/form-data",
-                //   }
-                // }).then((res)=>{
-                //   console.log(res.data)
-                //   alt = res.data.postImageKEY[0]
-                //   return res.data.postImageURL[0]
-                // }
-                // )
-                // setImageKey((prevState)=>[...prevState,alt])
                 callback(imageUrl,"이미지")
-                // callback(imageUrl)
             }
         }}
       ></Editor>
@@ -82,7 +56,6 @@ const PostEditer = ({setContent,setPreImages,content,setEditorImage}) => {
 
 const Wrap = styled.div`
     width: 50%;
-    /* width: 753px; */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -91,12 +64,4 @@ const Wrap = styled.div`
   font-size: 16px;
 }
 `
-// const Button = styled.button`
-//     margin: 30px auto;
-//     width: 50%;
-//     height: 30px;
-//     border: none;
-//     font-size: 15px;
-//     cursor: pointer;
-// `
 export default PostEditer;

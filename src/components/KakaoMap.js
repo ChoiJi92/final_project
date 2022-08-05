@@ -8,11 +8,8 @@ import unsaveIcon from "../assests/css/images/unsaveIcon.webp";
 import saveIcon from "../assests/css/images/saveIcon.webp";
 import cancelIcon from "../assests/css/images/cancelIcon.webp";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { hostData, testDataMap } from "../recoil/atoms";
 import { useMutation, useQueryClient } from "react-query";
 import instance from "../shared/axios";
-import { Login } from "@mui/icons-material";
 import LoginModal from "./LoginModal";
 const KakaoMap = ({ data, height, singleMarker }) => {
   const { kakao } = window;
@@ -20,21 +17,16 @@ const KakaoMap = ({ data, height, singleMarker }) => {
   const [map, setMap] = useState();
   const [markers, setMarkers] = useState([]);
   const [info, setInfo] = useState();
-  const [save, setSave] = useState(false);
   const userId = sessionStorage.getItem("userId");
   const navigate = useNavigate();
-  // const isTest = useRecoilValue(hostData)
   const queryClient = useQueryClient();
-
   const [open, setOpen] = useState(false);
-
   const savePost = useMutation(
     ["save"],
     (id) =>
       instance
         .post(`/save/${id}`)
         .then((res) => {
-          console.log(res.data);
         })
         .catch((err) => {
           console.log(err, "why");
@@ -51,7 +43,6 @@ const KakaoMap = ({ data, height, singleMarker }) => {
       instance
         .delete(`/save/${id}/unsave`)
         .then((res) => {
-          console.log(res.data);
         })
         .catch((err) => {
           console.log(err, "why");
@@ -63,7 +54,7 @@ const KakaoMap = ({ data, height, singleMarker }) => {
     }
   );
 
-  const saveClick = (id, save) => {
+  const saveClick = (id) => {
     if (userId) {
       savePost.mutate(id);
     } else {
@@ -71,7 +62,7 @@ const KakaoMap = ({ data, height, singleMarker }) => {
     }
   };
 
-  const cancelSaveClick = (id, save) => {
+  const cancelSaveClick = (id) => {
       saveDelete.mutate(id);
   };
   const bounds = new kakao.maps.LatLngBounds();
@@ -80,8 +71,6 @@ const KakaoMap = ({ data, height, singleMarker }) => {
     if (!map) return;
 
     let markers = [];
-    // if(data){
-    // for (let i = 0; i < data.length; i++) 
     data.forEach((v,i) => 
     {
       geocoder.addressSearch(v.mainAddress, function (result, status) {
@@ -101,31 +90,6 @@ const KakaoMap = ({ data, height, singleMarker }) => {
         setMarkers([...markers]);
       });
     })
-    // setMarkers([...markers]);
-    // }else{
-    //   for (let i = 0; i < isTest.length; i++) {
-    //     geocoder.addressSearch(isTest[i].mainAddress,  function (result, status) {
-    //       // 정상적으로 검색이 완료됐으면
-    //       if (status === kakao.maps.services.Status.OK) {
-    //         markers.push({
-    //           position: {
-    //             lat: result[0].y,
-    //             lng: result[0].x,
-    //           },
-    //           content: isTest[i],
-    //         });
-
-    //         bounds.extend(new kakao.maps.LatLng(result[0].y, result[0].x));
-    //       }
-    //       console.log("렌더링 two~~~~")
-    //       map.setBounds(bounds);
-
-    //       setMarkers([...markers]);
-    //     });
-    //   }
-    // }
-
-    // setIsTest(markers1)
   }, [map, data]);
   const mapRef = useRef();
   const zoomIn = () => {
@@ -148,12 +112,10 @@ const KakaoMap = ({ data, height, singleMarker }) => {
         style={{
           // 지도의 크기
           width: "100%",
-          // height: "300px",
           height: `${height}`,
           position: "relative",
           overflow: "hidden",
           borderRadius: "20px",
-          // marginTop:'40px'
         }}
         level={8} // 지도의 확대 레벨
         onCreate={setMap}
@@ -191,8 +153,7 @@ const KakaoMap = ({ data, height, singleMarker }) => {
                       <div className="desc">
                         <div
                           className="house"
-                          onClick={(e) => {
-                            // e.stopPropagation()
+                          onClick={() => {
                             navigate(`/house/${v.content.hostId}`);
                           }}
                         >
@@ -247,7 +208,6 @@ const KakaoMap = ({ data, height, singleMarker }) => {
 };
 const Zoom = styled.div`
   position: absolute;
-  /* margin-left: 350px; */
   margin-top: 40px;
   top: 0;
   right: 20px;
@@ -280,12 +240,10 @@ const Wrap = styled.div`
   bottom: 200px;
   .info {
     width: 400px;
-    /* border: 1px solid red; */
   }
   .title {
     background: url(${(props) => props.image}) no-repeat;
     background-size: cover;
-    /* width: 400px; */
     width: 100%;
     height: 220px;
     border-top-left-radius: 20px;

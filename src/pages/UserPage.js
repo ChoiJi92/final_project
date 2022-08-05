@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import mypageImg from "../assests/css/images/mypageImg.webp";
 import styled from "styled-components";
 import moreIcon from "../assests/css/images/moreIcon.webp";
@@ -6,19 +6,14 @@ import noMoreIcon from "../assests/css/images/noMoreIcon.webp";
 import unlikeIcon from "../assests/css/images/unlikeIcon.webp";
 import commentIcon from "../assests/css/images/commentIcon.webp";
 
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import instance from "../shared/axios";
 import Footer from "../components/Footer";
 import MetaTag from "./MetaTag";
 
 const UserPage = () => {
-  const [myLike, setMyLike] = useState(true);
-
   const [upMore, setUpMore] = useState(false);
-
-  // 데이터
-  const navigate = useNavigate();
   const params = useParams();
 
   const { data } = useQuery(
@@ -27,15 +22,9 @@ const UserPage = () => {
       instance
         .get(`oauth/other/${params.id}`)
         .then((res) => {
-          // console.log(res.data);
-          return (
-            //   setMyLikePost(res.data.mylikespost), setMyPost(res.data.mypostinfo)
-            res.data
-          );
+          return res.data;
         })
-        .catch((err) => {
-          // console.log(err);
-        }),
+        .catch((err) => {}),
     {
       refetchOnWindowFocus: false,
     }
@@ -43,7 +32,7 @@ const UserPage = () => {
 
   return (
     <>
-    <MetaTag title={`${data.nickname}님의 페이지`}/>
+      <MetaTag title={`${data.nickname}님의 페이지`} />
       <MainBox>
         <ProfileBox>
           <div className="profileWrap">
@@ -137,7 +126,6 @@ const UserPage = () => {
 };
 
 const MainBox = styled.div`
-  /* width: 100%; */
   width: 836px;
   height: 100vh;
   display: flex;
@@ -242,13 +230,10 @@ const HiddenMyLikeBox = styled.div`
   margin: 5px 0;
   #listBox {
     width: 30.3%;
-    /* width: 252px; */
     display: flex;
     flex-direction: column;
     margin: 0 12px;
     margin-bottom: 40px;
-
-    /* margin: 25px 10px 0px 10px; */
 
     .title {
       font-style: normal;
@@ -256,7 +241,6 @@ const HiddenMyLikeBox = styled.div`
       font-size: 27px;
       line-height: 39px;
       color: #636366;
-      // 넘치는 제목 자르기
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -304,35 +288,4 @@ const EmptyImgBox = styled.div`
     opacity: 0.5;
   }
 `;
-
-const MyDefaultBoxBottom = styled.div`
-  margin: 20px 0;
-  #mylike {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  #myWrite {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  span {
-    cursor: pointer;
-  }
-  h1 {
-    margin-left: 35px;
-    margin-bottom: 10px;
-    cursor: pointer;
-  }
-  #myInfo {
-    display: flex;
-    flex-wrap: nowrap;
-  }
-  #bottomUnderbar {
-    border: 1px solid green;
-    width: auto;
-  }
-`;
-
 export default UserPage;

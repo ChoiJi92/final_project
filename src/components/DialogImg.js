@@ -1,10 +1,8 @@
 import React from "react";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { TransitionProps } from "@mui/material/transitions";
 import Slide from "@mui/material/Slide";
 import styled from "styled-components";
 import { FaTimes } from "react-icons/fa";
@@ -15,7 +13,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const DialogImg = (props) => {
   const { listImg, open, onClose } = props;
-  // console.log(listImg, "dialog img");
   return (
     <Dialog
       fullWidth={true}
@@ -47,7 +44,6 @@ const Container = styled(DialogContent)`
   display: flex;
   justify-content: center;
   border-radius: 30px;
-  /* align-items: center;  */
 `;
 const Wrap = styled(DialogContentText)`
   width: 100%;
@@ -56,22 +52,13 @@ const Wrap = styled(DialogContentText)`
   justify-content: center;
   grid-template-columns: repeat(auto-fill, minmax(50%,auto));
   border-radius: 30px;
-  /* border: 1px solid red; */
 
   img {
     width: 100%;
     height: 592px;
     margin-top: 10px;
-    /* border: 1px solid; */
-    /* object-fit: none; */
-    /* border-radius: 30px; */
-    /* object-fit: scale-down; */
     object-fit: contain;
-    /* object-fit: fill; */
-    /* object-fit: cover; */
     overflow: hidden;
-    
-    
   }
 `;
 

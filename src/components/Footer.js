@@ -28,8 +28,6 @@ const Wrap = styled.footer`
   height: 200px;
   position: relative;
   bottom: 0;
-  /* justify-content: space-between; */
-  /* align-items: center; */
   background: #f7f3ef;
   .wrap {
     display: flex;
@@ -46,7 +44,6 @@ const Wrap = styled.footer`
     line-height: 110%;
     margin-top: 62.27px;
     opacity: 0.2;
-    /* text-align: center; */
   }
   .service {
     display: flex;

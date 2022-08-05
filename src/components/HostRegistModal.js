@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -37,17 +37,14 @@ const HostRegistModal = ({ setHostOpen }) => {
   const [ishost, setIshost] = useState(false);
   const navigate = useNavigate();
   const hostRegister = useMutation((CNU) => {
-    // console.log(CNU);
     instance
       .put("/oauth/mypage/checkCNU", { CNU })
       .then((res) => {
-        // console.log(res.data);
         setIshost(res.data.result);
         sessionStorage.setItem("host", res.data.result);
       })
       .catch((err) => {
         window.alert(err.response.data.message);
-        console.log(err)
       });
   });
   const onKeyPress=(e) =>{
@@ -154,7 +151,6 @@ const HostRegistModal = ({ setHostOpen }) => {
 };
 
 const Container = styled(Typography)`
-  /* border: 1px solid; */
   display: flex;
   justify-content: center;
   align-items: center;

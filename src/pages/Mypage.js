@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import mypageImg from "../assests/css/images/mypageImg.webp";
 import styled from "styled-components";
 import starIcon from "../assests/css/images/starIcon.webp";
@@ -59,14 +59,9 @@ const Mypage = () => {
       instance
         .get(`oauth/mypage/${userId}`)
         .then((res) => {
-          console.log(res);
-          return (
-            res.data
-          );
+          return res.data;
         })
-        .catch((err) => {
-          console.log(err);
-        }),
+        .catch((err) => {}),
     {
       onSuccess: (data) => {
         setMyLikePost(data.mylikespost);
@@ -90,31 +85,31 @@ const Mypage = () => {
   });
   return (
     <>
-    <MetaTag title={`${nickName}님의 페이지`}/>
+      <MetaTag title={`${nickName}님의 페이지`} />
       <MainBox>
         <ProfileBox isEdit={isEdit}>
           <div className="profileWrap">
-          <Badge
-        overlap="circular"
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        badgeContent={
-          <img
-            style={{ width: "24px", height: "24px" }}
-            src={profileEdit}
-            alt="프로필수정"
-          ></img>
-        }
-      >
-        <Avatar
-          alt="프로필 이미지"
-          src={userImage}
-          sx={{ width: 72, height: 72 }}
-          style={{ cursor: "pointer" }}
-          onClick={() => {
-            setOpen(true);
-          }}
-        />
-      </Badge>
+            <Badge
+              overlap="circular"
+              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+              badgeContent={
+                <img
+                  style={{ width: "24px", height: "24px" }}
+                  src={profileEdit}
+                  alt="프로필수정"
+                ></img>
+              }
+            >
+              <Avatar
+                alt="프로필 이미지"
+                src={userImage}
+                sx={{ width: 72, height: 72 }}
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  setOpen(true);
+                }}
+              />
+            </Badge>
             <MyInfoModal open={open} setOpen={setOpen}></MyInfoModal>
             <div id="profile">
               {isEdit ? (
@@ -123,12 +118,11 @@ const Mypage = () => {
                   <div className="btn">
                     <button
                       onClick={() => {
-                        
                         nickNameUpdate.mutate(nicknameRef.current.value);
                       }}
                     >
                       저장
-                      <img className="checkIcon" src={checkIcon} alt="저장"/>
+                      <img className="checkIcon" src={checkIcon} alt="저장" />
                     </button>
                     <button
                       onClick={() => {
@@ -136,7 +130,7 @@ const Mypage = () => {
                       }}
                     >
                       취소
-                      <img className="cancelIcon" src={cancelIcon} alt="취소"/>
+                      <img className="cancelIcon" src={cancelIcon} alt="취소" />
                     </button>
                   </div>
                 </div>
@@ -200,7 +194,7 @@ const Mypage = () => {
                   <>
                     {!upMore ? (
                       <img
-                      style={{cursor:'pointer'}}
+                        style={{ cursor: "pointer" }}
                         src={moreIcon}
                         alt="더보기"
                         onClick={() => {
@@ -209,7 +203,7 @@ const Mypage = () => {
                       />
                     ) : (
                       <img
-                      style={{cursor:'pointer'}}
+                        style={{ cursor: "pointer" }}
                         src={noMoreIcon}
                         alt="접기"
                         onClick={() => {
@@ -228,7 +222,7 @@ const Mypage = () => {
                   <>
                     {!upMore ? (
                       <img
-                      style={{cursor:'pointer'}}
+                        style={{ cursor: "pointer" }}
                         src={moreIcon}
                         alt="더보기"
                         onClick={() => {
@@ -237,7 +231,7 @@ const Mypage = () => {
                       />
                     ) : (
                       <img
-                      style={{cursor:'pointer'}}
+                        style={{ cursor: "pointer" }}
                         src={noMoreIcon}
                         alt="접기"
                         onClick={() => {
@@ -266,8 +260,8 @@ const Mypage = () => {
                           src={v.images[0]?.thumbnailURL}
                           key={i}
                           alt="이미지"
-                          onClick={()=>{
-                            navigate(`/community/${v.postId}`)
+                          onClick={() => {
+                            navigate(`/community/${v.postId}`);
                           }}
                         />
                       ))}
@@ -288,8 +282,8 @@ const Mypage = () => {
                           src={v.images[0]?.thumbnailURL}
                           key={i}
                           alt="이미지"
-                          onClick={()=>{
-                            navigate(`/house/${v.hostId}`)
+                          onClick={() => {
+                            navigate(`/house/${v.hostId}`);
                           }}
                         />
                       ))}
@@ -310,9 +304,13 @@ const Mypage = () => {
                           src={v.images[0]?.thumbnailURL}
                           alt="이미지"
                         />
-                        <span className="title" style={{ marginTop: "5px" }} onClick={()=>{
-                          navigate(`/community/${v.postId}`)
-                        }}>
+                        <span
+                          className="title"
+                          style={{ marginTop: "5px" }}
+                          onClick={() => {
+                            navigate(`/community/${v.postId}`);
+                          }}
+                        >
                           {v.title}
                         </span>
                         <div id="icons">
@@ -340,9 +338,13 @@ const Mypage = () => {
                           src={v.images[0].thumbnailURL}
                           alt="이미지"
                         />
-                        <span className="title" style={{ marginTop: "5px" }} onClick={()=>{
-                          navigate(`/house/${v.hostId}`)
-                        }}>
+                        <span
+                          className="title"
+                          style={{ marginTop: "5px" }}
+                          onClick={() => {
+                            navigate(`/house/${v.hostId}`);
+                          }}
+                        >
                           {v.title}
                         </span>
                         <div id="icons">
@@ -350,7 +352,9 @@ const Mypage = () => {
                             style={{ display: "flex", alignItems: "center" }}
                           >
                             <img src={starIcon} alt="별점" />
-                            <span style={{ marginLeft: "10px" }}>{v.average.toFixed(1)}</span>
+                            <span style={{ marginLeft: "10px" }}>
+                              {v.average.toFixed(1)}
+                            </span>
                           </div>
                           <img src={saveIcon} alt="저장" />
                         </div>
@@ -393,7 +397,7 @@ const Mypage = () => {
                   <>
                     {!bottomMore ? (
                       <img
-                      style={{cursor:'pointer'}}
+                        style={{ cursor: "pointer" }}
                         src={moreIcon}
                         alt="더보기"
                         onClick={() => {
@@ -402,7 +406,7 @@ const Mypage = () => {
                       />
                     ) : (
                       <img
-                      style={{cursor:'pointer'}}
+                        style={{ cursor: "pointer" }}
                         src={noMoreIcon}
                         alt="접기"
                         onClick={() => {
@@ -421,7 +425,7 @@ const Mypage = () => {
                   <>
                     {!bottomMore ? (
                       <img
-                      style={{cursor:'pointer'}}
+                        style={{ cursor: "pointer" }}
                         src={moreIcon}
                         alt="더보기"
                         onClick={() => {
@@ -430,7 +434,7 @@ const Mypage = () => {
                       />
                     ) : (
                       <img
-                      style={{cursor:'pointer'}}
+                        style={{ cursor: "pointer" }}
                         src={noMoreIcon}
                         alt="접기"
                         onClick={() => {
@@ -459,8 +463,8 @@ const Mypage = () => {
                           src={v.images[0]?.thumbnailURL}
                           alt="이미지"
                           key={i}
-                          onClick={()=>{
-                            navigate(`/community/${v.postId}`)
+                          onClick={() => {
+                            navigate(`/community/${v.postId}`);
                           }}
                         />
                       ))}
@@ -477,9 +481,13 @@ const Mypage = () => {
                   ) : (
                     <DefaultImgBox>
                       {myHostPost.slice(0, 3).map((v, i) => (
-                        <img  src={v.images[0].thumbnailURL} alt="이미지" onClick={()=>{
-                          navigate(`/house/${v.hostId}`)
-                        }}/>
+                        <img
+                          src={v.images[0].thumbnailURL}
+                          alt="이미지"
+                          onClick={() => {
+                            navigate(`/house/${v.hostId}`);
+                          }}
+                        />
                       ))}
                     </DefaultImgBox>
                   )}
@@ -498,9 +506,13 @@ const Mypage = () => {
                           src={v.images[0]?.thumbnailURL}
                           alt="이미지"
                         />
-                        <span className="title" style={{ marginTop: "5px" }} onClick={()=>{
-                          navigate(`/community/${v.postId}`)
-                        }}>
+                        <span
+                          className="title"
+                          style={{ marginTop: "5px" }}
+                          onClick={() => {
+                            navigate(`/community/${v.postId}`);
+                          }}
+                        >
                           {v.title}
                         </span>
                         <div id="icons">
@@ -523,10 +535,18 @@ const Mypage = () => {
                   {myHostPost.map((v, i) => {
                     return (
                       <div key={i} id="listBox">
-                        <img className="thumbnailImg" src={v.images[0].thumbnailURL} alt='이미지'/>
-                        <span className="title" style={{ marginTop: "5px" }} onClick={()=>{
-                          navigate(`/house/${v.hostId}`)
-                        }}>
+                        <img
+                          className="thumbnailImg"
+                          src={v.images[0].thumbnailURL}
+                          alt="이미지"
+                        />
+                        <span
+                          className="title"
+                          style={{ marginTop: "5px" }}
+                          onClick={() => {
+                            navigate(`/house/${v.hostId}`);
+                          }}
+                        >
                           {v.title}
                         </span>
                         <div id="icons">
@@ -534,7 +554,9 @@ const Mypage = () => {
                             style={{ display: "flex", alignItems: "center" }}
                           >
                             <img src={starIcon} alt="별점" />
-                            <span style={{ marginLeft: "10px" }}>{v.average.toFixed(1)}</span>
+                            <span style={{ marginLeft: "10px" }}>
+                              {v.average.toFixed(1)}
+                            </span>
                           </div>
                           <img src={unsaveIcon2} alt="저장" />
                         </div>
@@ -547,27 +569,22 @@ const Mypage = () => {
           )}
         </MyDefaultBoxBottom>
       </MainBox>
-      <ScrollTopBtn/>
+      <ScrollTopBtn />
       <Footer />
     </>
   );
 };
 
 const MainBox = styled.div`
-  /* width: 100%; */
   width: 836px;
   height: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* align-items: center; */
-
   margin: 0 auto;
 `;
 
 const ProfileBox = styled.div`
-  /* width: 41.563%; */
-  /* width: 796px; */
   margin-top: 92px;
   .profileWrap {
     display: flex;
@@ -580,7 +597,7 @@ const ProfileBox = styled.div`
       display: flex;
       flex-direction: row;
       margin-bottom: 6px;
-      height: ${(props)=>props.isEdit && '56px'};
+      height: ${(props) => props.isEdit && "56px"};
       h3 {
         font-style: normal;
         font-weight: 600;
@@ -594,12 +611,12 @@ const ProfileBox = styled.div`
         height: 32px;
         opacity: 0.5;
       }
-      .checkIcon{
+      .checkIcon {
         width: 30px;
         height: 30px;
         margin-left: 5px;
       }
-      .cancelIcon{
+      .cancelIcon {
         width: 30px;
         height: 30px;
         margin-left: 5px;
@@ -680,9 +697,6 @@ const MyDefaultBoxTop = styled.div`
     justify-content: space-between;
     align-items: center;
   }
-  span {
-    /* cursor: pointer; */
-  }
   h1 {
     opacity: ${(props) => (props.myLike ? "1" : "0.4")};
     margin-left: 35px;
@@ -725,7 +739,6 @@ const HiddenMyLikeBox = styled.div`
   margin: 10px 0;
   #listBox {
     width: 30.3%;
-    /* width: 252px; */
     display: flex;
     flex-direction: column;
     margin: 0 12px;
@@ -743,8 +756,8 @@ const HiddenMyLikeBox = styled.div`
       text-overflow: ellipsis;
       cursor: pointer;
       :hover {
-      color: #3498db;
-    }
+        color: #3498db;
+      }
     }
   }
   .thumbnailImg {
@@ -802,9 +815,6 @@ const MyDefaultBoxBottom = styled.div`
     justify-content: space-between;
     align-items: center;
   }
-  /* span {
-    cursor: pointer;
-  } */
   h1 {
     margin-left: 35px;
     margin-bottom: 10px;

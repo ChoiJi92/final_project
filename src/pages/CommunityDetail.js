@@ -37,11 +37,9 @@ const CommunityDetail = () => {
     ["detailContent", params.id],
     () =>
       instance.get(`/post/${params.id}`).then((res) => {
-        console.log(res.data);
         return res.data;
-      }).catch((err)=>console.log(err)),
+      }).catch((err)=>{}),
     {
-      // retry: false, // 재호출 안하기
       enabled: !!params.id,
       refetchOnWindowFocus: false, // 다른화면 갔다와도 재호출 안되게 함
     }
@@ -51,15 +49,12 @@ const CommunityDetail = () => {
     ["loadComment"],
     () =>
       instance.get(`/post/${params.id}/comment`).then((res) => {
-        // console.log("전체코멘트", res.data);
         return res.data.commentInfo;
       }),
     {
-      // retry: false, // 재호출 안하기
       refetchOnWindowFocus: false, // 다른화면 갔다와도 재호출 안되게 함
     }
   );
-  // const commentData = loadComment.data;
 
   // 코멘트 생성
   const createComment = useMutation(
@@ -95,7 +90,6 @@ const CommunityDetail = () => {
     ["unLike"],
     (id) =>
       instance.delete(`/like/${id}/unlike`).then((res) => {
-        // console.log(res.data);
         return res.data;
       }),
     {
@@ -111,11 +105,9 @@ const CommunityDetail = () => {
       instance
         .post(`/save/${id}`)
         .then((res) => {
-          console.log(res.data);
           return res.data;
         })
         .catch((err) => {
-          // console.log(err, "why");
         }),
     {
       onSuccess: () => {
@@ -155,12 +147,10 @@ const CommunityDetail = () => {
     ["deleteContent"],
     (postId) =>
       instance.delete(`/post/${postId}`).then((res) => {
-        // console.log(res.data);
         navigate("/community");
       }),
     {
       onSuccess: () => {
-        // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
         queryClient.invalidateQueries("content");
       },
     }
@@ -481,7 +471,6 @@ const WrapLeft = styled.div`
 `;
 const Content = styled.div`
   width: 100%;
-  /* height: 800px; */
   .hashTag {
     height: auto;
     display: flex;
@@ -515,21 +504,11 @@ const Content = styled.div`
   }
   .post {
     margin-top: 50px;
-    .toastui-editor-contents {
-      /* height: 880px; */
-      /* overflow: auto; */
-    }
+
     .toastui-editor-contents p {
-      /* font-weight: 300; */
       font-size: 18px;
       line-height: 150%;
     }
-    /* .toastui-editor-contents img {
-      border-radius: 20px;
-      width: 100%;
-      height: 614px;
-      object-fit: cover;
-    } */
   }
 `;
 const User = styled.div`
@@ -636,7 +615,6 @@ const WrapBottom = styled.div`
   }
   .content {
     margin-left: 14px;
-    /* width: 567px; */
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -694,7 +672,6 @@ const WrapRight = styled.div`
     box-shadow: 0px 12px 42px #eee9e4;
     display: flex;
     flex-direction: column;
-    /* justify-content: space-between; */
     .otherContainer {
       height: 77%;
       .noContent {
@@ -843,7 +820,6 @@ const CommentWrap = styled.div`
     width: 100%;
     display: flex;
     flex-direction: row;
-    /* align-items: center; */
     margin-top: 30px;
     img {
       width: 96px;

@@ -1,18 +1,15 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import instance from "../shared/axios";
 import Loading from "../pages/Loading";
 
 const KakaoRedirect = () => {
   let params = new URL(window.location.href).searchParams;
   let code = params.get("code"); // 인가코드 받는 부분
-
   useEffect(()=>{
     async function kakaoLogin(){
       await instance
       .get(`/oauth/kakao/callback?code=${code}`)
       .then((response) => {
-        console.log(response)
         sessionStorage.setItem('token',response.data.users.token)  
         sessionStorage.setItem('userId',response.data.users.userId)
         sessionStorage.setItem('nickName',response.data.users.nickname)  
@@ -23,7 +20,7 @@ const KakaoRedirect = () => {
       })
       .catch((err) => {
         window.alert("로그인에 실패하였습니다.");
-        // window.location.replace("/");
+        window.location.replace("/");
       });
     }
     kakaoLogin()
