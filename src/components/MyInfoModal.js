@@ -30,9 +30,6 @@ const MyInfoModal = ({open,setOpen}) => {
   const [isImgUrl, setIsImgUrl] = useState("");
   const [profile, setProfile] = useState();
 
-  // console.log(userImage, nickName);
-  //   const handleOpen = () => setOpen(true);
-  //   const handleClose = () => setOpen(false);
   const imgChangeClick = () => {
     currentImg.current.click();
   };
@@ -52,13 +49,11 @@ const MyInfoModal = ({open,setOpen}) => {
         },
       })
       .then((res) => {
-        // console.log(res.data);
         sessionStorage.setItem("userImage", res.data.userImageURL[0]);
         handleClose();
         window.location.reload();
       })
       .catch((err) => {
-        // console.log(err, "why");
       });
   });
 
@@ -72,7 +67,6 @@ const MyInfoModal = ({open,setOpen}) => {
     <div>
       <Modal
         aria-labelledby="transition-modal-title"
-        // aria-describedby="transition-modal-description"
         open={open}
         onClose={handleClose}
         closeAfterTransition
@@ -161,10 +155,8 @@ const Main = styled(Typography)`
       width: 100%;
     }
     button {
-      /* width: 540px; */
       width: 88.82%;
       height: 79px;
-      /* padding: 10px 15px; */
       border: none;
       background: #eee9e4;
       border-radius: 20px;

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 const TagList = ({ tagList, setTagList, maxLength, width, margin }) => {
-  // const [tagList, setTagList] = useRecoilState(tagState);
   const [tag, setTag] = useState();
 
   const onKeyPress = (e) => {
@@ -43,7 +42,6 @@ const TagList = ({ tagList, setTagList, maxLength, width, margin }) => {
         onKeyDown={onKeyDown}
         placeholder="#태그"
         value={tag || ""}
-        // defaultValue={tag}
       ></input>
     </Tag>
   );
@@ -56,13 +54,9 @@ const Tag = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  /* border: 1px solid; */
   div {
     border-radius: 10px;
-    /* width: 11%; */
-    /* min-width: 12%; */
     width: 120px;
-    /* padding: 20px; */
     height: 41px;
     display: flex;
     justify-content: center;
@@ -78,7 +72,6 @@ const Tag = styled.div`
     width: 120px;
     height: 41px;
     text-align: center;
-    /* padding: 10px; */
     border: 1px solid #eee9e4;
     border-radius: 10px;
     font-style: normal;

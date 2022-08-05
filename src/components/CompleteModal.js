@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -23,8 +23,6 @@ const style = {
 };
 
 const CompleteModal = ({ open, setOpen, isHost }) => {
-  // const [open, setOpen] = useState(false);
-  // const handleOpen = () => setOpen(true);
   const params = useParams();
   const navigate = useNavigate();
   const handleClose = () => {
@@ -117,8 +115,6 @@ const Container = styled(Typography)`
   justify-content: flex-end;
   align-items: center;
   img {
-    /* position: absolute; */
-    /* right: 10px; */
     cursor: pointer;
   }
 `;

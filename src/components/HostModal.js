@@ -37,7 +37,6 @@ const HostModal = ({ setAnchorEl }) => {
     }
   };
   const handleClose = () => {
-    // navigate("/");
     setOpen(false);
   };
 
@@ -110,7 +109,6 @@ const Container = styled(Typography)`
     font-weight: 500;
   }
   img {
-    /* position: absolute; */
     right: 10px;
     cursor: pointer;
   }
@@ -142,7 +140,6 @@ const Img = styled.img`
 `;
 const Btn = styled.div`
   width: 100%;
-  /* width: 540px; */
   margin: 40px auto 20px auto;
   display: flex;
   flex-direction: column;

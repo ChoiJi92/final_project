@@ -11,7 +11,6 @@ import { useRecoilState} from "recoil";
 import { chatState} from "../recoil/atoms";
 import Footer from "../components/Footer";
 import MetaTag from "./MetaTag";
-// import { useBeforeunload } from "react-beforeunload";
 const ChatRoom = () => {
   const messageRef = useRef();
   const chatBoxRef = useRef();
@@ -35,7 +34,6 @@ const ChatRoom = () => {
       instance
         .get(`/room/${params.id}`)
         .then((res) => {
-          // console.log(res.data);
           setChat([
             ...res.data.loadChat.map((v) => ({
               messageChat: v.chat,
@@ -46,67 +44,46 @@ const ChatRoom = () => {
           return res.data;
         })
         .catch((err) => {
-          // console.log(err);
         }),
     {
       enabled:!!params.id,
       refetchOnWindowFocus: false,
     }
   );
-  // const preventClose = (e) => {  e.preventDefault();  e.returnValue = "";} //Chrome에서 동작하도록; deprecated};
-  // useEffect(() => {  (() => {
-  //   window.addEventListener("beforeunload", preventClose);
-  // })();
-  // return () => {
-  //   window.removeEventListener("beforeunload", preventClose);
-  // };}, []);
-
-  // useBeforeunload((event) => event.preventDefault());
 
   useEffect(() => {
-    // console.log("연결");
     socket.current = io(url);
-    // socketRef.current = io.connect(url);
-    // console.log("나는 이펙트 소켓", socket.current);
     socket.current.emit("join-room", params.id, userId);
-
     return () => {
       socket.current.disconnect();
     };
   }, []);
+
   useEffect(() => {
-    socket.current.on("message", (messageChat, user, profileImage, roomId) => {
-      console.log(messageChat, user, profileImage, roomId);
+    socket.current.on("message", (messageChat, user, profileImage) => {
       setChat([...chat, { user, messageChat, profileImage }]);
     });
     scrollToBottom();
     socket.current.on("welcome", (nickname) => {
-      // console.log(nickname);
       setChat([
         ...chat,
         { messageChat: `${nickname}님이 입장하셨습니다.`, user: "system" },
       ]);
-
     });
     socket.current.on("bye", (nickname) => {
-      // console.log(nickname, "님이 퇴장하셨습니다.","웰컴과 같은 자리");
       setChat([
         ...chat,
         { messageChat: `${nickname}님이 퇴장하셨습니다.`, user: "system" },
       ]);
-
     });
-    // console.log(chat,'나는 채팅리스트')
   }, [chat]);
   const sendMessage = (message) => {
-    // console.log("나는 메세지 소켓", socket);
     if (message !== "") {
       socket.current.emit("chat_message", message, userId, params.id);
       setChat([
         ...chat,
         { messageChat: message, user: nickName, profileImage: userImage },
       ]);
-      // console.log(message, userId);
       messageRef.current.value = "";
     }
   };
@@ -132,7 +109,6 @@ const ChatRoom = () => {
             profileImage: userImage,
           },
         ]);
-        // console.log(chat);
         messageRef.current.value = "";
       }
     }
@@ -156,7 +132,6 @@ const ChatRoom = () => {
               <div
                 className="hostChat"
                 onClick={() => {
-                  // setHost(true);
                   navigate('/onready')
                 }}
               >
@@ -264,9 +239,7 @@ const ChatRoom = () => {
 };
 
 const Container = styled.div`
-  /* align-items: center; */
   margin-top: 40px;
-  /* margin-bottom: 50px; */
   height: auto;
   min-height: 80vh;
 `;
@@ -279,7 +252,6 @@ const Wrap = styled.div`
 
 `;
 const ChatWrap = styled.div`
-  /* width: 100%; */
   height: 851px;
   display: flex;
   flex-direction: row;
@@ -314,7 +286,6 @@ const Header = styled.div`
   }
 `;
 const ChatList = styled.div`
-  /* width: 45.152%; */
   width: 48.7%;
   border: 1px solid #EEE9E4;
   border-radius: 20px;
@@ -328,7 +299,6 @@ const ChatList = styled.div`
     padding: 17px 16px;
     .currentChatRoom {
       padding: 30px 27px;
-      /* border-bottom: 1px solid #c7c7cc; */
       background: #EEE9E4;
       border-radius: 20px;
       margin-bottom: 12px;
@@ -401,7 +371,6 @@ const ChatList = styled.div`
   }
 `;
 const Room = styled.div`
-  /* width: 45.152%; */
   width: 100%;
   margin-left: 20px;
   display: flex;
@@ -409,7 +378,6 @@ const Room = styled.div`
   justify-content: space-between;
   .messageWrap {
     height: 90%;
-    /* padding: 10px; */
     border: 1px solid #EEE9E4;
     border-radius: 20px;
     overflow: hidden;
@@ -516,7 +484,6 @@ const Room = styled.div`
       width: 52px;
       height: 52px;
       border-radius: 50%;
-      /* border: 1px solid; */
       margin-right: 20px;
     }
   }

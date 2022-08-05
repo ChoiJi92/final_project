@@ -5,7 +5,6 @@ import google_logo from '../assests/css/images/구글 로고.webp'
 
 const Google = () => {
   const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID
-  // const REDIRECT_URI = "http://localhost:3000/oauth/google/callback";
   const REDIRECT_URI = "https://mendorong-jeju.co.kr/oauth/google/callback";
   const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email`;
 

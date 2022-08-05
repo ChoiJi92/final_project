@@ -22,6 +22,7 @@ const NaverRedirect = () => {
         })
         .catch((err) => {
           window.alert("로그인에 실패하였습니다.");
+          window.location.replace("/");
         });
       }
       naverLogin()

@@ -5,8 +5,8 @@ import Comment from "./Comment";
 const CommentList = ({data}) => {
   return (
     <CommentWrap>
-      {data.map((v,i) => 
-      <Comment key={v.commentId} value={v} index={i}></Comment>
+      {data.map((v) => 
+      <Comment key={v.commentId} value={v}></Comment>
       )}
     </CommentWrap>
   );

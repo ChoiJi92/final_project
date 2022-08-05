@@ -37,19 +37,16 @@ const RoomModal = ({ width, borderRadius }) => {
   const [userCount, setUserCount] = useState();
   const queryClient = useQueryClient();
   const roomNameRef = useRef();
-  const userCountRef = useRef();
   const userId = sessionStorage.getItem("userId");
   const navigate = useNavigate();
   const createChatRoom = useMutation(
     ["createChatRoom"],
     (data) =>
       instance.post("/room", data).then((res) => {
-        // console.log(res.data);
         return res.data
       }),
     {
       onSuccess: () => {
-        // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
         queryClient.invalidateQueries("loadChatRoom");
         queryClient.invalidateQueries("loadDetailRoom");
       },
@@ -64,9 +61,6 @@ const RoomModal = ({ width, borderRadius }) => {
     } else if (!userCount) {
       window.alert("방 인원을 정해주세요 :)");
     } else {
-      // console.log(roomNameRef.current.value);
-      // console.log(userCount);
-      // console.log(tagList);
       const data = {
         title: roomNameRef.current.value,
         max: userCount,
@@ -257,13 +251,6 @@ const Middle = styled(Typography)`
       ::placeholder {
         color: #8e8e93;
       }
-      // input type number 일 때 오른쪽 화살표 없애는 css
-      /* ::-webkit-outer-spin-button,
-      ::-webkit-inner-spin-button{
-      appearance: none;
-      -moz-appearance: none;
-      -webkit-appearance: none;
-      } */
     }
   }
   .hashTag {

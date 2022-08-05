@@ -38,7 +38,6 @@ const Community = () => {
     ["content"],
     () =>
       instance.get("/post").then((res) => {
-        console.log(res.data);
         setBestData(res.data.Top5);
         setCommunityData(res.data.allPost);
         return res.data.allPost;
@@ -51,27 +50,22 @@ const Community = () => {
     ["Like"],
     (id) =>
       instance.post(`/like/${id}`).then((res) => {
-        // console.log(res.data)
         return res.data;
       }),
     {
       onSuccess: () => {
-        // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
         queryClient.invalidateQueries("content");
       },
     }
   );
-  // 좋아요 취소
   const unLike = useMutation(
     ["unLike"],
     (id) =>
       instance.delete(`/like/${id}/unlike`).then((res) => {
-        // console.log(res.data)
         return res.data;
       }),
     {
       onSuccess: () => {
-        // post 성공하면 'content'라는 key를 가진 친구가 실행 (content는 get요청하는 친구)
         queryClient.invalidateQueries("content");
       },
     }
@@ -248,7 +242,7 @@ const Community = () => {
           {communityData.map((v) => (
             <Card key={v.postId}>
               <div className="leftContent">
-                <div className="user">{v.user?.nickname}</div>
+                <div className="user">{v.user?.nickname} · <p>{v.createdAt}</p> </div>
                 <h1
                   className="title"
                   onClick={() => {
@@ -356,16 +350,13 @@ const Top = styled.div`
     }
   }
   .rightImage {
-    /* width: 433px; */
     width: 32%;
     height: 500px;
     border-radius: 20px;
-    /* border: 1px solid; */
     padding: 40px 20px;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    /* align-items: center; */
     position: relative;
     background: linear-gradient(
         180deg,
@@ -422,12 +413,9 @@ const Wrap = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  /* align-items: flex-end; */
-  /* justify-content: flex-end; */
   position: absolute;
   bottom: 0;
   padding: 0 26px 30px 30px;
-  /* border: 1px solid black; */
   color: white;
   white-space: nowrap;
   .prevIcon {
@@ -449,7 +437,6 @@ const Wrap = styled.div`
   }
   .user {
     display: flex;
-    /* justify-content: center; */
     align-items: center;
     width: 30%;
     img {
@@ -489,7 +476,6 @@ const Wrap = styled.div`
     }
     button {
       width: 51%;
-      /* width: 200px; */
       height: 56px;
       border-radius: 16px;
       border: none;
@@ -510,7 +496,6 @@ const Middle = styled.div`
   justify-content: space-between;
   border-bottom: 1px solid #e5e5ea;
   div {
-    /* border: 1px solid; */
     width: 200px;
     height: 100px;
     display: flex;
@@ -518,7 +503,6 @@ const Middle = styled.div`
     justify-content: center;
     cursor: pointer;
     :hover {
-      /* border-bottom: 5px solid #8E8E93; */
       * {
         opacity: 1;
       }
@@ -567,24 +551,23 @@ const Card = styled.div`
     .thumnail {
       transform: scale(1.1);
       transition: all 0.3s ease-in-out;
-      /* transition: transform 0.2s; */
-      /* transition-property: transform;
-      transition-duration: 0.2s;
-      transition-timing-function: ease;
-      transition-delay: 0s; */
     }
   }
   .leftContent {
-    /* height: 100%; */
     width: 60%;
     position: relative;
   }
   .user {
+    display: flex;
+    flex-direction: row;
     color: #aeaeb2;
     margin-bottom: 28px;
     font-weight: 600;
     font-size: 27px;
-    line-height: 32px;
+    line-height: 29px;
+    p{
+      font-weight: 400;
+    }
   }
   .title {
     margin-bottom: 35px;
@@ -642,7 +625,6 @@ const Card = styled.div`
 const Edit = styled.div`
   width: 80px;
   height: 80px;
-  /* border: 1px solid; */
   border-radius: 50%;
   position: fixed;
   bottom: 30px;

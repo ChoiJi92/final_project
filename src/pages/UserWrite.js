@@ -4,10 +4,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Dropzone from "react-dropzone";
 import PostEditer from "../components/PostEditer";
-import {
-  useParams,
-  UNSAFE_NavigationContext as NavigationContext,
-} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import AddressModal from "../components/AddressModal";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "react-query";
@@ -15,21 +12,19 @@ import instance from "../shared/axios";
 import WriteFooter from "../components/WriteFooter";
 import TagList from "../components/TagList";
 import MetaTag from "./MetaTag";
-import Error from "./Error";
 import { useRecoilState } from "recoil";
 import { textImageURL, thumbnailURL } from "../recoil/atoms";
 
 const UserWrite = () => {
   const params = useParams();
-  const userId = sessionStorage.getItem("userId");
   const [existThumbnail, setExistThumbnail] = useRecoilState(thumbnailURL);
   const [existTextImage, setExistTextImage] = useRecoilState(textImageURL);
+
   // params.id에 의 queryfunction이 실행될지 말지를 결정하므로 queryKey에 넣어줘야함
   const { data } = useQuery(
     ["editContent", params.id],
     () =>
       instance.get(`/post/${params.id}`).then((res) => {
-        // console.log(res.data);
         setExistThumbnail([res.data.allPost[0].images[0]]);
         setExistTextImage([
           ...res.data.allPost[0].images.filter((_, i) => i !== 0),
@@ -49,12 +44,9 @@ const UserWrite = () => {
   const [thumbnail, setThumbnail] = useState();
   const [editorImage, setEditorImage] = useState([]);
   const [preImages, setPreImages] = useState([]);
-  // const [modalOpen, setModalOpen] = useState(false);
   const [address, setAddress] = useState(data?.mainAddress);
   const [tagList, setTagList] = useState(data?.tagList ? data?.tagList : []);
-  // const address = useRecoilValue(addressState);
   const [content, setContent] = useState();
-  // const [imageKey, setImageKey] = useState([]);
   const {
     register,
     handleSubmit,
@@ -64,22 +56,8 @@ const UserWrite = () => {
   } = useForm();
   // 이미지 업로드 부분
   const onDrop = useCallback((acceptedFiles) => {
-    // console.log(acceptedFiles[0]);
-    // let imagelist = []; // 미리보기 이미지 담을 리스트
-    // let filelist = []; // 업로드할 파일을 담을 리스트
-    // 이미지 미리보기 createObjectURL 버전
     setThumbnail(acceptedFiles[0]);
     setPreview(URL.createObjectURL(acceptedFiles[0]));
-    // console.log(imagelist[i]);
-    // setPreview([...preview, ...imagelist]);
-    // let reader = new FileReader(); // 이미지 미리보기!!!
-    // reader.readAsDataURL(acceptedFiles[i]);
-    // reader.onload = () => {
-    //   imagelist[i] = reader.result;
-    //   setPreview([...preview, ...imagelist]);
-    // };
-    // setThumbnail([...thumbnail, ...filelist]);
-    // e.target.value = "";
   }, []);
   const titleChange = (e) => {
     // 글자수 제한
@@ -103,7 +81,6 @@ const UserWrite = () => {
         })
         .then((res) => {
           setOpen(true);
-          // console.log(res.data);
         }),
     {
       onSuccess: () => {
@@ -124,7 +101,6 @@ const UserWrite = () => {
         })
         .then((res) => {
           setOpen(true);
-          console.log(res.data);
         }),
     {
       onSuccess: () => {
@@ -134,37 +110,17 @@ const UserWrite = () => {
     }
   );
   const onSubmit = (data) => {
-    // console.log(data);
-    // console.log(title);
-    // console.log(content);
-    // console.log(thumbnail);
-    // console.log(address);
-    // console.log(tagList);
-    // console.log(editorImage,'텍스트 파일객체'); // foreach 돌려야함
-    // console.log(preImages,'텍스트 파일 blob');
-    // console.log("저장");
-    // console.log(existThumbnail,'처음에 저장된 썸네일'); //처음에 저장된 썸네일
-    // console.log(existTextImage,'처음에 저장된 텍스트 이미지'); //처음에 저장된 텍스트 이미지
-
     let filterImage = preImages.filter((v) => !content.includes(v)); // 삭제된 imageurl
-    
-    let filterTextImage = existTextImage.filter((v)=> !content.includes(v.postImageURL))  //필터된 텍스트이미지
-    // console.log(filterTextImage,'나는 필터된 텍스트이미지')
-    // console.log(filterImage, "나는 없어진 이미지!");
-    
+
+    let filterTextImage = existTextImage.filter(
+      (v) => !content.includes(v.postImageURL)
+    ); //필터된 텍스트이미지
+
     let index = filterImage.map((v) => preImages.indexOf(v)); //없어진 이미지 인덱스
-    // console.log(index, "나는 없어진 친구 인덱스");
-    
-    let newEditorImage = editorImage.filter((_, i) => !index.includes(i));  //필터된 파일 (파일객체 보내야됨)
-    // console.log(
-    //   editorImage.filter((_, i) => !index.includes(i)),
-    //   "나는 필터된 file!!"
-    // );
-    let newPreImages = preImages.filter((v) => content.includes(v));  // 필터된 blob 객체(보내야됨)
-    // console.log(
-    //   preImages.filter((v) => content.includes(v)),
-    //   "필터된 친구"
-    // );
+
+    let newEditorImage = editorImage.filter((_, i) => !index.includes(i)); //필터된 파일 
+
+    let newPreImages = preImages.filter((v) => content.includes(v)); // 필터된 blob 객체
 
     if (!thumbnail && !preview) {
       window.alert("썸네일 사진을 추가해 주세요 :)");
@@ -175,18 +131,9 @@ const UserWrite = () => {
     } else {
       const formData = new FormData();
       if (thumbnail) {
-        // console.log("여기 지나가나요?");
-        // console.log(thumbnail,'나는 썸네일')
         formData.append("images", thumbnail);
       }
-      // else{
-      //   console.log('여기는?')
-      //   formData.append("images", preview)
-      // }
-      // console.log(newEditorImage, "필터된 파일객체들");
-      // console.log(newPreImages, "필터된 url들");
       newEditorImage.forEach((file) => formData.append("images", file));
-
       formData.append("title", title);
       formData.append("content", content);
       formData.append("tagList", tagList);
@@ -197,27 +144,24 @@ const UserWrite = () => {
       formData.append("houseTitle", data.houseTitle);
       formData.append("link", data.link);
       formData.append("preImages", newPreImages);
-      formData.append("deleteImages",filterTextImage)
-    
+      formData.append("deleteImages", filterTextImage);
+
       if (!params.id) {
         createPost.mutate(formData);
-        setOpen(true);
       } else {
-        if(thumbnail){
-        formData.append('changeThumbnail',true)
-        updatePost.mutate(formData);
-        }else{
-          formData.append('changeThumbnail',false)
+        if (thumbnail) {
+          formData.append("changeThumbnail", true);
+          updatePost.mutate(formData);
+        } else {
+          formData.append("changeThumbnail", false);
           updatePost.mutate(formData);
         }
-        setOpen(true);
       }
     }
   };
   return (
     <>
       <MetaTag title={"숙소정보를 공유해 주세요 :) | 멘도롱 제주"} />
-
       <Wrap>
         <Container background={preview}>
           <Dropzone multiple={false} onDrop={onDrop}>
@@ -296,9 +240,7 @@ const UserWrite = () => {
               <h3>카테고리 *</h3>
               <div>
                 <Select
-                  // onChange={handleChange}
                   defaultValue={data?.category ? data?.category : ""}
-                  // value={data.category ? data.category : ""}
                   {...register("category", { required: true })}
                   style={{
                     width: "100%",
@@ -323,7 +265,6 @@ const UserWrite = () => {
                   <MenuItem value="관광지근처">관광지근처</MenuItem>
                   <MenuItem value="조용한마을">조용한마을</MenuItem>
                   <MenuItem value="우도">우도</MenuItem>
-                  {/* <MenuItem value="성산일출봉">성산일출봉</MenuItem> */}
                 </Select>
                 <p className="errorMessage">
                   {errors.category?.type === "required" &&
@@ -336,7 +277,6 @@ const UserWrite = () => {
               <div>
                 <Select
                   defaultValue={data?.type ? data.type : ""}
-                  // onChange={handleChange}
                   {...register("type", { required: true })}
                   style={{
                     width: "100%",
@@ -374,7 +314,6 @@ const UserWrite = () => {
                   <input
                     placeholder="주소를 검색해 주세요."
                     {...register("mainAddress")}
-                    // value={address || ""}
                     defaultValue={address}
                     readOnly
                   ></input>
@@ -417,7 +356,6 @@ const UserWrite = () => {
   );
 };
 const Wrap = styled.div`
-  /* height: 100vh; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -428,16 +366,10 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  /* margin-top: 120px; */
   width: 100%;
   margin: 120px 0 95px 0;
-  /* border: 1px solid; */
-  /* height: 300px;
-  background-size: cover;
-  background-repeat: no-repeat; */
   cursor: pointer;
   div {
-    /* width: 434px; */
     width: 22.6042%;
     height: 270px;
     border: none;
