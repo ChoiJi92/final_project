@@ -7,13 +7,16 @@
 
 ## 📆 제작 기간 및 팀원 소개 👨‍💻
 - 2022.06.24 ~ 2022.08.05
-- Front-end
-	- 최지훈 [Github](https://github.com/Choiji92)
-	- 송완준 [Github](https://github.com/natural-nine)
-- Back-end
-    - 강유신 [Github](https://github.com/Usiniverse)
-	- 윤기남 [Github](https://github.com/wea9677)
-	- 이재근 [Github](https://github.com/flypig-hub)
+	
+| 역할 | 이름 | 분담 |
+| ---- | ----- | --- |
+| BE🔰 | 강유신[GitHub](https://github.com/Usiniverse) | 유저커뮤니티/호스트 숙소 등록 CRUD, AWS S3, HTTPS 배포 |
+| BE | 윤기남[GitHub](https://github.com/wea9677) | 소셜로그인, user마이페이지, 리뷰, 저장하기 기능 |
+| BE | 이재근[GitHub](https://github.com/flypig-hub) | 댓글, 좋아요, 채팅방  CRUD, socket 채팅기능 |
+| FE🔰 | 최지훈[GitHub](https://github.com/Choiji92/final_project#readme) | 소셜로그인, 커뮤니티 글 관련 CRUD, 게시글 댓글 CRUD, 게시글 좋아요기능. 유저닉네임,프로필사진 수정, 실시간채팅, 지역 검색기능, 카테고리 필터기능, Https 배포, CI/CD |
+| FE | 송완준[GitHub](https://github.com/natural-nine) | 숙소관련 CRUD, 숙소 저장기능, 숙소 후기 CRUD |
+| Design | 김나영 | 디자인 담당 |
+
 
 ## 💻 Front-end 
 - 소셜 로그인 구현
