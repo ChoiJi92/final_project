@@ -49,6 +49,13 @@
 	 <img src="https://img.shields.io/badge/axios-FFCA28?style=for-the-badge&logo=axios&logoColor=white">
 		 <img src="https://img.shields.io/badge/amazonaws-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white">
 		 <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
+### 주요 기술 스택 선정 이유
+1. React-query
+	- 부트캠프 과정에서 전역 상태 관리 라이브러리인 Redux를 학습하고 사용하였습니다. 이 때 서버 데이터를 받아와 상태관리를 하기 위해 미들웨어로 Redux-thunk를 사용하게 되었습니다. 이렇게 사용하다 보니 Redux를 클라이언트의 전역 상태 관리를 위해 사용한다기 보다는 비동기 요청을 위해 사용을 하게 되고, 그로 인해 Store 또한 너무 비대해 진다고 생각이 들었습니다. 그래서 저희는 서버와 클라이언트 데이터를 분리하기 위해 react-query를 도입하게 되었고, 비동기 과정을 더욱 편하게 사용할 수 있게 되었습니다.
+
+2. Recoil
+	- 전역 상태 관리 라이브러리인 Redux를 사용해 오면서 보일러플레이트가 너무 많다고 생각이 들었고, 새로운 전역 상태 관리 라이브러리인 Recoil을 도입하게 되었습니다.
+	- Recoil은 리액트 훅인 useState처럼 사용할 수 있다는 것과, 러닝커브가 낮다는 장점이 있습니다.  
 		
 ## 🗒️  페이지 & 기능
 ### 1. 소셜로그인
