@@ -11,17 +11,17 @@ const Profile = ({item, data}) => {
     <Main>
         {data ? (
         <>
-        <img src={data.userImageURL} alt="프로필"/>
+        <img src={data.user.userImageURL} alt="프로필"/>
         <div id="profileName">
-            <SpanName >{data.nickname}</SpanName>
-            <SpanTime></SpanTime>
+            <SpanName >{data.user.nickname}</SpanName>
+            <SpanTime>{data.createdAt}</SpanTime>
         </div>
         </>) : (
         <>
-            <img src={item.userImageURL} alt="프로필"/>
+            <img src={item.user.userImageURL} alt="프로필"/>
         <div id="profileName">
-            <SpanName>{item.nickname}</SpanName>
-            <SpanTime></SpanTime>
+            <SpanName>{item.user.nickname}</SpanName>
+            <SpanTime>{item.createdAt}</SpanTime>
         </div>
         </>
         )}
