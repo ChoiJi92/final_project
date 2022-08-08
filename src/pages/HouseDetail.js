@@ -46,7 +46,7 @@ const HouseDetail = () => {
         id:id,
         review:review,
         star:star,
-        reviewId:reviewId
+        reviewId:reviewId,
       });
     }
   };
@@ -88,7 +88,7 @@ const HouseDetail = () => {
     () => 
        instance
         .get(`/review/${hostId}/review`)
-        .then((res) => { return(res.data)})
+        .then((res) => {return(res.data)})
         .catch((err) => {
           console.log(err);
         }),
@@ -366,7 +366,7 @@ const HouseDetail = () => {
                     <div id="iconBox">
                       {userId == item?.userId ? (
                       <>
-                      <img onClick={()=>{openModal(item?.userId, item?.review, item?.starpoint, item?.reviewId)}} src={editIcon} alt="수정" />
+                      <img onClick={()=>{openModal(item?.userId, item?.review, item?.starpoint, item?.reviewId, item?.createdAt)}} src={editIcon} alt="수정" />
                       <img onClick={()=>{deleteReview.mutate(item?.reviewId)}}  src={deleteIcon} alt="삭제" />
                       </>) 
                       : 
@@ -395,7 +395,7 @@ const HouseDetail = () => {
                         <div id="iconBox">
                         {userId == item?.userId ? (
                       <>
-                      <img onClick={()=>{openModal(item?.userId, item.review, item.starpoint)}} src={editIcon} alt="수정" />
+                      <img onClick={()=>{openModal(item?.userId, item?.review, item?.starpoint, item?.reviewId, item?.createdAt)}} src={editIcon} alt="수정" />
                       <img onClick={()=>{deleteReview.mutate(item?.reviewId)}}  src={deleteIcon} alt="삭제" />
                       </>) 
                       : 
