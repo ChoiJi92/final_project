@@ -56,7 +56,7 @@ const Comment = ({ value }) => {
           {!edit ? (
             <>
               <div className="comment">{value.comment}</div>
-              {/* <div className="date">2시간 전</div> */}
+              <div className="date">{value.createdAt}</div>
             </>
           ) : (
             <input
