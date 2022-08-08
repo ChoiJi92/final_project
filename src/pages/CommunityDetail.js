@@ -176,7 +176,7 @@ const CommunityDetail = () => {
                     <img src={data.allPost[0].userImageURL} alt="프로필"></img>
                     <div className="profile">
                       <div className="nickname">{data.allPost[0].nickname}</div>
-                      {/* <div className="time">2시간 전</div> */}
+                      <div className="time">{data.allPost[0].createdAt}</div>
                     </div>
                   </div>
                   <Button>
